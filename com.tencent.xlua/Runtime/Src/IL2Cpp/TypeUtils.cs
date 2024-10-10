@@ -6,7 +6,7 @@
 */
 
 #if UNITY_2020_1_OR_NEWER
-#if EXPERIMENTAL_IL2CPP_PUERTS || UNITY_EDITOR || PUERTS_GENERAL
+#if UNITY_EDITOR || PUERTS_GENERAL
 
 using System;
 using System.Reflection;
