@@ -1,0 +1,18 @@
+{
+    "name": "com.tencent.xlua.Editor",
+    "rootNamespace": "",
+    "references": [
+        "com.tencent.xlua.Runtime"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

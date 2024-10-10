@@ -1,5 +1,5 @@
 
-set "__VS=Visual Studio 16 2019"
+set "__VS=Visual Studio 17 2022"
 set "__VSWhere=%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe"
 set "__VSDISPLAY="
 set "__VSVER="
@@ -20,7 +20,7 @@ if "%__VSVER%" neq "" (
 mkdir build64 & pushd build64
 cmake -G "%__VS%" -A x64 ..
 popd
-cmake --build build64 --config Release
+cmake --build build64 --config Debug
 md plugin_lua53\Plugins\x86_64
-copy /Y build64\Release\xlua.dll plugin_lua53\Plugins\x86_64\xlua.dll
+copy /Y build64\Debug\xlua.dll plugin_lua53\Plugins\x86_64\xlua.dll
 pause
