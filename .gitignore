@@ -40,3 +40,4 @@ Packages/packages-lock.json
 UserSettings
 win
 build/plugin_lua53
+.vscode

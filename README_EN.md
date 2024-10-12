@@ -95,14 +95,3 @@ It is recommended that you bind once and reuse it. If code is generated, no gc a
 * [11_RawObject](Assets/XLua/Examples/11_RawObject/): This example shows how to specify transferring a Lua number in the int after boxing when the C# parameter is an object.
 * [12_ReImplementInLua](Assets/XLua/Examples/12_ReImplementInLua/): This shows how to change complex value types to Lua implementations.
 * [14_HotfixAsyncAwait](Assets/XLua/Examples/14_HotfixAsyncAwait/): This shows how to change asynchronous functions and await keyword to Lua implementation.
-
-## Technical support
-
-QQ Group 1: 612705778 (may be full)
-
-QQ Group 2: 703073338
-
-QQ Group 3: 811246782
-
-Check answers: If you encounter a problem, please read the FAQs first.
-

@@ -114,10 +114,42 @@ else ( )
     list (APPEND LUA_SOCKET luasocket/usocket.c)
 endif ( )
 
-set ( XLUA_CORE
-    i64lib.c
-    xlua.c
+include_directories(
+    Inc
+    ../com.tencent.xlua/Plugins
 )
+set ( XLUA_CORE
+    Src/i64lib.c
+    Src/xlua.c
+)
+
+set ( XLUA_INC
+    Inc/UnityExports4XLua.h
+)
+
+set ( XLUA_SRC
+    Src/FunctionBridge.Gen.h
+)
+
+macro(source_group_by_dir proj_dir source_files)
+    if(MSVC OR APPLE)
+        get_filename_component(sgbd_cur_dir ${proj_dir} ABSOLUTE)
+        foreach(sgbd_file ${${source_files}})
+			get_filename_component(sgbd_abs_file ${sgbd_file} ABSOLUTE)
+            file(RELATIVE_PATH sgbd_fpath ${sgbd_cur_dir} ${sgbd_abs_file})
+            string(REGEX REPLACE "\(.*\)/.*" \\1 sgbd_group_name ${sgbd_fpath})
+            string(COMPARE EQUAL ${sgbd_fpath} ${sgbd_group_name} sgbd_nogroup)
+            string(REPLACE "/" "\\" sgbd_group_name ${sgbd_group_name})
+            if(sgbd_nogroup)
+                set(sgbd_group_name "\\")
+            endif(sgbd_nogroup)
+            source_group(${sgbd_group_name} FILES ${sgbd_file})
+        endforeach(sgbd_file)
+    endif(MSVC OR APPLE)
+endmacro(source_group_by_dir)
+
+source_group_by_dir(${CMAKE_CURRENT_SOURCE_DIR} PUERTS_INC)
+source_group_by_dir(${CMAKE_CURRENT_SOURCE_DIR} PUERTS_SRC)
 
 if (NOT USING_LUAJIT)
     list (APPEND XLUA_CORE memory_leak_checker.c)

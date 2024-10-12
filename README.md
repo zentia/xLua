@@ -40,13 +40,13 @@ xLua 可以直接简单的安装在 Unity 项目中.
 
 ## 文档
 
-* (必看) [XLua 教程](Assets/XLua/Doc/XLua教程.md)：教程，其配套代码[这里](Assets/XLua/Tutorial/)。
-* (必看) [XLua 的配置](Assets/XLua/Doc/configure.md)：介绍如何配置xLua。
-* [常见问题解答](Assets/XLua/Doc/faq.md)：常见问题都总结在这里，初使用大多数问题都可以在这里找到答案。
-* [热补丁操作指南](Assets/XLua/Doc/hotfix.md)：介绍如何使用热补丁特性。
-* [XLua增加删除第三方lua库](Assets/XLua/Doc/XLua增加删除第三方lua库.md)：如何增删第三方lua扩展库。
-* [XLua API](Assets/XLua/Doc/XLua_API.md)：API文档。
-* [生成引擎二次开发指南](Assets/XLua/Doc/custom_generate.md)：介绍如何做生成引擎的二次开发。
+* (必看) [XLua 教程](Doc/XLua教程.md)：教程，其配套代码[这里](Assets/Tutorial/)。
+* (必看) [XLua 的配置](Doc/configure.md)：介绍如何配置xLua。
+* [常见问题解答](Doc/faq.md)：常见问题都总结在这里，初使用大多数问题都可以在这里找到答案。
+* [热补丁操作指南](Doc/hotfix.md)：介绍如何使用热补丁特性。
+* [XLua增加删除第三方lua库](Doc/XLua增加删除第三方lua库.md)：如何增删第三方lua扩展库。
+* [XLua API](Doc/XLua_API.md)：API文档。
+* [生成引擎二次开发指南](Doc/custom_generate.md)：介绍如何做生成引擎的二次开发。
 
 <br/>
 
@@ -104,7 +104,7 @@ C#主动调用 Lua 也很简单，比如要调用 Lua 的系统函数，推荐�
 
 ## 更多示例
 
-* [01_Helloworld](Assets/XLua/Examples/01_Helloworld/): 快速入门的例子。
+* [01_Helloworld](Assets/Examples/01_Helloworld/): 快速入门的例子。
 * [02_U3DScripting](Assets/XLua/Examples/02_U3DScripting/): 展示怎么用 Lua 来写 MonoBehaviour。
 * [03_UIEvent](Assets/XLua/Examples/03_UIEvent/): 展示怎么用 Lua 来写 UI 逻辑。
 * [04_LuaObjectOrented](Assets/XLua/Examples/04_LuaObjectOrented/): 展示 Lua 面向对象和 C# 的配合。
@@ -119,18 +119,3 @@ C#主动调用 Lua 也很简单，比如要调用 Lua 的系统函数，推荐�
 * [14_HotfixAsyncAwait](Assets/XLua/Examples/14_HotfixAsyncAwait/): 展示如何将异步函数和await关键字改为 Lua 实现。
 
 <br/>
-
-## 技术支持
-
-一群：612705778 (已满)
-
-二群：703073338 (已满)
-
-三群：811246782
-
-入群的问题：有问题该先从哪找答案
-
-回答：FAQ
-
-平时也要谨记这答案，90%以上问题都可以在[FAQ](Assets/XLua/Doc/faq.md)里头找到答案。这些问题就别在群刷屏了。
-

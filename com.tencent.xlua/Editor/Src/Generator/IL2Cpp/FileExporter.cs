@@ -362,22 +362,24 @@ namespace PuertsIl2cpp.Editor
                     .ToList();
                 fieldWrapperInfos.Sort((x, y) => string.CompareOrdinal(x.Signature, y.Signature));
 
-                using (var jsEnv = new LuaEnv())
+                using (var luaEnv = new LuaEnv())
                 {
-                    // jsEnv.UsingFunc<CppWrappersInfo, string>();
-                    // var cppWrapRender = jsEnv.ExecuteModule<Func<CppWrappersInfo, string>>("puerts/templates/cppwrapper.tpl.mjs", "default");
-                    // using (StreamWriter textWriter = new StreamWriter(Path.Combine(saveTo, "FunctionBridge.Gen.h"), false, Encoding.UTF8))
-                    // {
-                    //     string fileContext = cppWrapRender(new CppWrappersInfo
-                    //     {
-                    //         ValueTypeInfos = valueTypeInfos,
-                    //         WrapperInfos = wrapperInfos,
-                    //         BridgeInfos = bridgeInfos,
-                    //         FieldWrapperInfos = fieldWrapperInfos
-                    //     });
-                    //     textWriter.Write(fileContext);
-                    //     textWriter.Flush();
-                    // }
+                    var scriptScopeTable  = luaEnv.NewTable();
+                    luaEnv.DoString("xlua/templates/cppwrapper.tpl.lua", "cppwrapper.tpl", scriptScopeTable);
+                    var gen = scriptScopeTable.Get<LuaFunction>("Gen");
+                    using (var textWriter = new StreamWriter(Path.Combine(saveTo, "FunctionBridge.Gen.h"), false, Encoding.UTF8))
+                    {
+                        var fileContext = gen.Func<CppWrappersInfo, string>(new CppWrappersInfo
+                        {
+                            ValueTypeInfos = valueTypeInfos,
+                            WrapperInfos = wrapperInfos,
+                            BridgeInfos = bridgeInfos,
+                            FieldWrapperInfos = fieldWrapperInfos
+                        });
+                        textWriter.Write(fileContext);
+                        textWriter.Flush();
+                    }
+                    scriptScopeTable.Dispose();
                 }
             }
 
@@ -449,7 +451,7 @@ namespace PuertsIl2cpp.Editor
                     { "pesapi_adpt.c", Resources.Load<TextAsset>("puerts/xil2cpp/pesapi_adpt.c").text },
                     { "pesapi.h", Resources.Load<TextAsset>("puerts/xil2cpp/pesapi.h").text },
                     { "Puerts_il2cpp.cpp", Resources.Load<TextAsset>("puerts/xil2cpp/Puerts_il2cpp.cpp").text },
-                    { "UnityExports4Puerts.h", Resources.Load<TextAsset>("puerts/xil2cpp/UnityExports4Puerts.h").text }
+                    { "UnityExports4XLua.h", Resources.Load<TextAsset>("puerts/xil2cpp/UnityExports4XLua.h").text }
                 };
 
                 foreach (var cPlugin in cPluginCode)
@@ -465,7 +467,7 @@ namespace PuertsIl2cpp.Editor
 
             public static void GenMarcoHeader(string outDir)
             {
-                var filePath = outDir + "unityenv_for_puerts.h";
+                var filePath = outDir + "unityenv_for_xlua.h";
 
 //                 using (var jsEnv = new Puerts.JsEnv())
 //                 {
