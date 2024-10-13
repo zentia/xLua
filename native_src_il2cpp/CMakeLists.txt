@@ -33,30 +33,26 @@ endif()
 
 set(BACKEND_ROOT ${PROJECT_SOURCE_DIR}/../build/${LUA_ENGINE})
 
-set(ThirdParty ${PROJECT_SOURCE_DIR}/../ThirdParty)
+set(ThirdParty ${PROJECT_SOURCE_DIR}/../XLua/ThirdParty)
 
 string (REPLACE ";" "$<SEMICOLON>${BACKEND_ROOT}" BACKEND_INC_NAMES "${BACKEND_ROOT}${BACKEND_INC_NAMES}")
 string (REPLACE ";" "$<SEMICOLON>${BACKEND_ROOT}" BACKEND_LIB_NAMES "${BACKEND_ROOT}${BACKEND_LIB_NAMES}")
 string (REPLACE ";" "$<SEMICOLON>" BACKEND_DEFINITIONS "${BACKEND_DEFINITIONS}")
 
-set(ThirdParty ${PROJECT_SOURCE_DIR}/../ThirdParty)
+set(ThirdParty ${PROJECT_SOURCE_DIR}/../XLua/ThirdParty)
 include_directories(
     Inc
     ../com.tencent.xlua/Plugins/xlua_il2cpp
     ${BACKEND_INC_NAMES}
     ${PROJECT_SOURCE_DIR}/../native_src/Inc
-    ${PROJECT_SOURCE_DIR}/../../unreal/Puerts/Source/JsEnv/Private
-    ${ThirdParty}/Include/websocketpp
-    ${ThirdParty}/Include/asio
+    ${PROJECT_SOURCE_DIR}/../XLua/Source/LuaEnv/Private
 )
 
-set ( PUERTS_INC
-    ${PROJECT_SOURCE_DIR}/../../unreal/Puerts/Source/JsEnv/Private/V8InspectorImpl.h
-    ${PROJECT_SOURCE_DIR}/../../unreal/Puerts/Source/JsEnv/Private/PromiseRejectCallback.hpp
-    ${PROJECT_SOURCE_DIR}/../cli/UnityExports4Puerts.h
+set ( XLUA_INC
+    ${PROJECT_SOURCE_DIR}/../cli/UnityExports4XLua.h
 )
 
-set ( PUERTS_SRC
+set ( XLUA_SRC
     Src/Puerts.cpp
     Src/PesapiV8Impl.cpp
     Src/PesapiAddonLoad.cpp
