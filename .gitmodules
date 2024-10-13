@@ -1,6 +1,3 @@
-[submodule "build/lua"]
-	path = build/lua
-	url = https://github.com/lua/lua.git
 [submodule "build/LuaJIT"]
 	path = build/LuaJIT
 	url = https://github.com/LuaJIT/LuaJIT.git
