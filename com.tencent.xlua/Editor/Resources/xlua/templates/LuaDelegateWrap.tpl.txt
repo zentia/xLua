@@ -100,7 +100,7 @@ namespace XLua.CSObjectWrap
 		[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
         static int __AddMeta(RealStatePtr L)
 		{
-			ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+			ObjectTranslatorWrap translator = ObjectTranslatorPool.Instance.Find(L) as ObjectTranslatorWrap;
 			try {
 				<%=GetCasterStatement(type, 1, "leftside", true)%>;
 				<%=GetCasterStatement(type, 2, "rightside", true)%>;
@@ -114,7 +114,7 @@ namespace XLua.CSObjectWrap
 		[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
         static int __SubMeta(RealStatePtr L)
 		{
-			ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+			ObjectTranslatorWrap translator = ObjectTranslatorPool.Instance.Find(L) as ObjectTranslatorWrap;
 			try {
 				<%=GetCasterStatement(type, 1, "leftside", true)%>;
 				<%=GetCasterStatement(type, 2, "rightside", true)%>;

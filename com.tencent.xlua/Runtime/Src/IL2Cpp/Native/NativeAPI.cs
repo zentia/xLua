@@ -231,4 +231,3 @@ namespace XLuaIl2cpp
 }
 
 #endif
-#endif

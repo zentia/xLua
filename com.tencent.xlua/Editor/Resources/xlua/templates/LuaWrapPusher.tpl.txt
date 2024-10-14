@@ -15,7 +15,7 @@ require "TemplateCommon"
 
 namespace XLua
 {
-    public partial class ObjectTranslator
+    public partial class ObjectTranslatorWrap : ObjectTranslator
     {
         <%if purevaluetypes.Count > 0 then
         local init_class_name = "IniterAdder" .. CSVariableName(purevaluetypes[0].Type)
@@ -27,8 +27,9 @@ namespace XLua
                 LuaEnv.AddIniter(Init);
             }
 			
-			static void Init(LuaEnv luaenv, ObjectTranslator translator)
+			static void Init(LuaEnv luaenv, ObjectTranslator t)
 			{
+				var translator = t as ObjectTranslatorWrap;
 			<%ForEachCsList(purevaluetypes, function(type_info)
             if not type_info.Type.IsValueType then return end
             local full_type_name = CsFullTypeName(type_info.Type)%>
@@ -85,7 +86,7 @@ namespace XLua
 			<%end)%>
 			<%else%>
             IntPtr buff = LuaAPI.xlua_pushstruct(L, <%=is_enum and 4 or type_info.Size%>, <%=type_id_var_name%>);
-            if (!CopyByValue.Pack(buff, 0, <%=is_enum and "(int)" or ""%>val))
+            if (!CopyByValueWrap.Pack(buff, 0, <%=is_enum and "(int)" or ""%>val))
             {
                 throw new Exception("pack fail fail for <%=full_type_name%> ,value="+val);
             }
@@ -112,7 +113,7 @@ namespace XLua
 				
                 IntPtr buff = LuaAPI.lua_touserdata(L, index);<%if is_enum then%>
 				int e;
-                <%end%>if (!CopyByValue.UnPack(buff, 0, out <%=is_enum and "e" or "val"%>))
+                <%end%>if (!CopyByValueWrap.UnPack(buff, 0, out <%=is_enum and "e" or "val"%>))
                 {
                     throw new Exception("unpack fail for <%=full_type_name%>");
                 }<%if is_enum then%>
@@ -121,7 +122,7 @@ namespace XLua
             }<%if not is_enum then%>
 			else if (type ==LuaTypes.LUA_TTABLE)
 			{
-			    CopyByValue.UnPack(this, L, index, out val);
+			    CopyByValueWrap.UnPack(this, L, index, out val);
 			}<%end%>
             else
             {
@@ -145,7 +146,7 @@ namespace XLua
 				}
 				
                 IntPtr buff = LuaAPI.lua_touserdata(L, index);
-                if (!CopyByValue.Pack(buff, 0,  <%=is_enum and "(int)" or ""%>val))
+                if (!CopyByValueWrap.Pack(buff, 0,  <%=is_enum and "(int)" or ""%>val))
                 {
                     throw new Exception("pack fail for <%=full_type_name%> ,value="+val);
                 }
@@ -196,8 +197,9 @@ namespace XLua
 	
 	public partial class StaticLuaCallbacks
     {
-	    internal static bool __tryArrayGet(Type type, RealStatePtr L, ObjectTranslator translator, object obj, int index)
+	    internal static bool __tryArrayGet(Type type, RealStatePtr L, ObjectTranslator t, object obj, int index)
 		{
+			var translator = t as ObjectTranslatorWrap;
 		<%ForEachCsList(purevaluetypes, function(type_info, idx)
 		if not type_info.Type.IsValueType then return end
 		local full_type_name = CsFullTypeName(type_info.Type)

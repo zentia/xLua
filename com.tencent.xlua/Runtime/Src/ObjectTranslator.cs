@@ -83,7 +83,7 @@ namespace XLua
         LUA_ERRERR = 5,
     }
 
-    sealed class LuaIndexes
+    public class LuaIndexes
     {
         public static int LUA_REGISTRYINDEX
         {
@@ -106,7 +106,7 @@ namespace XLua
 	{
         internal MethodWrapsCache methodWrapsCache;
         internal ObjectCheckers objectCheckers;
-        internal ObjectCasters objectCasters;
+        public ObjectCasters objectCasters;
 
         internal readonly ObjectPool objects = new ObjectPool();
         internal readonly Dictionary<object, int> reverseMap = new Dictionary<object, int>(new ReferenceEqualsComparer());
@@ -265,7 +265,7 @@ namespace XLua
             initCSharpCallLua();
         }
 
-        internal enum LOGLEVEL{
+        public enum LOGLEVEL{
             NO,
             INFO,
             WARN,
@@ -1024,7 +1024,7 @@ namespace XLua
             }
         }
 
-        internal int getTypeId(RealStatePtr L, Type type, out bool is_first, LOGLEVEL log_level = LOGLEVEL.WARN)
+        public int getTypeId(RealStatePtr L, Type type, out bool is_first, LOGLEVEL log_level = LOGLEVEL.WARN)
         {
             int type_id;
             is_first = false;
@@ -1375,7 +1375,7 @@ namespace XLua
             return getCsObj(L, index, LuaAPI.xlua_tocsobj_safe(L, index));
         }
 
-		internal object FastGetCSObj(RealStatePtr L,int index)
+		public object FastGetCSObj(RealStatePtr L,int index)
 		{
             return getCsObj(L, index, LuaAPI.xlua_tocsobj_fast(L,index));
         }

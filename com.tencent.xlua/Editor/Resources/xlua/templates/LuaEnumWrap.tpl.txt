@@ -53,7 +53,7 @@ namespace XLua.CSObjectWrap
 		[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
         static int __CastFrom(RealStatePtr L)
 		{
-			ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+			ObjectTranslatorWrap translator = ObjectTranslatorPool.Instance.Find(L) as ObjectTranslatorWrap;
 			LuaTypes lua_type = LuaAPI.lua_type(L, 1);
             if (lua_type == LuaTypes.LUA_TNUMBER)
             {

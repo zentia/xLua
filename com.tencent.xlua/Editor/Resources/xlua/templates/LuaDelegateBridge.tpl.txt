@@ -15,8 +15,12 @@ require "TemplateCommon"
 
 namespace XLua
 {
-    public partial class DelegateBridge : DelegateBridgeBase
+    public partial class DelegateBridgeWrap : DelegateBridge
     {
+		public DelegateBridgeWrap(int reference, LuaEnv luaenv) : base(reference, luaenv)
+	    {
+		    
+	    }
 		<%
 		ForEachCsList(delegates_groups, function(delegates_group, group_idx)
 		local delegate = delegates_group.Key
@@ -47,7 +51,7 @@ namespace XLua
 #endif
                 RealStatePtr L = luaEnv.rawL;
                 int errFunc = LuaAPI.pcall_prepare(L, errorFuncRef, luaReference);
-                <%if CallNeedTranslator(delegate, "") then %>ObjectTranslator translator = luaEnv.translator;<%end%>
+                <%if CallNeedTranslator(delegate, "") then %>ObjectTranslatorWrap translator = luaEnv.translator as ObjectTranslatorWrap;<%end%>
                 <%
                 local param_count = parameters.Length
                 local has_v_params = param_count > 0 and parameters[param_count - 1].IsParamArray
@@ -75,7 +79,7 @@ namespace XLua
 		}
         <%end)%>
         
-		static DelegateBridge()
+		static DelegateBridgeWrap()
 		{
 		    Gen_Flag = true;
 		}

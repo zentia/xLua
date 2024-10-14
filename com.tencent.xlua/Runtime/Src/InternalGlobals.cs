@@ -22,16 +22,16 @@ using System.Reflection;
 
 namespace XLua
 {
-    internal partial class InternalGlobals
+    public partial class InternalGlobals
     {
 #if !THREAD_SAFE && !HOTFIX_ENABLE
         internal static byte[] strBuff = new byte[256];
 #endif
 
-        internal delegate bool TryArrayGet(Type type, RealStatePtr L, ObjectTranslator translator, object obj, int index);
-        internal delegate bool TryArraySet(Type type, RealStatePtr L, ObjectTranslator translator, object obj, int array_idx, int obj_idx);
-        internal static volatile TryArrayGet genTryArrayGetPtr = null;
-        internal static volatile TryArraySet genTryArraySetPtr = null;
+        public delegate bool TryArrayGet(Type type, RealStatePtr L, ObjectTranslator translator, object obj, int index);
+        public delegate bool TryArraySet(Type type, RealStatePtr L, ObjectTranslator translator, object obj, int array_idx, int obj_idx);
+        public static volatile TryArrayGet genTryArrayGetPtr = null;
+        public static volatile TryArraySet genTryArraySetPtr = null;
 
         internal static volatile ObjectTranslatorPool objectTranslatorPool = new ObjectTranslatorPool();
 
@@ -56,7 +56,7 @@ namespace XLua
             { "op_RightShift", "__shr" },
         };
 
-        internal static volatile Dictionary<Type, IEnumerable<MethodInfo>> extensionMethodMap = null;
+        public static volatile Dictionary<Type, IEnumerable<MethodInfo>> extensionMethodMap = null;
 
 #if GEN_CODE_MINIMIZE
         internal static volatile LuaDLL.CSharpWrapperCaller CSharpWrapperCallerPtr = new LuaDLL.CSharpWrapperCaller(StaticLuaCallbacks.CSharpWrapperCallerImpl);

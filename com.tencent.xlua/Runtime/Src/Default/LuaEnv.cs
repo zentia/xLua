@@ -28,9 +28,9 @@ namespace XLua
         public const string CSHARP_NAMESPACE = "xlua_csharp_namespace";
         public const string MAIN_SHREAD = "xlua_main_thread";
 
-        internal RealStatePtr rawL;
+        public RealStatePtr rawL;
 
-        internal RealStatePtr L
+        public RealStatePtr L
         {
             get
             {
@@ -44,9 +44,9 @@ namespace XLua
 
         private LuaTable _G;
 
-        internal ObjectTranslator translator;
+        public ObjectTranslator translator;
 
-        internal int errorFuncRef = -1;
+        public int errorFuncRef = -1;
 
 #if THREAD_SAFE || HOTFIX_ENABLE
         internal /*static*/ object luaLock = new object();
