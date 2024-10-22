@@ -18,7 +18,7 @@ using System;
     *  3、Binding、BlittableCopy、Filter配置须放到Editor目录下；
 *************************************************************************************************/
 
-namespace Puerts
+namespace XLua
 {
     //放置配置的类
     [AttributeUsage(AttributeTargets.Class)]

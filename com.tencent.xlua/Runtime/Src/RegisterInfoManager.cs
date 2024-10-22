@@ -7,7 +7,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Puerts
+namespace XLua
 {
     public enum BindingMode {
         FastBinding = 1024, // static wrapper

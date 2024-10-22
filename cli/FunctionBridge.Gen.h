@@ -868,43 +868,38 @@ struct N_bS_i4i4i4i4u8__
 
 
 // System.Collections.Generic.KeyValuePair`2[System.Int32,System.Int32] get_Current()
-static bool w_S_i4i4_t(void* method, MethodPointer methodPointer, const v8::FunctionCallbackInfo<v8::Value>& info, bool checkJSArgument, WrapData* wrapData) {
+static bool w_S_i4i4_t(void* method, MethodPointer methodPointer, lua_State *L, bool checkLuaArgument, WrapData* wrapData) {
     // PLog(LogLevel::Log, "Running w_S_i4i4_t");
     
     auto TIret = wrapData->TypeInfos[0];
 
-    v8::Isolate* isolate = info.GetIsolate();
-    v8::Local<v8::Context> context = isolate->GetCurrentContext();
-
-    if (checkJSArgument) {
-        auto length = info.Length();
+    if (checkLuaArgument) {
+        auto length = lua_gettop(L);
         if (length != 0) return false;
     }
-    auto self = puerts::DataTransfer::GetPointerFast<void>(info.Holder());
+    auto self = xlua::DataTransfer::GetPointerFast<void>(L, 1);
     
 
     typedef struct S_i4i4_ (*FuncToCall)(void*,const void* method);
     struct S_i4i4_ ret = ((FuncToCall)methodPointer)(self,  method);
 
+    xlua_pushstruct(L, )    
     
-    info.GetReturnValue().Set(CopyValueType(isolate, context, TIret, &ret, sizeof(ret)));
     return true;
 }
 
 // Enumerator GetEnumerator()
-static bool w_S_oi4i4S_i4i4_i4_t(void* method, MethodPointer methodPointer, const v8::FunctionCallbackInfo<v8::Value>& info, bool checkJSArgument, WrapData* wrapData) {
+static bool w_S_oi4i4S_i4i4_i4_t(void* method, MethodPointer methodPointer, lua_State *L, bool checkJSArgument, WrapData* wrapData) {
     // PLog(LogLevel::Log, "Running w_S_oi4i4S_i4i4_i4_t");
     
     auto TIret = wrapData->TypeInfos[0];
 
-    v8::Isolate* isolate = info.GetIsolate();
-    v8::Local<v8::Context> context = isolate->GetCurrentContext();
-
+    
     if (checkJSArgument) {
-        auto length = info.Length();
+        auto length = lua_gettop(L);
         if (length != 0) return false;
     }
-    auto self = puerts::DataTransfer::GetPointerFast<void>(info.Holder());
+    auto self = puerts::DataTransfer::GetPointerFast<void>(L, 1);
     
 
     typedef struct S_oi4i4S_i4i4_i4_ (*FuncToCall)(void*,const void* method);
@@ -916,13 +911,10 @@ static bool w_S_oi4i4S_i4i4_i4_t(void* method, MethodPointer methodPointer, cons
 }
 
 // UnityEngine.Color get_red()
-static bool w_S_r4r4r4r4_(void* method, MethodPointer methodPointer, const v8::FunctionCallbackInfo<v8::Value>& info, bool checkJSArgument, WrapData* wrapData) {
+static bool w_S_r4r4r4r4_(void* method, MethodPointer methodPointer, lua_State *L, bool checkJSArgument, WrapData* wrapData) {
     // PLog(LogLevel::Log, "Running w_S_r4r4r4r4_");
     
     auto TIret = wrapData->TypeInfos[0];
-
-    v8::Isolate* isolate = info.GetIsolate();
-    v8::Local<v8::Context> context = isolate->GetCurrentContext();
 
     if (checkJSArgument) {
         auto length = info.Length();
@@ -2036,10 +2028,10 @@ static struct N_bS_i4i4i4i4u8__ b_N_bS_i4i4i4i4u8__o(void* target, void* p0, voi
     v8::TryCatch TryCatch(isolate);
     auto Function = delegateInfo->JsObject.Get(isolate).As<v8::Function>();
     v8::Local<v8::Value> Argv[1]{
-        CSRefToJsValue(isolate, context, p0)
+        CSRefToLuaValue(L, p0)
     };
     auto MaybeRet = Function->Call(context, v8::Undefined(isolate), 1, Argv);
-    
+    lua_pcall(L);
     if (TryCatch.HasCaught())
     {
         auto msg = DataTransfer::ExceptionToString(isolate, TryCatch.Exception());
@@ -8003,6 +7995,7 @@ static void* b_s(void* target, void* method) {
     
     // JSValToCSVal s
     v8::String::Utf8Value tret(isolate, MaybeRet.ToLocalChecked());
+    
     void* ret = CStringToCSharpString(*tret);
     return ret;
         
@@ -13075,7 +13068,7 @@ static void ifg_tr4(const v8::FunctionCallbackInfo<v8::Value>& info, void* field
     info.GetReturnValue().Set(ret);
 }
 
-static void ifs_tr4(const v8::FunctionCallbackInfo<v8::Value>& info, void* fieldInfo, size_t offset, void* TIp) {
+static void ifs_tr4(lua_State *L, void* fieldInfo, size_t offset, void* TIp) {
     // PLog(LogLevel::Log, "Running ifs_tr4");
     
     v8::Isolate* isolate = info.GetIsolate();

@@ -2,14 +2,14 @@
   "name": "com.tencent.xlua",
   "displayName": "xlua",
   "version": "1.0.0",
-  "description": "Write your game with TypeScript in UE4 or Unity. Puerts can be pronounced as xlua",
+  "description": "Write your game with Lua in Unity.",
   "keywords": [
     "Script"
   ],
   "author": {
-    "name": "Tencent xlua Group",
+    "name": "zentia",
     "email": "zentiali@tencent.com",
-    "url": "https://github.com/xlua"
+    "url": "https://github.com/zentia/xlua"
   },
   "category": "Libraries",
   "unity": "2022.3"

@@ -10,9 +10,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using Puerts.TypeMapping;
+using XLua.TypeMapping;
 
-namespace Puerts.Editor
+namespace XLua.Editor
 {
     namespace Generator {
 
@@ -391,7 +391,7 @@ namespace Puerts.Editor
                 {
                     extensionMethods = (from type in genTypeSet
                                         from method in type.GetMethods(BindingFlags.Static | BindingFlags.Public)
-                                        where isDefined(method, typeof(ExtensionAttribute)) && Puerts.Utils.IsNotGenericOrValidGeneric(method)
+                                        where isDefined(method, typeof(ExtensionAttribute)) && XLua.Utils.IsNotGenericOrValidGeneric(method)
                                         group method by getExtendedType(method)).ToDictionary(g => g.Key, g => g.ToArray());
                 }
                 MethodInfo[] ret;

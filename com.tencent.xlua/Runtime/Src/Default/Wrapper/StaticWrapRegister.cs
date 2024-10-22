@@ -10,7 +10,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace Puerts
+namespace XLua
 {
     public enum LazyMemberType
     {

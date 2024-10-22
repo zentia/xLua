@@ -5,139 +5,15 @@
 * This file is subject to the terms and conditions defined in file 'LICENSE', which is part of this source code package.
 */
 
-#if !EXPERIMENTAL_IL2CPP_PUERTS || !ENABLE_IL2CPP
+#if !ENABLE_IL2CPP
 
 using System;
 using System.Linq;
 
-namespace Puerts
+namespace XLua
 {
-    public static class TypeExtensions
+    public static partial class TypeExtensions
     {
-        internal static bool IsValueType(this Type type)
-        {
-#if !UNITY_WSA || UNITY_EDITOR
-            return type.IsValueType;
-#else
-            return type.GetTypeInfo().IsValueType;
-#endif
-        }
-
-        internal static bool IsEnum(this Type type)
-        {
-#if !UNITY_WSA || UNITY_EDITOR
-            return type.IsEnum;
-#else
-            return type.GetTypeInfo().IsEnum;
-#endif
-        }
-
-        internal static bool IsPrimitive(this Type type)
-        {
-#if !UNITY_WSA || UNITY_EDITOR
-            return type.IsPrimitive;
-#else
-            return type.GetTypeInfo().IsPrimitive;
-#endif
-        }
-
-        internal static bool IsAbstract(this Type type)
-        {
-#if !UNITY_WSA || UNITY_EDITOR
-            return type.IsAbstract;
-#else
-            return type.GetTypeInfo().IsAbstract;
-#endif
-        }
-
-        internal static bool IsSealed(this Type type)
-        {
-#if !UNITY_WSA || UNITY_EDITOR
-            return type.IsSealed;
-#else
-            return type.GetTypeInfo().IsSealed;
-#endif
-        }
-
-        internal static bool IsInterface(this Type type)
-        {
-#if !UNITY_WSA || UNITY_EDITOR
-            return type.IsInterface;
-#else
-            return type.GetTypeInfo().IsInterface;
-#endif
-        }
-
-        internal static bool IsClass(this Type type)
-        {
-#if !UNITY_WSA || UNITY_EDITOR
-            return type.IsClass;
-#else
-            return type.GetTypeInfo().IsClass;
-#endif
-        }
-
-        internal static Type BaseType(this Type type)
-        {
-#if !UNITY_WSA || UNITY_EDITOR
-            return type.BaseType;
-#else
-            return type.GetTypeInfo().BaseType;
-#endif
-        }
-
-        internal static bool IsGenericType(this Type type)
-        {
-#if !UNITY_WSA || UNITY_EDITOR
-            return type.IsGenericType;
-#else
-            return type.GetTypeInfo().IsGenericType;
-#endif
-        }
-
-        internal static bool IsGenericTypeDefinition(this Type type)
-        {
-#if !UNITY_WSA || UNITY_EDITOR
-            return type.IsGenericTypeDefinition;
-#else
-            return type.GetTypeInfo().IsGenericTypeDefinition;
-#endif
-        }
-
-#if UNITY_WSA && !UNITY_EDITOR
-        internal static bool IsSubclassOf(this Type type, Type c)
-        {
-            return type.GetTypeInfo().IsSubclassOf(c);
-        }
-
-        internal static bool IsDefined(this Type type, Type attributeType, bool inherit)
-        {
-            return type.GetTypeInfo().IsDefined(attributeType, inherit);
-        }
-
-        internal static Type[] GetGenericParameterConstraints(this Type type)
-        {
-            return type.GetTypeInfo().GetGenericParameterConstraints();
-        }
-#endif
-
-        internal static bool IsNestedPublic(this Type type)
-        {
-#if !UNITY_WSA || UNITY_EDITOR
-            return type.IsNestedPublic;
-#else
-            return type.GetTypeInfo().IsNestedPublic;
-#endif        
-        }
-
-        internal static bool IsPublic(this Type type)
-        {
-#if !UNITY_WSA || UNITY_EDITOR
-            return type.IsPublic;
-#else
-            return type.GetTypeInfo().IsPublic;
-#endif        
-        }
 
         internal static bool IsStruct(this Type type)
         {

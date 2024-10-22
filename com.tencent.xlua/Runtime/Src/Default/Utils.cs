@@ -10,9 +10,9 @@ using System.Data;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-#if EXPERIMENTAL_IL2CPP_PUERTS && ENABLE_IL2CPP
+#if ENABLE_IL2CPP
 
-namespace Puerts
+namespace XLua
 {
     [UnityEngine.Scripting.Preserve]
     public static class Utils
@@ -76,9 +76,9 @@ namespace Puerts
     }
 }
 #else
-namespace Puerts
+namespace XLua
 {
-    public static class Utils
+    public static partial class Utils
     {
         public static long TwoIntToLong(int b, int a)
         {
@@ -136,7 +136,7 @@ namespace Puerts
                 {
                     // the constraint could not be another genericType #533
                     if (
-                        !parameterConstraint.IsClass() ||
+                        !parameterConstraint.IsClass ||
                         parameterConstraint == typeof(ValueType) ||
                         (
                             parameterConstraint.IsGenericType &&
@@ -214,7 +214,7 @@ namespace Puerts
                     foreach (var parameterConstraint in parameterConstraints)
                     {
                         // 所有泛型参数的类型约束都不是值类型
-                        if (!parameterConstraint.IsClass() || (parameterConstraint == typeof(ValueType)))
+                        if (!parameterConstraint.IsClass || (parameterConstraint == typeof(ValueType)))
                             return false;
                     }
                     hasValidGenericParameter = true;
@@ -315,69 +315,6 @@ namespace Puerts
             return false;
         }
 
-        public static IEnumerable<MethodInfo> GetExtensionMethodsOf(Type type_to_be_extend)
-        {
-            if (Utils_Internal.extensionMethodMap == null)
-            {
-                List<Type> type_def_extention_method = new List<Type>();
-
-                IEnumerator<Type> enumerator = GetAllTypes().GetEnumerator();
-
-                while (enumerator.MoveNext())
-                {
-                    Type type = enumerator.Current;
-                    if (type.IsDefined(typeof(ExtensionAttribute), false))
-                    {
-                        type_def_extention_method.Add(type);
-                    }
-
-                    if (!type.IsAbstract() || !type.IsSealed()) continue;
-
-                    var fields = type.GetFields(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.DeclaredOnly);
-                    for (int i = 0; i < fields.Length; i++)
-                    {
-                        var field = fields[i];
-                        if ((typeof(IEnumerable<Type>)).IsAssignableFrom(field.FieldType))
-                        {
-                            var types = field.GetValue(null) as IEnumerable<Type>;
-                            if (types != null)
-                            {
-                                type_def_extention_method.AddRange(types.Where(t => t != null && t.IsDefined(typeof(ExtensionAttribute), false)));
-                            }
-                        }
-                    }
-
-                    var props = type.GetProperties(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.DeclaredOnly);
-                    for (int i = 0; i < props.Length; i++)
-                    {
-                        var prop = props[i];
-                        if (!prop.CanRead)
-                            continue;
-                        if ((typeof(IEnumerable<Type>)).IsAssignableFrom(prop.PropertyType))
-                        {
-                            var types = prop.GetValue(null, null) as IEnumerable<Type>;
-                            if (types != null)
-                            {
-                                type_def_extention_method.AddRange(types.Where(t => t != null && t.IsDefined(typeof(ExtensionAttribute), false)));
-                            }
-                        }
-                    }
-                }
-                enumerator.Dispose();
-
-                Utils_Internal.extensionMethodMap = (from type in type_def_extention_method.Distinct()
-// #if UNITY_EDITOR
-//                                       where !type.Assembly.Location.Contains("Editor")
-// #endif
-                                                     from method in type.GetMethods(BindingFlags.Static | BindingFlags.Public)
-                                                     where method.IsDefined(typeof(ExtensionAttribute), false) && IsSupportedMethod(method)
-                                                     group method by GetExtendedType(method)).ToDictionary(g => g.Key, g => g as IEnumerable<MethodInfo>);
-            }
-            IEnumerable<MethodInfo> ret = null;
-            Utils_Internal.extensionMethodMap.TryGetValue(type_to_be_extend, out ret);
-            return ret;
-        }
-
         private static Type GetExtendedType(MethodInfo method)
         {
             var type = method.GetParameters()[0].ParameterType;
@@ -388,7 +325,7 @@ namespace Puerts
                 throw new InvalidOperationException();
 
             var firstParameterConstraint = parameterConstraints[0];
-            if (!firstParameterConstraint.IsClass())
+            if (!firstParameterConstraint.IsClass)
                 throw new InvalidOperationException();
             return firstParameterConstraint;
         }
@@ -494,7 +431,7 @@ namespace Puerts
                     {
 #endif
                         allTypes.AddRange(assemblies[i].GetTypes()
-                            .Where(type => exclude_generic_definition ? !type.IsGenericTypeDefinition() : true));
+                            .Where(type => exclude_generic_definition ? !type.IsGenericTypeDefinition : true));
 #if (UNITY_EDITOR || PUERTS_GENERAL) && !NET_STANDARD_2_0
                     }
 #endif

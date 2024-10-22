@@ -104,33 +104,6 @@ namespace XLua
                    where exclude_generic_definition ? !type.GetTypeInfo().IsGenericTypeDefinition : true
                    select type;
         }
-#else
-		public static List<Type> GetAllTypes(bool exclude_generic_definition = true)
-		{
-			List<Type> allTypes = new List<Type>();
-			var assemblies = AppDomain.CurrentDomain.GetAssemblies();
-			for (int i = 0; i < assemblies.Length; i++)
-			{
-				try
-				{
-#if (UNITY_EDITOR || XLUA_GENERAL) && !NET_STANDARD_2_0
-					if (!(assemblies[i].ManifestModule is System.Reflection.Emit.ModuleBuilder))
-					{
-#endif
-						allTypes.AddRange(assemblies[i].GetTypes()
-						.Where(type => exclude_generic_definition ? !type.IsGenericTypeDefinition() : true)
-						);
-#if (UNITY_EDITOR || XLUA_GENERAL) && !NET_STANDARD_2_0
-					}
-#endif
-				}
-				catch (Exception)
-				{
-				}
-			}
-
-			return allTypes;
-		}
 #endif
 
 		static LuaCSFunction genFieldGetter(Type type, FieldInfo field)
@@ -1436,39 +1409,6 @@ namespace XLua
 
             var lastPos = delegateParams.Length - 1;
             return lastPos < 0 || delegateParams[lastPos].IsDefined(typeof(ParamArrayAttribute), false) == bridgeParams[lastPos].IsDefined(typeof(ParamArrayAttribute), false);
-		}
-
-		public static bool IsSupportedMethod(MethodInfo method)
-		{
-			if (!method.ContainsGenericParameters)
-				return true;
-			var methodParameters = method.GetParameters();
-			var returnType = method.ReturnType;
-			var hasValidGenericParameter = false;
-			var returnTypeValid = !returnType.IsGenericParameter;
-			for (var i = 0; i < methodParameters.Length; i++)
-			{
-				var parameterType = methodParameters[i].ParameterType;
-				if (parameterType.IsGenericParameter)
-				{
-					var parameterConstraints = parameterType.GetGenericParameterConstraints();
-					if (parameterConstraints.Length == 0) return false;
-					foreach (var parameterConstraint in parameterConstraints)
-					{
-						if (!parameterConstraint.IsClass() || (parameterConstraint == typeof(ValueType)))
-							return false;
-					}
-					hasValidGenericParameter = true;
-					if (!returnTypeValid)
-					{
-						if (parameterType == returnType)
-						{
-							returnTypeValid = true;
-						}
-					}
-				}
-			}
-			return hasValidGenericParameter && returnTypeValid;
 		}
 
 		public static MethodInfo MakeGenericMethodWithConstraints(MethodInfo method)

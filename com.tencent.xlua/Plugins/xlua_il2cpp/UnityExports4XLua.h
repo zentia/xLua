@@ -7,7 +7,7 @@
  */
 
 #pragma once
-namespace puerts
+namespace xlua
 {
 #if defined(USE_OUTSIZE_UNITY)
 
@@ -18,18 +18,17 @@ typedef void* (*DelegateAllocateFunc)(const void* type, MethodPointer methodPoin
 typedef void (*FieldOperationFunc)(void *obj, void *fieldInfo, size_t offset, void *value);
 typedef void* (*GetValueTypeFieldPtrFunc)(void *obj, void *field, size_t offset);
 typedef void MethodType;
-typedef bool (*WrapFuncPtr)(MethodType* method, MethodPointer methodPointer, const v8::FunctionCallbackInfo<v8::Value>& info, bool checkArgument, struct WrapData* wrapData);
-typedef v8::FunctionCallback FunctionCallbackFunc;
+typedef bool (*WrapFuncPtr)(MethodType* method, MethodPointer methodPointer, const pesapi_callback_info info, bool checkArgument, struct WrapData* wrapData);
 
-typedef void (*FieldWrapFuncPtr)(const v8::FunctionCallbackInfo<v8::Value>& info, void* fieldInfo, size_t offset, void* typeInfo);
+typedef void (*FieldWrapFuncPtr)(const pesapi_callback_info info, void* fieldInfo, size_t offset, void* typeInfo);
 
 typedef void TypeIdType;
 
-typedef void (*SetNativePtrFunc)(v8::Object* obj, void* ptr, void* type_id);
+typedef void (*SetNativePtrFunc)(pesapi_value obj, void* ptr, void* type_id);
 
-typedef v8::Value* (*CreateLuaArrayBufferFunc)(v8::Context* env, void* buffer, size_t length);
+typedef pesapi_value (*CreateLuaArrayBufferFunc)(pesapi_env env, void* buffer, size_t length);
 
-typedef void (*UnrefJsObjectFunc)(struct PersistentObjectInfo* objectInfo);
+typedef void (*UnrefLuaObjectFunc)(struct PersistentObjectInfo* objectInfo);
 
 typedef void* (*IsInstFunc)(void * obj, void* typeId); 
 
@@ -39,13 +38,13 @@ typedef bool (*IsDelegateFunc)(const void* typeId);
 
 typedef bool (*IsAssignableFromFunc)(const void* typeId, const void* typeId2); 
 
-typedef void* (*JsValueToCSRefFunc)(const void *typeId, v8::Context* env, v8::Value* jsval);
+typedef void* (*LuaValueToCSRefFunc)(const void *typeId, pesapi_env env, pesapi_value jsval);
 
 typedef const void* (*CSharpTypeToTypeIdFunc)(const void *type);
 
 typedef void* (*CStringToCSharpStringFunc)(const char* str);
 
-typedef pesapi_value (*TryTranslateFunc)(v8::Context* env, const void* obj);
+typedef pesapi_value (*TryTranslateFunc)(pesapi_env env, const void* obj);
 
 typedef int (*GetTIDFunc)(void* obj);
 
@@ -55,11 +54,11 @@ typedef const void* (*GetParameterTypeFunc)(const void* method, int index);
 
 typedef void (*SetPersistentObjectFunc)(pesapi_env env, pesapi_value pvalue, PersistentObjectInfo* objectInfo);
 
-typedef v8::Value* (*GetPersistentObjectFunc)(v8::Context* env, const PersistentObjectInfo* objectInfo);
+typedef pesapi_value (*GetPersistentObjectFunc)(pesapi_env env, const PersistentObjectInfo* objectInfo);
 
 typedef void* (*GetJSObjectValueFunc)(const PersistentObjectInfo* objectInfo, const char* key, const void* type);
 
-typedef v8::Value* (*GetModuleExecutorFunc)(v8::Context* env);
+typedef pesapi_value (*GetModuleExecutorFunc)(pesapi_env env);
 
 typedef void* (*NewArrayFunc)(const void *typeId, uint32_t length);
 
@@ -94,7 +93,7 @@ typedef void (*SetNativePtrFunc)(pesapi_value obj, void* ptr, const void* type_i
 
 typedef pesapi_value (*CreateLuaArrayBufferFunc)(pesapi_env env, void* buffer, size_t length);
 
-typedef void (*UnrefJsObjectFunc)(PersistentObjectInfo* delegateInfo);
+typedef void (*UnrefLuaObjectFunc)(PersistentObjectInfo* delegateInfo);
 
 typedef Il2CppObject* (*IsInstFunc)(Il2CppObject* obj, Il2CppClass* typeId); 
 
@@ -210,8 +209,8 @@ struct UnityExports
     //plugin api
     
     SetNativePtrFunc SetNativePtr = nullptr;
-    CreateLuaArrayBufferFunc CreateJSArrayBuffer = nullptr;
-    UnrefJsObjectFunc UnrefJsObject = nullptr;
+    CreateLuaArrayBufferFunc CreateLuaArrayBuffer = nullptr;
+    UnrefLuaObjectFunc UnrefLuaObject = nullptr;
     FunctionToDelegateFunc FunctionToDelegate = nullptr;
 
     SetPersistentObjectFunc SetPersistentObject = nullptr;

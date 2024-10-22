@@ -1,0 +1,60 @@
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using UnityEngine;
+
+namespace XLua.Editor
+{
+    namespace Generator
+    {
+        public class FileExporter
+        {
+            public static void GenRegisterInfo(string outDir)
+            {
+                var configure = XLua.Configure.GetConfigureByTags(new List<string>()
+                {
+                    "XLua.BindingAttribute",
+                    "XLua.BlittableCopyAttribute"
+                });
+                var genTypes = configure["XLua.BindingAttribute"].Select(kv => kv.Key)
+                    .Where(o => o is Type)
+                    .Cast<Type>()
+                    .Where(t => !t.IsGenericTypeDefinition && !t.Name.StartsWith("<"))
+                    .Distinct()
+                    .ToList();
+
+                var blittableCopyTypes = new HashSet<Type>(configure["XLua.BlittableCopyAttribute"].Select(kv => kv.Key)
+                    .Where(o => o is Type)
+                    .Cast<Type>()
+                    .Where(t => !t.IsPrimitive && Utils.isBlittableType(t))
+                    .Distinct());
+
+                if (!Utils.HasFilter)
+                {
+                    Utils.SetFilters(Configure.GetFilters());
+                }
+                
+                var RegisterInfos = RegisterInfoGenerator.GetRegisterInfos(genTypes, blittableCopyTypes);
+
+                using (var luaEnv = new LuaEnv())
+                {
+                    var packageInfo = UnityEditor.PackageManager.PackageInfo.FindForAssetPath("Packages/com.tencent.xlua");
+                    luaEnv.DoString($"package.path = package.path..';{packageInfo.assetPath + "/xlua/templates"}/?.lua'");
+                    var bytes = File.ReadAllBytes(packageInfo.assetPath + "/xlua/templates/registerinfo.tpl.lua");
+                    luaEnv.DoString(bytes, "registerinfo");
+                    var func = luaEnv.Global.Get<LuaFunction>("RegisterInfoTemplate");
+                    var registerInfoContent = func.Func<List<RegisterInfoForGenerate>, string>(RegisterInfos);
+                    var registerInfoPath = outDir + "RegisterInfo_Gen.cs";
+                    using (var textWriter = new StreamWriter(registerInfoPath, false, Encoding.UTF8))
+                    {
+                        textWriter.Write(registerInfoContent);
+                        textWriter.Flush();
+                    }
+                }
+            }
+        }    
+    }
+    
+}

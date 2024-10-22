@@ -5,8 +5,7 @@
 * This file is subject to the terms and conditions defined in file 'LICENSE', which is part of this source code package.
 */
 
-#if UNITY_2020_1_OR_NEWER
-#if UNITY_EDITOR || PUERTS_GENERAL
+#if UNITY_EDITOR || XLUA_GENERAL
 
 using System;
 using System.Reflection;
@@ -14,7 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
-namespace PuertsIl2cpp
+namespace XLuaIl2cpp
 {
 	public static class ExtensionMethodInfo
 	{
@@ -449,5 +448,4 @@ namespace PuertsIl2cpp
     }
 }
 
-#endif
 #endif

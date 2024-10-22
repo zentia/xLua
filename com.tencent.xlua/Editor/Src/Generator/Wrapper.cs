@@ -9,9 +9,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Puerts.TypeMapping;
+using XLua.TypeMapping;
 
-namespace Puerts.Editor
+namespace XLua.Editor
 {
     namespace Generator
     {
@@ -182,9 +182,9 @@ namespace Puerts.Editor
                     // 做这个事情的原因是目前还没法做到重载级别的lazy。
                     LazyMemberCollector lazyCollector = new LazyMemberCollector();
 
-                    var methodLists = Puerts.Utils.GetMethodAndOverrideMethod(type, Utils.Flags)
+                    var methodLists = XLua.Utils.GetMethodAndOverrideMethod(type, Utils.Flags)
                         .Where(m => !Utils.IsNotSupportedMember(m))
-                        .Where(m => !m.IsSpecialName && Puerts.Utils.IsNotGenericOrValidGeneric(m))
+                        .Where(m => !m.IsSpecialName && XLua.Utils.IsNotGenericOrValidGeneric(m))
                         .Where(m => 
                         { 
                             BindingMode mode = Utils.getBindingMode(m);
@@ -194,12 +194,12 @@ namespace Puerts.Editor
                         })
                         .ToArray();
 
-                    var extensionMethodsList = Puerts.Editor.Generator.Utils.GetExtensionMethods(type, new HashSet<Type>(genTypes));
+                    var extensionMethodsList = XLua.Editor.Generator.Utils.GetExtensionMethods(type, new HashSet<Type>(genTypes));
                     if (extensionMethodsList != null)
                     {
                         extensionMethodsList = new List<MethodInfo>(extensionMethodsList)
                             .Where(m => !Utils.IsNotSupportedMember(m))
-                            .Where(m => !m.IsGenericMethodDefinition || Puerts.Utils.IsNotGenericOrValidGeneric(m)).ToArray();
+                            .Where(m => !m.IsGenericMethodDefinition || XLua.Utils.IsNotGenericOrValidGeneric(m)).ToArray();
                         if (genTypes != null)
                         {
                             extensionMethodsList = extensionMethodsList.Where(m => genTypes.Contains(m.DeclaringType)).ToArray();
@@ -585,7 +585,7 @@ namespace Puerts.Editor
                             {
                                 ParameterInfo[] pinfos = parameters.Take(i).ToArray();
                                 ParameterInfo[] ellipsisedPInfos = parameters.Where((item, index) => index >= i).ToArray();
-                                if (!Puerts.Utils.IsNotGenericOrValidGeneric((MethodInfo)methodBase, pinfos)) continue;
+                                if (!XLua.Utils.IsNotGenericOrValidGeneric((MethodInfo)methodBase, pinfos)) continue;
                                 optionalInfo = new OverloadGenInfo()
                                 {
                                     ParameterInfos = pinfos.Select(info => ParameterGenInfo.FromParameterInfo(info)).ToArray(),

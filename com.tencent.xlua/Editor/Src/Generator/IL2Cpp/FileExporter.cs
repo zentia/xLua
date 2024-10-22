@@ -1,10 +1,9 @@
 /*
-* Tencent is pleased to support the open source community by making Puerts available.
+* Tencent is pleased to support the open source community by making XLua available.
 * Copyright (C) 2020 THL A29 Limited, a Tencent company.  All rights reserved.
-* Puerts is licensed under the BSD 3-Clause License, except for the third-party components listed in the file 'LICENSE' which may be subject to their corresponding license terms. 
+* XLua is licensed under the BSD 3-Clause License, except for the third-party components listed in the file 'LICENSE' which may be subject to their corresponding license terms. 
 * This file is subject to the terms and conditions defined in file 'LICENSE', which is part of this source code package.
 */
-#if UNITY_2020_1_OR_NEWER
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,15 +11,16 @@ using System.Linq;
 using System.Text;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using Puerts.TypeMapping;
+using XLua.TypeMapping;
 using XLua;
-using Utils = Puerts.Editor.Generator.Utils;
+using Utils = XLua.Editor.Generator.Utils;
 
 #if !PUERTS_GENERAL && !UNITY_WEBGL
 using Mono.Reflection;
 using UnityEngine;
+using XLua.LuaDLL;
 
-namespace PuertsIl2cpp.Editor
+namespace XLuaIl2cpp.Editor
 {
     namespace Generator
     {
@@ -29,7 +29,7 @@ namespace PuertsIl2cpp.Editor
             public static List<string> GetValueTypeFieldSignatures(Type type)
             {
                 List<string> ret = new List<string>();
-                if (type.BaseType != null && type.BaseType.IsValueType) ret.Add(PuertsIl2cpp.TypeUtils.GetTypeSignature(type.BaseType));
+                if (type.BaseType != null && type.BaseType.IsValueType) ret.Add(XLuaIl2cpp.TypeUtils.GetTypeSignature(type.BaseType));
                 foreach (var field in type.GetFields(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic))
                 {
                     // if ((field.FieldType.IsValueType && !field.FieldType.IsPrimitive))
@@ -38,7 +38,7 @@ namespace PuertsIl2cpp.Editor
                     // }
                     // else
                     // {
-                        ret.Add(PuertsIl2cpp.TypeUtils.GetTypeSignature(field.FieldType));
+                        ret.Add(XLuaIl2cpp.TypeUtils.GetTypeSignature(field.FieldType));
                     // }
                 }
                 return ret;
@@ -138,7 +138,7 @@ namespace PuertsIl2cpp.Editor
                 }
 
                 list.Add(new ValueTypeInfo { 
-                    Signature = PuertsIl2cpp.TypeUtils.GetTypeSignature(type), 
+                    Signature = XLuaIl2cpp.TypeUtils.GetTypeSignature(type), 
                     CsName = type.Name, 
                     FieldSignatures = GetValueTypeFieldSignatures(type),
                     NullableHasValuePosition = value
@@ -148,32 +148,32 @@ namespace PuertsIl2cpp.Editor
 
             public static void GenCPPWrap(string saveTo, bool onlyConfigure = false)
             {
-                Utils.SetFilters(Puerts.Configure.GetFilters());
+                Utils.SetFilters(XLua.Configure.GetFilters());
                 
                 var types = from assembly in AppDomain.CurrentDomain.GetAssemblies()
-                                // where assembly.FullName.Contains("puerts") || assembly.FullName.Contains("Assembly-CSharp") || assembly.FullName.Contains("Unity")
+                                // where assembly.FullName.Contains("xlua") || assembly.FullName.Contains("Assembly-CSharp") || assembly.FullName.Contains("Unity")
                             where !(assembly.ManifestModule is System.Reflection.Emit.ModuleBuilder)
                             from type in assembly.GetTypes()
                             where type.IsPublic
                             select type;
 
                 const BindingFlags flag = BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public;
-                const BindingFlags flagForPuer = BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic;
+                const BindingFlags flagForXLua = BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic;
 
                 var typeExcludeDelegate = types
                     .Where(t => !typeof(MulticastDelegate).IsAssignableFrom(t));
 
                 var ctorToWrapper = typeExcludeDelegate
-                    .SelectMany(t => t.GetConstructors(t.FullName.Contains("Puer") ? flagForPuer : flag))
-                    .Where(m => Utils.getBindingMode(m) != Puerts.BindingMode.DontBinding);
+                    .SelectMany(t => t.GetConstructors(t.FullName.Contains("XLua") ? flagForXLua : flag))
+                    .Where(m => Utils.getBindingMode(m) != XLua.BindingMode.DontBinding);
 
                 var methodToWrap = typeExcludeDelegate
-                    .SelectMany(t => t.GetMethods(t.FullName.Contains("Puer") ? flagForPuer : flag))
-                    .Where(m => Utils.getBindingMode(m) != Puerts.BindingMode.DontBinding);
+                    .SelectMany(t => t.GetMethods(t.FullName.Contains("XLua") ? flagForXLua : flag))
+                    .Where(m => Utils.getBindingMode(m) != XLua.BindingMode.DontBinding);
 
                 var fieldToWrapper = typeExcludeDelegate
-                    .SelectMany(t => t.GetFields(t.FullName.Contains("Puer") ? flagForPuer : flag))
-                    .Where(m => Utils.getBindingMode(m) != Puerts.BindingMode.DontBinding);
+                    .SelectMany(t => t.GetFields(t.FullName.Contains("XLua") ? flagForXLua : flag))
+                    .Where(m => Utils.getBindingMode(m) != XLua.BindingMode.DontBinding);
 
                 var wrapperUsedTypes = types
                     .Concat(ctorToWrapper.SelectMany(c => c.GetParameters()).Select(pi => GetUnrefParameterType(pi)))
@@ -183,7 +183,7 @@ namespace PuertsIl2cpp.Editor
                     .Distinct();
                 
 
-                Type[] PuerDelegates = {
+                Type[] XLuaDelegates = {
                     typeof(Func<string, XLua.LuaTable>),
                     typeof(Func<XLua.LuaTable, string, string>),
                     typeof(Func<XLua.LuaTable, string, int>),
@@ -199,7 +199,7 @@ namespace PuertsIl2cpp.Editor
 
                 HashSet<Type> typeInGenericArgument = new HashSet<Type>();
                 HashSet<MethodBase> processed = new HashSet<MethodBase>();
-#if !PUERTS_GENERAL
+#if !XLUA_GENERAL
                 foreach (var method in methodToWrap)
                 {
                     GenericArgumentInInstructions(method, typeInGenericArgument, processed, mb =>
@@ -222,7 +222,7 @@ namespace PuertsIl2cpp.Editor
 #endif
 
                 var delegateToBridge = wrapperUsedTypes
-                    .Concat(PuerDelegates)
+                    .Concat(XLuaDelegates)
                     .Concat(typeInGenericArgument)
                     .Where(t => typeof(MulticastDelegate).IsAssignableFrom(t));
 
@@ -247,11 +247,11 @@ namespace PuertsIl2cpp.Editor
                 var bridgeInfos = delegateInvokes
                     .Select(m => new SignatureInfo
                     {
-                        Signature = PuertsIl2cpp.TypeUtils.GetMethodSignature(m, true),
+                        Signature = XLuaIl2cpp.TypeUtils.GetMethodSignature(m, true),
                         CsName = m.ToString(),
-                        ReturnSignature = PuertsIl2cpp.TypeUtils.GetTypeSignature(m.ReturnType),
+                        ReturnSignature = XLuaIl2cpp.TypeUtils.GetTypeSignature(m.ReturnType),
                         ThisSignature = null,
-                        ParameterSignatures = m.GetParameters().Select(p => PuertsIl2cpp.TypeUtils.GetParameterSignature(p)).ToList()
+                        ParameterSignatures = m.GetParameters().Select(p => XLuaIl2cpp.TypeUtils.GetParameterSignature(p)).ToList()
                     })
                     .GroupBy(s => s.Signature)
                     .Select(s => s.FirstOrDefault())
@@ -264,11 +264,11 @@ namespace PuertsIl2cpp.Editor
 
                 if (onlyConfigure)
                 {
-                    var configure = Puerts.Configure.GetConfigureByTags(new List<string>() {
-                        "Puerts.BindingAttribute",
+                    var configure = XLua.Configure.GetConfigureByTags(new List<string>() {
+                        "XLua.BindingAttribute",
                     });
 
-                    var configureTypes = new HashSet<Type>(configure["Puerts.BindingAttribute"].Select(kv => kv.Key)
+                    var configureTypes = new HashSet<Type>(configure["XLua.BindingAttribute"].Select(kv => kv.Key)
                         .Where(o => o is Type)
                         .Cast<Type>()
                         .Where(t => !typeof(MulticastDelegate).IsAssignableFrom(t))
@@ -281,17 +281,17 @@ namespace PuertsIl2cpp.Editor
                     genWrapperCtor = configureTypes
                         .SelectMany(t => t.GetConstructors(flag))
                         .Where(m => !Utils.IsNotSupportedMember(m, true))
-                        .Where(m => Utils.getBindingMode(m) != Puerts.BindingMode.DontBinding);
+                        .Where(m => Utils.getBindingMode(m) != XLua.BindingMode.DontBinding);
 
                     genWrapperMethod = configureTypes
                         .SelectMany(t => t.GetMethods(flag))
                         .Where(m => !Utils.IsNotSupportedMember(m, true))
-                        .Where(m => Utils.getBindingMode(m) != Puerts.BindingMode.DontBinding);
+                        .Where(m => Utils.getBindingMode(m) != XLua.BindingMode.DontBinding);
 
                     genWrapperField = configureTypes
                         .SelectMany(t => t.GetFields(flag))
                         .Where(m => !Utils.IsNotSupportedMember(m, true))
-                        .Where(m => Utils.getBindingMode(m) != Puerts.BindingMode.DontBinding);
+                        .Where(m => Utils.getBindingMode(m) != XLua.BindingMode.DontBinding);
 
                     var configureUsedTypes = configureTypes
                         .Concat(genWrapperCtor.SelectMany(c => c.GetParameters()).Select(pi => GetUnrefParameterType(pi)))
@@ -321,11 +321,11 @@ namespace PuertsIl2cpp.Editor
                         var isExtensionMethod = m.IsDefined(typeof(ExtensionAttribute));
                         return new SignatureInfo
                         {
-                            Signature = PuertsIl2cpp.TypeUtils.GetMethodSignature(m, false, isExtensionMethod),
+                            Signature = XLuaIl2cpp.TypeUtils.GetMethodSignature(m, false, isExtensionMethod),
                             CsName = m.ToString(),
-                            ReturnSignature = PuertsIl2cpp.TypeUtils.GetTypeSignature(m.ReturnType),
-                            ThisSignature = PuertsIl2cpp.TypeUtils.GetThisSignature(m, isExtensionMethod),
-                            ParameterSignatures = m.GetParameters().Skip(isExtensionMethod ? 1 : 0).Select(p => PuertsIl2cpp.TypeUtils.GetParameterSignature(p)).ToList()
+                            ReturnSignature = XLuaIl2cpp.TypeUtils.GetTypeSignature(m.ReturnType),
+                            ThisSignature = XLuaIl2cpp.TypeUtils.GetThisSignature(m, isExtensionMethod),
+                            ParameterSignatures = m.GetParameters().Skip(isExtensionMethod ? 1 : 0).Select(p => XLuaIl2cpp.TypeUtils.GetParameterSignature(p)).ToList()
                         };
                     })
                     .Concat(
@@ -335,11 +335,11 @@ namespace PuertsIl2cpp.Editor
                                 var isExtensionMethod = false;
                                 return new SignatureInfo
                                 {
-                                    Signature = PuertsIl2cpp.TypeUtils.GetMethodSignature(m, false, isExtensionMethod),
+                                    Signature = XLuaIl2cpp.TypeUtils.GetMethodSignature(m, false, isExtensionMethod),
                                     CsName = m.ToString(),
                                     ReturnSignature = "v",
                                     ThisSignature = "t",
-                                    ParameterSignatures = m.GetParameters().Skip(isExtensionMethod ? 1 : 0).Select(p => PuertsIl2cpp.TypeUtils.GetParameterSignature(p)).ToList()
+                                    ParameterSignatures = m.GetParameters().Skip(isExtensionMethod ? 1 : 0).Select(p => XLuaIl2cpp.TypeUtils.GetParameterSignature(p)).ToList()
                                 };
                             })
                     )
@@ -351,9 +351,9 @@ namespace PuertsIl2cpp.Editor
                 var fieldWrapperInfos = genWrapperField
                     .Select(f => new SignatureInfo
                     {
-                        Signature = (f.IsStatic ? "" : "t") + PuertsIl2cpp.TypeUtils.GetTypeSignature(f.FieldType),
+                        Signature = (f.IsStatic ? "" : "t") + XLuaIl2cpp.TypeUtils.GetTypeSignature(f.FieldType),
                         CsName = f.ToString(),
-                        ReturnSignature = PuertsIl2cpp.TypeUtils.GetTypeSignature(f.FieldType),
+                        ReturnSignature = XLuaIl2cpp.TypeUtils.GetTypeSignature(f.FieldType),
                         ThisSignature = (f.IsStatic ? "" : "t"),
                         ParameterSignatures = null
                     })
@@ -364,9 +364,13 @@ namespace PuertsIl2cpp.Editor
 
                 using (var luaEnv = new LuaEnv())
                 {
-                    var scriptScopeTable  = luaEnv.NewTable();
-                    luaEnv.DoString("xlua/templates/cppwrapper.tpl.lua", "cppwrapper.tpl", scriptScopeTable);
-                    var gen = scriptScopeTable.Get<LuaFunction>("Gen");
+                    var assetPath = Path.GetFullPath("Packages/com.tencent.xlua/");
+                    assetPath = assetPath.Replace("\\", "/");
+                    luaEnv.DoString($"package.path = package.path..';{assetPath + "Editor/Resources/xlua/templates"}/?.lua'");
+                    var path = Path.Combine(assetPath, "Editor/Resources/xlua/templates/cppwrapper.tpl.lua");
+                    var bytes = File.ReadAllBytes(path);
+                    luaEnv.DoString(bytes, path);
+                    var gen = luaEnv.Global.Get<LuaFunction>("Gen");
                     using (var textWriter = new StreamWriter(Path.Combine(saveTo, "FunctionBridge.Gen.h"), false, Encoding.UTF8))
                     {
                         var fileContext = gen.Func<CppWrappersInfo, string>(new CppWrappersInfo
@@ -379,24 +383,23 @@ namespace PuertsIl2cpp.Editor
                         textWriter.Write(fileContext);
                         textWriter.Flush();
                     }
-                    scriptScopeTable.Dispose();
                 }
             }
 
             public static void GenExtensionMethodInfos(string outDir)
             {
-                var configure = Puerts.Configure.GetConfigureByTags(new List<string>() {
-                    "Puerts.BindingAttribute",
+                var configure = XLua.Configure.GetConfigureByTags(new List<string>() {
+                    "XLua.BindingAttribute",
                 });
 
-                var genTypes = new HashSet<Type>(configure["Puerts.BindingAttribute"].Select(kv => kv.Key)
+                var genTypes = new HashSet<Type>(configure["XLua.BindingAttribute"].Select(kv => kv.Key)
                     .Where(o => o is Type)
                     .Cast<Type>()
                     .Where(t => !t.IsGenericTypeDefinition && !t.Name.StartsWith("<"))
                     .Distinct()
                     .ToList());
 
-                // genTypes.Add(typeof(PuertsIl2cpp.ArrayExtension));
+                genTypes.Add(typeof(XLuaIl2cpp.ArrayExtension));
                 // genTypes.Add(typeof(PuertsIl2cpp.ArrayExtension2));
                 var extendedType2extensionType = (from type in genTypes
 #if UNITY_EDITOR
@@ -406,52 +409,62 @@ namespace PuertsIl2cpp.Editor
                                                   where Utils.isDefined(method, typeof(ExtensionAttribute))
                                                   group type by Utils.getExtendedType(method)).ToDictionary(g => g.Key, g => (g as IEnumerable<Type>).Distinct().ToList()).ToList();
 
-                // using (var jsEnv = new Puerts.JsEnv())
-                // {
-                //     var wrapRender = jsEnv.ExecuteModule<Func<List<KeyValuePair<Type, List<Type>>>, string>>(
-                //         "puerts/templates/extension_methods_gen.tpl.mjs", "default");
-                //     string fileContent = wrapRender(extendedType2extensionType);
-                //     var filePath = outDir + "ExtensionMethodInfos_Gen.cs";
-                //     using (StreamWriter textWriter = new StreamWriter(filePath, false, Encoding.UTF8))
-                //     {
-                //         textWriter.Write(fileContent);
-                //         textWriter.Flush();
-                //     }
-                // }
+                using (var luaEnv = new LuaEnv())
+                {
+                    var assetPath = Path.GetFullPath("Packages/com.tencent.xlua/");
+                    assetPath = assetPath.Replace("\\", "/");
+                    luaEnv.DoString($"package.path = package.path..';{assetPath + "Editor/Resources/xlua/templates"}/?.lua'");
+                    var path = Path.Combine(assetPath, "Editor/Resources/xlua/templates/extension_methods_gen.tpl.lua");
+                    var bytes = File.ReadAllBytes(path);
+                    luaEnv.DoString(bytes, path);
+                    var func = luaEnv.Global.Get<LuaFunction>("TypingTemplate");
+                    var fileContent = func.Func<List<KeyValuePair<Type, List<Type>>>, string>(extendedType2extensionType);
+                    var filePath = outDir + "ExtensionMethodInfos_Gen.cs";
+                    using (var textWriter = new StreamWriter(filePath, false, Encoding.UTF8))
+                    {
+                        textWriter.Write(fileContent);
+                        textWriter.Flush();
+                    }
+                }
             }
 
             public static void GenLinkXml(string outDir)
             {
-                var configure = Puerts.Configure.GetConfigureByTags(new List<string>() {
-                        "Puerts.BindingAttribute",
+                var configure = XLua.Configure.GetConfigureByTags(new List<string>() {
+                        "XLua.BindingAttribute",
                     });
-                var genTypes = configure["Puerts.BindingAttribute"].Select(kv => kv.Key)
+                var genTypes = configure["XLua.BindingAttribute"].Select(kv => kv.Key)
                     .Where(o => o is Type)
                     .Cast<Type>()
                     .Where(t => !t.IsGenericTypeDefinition && !t.Name.StartsWith("<"))
                     .Distinct()
                     .ToList();
-                // using (var jsEnv = new Puerts.JsEnv())
-                // {
-                //     var linkXMLRender = jsEnv.ExecuteModule<Func<List<Type>, string>>("puerts/templates/linkxmlgen.tpl.mjs", "LinkXMLTemplate");
-                //     string linkXMLContent = linkXMLRender(genTypes);
-                //     var linkXMLPath = outDir + "link.xml";
-                //     using (StreamWriter textWriter = new StreamWriter(linkXMLPath, false, Encoding.UTF8))
-                //     {
-                //         textWriter.Write(linkXMLContent);
-                //         textWriter.Flush();
-                //     }
-                // }
+                using (var luaEnv = new LuaEnv())
+                {
+                    var scriptScope = luaEnv.NewTable();
+                    var packageInfo = UnityEditor.PackageManager.PackageInfo.FindForAssetPath("Packages/com.tencent.xlua");
+                    luaEnv.DoString($"package.path = package.path..';{packageInfo.assetPath + "/xlua/templates"}/?.lua'");
+                    var bytes = File.ReadAllBytes(packageInfo.assetPath + "/xlua/templates/linkxmlgen.tpl.lua");
+                    luaEnv.DoString(bytes, "LinkXMLTemplate", scriptScope);
+                    var func = scriptScope.Get<LuaFunction>("RegisterInfoTemplate");
+                    var linkXMLContent = func.Func<List<Type>, string>(genTypes);
+                    var linkXMLPath = outDir + "link.xml";
+                    using (var textWriter = new StreamWriter(linkXMLPath, false, Encoding.UTF8))
+                    {
+                        textWriter.Write(linkXMLContent);
+                        textWriter.Flush();
+                    }
+                }
             }
 
             public static void CopyXIl2cppCPlugin(string outDir)
             {
                 Dictionary<string, string> cPluginCode = new Dictionary<string, string>()
                 {
-                    { "pesapi_adpt.c", Resources.Load<TextAsset>("puerts/xil2cpp/pesapi_adpt.c").text },
-                    { "pesapi.h", Resources.Load<TextAsset>("puerts/xil2cpp/pesapi.h").text },
-                    { "Puerts_il2cpp.cpp", Resources.Load<TextAsset>("puerts/xil2cpp/Puerts_il2cpp.cpp").text },
-                    { "UnityExports4XLua.h", Resources.Load<TextAsset>("puerts/xil2cpp/UnityExports4XLua.h").text }
+                    { "pesapi_adpt.c", Resources.Load<TextAsset>("xlua/xil2cpp/pesapi_adpt.c").text },
+                    { "pesapi.h", Resources.Load<TextAsset>("xlua/xil2cpp/pesapi.h").text },
+                    { "Puerts_il2cpp.cpp", Resources.Load<TextAsset>("xlua/xil2cpp/Puerts_il2cpp.cpp").text },
+                    { "UnityExports4XLua.h", Resources.Load<TextAsset>("xlua/xil2cpp/UnityExports4XLua.h").text }
                 };
 
                 foreach (var cPlugin in cPluginCode)
@@ -469,31 +482,33 @@ namespace PuertsIl2cpp.Editor
             {
                 var filePath = outDir + "unityenv_for_xlua.h";
 
-//                 using (var jsEnv = new Puerts.JsEnv())
-//                 {
-//                     var macroHeaderRender = jsEnv.ExecuteModule<Func<bool, bool, string>>("puerts/xil2cpp/unityenv_for_puerts.h.tpl.mjs", "default");
-//                     string macroHeaderContent = macroHeaderRender(              
-// #if !UNITY_2021_1_OR_NEWER
-//                         false,
-// #else
-//                         true,
-// #endif
-// #if UNITY_ANDROID || UNITY_IPHONE
-//                         false
-// #else
-//                         true
-// #endif
-//                     );
-//
-//                     using (StreamWriter textWriter = new StreamWriter(filePath, false, Encoding.UTF8))
-//                     {
-//                         textWriter.Write(macroHeaderContent);
-//                         textWriter.Flush();
-//                     }
-//                 }
+                using (var jsEnv = new LuaEnv())
+                {
+                    var asset = Resources.Load<TextAsset>("xlua/xil2cpp/unityenv_for_puerts.h.tpl.lua");
+                    var table = jsEnv.NewTable();
+                    jsEnv.LoadString(asset.text, "unityenv_for_xlua", table);
+                    var func = table.Get<LuaFunction>("unityenv_for_xlua");
+                    string macroHeaderContent = func.Func<bool, bool, string>(              
+#if !UNITY_2021_1_OR_NEWER
+                        false,
+#else
+                        true,
+#endif
+#if UNITY_ANDROID || UNITY_IPHONE
+                        false
+#else
+                        true
+#endif
+                    );
+
+                    using (StreamWriter textWriter = new StreamWriter(filePath, false, Encoding.UTF8))
+                    {
+                        textWriter.Write(macroHeaderContent);
+                        textWriter.Flush();
+                    }
+                }
             }
         }
     }
 }
-#endif
 #endif

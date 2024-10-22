@@ -45,7 +45,6 @@ include_directories(
     ../com.tencent.xlua/Plugins/xlua_il2cpp
     ${BACKEND_INC_NAMES}
     ${PROJECT_SOURCE_DIR}/../native_src/Inc
-    ${PROJECT_SOURCE_DIR}/../XLua/Source/LuaEnv/Private
 )
 
 set ( XLUA_INC
@@ -53,7 +52,7 @@ set ( XLUA_INC
 )
 
 set ( XLUA_SRC
-    Src/Puerts.cpp
+    Src/XLua.cpp
     Src/PesapiV8Impl.cpp
     Src/PesapiAddonLoad.cpp
     Src/CppObjectMapper.cpp

@@ -1,7 +1,7 @@
 ﻿/*
- * Tencent is pleased to support the open source community by making Puerts available.
+ * Tencent is pleased to support the open source community by making XLua available.
  * Copyright (C) 2020 THL A29 Limited, a Tencent company.  All rights reserved.
- * Puerts is licensed under the BSD 3-Clause License, except for the third-party components listed in the file 'LICENSE' which may
+ * XLua is licensed under the BSD 3-Clause License, except for the third-party components listed in the file 'LICENSE' which may
  * be subject to their corresponding license terms. This file is subject to the terms and conditions defined in file 'LICENSE',
  * which is part of this source code package.
  */
@@ -39,7 +39,7 @@ static_assert(IL2CPP_GC_BOEHM, "Only BOEHM GC supported!");
 
 using namespace il2cpp::vm;
 
-namespace puerts
+namespace xlua
 {
 
 intptr_t GetMethodPointer(Il2CppReflectionMethod* method)
@@ -167,11 +167,7 @@ Il2CppDelegate* FunctionPointerToDelegate(Il2CppMethodPointer functionPtr, Il2Cp
         }
     }
 
-#ifdef UNITY_2021_1_OR_NEWER
     Type::ConstructClosedDelegate((Il2CppDelegate*)delegate, target, functionPtr, method);
-#else
-    Type::ConstructDelegate((Il2CppDelegate*)delegate, target, functionPtr, method);
-#endif
 
     return (Il2CppDelegate*)delegate;
 }
@@ -187,13 +183,11 @@ static void* DelegateAllocate(Il2CppClass *klass, Il2CppMethodPointer functionPt
 
     if (MethodIsStatic(delegate->method)) return nullptr;
 
-#ifndef UNITY_2021_1_OR_NEWER
     const MethodInfo* ctor = il2cpp_class_get_method_from_name(delegateInfoClass, ".ctor", 0);
     typedef void (*NativeCtorPtr)(Il2CppObject* ___this, const MethodInfo* method);
     ((NativeCtorPtr)ctor->methodPointer)(target, ctor);
 
     IL2CPP_OBJECT_SETREF(delegate, target, target);
-#endif
 
     *outTargetData = target + 1;
 
@@ -215,7 +209,7 @@ void SetGlobalType_LuaObject(Il2CppReflectionType *type)
 {
     if (!type)
     {
-        Exception::Raise(Exception::GetInvalidOperationException("type of JSObject is null"));
+        Exception::Raise(Exception::GetInvalidOperationException("type of LuaObject is null"));
     }
     g_typeofPersistentObjectInfo = il2cpp_codegen_class_from_type(type->type);
 }
@@ -334,7 +328,7 @@ void* GetDefaultValuePtr(const MethodInfo* method, uint32_t index)
 
 static void* CtorCallback(pesapi_callback_info info);
 
-static puerts::UnityExports g_unityExports;
+static xlua::UnityExports g_unityExports;
 
 static void* CtorCallback(pesapi_callback_info info)
 {
@@ -402,7 +396,7 @@ static void* CtorCallback(pesapi_callback_info info)
 void ReleaseScriptObject(RuntimeObject* obj)
 {
     int32_t _offset = 1;
-    g_unityExports.UnrefJsObject(obj + _offset);
+    g_unityExports.UnrefLuaObject(obj + _offset);
 }
 
 
@@ -450,7 +444,7 @@ pesapi_value TryTranslateBuiltin(pesapi_env env, Il2CppObject* obj)
             Il2CppArray* buffer;
             il2cpp_field_get_value(obj, ArrayBufferBytesField, &buffer);
 
-            return g_unityExports.CreateJSArrayBuffer(env, Array::GetFirstElementAddress(buffer), (size_t) length);
+            return g_unityExports.CreateLuaArrayBuffer(env, Array::GetFirstElementAddress(buffer), (size_t) length);
         }
     }
     return nullptr;
@@ -1496,26 +1490,26 @@ static void ReflectionGetFieldWrapper(pesapi_callback_info info, FieldInfo* fiel
         }
 
         Il2CppObject* obj = (Il2CppObject*) storage - 1;
-        pesapi_value jsVal = TryTranslatePrimitiveWithClass(env, obj, expectType);
+        pesapi_value luaVal = TryTranslatePrimitiveWithClass(env, obj, expectType);
     
-        if (!jsVal) 
+        if (!luaVal) 
         {
             if (isFieldPtr)
             {
-                jsVal = pesapi_native_object_to_value(env, expectType, storage, false);
+                luaVal = pesapi_native_object_to_value(env, expectType, storage, false);
             }
             else
             {
                 auto valueSize = expectType->instance_size - sizeof(Il2CppObject);
                 auto buff = new uint8_t[valueSize];
                 memcpy(buff, storage, valueSize);
-                jsVal = pesapi_native_object_to_value(env, expectType, buff, true);
+                luaVal = pesapi_native_object_to_value(env, expectType, buff, true);
             }
         }
         
-        if (jsVal)
+        if (luaVal)
         {
-            pesapi_add_return(info, jsVal);
+            pesapi_add_return(info, luaVal);
         }
     }
     else

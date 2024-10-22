@@ -96,6 +96,28 @@ function string.endsWith(str, suffix)
     return string.sub(str, -string.len(suffix)) == suffix
 end
 
+function string.split(s, sep)
+    if sep == nil or sep == '' then
+        sep = '%s'
+    end
+    local t = {}
+    local pattern = '([^' .. sep .. ']+)'
+    for str in string.gmatch(s, pattern) do
+        table.insert(t, str)
+    end
+    return t
+end
+
+function table.filter(tbl, fn)
+    local t = {}
+    for i, v in ipairs(tbl) do
+        if fn(v, i) then
+            table.insert(t, v)
+        end
+    end
+    return t
+end
+
 function ternary(condition, true_value, false_value)
     if condition then
         return true_value
@@ -104,13 +126,47 @@ function ternary(condition, true_value, false_value)
     end
 end
 
-function TaggedTemplateEngine(str, ...) 
+function TaggedTemplateEngine(str, ...)
     local exps = {...}
+    --for i, v in ipairs(exps) do
+    --    print(v)
+    --end
     local ret = ''
     local justAddedAnEmptyExp = false
     local ifStack = {}
-    local i = -1
-    while (i < #str - 2) do
+    local i = 0
+    
+    ---@param str1 string
+    ---@param str2 string
+    function WillConnectWithAnEmptyLine(str1, str2)
+        if (not str1 or not str2) then return {} end
+        local str1LastLineSeq = str1:lastIndexOf('\n')
+        local str2FirstLineSeq = str2:find('\n')
+        if str1LastLineSeq ~= -1 and str1:sub(str1LastLineSeq):trim()== "" and str2FirstLineSeq ~= -1 and str2:sub(0, str2FirstLineSeq):trim() == "" then
+            return str1LastLineSeq, str2FirstLineSeq
+        else
+            return {}
+        end
+    end
+
+    ---@param s string
+    function appendStr(s)
+        -- 如果一行里除了 IF ELSE ELSEIF ENDIF没有其它东西，最终会形成一个空行，可以切掉。
+        if (justAddedAnEmptyExp) then
+            local retLastLineSeq, strFirstLineSeq = WillConnectWithAnEmptyLine(ret, s)
+            if (retLastLineSeq ~= nil and strFirstLineSeq ~= nil) then
+                ret = string.sub(s, 0, retLastLineSeq)
+                s = string.sub(s, strFirstLineSeq)
+            end
+        end
+        if s == nil then
+            for j, v in pairs(str) do
+                print(string.format('%d->%s',j, v))
+            end
+        end
+        ret = ret .. s
+    end
+    while i < #str - 2 do
         i = i + 1
         -- handle str
         if #ifStack == 0 or ifStack[#ifStack]:isTrue() then
@@ -139,7 +195,7 @@ function TaggedTemplateEngine(str, ...)
                 curif.b = not curif.b and exps[i].b
                 justAddedAnEmptyExp = true
                 continue = true
-            elseif (ifStack[#ifStack].isFalse()) then
+            elseif (ifStack[#ifStack]:isFalse()) then
                 if (isInstanceOf(exps[i], TTIf)) then
                     ifStack.push(IF:new(false))
                 end
@@ -158,44 +214,16 @@ function TaggedTemplateEngine(str, ...)
         if (not continue and isInstanceOf(exps[i], TTFor)) then
             justAddedAnEmptyExp = true
         end
-        appendStr(exps[i]:toString())
+        appendStr(tostring(exps[i]))
 
-        if (exps[i].trim and exps[i]:trim() == "") then
+        if (type(exps[i]) == 'string' and string.trim(exps[i]) == "") then
             justAddedAnEmptyExp = true
         end
     end
     appendStr(str[i + 1])
     
-    ---@param str string
-    function appendStr(str) 
-        -- 如果一行里除了 IF ELSE ELSEIF ENDIF没有其它东西，最终会形成一个空行，可以切掉。
-        if (justAddedAnEmptyExp) then
-            local retLastLineSeq, strFirstLineSeq = WillConnectWithAnEmptyLine(ret, str)
-            if (retLastLineSeq ~= nil and strFirstLineSeq ~= nil) then
-                ret = string.sub(str, 0, retLastLineSeq)
-                str = string.sub(str, strFirstLineSeq)
-            end
-        end
-        ret = ret + str
-    end
-    ---@param str1 string
-    ---@param str2 string
-    function WillConnectWithAnEmptyLine(str1, str2) 
-        if (not str1 or not str2) then return {} end
-        local str1LastLineSeq = str1:lastIndexOf('\n')
-        local str2FirstLineSeq = str2:find('\n')
-        if (
-            str1LastLineSeq ~= -1 and str1:sub(str1LastLineSeq):trim()== "" and 
-            str2FirstLineSeq ~= -1 and str2:sub(0, str2FirstLineSeq):trim() == ""
-        ) then
-            return str1LastLineSeq, str2FirstLineSeq
-         else  
-            return {}
-        end
-    end
-
-    if (scopeLevel) then
-        table.insert(resultInScope[scopeLevel - 1], ret)
+    if scopeLevel > 0 then
+        table.insert(resultInScope[scopeLevel], ret)
     end
     return ret
 end
@@ -236,10 +264,9 @@ function Elser:toString()
 end
 function IF(b, contentFn) 
     if (not contentFn) then
-        return TTIf:new(b):toString()
-
+        return TTIf:new(b)
     else 
-        return Elser:new(b, contentFn):toString()
+        return Elser:new(b, contentFn)
     end
 end
 function ELSE() 
@@ -251,25 +278,38 @@ end
 function ENDIF() 
     return TTEndif
 end
-function FOR(arr, fn, joiner) 
-    if (not arr or not (isInstanceOf(arr, Array))) then return '' end
+function FOR(arr, fn, joiner)
+    if not joiner then
+        joiner = ''
+    end
+    if (not arr or type(arr) ~= 'table') then return '' end
 
     local scope = enterScope()
-    local ret = arr.map(fn)
-    local resultInScope = exitScope(scope)
-
-    if (ret.filter(function(item) return item ~= nil end) == 0) then
-        ret = resultInScope;
+    local ret = {}
+    for i, v in ipairs(arr) do
+        table.insert(ret, fn(v, i))
     end
+    local retInScope = exitScope(scope)
 
-    return TTFor:new(ret
-        .filter(function(str) return not str.trim or str:trim() ~= "" end)
-        .map(function(str)
-        if (not str.lastIndexOf) then return str end
-        local lastLineSeq = str:lastIndexOf('\n')
-        if (str:sub(lastLineSeq).trim() == "") then return str:sub(0, lastLineSeq)
-        else return str end
-    end)
-        .join(joiner)
-    );
+    if #ret == 0 then
+        ret = retInScope
+    end
+    local t = {}
+    for i, v in ipairs(ret) do
+        if type(v) ~= 'string' then
+            table.insert(t, v)
+        else
+            local s = string.trim(v) 
+            if s ~= '' then
+                local lastLineSeq = string.lastIndexOf(s, '\n')
+                local t1 = string.sub(s, lastLineSeq)
+                if string.trim(t1) == '' then
+                    table.insert(t, string.sub(s, 1, lastLineSeq))
+                else
+                    table.insert(t, s)    
+                end
+            end
+        end
+    end
+    return table.concat(t, joiner)
 end
