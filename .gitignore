@@ -30,3 +30,4 @@ UserSettings
 win
 build/plugin_lua53
 .vscode
+native_src_il2cpp/Src/FunctionBridge.Gen.h

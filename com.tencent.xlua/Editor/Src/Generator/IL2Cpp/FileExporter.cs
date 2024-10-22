@@ -214,7 +214,7 @@ namespace XLuaIl2cpp.Editor
                         }
                         catch (Exception e)
                         {
-                            UnityEngine.Debug.LogWarning(string.Format("get instructions of {0} ({2}:{3}) throw {1}", mb, e.Message, mb.DeclaringType == null ? "" : mb.DeclaringType.Assembly.GetName().Name, mb.DeclaringType));
+                            Debug.LogWarning(string.Format("get instructions of {0} ({2}:{3}) throw {1}", mb, e.Message, mb.DeclaringType == null ? "" : mb.DeclaringType.Assembly.GetName().Name, mb.DeclaringType));
                             return new MethodBase[] { };
                         }
                     });
@@ -441,12 +441,13 @@ namespace XLuaIl2cpp.Editor
                     .ToList();
                 using (var luaEnv = new LuaEnv())
                 {
-                    var scriptScope = luaEnv.NewTable();
-                    var packageInfo = UnityEditor.PackageManager.PackageInfo.FindForAssetPath("Packages/com.tencent.xlua");
-                    luaEnv.DoString($"package.path = package.path..';{packageInfo.assetPath + "/xlua/templates"}/?.lua'");
-                    var bytes = File.ReadAllBytes(packageInfo.assetPath + "/xlua/templates/linkxmlgen.tpl.lua");
-                    luaEnv.DoString(bytes, "LinkXMLTemplate", scriptScope);
-                    var func = scriptScope.Get<LuaFunction>("RegisterInfoTemplate");
+                    var assetPath = Path.GetFullPath("Packages/com.tencent.xlua/");
+                    assetPath = assetPath.Replace("\\", "/");
+                    luaEnv.DoString($"package.path = package.path..';{assetPath + "Editor/Resources/xlua/templates"}/?.lua'");
+                    var path = Path.Combine(assetPath, "Editor/Resources/xlua/templates/linkxmlgen.tpl.lua");
+                    var bytes = File.ReadAllBytes(path);
+                    luaEnv.DoString(bytes, path);
+                    var func = luaEnv.Global.Get<LuaFunction>("LinkXMLTemplate");
                     var linkXMLContent = func.Func<List<Type>, string>(genTypes);
                     var linkXMLPath = outDir + "link.xml";
                     using (var textWriter = new StreamWriter(linkXMLPath, false, Encoding.UTF8))
@@ -463,7 +464,7 @@ namespace XLuaIl2cpp.Editor
                 {
                     { "pesapi_adpt.c", Resources.Load<TextAsset>("xlua/xil2cpp/pesapi_adpt.c").text },
                     { "pesapi.h", Resources.Load<TextAsset>("xlua/xil2cpp/pesapi.h").text },
-                    { "Puerts_il2cpp.cpp", Resources.Load<TextAsset>("xlua/xil2cpp/Puerts_il2cpp.cpp").text },
+                    { "Puerts_il2cpp.cpp", Resources.Load<TextAsset>("xlua/xil2cpp/XLua_il2cpp.cpp").text },
                     { "UnityExports4XLua.h", Resources.Load<TextAsset>("xlua/xil2cpp/UnityExports4XLua.h").text }
                 };
 
@@ -482,18 +483,16 @@ namespace XLuaIl2cpp.Editor
             {
                 var filePath = outDir + "unityenv_for_xlua.h";
 
-                using (var jsEnv = new LuaEnv())
+                using (var luaEnv = new LuaEnv())
                 {
-                    var asset = Resources.Load<TextAsset>("xlua/xil2cpp/unityenv_for_puerts.h.tpl.lua");
-                    var table = jsEnv.NewTable();
-                    jsEnv.LoadString(asset.text, "unityenv_for_xlua", table);
-                    var func = table.Get<LuaFunction>("unityenv_for_xlua");
-                    string macroHeaderContent = func.Func<bool, bool, string>(              
-#if !UNITY_2021_1_OR_NEWER
-                        false,
-#else
-                        true,
-#endif
+                    var assetPath = Path.GetFullPath("Packages/com.tencent.xlua/");
+                    assetPath = assetPath.Replace("\\", "/");
+                    luaEnv.DoString($"package.path = package.path..';{assetPath + "Editor/Resources/xlua/templates"}/?.lua'");
+                    var path = Path.Combine(assetPath, "Editor/Resources/xlua/xil2cpp/unityenv_for_xlua.h.tpl.lua");
+                    var bytes = File.ReadAllBytes(path);
+                    luaEnv.DoString(bytes, path);
+                    var func = luaEnv.Global.Get<LuaFunction>("unityenv_for_xlua");
+                    string macroHeaderContent = func.Func<bool, bool, string>(true,
 #if UNITY_ANDROID || UNITY_IPHONE
                         false
 #else

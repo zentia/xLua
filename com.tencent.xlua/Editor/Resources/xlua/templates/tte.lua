@@ -5,9 +5,10 @@ function TTFor:new(str)
     self.str = str
     return self
 end
-function TTFor:toString()
+function TTFor:tostring()
     return self.str
 end
+
 local TTIf = {}
 TTIf.__index = TTIf
 function TTIf:new(exp)
@@ -15,33 +16,42 @@ function TTIf:new(exp)
     self.b = not not exp
     return self
 end
+
 function TTIf:isTrue()
     return self.b
 end
+
 function TTIf:isFalse()
     return not self.b
 end
-function TTIf:toString()
+
+function TTIf:tostring()
     error('invalid TTE use. please sure that you use the template literal as tagged template')
 end
+
 local TTEndif = { }
 local TTElse = { }
 local TTElseif = {}
 TTElseif.__index = TTElseif
+
 function TTElseif:new(exp)
     local self = setmetatable({}, TTElseif)
     self.b = not not exp
     return self
 end
+
 function TTElseif:isTrue()
     return self.b
 end
+
 function TTElseif:isFalse()
     return not self.b
 end
-function TTElseif:toString()
+
+function TTElseif:tostring()
     error('invalid TTE use. please sure that you use the template literal as tagged template')
 end    
+
 function isInstanceOf(obj, class)
     local mt = getmetatable(obj)
     while mt do
@@ -66,6 +76,7 @@ function exitScope(curScopeLevel)
     scopeLevel = scopeLevel - 1
     return ret
 end
+
 ---@param s string
 function string.lastIndexOf(s, pattern)
     local lastPos = nil
@@ -86,6 +97,7 @@ function string.lastIndexOf(s, pattern)
         return -1
     end
 end
+
 function string.trim(s)
     return string.gsub(s, "^%s*(.-)%s*$", "%1")
 end
@@ -128,9 +140,6 @@ end
 
 function TaggedTemplateEngine(str, ...)
     local exps = {...}
-    --for i, v in ipairs(exps) do
-    --    print(v)
-    --end
     local ret = ''
     local justAddedAnEmptyExp = false
     local ifStack = {}
@@ -139,10 +148,10 @@ function TaggedTemplateEngine(str, ...)
     ---@param str1 string
     ---@param str2 string
     function WillConnectWithAnEmptyLine(str1, str2)
-        if (not str1 or not str2) then return {} end
-        local str1LastLineSeq = str1:lastIndexOf('\n')
-        local str2FirstLineSeq = str2:find('\n')
-        if str1LastLineSeq ~= -1 and str1:sub(str1LastLineSeq):trim()== "" and str2FirstLineSeq ~= -1 and str2:sub(0, str2FirstLineSeq):trim() == "" then
+        if not str1 or not str2 then return {} end
+        local str1LastLineSeq = string.lastIndexOf(str1, '\n')
+        local str2FirstLineSeq = string.find(str2, '\n')
+        if str1LastLineSeq ~= -1 and string.trim(string.sub(str1, str1LastLineSeq)) == "" and str2FirstLineSeq ~= -1 and string.trim(string.sub(str2,0, str2FirstLineSeq)) == "" then
             return str1LastLineSeq, str2FirstLineSeq
         else
             return {}
@@ -152,21 +161,16 @@ function TaggedTemplateEngine(str, ...)
     ---@param s string
     function appendStr(s)
         -- 如果一行里除了 IF ELSE ELSEIF ENDIF没有其它东西，最终会形成一个空行，可以切掉。
-        if (justAddedAnEmptyExp) then
+        if justAddedAnEmptyExp then
             local retLastLineSeq, strFirstLineSeq = WillConnectWithAnEmptyLine(ret, s)
-            if (retLastLineSeq ~= nil and strFirstLineSeq ~= nil) then
-                ret = string.sub(s, 0, retLastLineSeq)
+            if retLastLineSeq ~= nil and strFirstLineSeq ~= nil then
+                ret = string.sub(ret, 1, retLastLineSeq)
                 s = string.sub(s, strFirstLineSeq)
-            end
-        end
-        if s == nil then
-            for j, v in pairs(str) do
-                print(string.format('%d->%s',j, v))
             end
         end
         ret = ret .. s
     end
-    while i < #str - 2 do
+    while i < #str - 1 do
         i = i + 1
         -- handle str
         if #ifStack == 0 or ifStack[#ifStack]:isTrue() then
@@ -175,13 +179,21 @@ function TaggedTemplateEngine(str, ...)
         justAddedAnEmptyExp = false
 
         -- handle exp
-        if (exps[i] == IF) then error('tte.IF must be used as a function') end
-        if (exps[i] == ENDIF) then error('tte.ENDIF must be used as a function') end
-        if (exps[i] == ELSE) then error('tte.ELSE must be used as a function') end
-        if (exps[i] == ELSEIF) then error('tte.ELSEIF must be used as a function') end
+        if exps[i] == IF then 
+            error('tte.IF must be used as a function') 
+        end
+        if exps[i] == ENDIF then 
+            error('tte.ENDIF must be used as a function') 
+        end
+        if exps[i] == ELSE then 
+            error('tte.ELSE must be used as a function') 
+        end
+        if exps[i] == ELSEIF then 
+            error('tte.ELSEIF must be used as a function') 
+        end
         local continue = false
-        if (#ifStack > 0) then
-            if (exps[i] == TTEndif) then
+        if #ifStack > 0 then
+            if exps[i] == TTEndif then
                 table.remove(ifStack)
                 justAddedAnEmptyExp = true
                 continue = true
@@ -190,34 +202,45 @@ function TaggedTemplateEngine(str, ...)
                 curif.b = not curif.b
                 justAddedAnEmptyExp = true
                 continue = true
-            elseif (isInstanceOf(exps[i], TTElseif)) then
+            elseif isInstanceOf(exps[i], TTElseif) then
                 local curif = ifStack[#ifStack]
                 curif.b = not curif.b and exps[i].b
                 justAddedAnEmptyExp = true
                 continue = true
-            elseif (ifStack[#ifStack]:isFalse()) then
+            elseif ifStack[#ifStack]:isFalse() then
                 if (isInstanceOf(exps[i], TTIf)) then
                     ifStack.push(IF:new(false))
                 end
                 continue = true                
             end
         end
-        if (not continue and isInstanceOf(exps[i] ,TTIf)) then
+        if not continue and isInstanceOf(exps[i] ,TTIf) then
             table.insert(ifStack, exps[i])
             justAddedAnEmptyExp = true
             continue = true
         end
-        if (not continue and exps[i] == TTElse) then error('unexpected else') end
-        if (not continue and isInstanceOf(exps[i], TTElseif)) then error('unexpected elseif') end
-        if (not exps[i] == TTEndif) then error('unexpected endif') end
+        if not continue then
+            if exps[i] == TTElse then
+                error('unexpected else')
+            end
+            if isInstanceOf(exps[i], TTElseif) then
+                error('unexpected elseif')
+            end
+            if not exps[i] == TTEndif then
+                error('unexpected endif')
+            end
 
-        if (not continue and isInstanceOf(exps[i], TTFor)) then
-            justAddedAnEmptyExp = true
-        end
-        appendStr(tostring(exps[i]))
-
-        if (type(exps[i]) == 'string' and string.trim(exps[i]) == "") then
-            justAddedAnEmptyExp = true
+            if isInstanceOf(exps[i], TTFor) then
+                justAddedAnEmptyExp = true
+            end
+            if type(exps[i]) == 'table' then
+                appendStr(exps[i]:tostring())
+            else
+                appendStr(tostring(exps[i]))
+            end
+            if type(exps[i]) == 'string' and string.trim(exps[i]) == "" then
+                justAddedAnEmptyExp = true
+            end    
         end
     end
     appendStr(str[i + 1])
@@ -278,6 +301,7 @@ end
 function ENDIF() 
     return TTEndif
 end
+
 function FOR(arr, fn, joiner)
     if not joiner then
         joiner = ''
@@ -299,17 +323,26 @@ function FOR(arr, fn, joiner)
         if type(v) ~= 'string' then
             table.insert(t, v)
         else
-            local s = string.trim(v) 
-            if s ~= '' then
-                local lastLineSeq = string.lastIndexOf(s, '\n')
-                local t1 = string.sub(s, lastLineSeq)
+            if v ~= '' then
+                local lastLineSeq = string.lastIndexOf(v, '\n')
+                local t1 = string.sub(v, lastLineSeq)
                 if string.trim(t1) == '' then
-                    table.insert(t, string.sub(s, 1, lastLineSeq))
+                    table.insert(t, string.sub(v, 1, lastLineSeq))
                 else
-                    table.insert(t, s)    
+                    table.insert(t, v)    
                 end
             end
         end
     end
     return table.concat(t, joiner)
+end
+
+function listToLuaArray(csArr)
+    local arr = {}
+    if (not csArr) then return arr end
+
+    for i = 1, csArr.Count do
+        table.insert(arr, csArr[i - 1])
+    end
+    return arr
 end

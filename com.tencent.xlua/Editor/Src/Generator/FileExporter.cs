@@ -40,10 +40,12 @@ namespace XLua.Editor
 
                 using (var luaEnv = new LuaEnv())
                 {
-                    var packageInfo = UnityEditor.PackageManager.PackageInfo.FindForAssetPath("Packages/com.tencent.xlua");
-                    luaEnv.DoString($"package.path = package.path..';{packageInfo.assetPath + "/xlua/templates"}/?.lua'");
-                    var bytes = File.ReadAllBytes(packageInfo.assetPath + "/xlua/templates/registerinfo.tpl.lua");
-                    luaEnv.DoString(bytes, "registerinfo");
+                    var assetPath = Path.GetFullPath("Packages/com.tencent.xlua/");
+                    assetPath = assetPath.Replace("\\", "/");
+                    luaEnv.DoString($"package.path = package.path..';{assetPath + "Editor/Resources/xlua/templates"}/?.lua'");
+                    var path = Path.Combine(assetPath, "Editor/Resources/xlua/templates/registerinfo.tpl.lua");
+                    var bytes = File.ReadAllBytes(path);
+                    luaEnv.DoString(bytes, path);
                     var func = luaEnv.Global.Get<LuaFunction>("RegisterInfoTemplate");
                     var registerInfoContent = func.Func<List<RegisterInfoForGenerate>, string>(RegisterInfos);
                     var registerInfoPath = outDir + "RegisterInfo_Gen.cs";

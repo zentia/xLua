@@ -5,7 +5,6 @@
 * This file is subject to the terms and conditions defined in file 'LICENSE', which is part of this source code package.
 */
 
-using System.Reflection;
 using System.IO;
 using System;
 #if !XLUA_GENERAL
@@ -13,29 +12,25 @@ using UnityEditor;
 using UnityEngine;
 #endif
 
-#if !XLUA_GENERAL && !UNITY_WEBGL
+#if !XLUA_GENERAL
 namespace XLuaIl2cpp.Editor
 {
     namespace Generator {
 
-        public class UnityMenu {
+        public static class UnityMenu {
             [MenuItem("XLua/Generate For xIl2cpp mode (all in one)", false, 2)]
             public static void GenV2() {
-                XLuaIl2cpp.Editor.Generator.UnityMenu.GenerateCppWrappers();
-                XLuaIl2cpp.Editor.Generator.UnityMenu.GenerateExtensionMethodInfos();
-                XLuaIl2cpp.Editor.Generator.UnityMenu.GenerateLinkXML();
-                XLuaIl2cpp.Editor.Generator.UnityMenu.GenerateCppPlugin();
+                GenerateCppWrappers();
+                GenerateExtensionMethodInfos();
+                GenerateLinkXML();
+                GenerateCppPlugin();
                 XLua.Editor.Generator.UnityMenu.GenRegisterInfo();
             }
 
             [MenuItem("XLua/Generate/xIl2cpp c file", false, 6)]
             public static void GenerateCppPlugin()
             {   
-#if CPP_OUTPUT_TO_NATIVE_SRC
-                var saveTo = Path.Combine(Application.dataPath, "com.tencent.xlua/Plugins/xlua_il2cpp/");
-#else
                 var saveTo = Path.Combine(Path.GetFullPath("Packages/com.tencent.xlua/"), "Plugins/xlua_il2cpp/");
-#endif
                 Directory.CreateDirectory(saveTo);
                 FileExporter.CopyXIl2cppCPlugin(saveTo);
                 FileExporter.GenMarcoHeader(saveTo);
@@ -55,11 +50,7 @@ namespace XLuaIl2cpp.Editor
             public static void GenerateCppWrappersInConfigure()
             {
                 var start = DateTime.Now;
-#if CPP_OUTPUT_TO_NATIVE_SRC
-                var saveTo = Path.Combine(Application.dataPath, "..", "native_src_il2cpp", "Src");
-#else
-                var saveTo = Path.Combine(Path.GetFullPath("Packages/com.tencent.xlua/"), "../../../", "native_src_il2cpp", "Src");
-#endif
+                var saveTo = Path.Combine(Path.GetFullPath("Packages/com.tencent.xlua/"), "../", "native_src_il2cpp", "Src");
                 Directory.CreateDirectory(saveTo);
                 FileExporter.GenCPPWrap(saveTo, true);
                 Debug.Log("finished! use " + (DateTime.Now - start).TotalMilliseconds + " ms Outputed to " + saveTo);

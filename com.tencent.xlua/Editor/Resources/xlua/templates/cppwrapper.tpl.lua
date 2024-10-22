@@ -1,16 +1,10 @@
+package.cpath = package.cpath .. ';C:/Users/Administrator/AppData/Roaming/JetBrains/Rider2024.2/plugins/EmmyLua/debugger/emmy/windows/x64/?.dll'
+local dbg = require('emmy_core')
+dbg.tcpConnect('localhost', 9966)
+
 require('tte')
 
 local sigs = CS.XLuaIl2cpp.TypeUtils.TypeSignatures;
-
-function listToLuaArray(csArr)
-    local arr = {}
-    if (not csArr) then return arr end
-    
-    for i = 1, csArr.Count do
-        table.insert(arr, csArr[i - 1])
-    end
-    return arr
-end
 
 local PrimitiveSignatureCppTypeMap = {
     v = 'void',
@@ -31,20 +25,20 @@ local PrimitiveSignatureCppTypeMap = {
 function needThis(wrapperInfo) 
     return wrapperInfo.ThisSignature == 't' or wrapperInfo.ThisSignature == 'T'
 end
+
 function getSignatureWithoutRefAndPrefix(signature) 
-    if (signature[1] == 'P' or signature[1] == 'D') then
-        return signature.sub(1)
+    if signature[1] == 'P' or signature[1] == 'D' then
+        return string.sub(signature, 1)
     else 
         return signature
     end
 end
-local CODE_SNIPPETS = {}
-CODE_SNIPPETS.__index = CODE_SNIPPETS
-function CODE_SNIPPETS:SToCPPType(signature)
+
+function SToCPPType(signature)
     if signature[1] == 'D' then
-        signature = signature.sub(2)
+        signature = string.sub(signature, 2)
     end
-    local t = PrimitiveSignatureCppTypeMap[t]
+    local t = PrimitiveSignatureCppTypeMap[signature]
     if not t then
         t = "void*"
     end
@@ -52,30 +46,34 @@ function CODE_SNIPPETS:SToCPPType(signature)
         t = string.format('struct %s', signature)
     end
     if signature[1] == 'P' then
-        t = string.format('%s*', CODE_SNIPPETS:SToCPPType(string.sub(signature, 2)))
+        t = string.format('%s*', SToCPPType(string.sub(signature, 2)))
     end
     return t
 end
-function CODE_SNIPPETS:defineValueType(valueTypeInfo)
+
+function defineValueType(valueTypeInfo)
     if not valueTypeInfo.Signature then
         return ''
     end
     local fieldSignatures = listToLuaArray(valueTypeInfo.FieldSignatures)
     local arg1 = FOR(fieldSignatures, function(s, i) return TaggedTemplateEngine({[[
+    ]],[[
     ]],[[ hasValue;
     ]],[[
-    ]], ' p',[[
-    ]],''}, IF(string.startsWith(valueTypeInfo.Signature, sigs.NullableStructPrefix) and i == valueTypeInfo.NullableHasValuePosition),
-            CODE_SNIPPETS:SToCPPType(s),ELSE(), CODE_SNIPPETS:SToCPPType(s), i, ENDIF()
-    ) end)
+]], ' p',';'}, IF(string.startsWith(valueTypeInfo.Signature, sigs.NullableStructPrefix) and i == valueTypeInfo.NullableHasValuePosition),
+            SToCPPType(s), ELSE(), SToCPPType(s), i, ENDIF()
+    ) end, '\n')
     return TaggedTemplateEngine({'// ',[[
+    
 struct ]], [[
+
 {
-    ]], [[
-};]]}, valueTypeInfo.Signature, valueTypeInfo.Signature, arg1)
+]], [[
+
+};]]}, valueTypeInfo.CsName, valueTypeInfo.Signature, arg1)
 end
 
-function CODE_SNIPPETS:getThis(signature)
+function getThis(signature)
     if signature == 't' then
         return 'auto self = xlua::DataTransfer::GetPointerFast<void>(info.Holder());'
     elseif signature == 'T' then
@@ -85,7 +83,7 @@ function CODE_SNIPPETS:getThis(signature)
     end
 end
 
-function CODE_SNIPPETS:getArgValue(signature, LuaName, isRef)
+function getArgValue(signature, LuaName, isRef)
     if PrimitiveSignatureCppTypeMap[signature] then
         if isRef then
             return string.format('converter::Converter<std::reference_wrapper<%s>>::toCpp(context, %s)', PrimitiveSignatureCppTypeMap[signature], LuaName)
@@ -102,7 +100,7 @@ function CODE_SNIPPETS:getArgValue(signature, LuaName, isRef)
     end
 end
 
-function CODE_SNIPPETS:declareTypeInfo(wrapperInfo)
+function declareTypeInfo(wrapperInfo)
     local returnHasTypeInfo = wrapperInfo.ReturnSignature and not PrimitiveSignatureCppTypeMap[getSignatureWithoutRefAndPrefix(wrapperInfo.ReturnSignature)]
     local ret = {}
     local i = 0
@@ -120,7 +118,7 @@ function CODE_SNIPPETS:declareTypeInfo(wrapperInfo)
     return table.concat(ret, '\n    ')
 end
 
-function CODE_SNIPPETS:checkLuaArg(signature, index)
+function checkLuaArg(signature, index)
     local ret = ''
     local TypeInfoIndex = index
     if signature[1] == 'D' then
@@ -156,10 +154,10 @@ function CODE_SNIPPETS:checkLuaArg(signature, index)
     return ret
 end
 
-function CODE_SNIPPETS:refSetback(signature, index)
+function refSetback(signature, index)
     if signature[1] == 'P' and signature ~= 'Pv' then
         local elementSignature = signature.sub(2)
-        local val = CODE_SNIPPETS:CSValToLuaVal(elementSignature, string.format('*p%d', index))
+        local val = CSValToLuaVal(elementSignature, string.format('*p%d', index))
 
         if val then
             if string.startsWith(elementSignature, sigs.StructPrefix) and string.endsWith('_') then
@@ -188,7 +186,7 @@ function CODE_SNIPPETS:refSetback(signature, index)
     return ''
 end
 
-function CODE_SNIPPETS:returnToLua(signature)
+function returnToLua(signature)
     if signature == 'i8' then
         return 'info.GetReturnValue().Set(lua_pushint64(L, ret));'
     elseif signature == 'u8' then
@@ -204,7 +202,7 @@ function CODE_SNIPPETS:returnToLua(signature)
     end
 end
 
-function CODE_SNIPPETS:LuaValToCSVal(signature, LuaName, CSName)
+function LuaValToCSVal(signature, LuaName, CSName)
     if signature == 's' then -- string
         return string.format([[    // LuaValToCSVal s
     char* t%s = lua_tostring(L, %s);
@@ -249,10 +247,10 @@ function CODE_SNIPPETS:LuaValToCSVal(signature, LuaName, CSName)
         %s u%s = %s;
         %s* %s = &u%s;
         int o%s = 0;
-        ]], CODE_SNIPPETS:SToCPPType(S), CSName, CODE_SNIPPETS:getArgValue(S, LuaName, true), CODE_SNIPPETS:SToCPPType(S), CSName, CSName, CSName)
+        ]], SToCPPType(S), CSName, getArgValue(S, LuaName, true), SToCPPType(S), CSName, CSName, CSName)
         else
             return string.format([[    // LuaValToCSVal p not primitive
-        %s %s = %s;]], CODE_SNIPPETS:SToCPPType(signature), CSName, CODE_SNIPPETS:getArgValue(S, LuaName, true))
+        %s %s = %s;]], SToCPPType(signature), CSName, getArgValue(S, LuaName, true))
         end
     elseif signature[1] == 'V' then
         local si = string.sub(signature, 2)
@@ -297,18 +295,18 @@ function CODE_SNIPPETS:LuaValToCSVal(signature, LuaName, CSName)
         end
     else
         return string.format([[    // LuaValToCSVal P any
-        %s %s = %s;]], CODE_SNIPPETS:SToCPPType(signature), CSName, CODE_SNIPPETS:getArgValue(signature, LuaName))
+        %s %s = %s;]], SToCPPType(signature), CSName, getArgValue(signature, LuaName))
     end
 end
 
-function CODE_SNIPPETS:returnToCS(signature)
+function returnToCS(signature)
     return string.format([[
 %s
     return ret;
-        ]], CODE_SNIPPETS:LuaValToCSVal(signature, 'MaybeRet.ToLocalChecked()', 'ret'))
+        ]], LuaValToCSVal(signature, 'MaybeRet.ToLocalChecked()', 'ret'))
 end
 
-function CODE_SNIPPETS:CSValToLuaVal(signature, CSName)
+function CSValToLuaVal(signature, CSName)
     if PrimitiveSignatureCppTypeMap[signature] then
         return string.format('converter::Converter<%s>::toScript(context, %s)', PrimitiveSignatureCppTypeMap[signature], CSName)
     elseif signature == 's' or signature == 'O' then
@@ -339,7 +337,7 @@ function genBridgeArgs(parameterSignatures)
             local arg1 = #parameterSignatures
             local arg2 = ''
             for i, v in ipairs(parameterSignatures) do
-                local t = CODE_SNIPPETS:CSValToLuaVal(v, string.format('p%d', i))
+                local t = CSValToLuaVal(v, string.format('p%d', i))
                 if not t then
                     t = 'lua_pushnil(L)'
                 end
@@ -358,7 +356,7 @@ function genBridgeArgs(parameterSignatures)
             local arg1 = #parameterSignatures - 1
             local arg2 = ''
             for i = 1, #parameterSignatures - 1 do
-                local t = CODE_SNIPPETS:CSValToLuaVal(v, string.format('p%d', i))
+                local t = CSValToLuaVal(v, string.format('p%d', i))
                 if not t then
                     t = 'lua_pushnil(L)'
                 end
@@ -382,10 +380,10 @@ function genBridge(bridgeInfo)
     if hasVarArgs then
         arg = ' + arrayLength - 1'
     end
-    local arg1 = CODE_SNIPPETS:SToCPPType(bridgeInfo.ReturnSignature)
+    local arg1 = SToCPPType(bridgeInfo.ReturnSignature)
     local arg2 = ''
     for i, v in ipairs(parameterSignatures) do
-        arg2 = arg2 .. string.format('%s p%d', CODE_SNIPPETS:SToCPPType(v), i) .. ', '
+        arg2 = arg2 .. string.format('%s p%d', SToCPPType(v), i) .. ', '
     end
     local arg3 = IF(bridgeInfo.ReturnSignature and not PrimitiveSignatureCppTypeMap[getSignatureWithoutRefAndPrefix(bridgeInfo.ReturnSignature)])
     local arg4 = ENDIF()
@@ -430,40 +428,40 @@ static ]],' b_', '(void* target, ', [[void* method) {
         arg, 
         IF(bridgeInfo.ReturnSignature == 'v'),
         ELSE(),
-        CODE_SNIPPETS:returnToCS(bridgeInfo.ReturnSignature),
+        returnToCS(bridgeInfo.ReturnSignature),
         ENDIF())
 end
 
 function genFuncWrapper(wrapperInfo) 
     local parameterSignatures = listToLuaArray(wrapperInfo.ParameterSignatures)
-    local arg1 = CODE_SNIPPETS:declareTypeInfo(wrapperInfo)
+    local arg1 = declareTypeInfo(wrapperInfo)
     local arg2 = 'true'
     local ret = table.filter(parameterSignatures, function(s) return s[1] == 'D' end)
     if #ret == 0 then
         arg2 = 'checkLuaArgument'
     end
     local arg3 = FOR(parameterSignatures, function(x, i) 
-        return TaggedTemplateEngine({'',''},CODE_SNIPPETS:checkLuaArg(x, i))
+        return TaggedTemplateEngine({'',''}, checkLuaArg(x, i))
     end)
-    local arg4 = CODE_SNIPPETS:getThis(wrapperInfo.ThisSignature)
+    local arg4 = getThis(wrapperInfo.ThisSignature)
     local arg5 = ''
     for i, v in ipairs(parameterSignatures) do
-        arg5 = arg5 .. CODE_SNIPPETS:LuaValToCSVal(v, string.format('info[%d]', i), string.format('p%d', i)) .. '\n'
+        arg5 = arg5 .. LuaValToCSVal(v, string.format('info[%d]', i), string.format('p%d', i)) .. '\n'
     end
-    local arg6 = CODE_SNIPPETS:SToCPPType(wrapperInfo.ReturnSignature)
+    local arg6 = SToCPPType(wrapperInfo.ReturnSignature)
     local arg7 = ''
     if needThis(wrapperInfo) then
         arg7 = 'void*,'
     end
     local arg8 = ''
     for i, v in ipairs(parameterSignatures) do
-        arg8 = arg8 .. CODE_SNIPPETS:SToCPPType(v) .. string.format(' p%d, ', i)
+        arg8 = arg8 .. SToCPPType(v) .. string.format(' p%d, ', i)
     end
     if arg8 ~= '' then
         arg8 = string.sub(arg8, 1, #arg8 - 2)    
     end
     local arg9 = IF(wrapperInfo.ReturnSignature ~= 'V')
-    local arg10 = CODE_SNIPPETS:SToCPPType(wrapperInfo.ReturnSignature)
+    local arg10 = SToCPPType(wrapperInfo.ReturnSignature)
     local arg11 = ENDIF()
     local arg12 = ''
     if needThis(wrapperInfo) then
@@ -477,10 +475,10 @@ function genFuncWrapper(wrapperInfo)
         arg13 = string.sub(arg13, 1, #arg13 - 2)    
     end
     local arg14 = FOR(parameterSignatures, function(x, i)
-        return TaggedTemplateEngine({'',''}, CODE_SNIPPETS:refSetback(x, i, wrapperInfo))
+        return TaggedTemplateEngine({'',''}, refSetback(x, i, wrapperInfo))
     end)
     local arg15 = IF(wrapperInfo.ReturnSignature ~= 'v')
-    local arg16 = CODE_SNIPPETS:returnToLua(wrapperInfo.ReturnSignature)
+    local arg16 = returnToLua(wrapperInfo.ReturnSignature)
     local arg17 = ENDIF()
     return TaggedTemplateEngine({[[
 // ]], [[
@@ -523,12 +521,12 @@ function genGetField(fieldWrapperInfo)
     info.GetReturnValue().Set(DataTransfer::FindOrAddCData(L, TIret, ret, true));]]
         end
     else
-        local arg = CODE_SNIPPETS:SToCPPType(fieldWrapperInfo.ReturnSignature) 
+        local arg = SToCPPType(fieldWrapperInfo.ReturnSignature) 
         local arg1 = 'nullptr, fieldInfo'
         if needThis(fieldWrapperInfo) then
             arg1 = 'self, fieldInfo'
         end
-        local arg2 = CODE_SNIPPETS:returnToLua(fieldWrapperInfo.ReturnSignature)
+        local arg2 = returnToLua(fieldWrapperInfo.ReturnSignature)
         return string.format([[%s ret;
         
         FieldGet(%s, offset, &ret);
@@ -546,7 +544,7 @@ static void ifg_]],[[(lua_State *L, void* fieldInfo, size_t offset, void* TIret)
     ]],[[
     ]], [[
     ]],[[
-    ]]}, fieldWrapperInfo.Signature, fieldWrapperInfo.Signature, IF(needThis(fieldWrapperInfo)), CODE_SNIPPETS:getThis(fieldWrapperInfo.ThisSignature), ENDIF(), genGetField(fieldWrapperInfo)
+    ]]}, fieldWrapperInfo.Signature, fieldWrapperInfo.Signature, IF(needThis(fieldWrapperInfo)), getThis(fieldWrapperInfo.ThisSignature), ENDIF(), genGetField(fieldWrapperInfo)
     )
 end
 
@@ -558,7 +556,7 @@ function Gen(genInfos)
     print(string.format('valuetypes:%d, wrappers:%d, bridge:%d, fieldWrapper:%d', #valueTypeInfos, #wrapperInfos, #bridgeInfos, #fieldWrapperInfos))
     local arg1 = ''
     for i, v in ipairs(valueTypeInfos) do
-        arg1 = arg1 .. CODE_SNIPPETS:defineValueType(v) .. '\n'        
+        arg1 = arg1 .. defineValueType(v) .. '\n'        
     end
     local arg2 = ''
     for i, v in ipairs(wrapperInfos) do
