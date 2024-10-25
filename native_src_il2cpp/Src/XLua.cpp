@@ -1346,3 +1346,8 @@ LUA_API bool RegisterCSharpType(LuaClassInfo* classInfo)
 
 	ClassDef.Initialize = classInfo->DeleagteBridge ? xlua::DelegateCtorCallback : xlua::GUnityExports.ConstructorCallbacks;
 }
+
+struct LuaEnv
+{
+	
+}

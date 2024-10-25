@@ -138,8 +138,17 @@ function ternary(condition, true_value, false_value)
     end
 end
 
-function TaggedTemplateEngine(str, ...)
-    local exps = {...}
+function TaggedTemplateEngine(...)
+    local str = {}
+    local exps = {}
+    for i, v in ipairs({ ... }) do
+        if v[1] == 2 then
+            table.insert(exps, v[2])
+        else
+            table.insert(str, v[2])
+        end    
+    end
+    
     local ret = ''
     local justAddedAnEmptyExp = false
     local ifStack = {}

@@ -1,7 +1,7 @@
 ﻿/*
- * Tencent is pleased to support the open source community by making Puerts available.
+ * Tencent is pleased to support the open source community by making XLua available.
  * Copyright (C) 2020 THL A29 Limited, a Tencent company.  All rights reserved.
- * Puerts is licensed under the BSD 3-Clause License, except for the third-party components listed in the file 'LICENSE' which may
+ * XLua is licensed under the BSD 3-Clause License, except for the third-party components listed in the file 'LICENSE' which may
  * be subject to their corresponding license terms. This file is subject to the terms and conditions defined in file 'LICENSE',
  * which is part of this source code package.
  */
@@ -76,7 +76,7 @@ public:
 
     static bool IsInstanceOf(lua_State *L, const void* TypeId, int ObjectIndex);
 
-    static void UnRef(v8::Isolate* Isolate, const v8::Local<v8::Value>& Value);
+    static void UnRef(lua_State* L, const v8::Local<v8::Value>& Value);
 
     static void UpdateRef(v8::Isolate* Isolate, v8::Local<v8::Value> Outer, const v8::Local<v8::Value>& Value);
 
@@ -127,7 +127,7 @@ public:
         lua_error(L, "%s", Message);
     }
     
-    FORCEINLINE static std::string ExceptionToString(lua_State *L, v8::Local<v8::Value> ExceptionValue)
+    FORCEINLINE static std::string ExceptionToString(lua_State *L, int oldTop)
     {
         v8::String::Utf8Value Exception(Isolate, ExceptionValue);
         const char * StrException = *Exception;
@@ -160,6 +160,12 @@ public:
             }
             return stm.str();
         }
+    }
+
+    template<typename T>
+    FORCEINLINE void PushByType(lua_State *L, T v)
+    {
+        
     }
 };
 }    // namespace PUERTS_NAMESPACE

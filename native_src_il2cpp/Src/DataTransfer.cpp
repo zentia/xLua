@@ -41,9 +41,9 @@ namespace xlua
         return cppObjectMapper->GetLuaEnvLifeCycleTracker();
     }
 
-    struct FPersistentObjectEnvInfo* DataTransfer::GetPersistentObjectEnvInfo(lua_State *L)
+    struct PersistentObjectEnvInfo* DataTransfer::GetPersistentObjectEnvInfo(lua_State *L)
     {
-        xlua::FCppObjectMapper *cppObjectMapper = xlua::FCppObjectMapper::Get(L);
+        xlua::CppObjectMapper *cppObjectMapper = xlua::CppObjectMapper::Get(L);
         return cppObjectMapper->GetPersistentObjectEnvInfo();
     }
 }    // namespace XLUA_NAMESPACE
