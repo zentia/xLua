@@ -193,11 +193,21 @@ function returnToLua(signature)
     elseif PrimitiveSignatureCppTypeMap[signature] then
         return 'info.GetReturnValue().Set(ret);'
     elseif string.startsWith(signature, sigs.NullableStructPrefix) and string.endsWith(signature, '_') then
-        return 'info.GetReturnValue().Set(CopyNullableValueType(L, context, TIret, &ret, ret.hasValue, sizeof(ret)));'
+        return 'info.GetReturnValue().Set(CopyNullableValueType(L, TIret, &ret, ret.hasValue, sizeof(ret)));'
     elseif string.startsWith(signature, sigs.StructPrefix) and string.endsWith(signature, '_') then
-        return 'info.GetReturnValue().Set(CopyValueType(L, context, TIret, &ret, sizeof(ret)));'
-    elseif signature == 'o' then
-        return 'info.GetReturnValue().Set(CSRefToLuaValue(L, context, ret));'
+        return 'info.GetReturnValue().Set(CopyValueType(L, TIret, &ret, sizeof(ret)));'
+    elseif signature == 'o' then -- classes except System.Object
+        return 'info.GetReturnValue().Set(CSRefToLuaValue(L, ret));'
+    elseif signature == 'a' then -- ArrayBuffer
+        return 'info.GetReturnValue().Set(CSAnyToLuaValue(L, ret));'
+    elseif signature == 'O' then -- System.Object
+        return 'info.GetReturnValue().Set(CSAnyToLuaValue(L, ret));'
+    elseif signature == 's' then -- string
+        return 'info.GetReturnValue().Set(CSAnyToLuaValue(L, ret));'
+    elseif signature == 'p' or signature == 'Pv' then -- IntPtr, void*
+        return 'info.GetReturnValue().Set(L, ret));'
+    else
+        return '// unknown ret signature: ' .. signature
     end
 end
 
@@ -224,8 +234,8 @@ function LuaValToCSVal(signature, LuaName, CSName)
         u%s = LuaValueToCSRef(L, t%s, TI%s);]], CSName, CSName, CSName, CSName, LuaName, LuaName, CSName, CSName, CSName)
     elseif (string.startsWith(signature, sigs.StructPrefix) or string.startsWith(signature, sigs.NullableStructPrefix)) and string.endsWith(signature, '_') then -- valuetype
         return string.format([[    // LuaValToCSVal struct
-        %s* p%s = DataTransfer::GetPointer<%s>(L, %s);
-        %s %s = p%s ? *p%s : %s {};]], signature, CSName, signature, LuaName, signature, CSName, CSName, CSName, signature)
+    %s* p%s = DataTransfer::GetPointer<%s>(L, %s);
+    %s %s = p%s ? *p%s : %s {};]], signature, CSName, signature, LuaName, signature, CSName, CSName, CSName, signature)
     elseif (string.startsWith(signature, 'P' .. sigs.StructPrefix) or string.startsWith(signature, 'P' .. sigs.NullableStructPrefix)) and string.endsWith(signature, '_') then -- valuetype ref
         local S = string.sub(signature, 2)
         return string.format([[    // LuaValToCSVal Pstruct
@@ -301,8 +311,7 @@ end
 function returnToCS(signature)
     return string.format([[
 %s
-    return ret;
-        ]], LuaValToCSVal(signature, 'MaybeRet.ToLocalChecked()', 'ret'))
+    return ret;]], LuaValToCSVal(signature, 'MaybeRet.ToLocalChecked()', 'ret'))
 end
 
 function CSValToLuaVal(signature, CSName)
@@ -363,7 +372,7 @@ function genBridgeArgs(parameterSignatures)
             return arg2,#parameterSignatures - 1
         end
     else
-        return ''
+        return '', 0
     end
 end
 
@@ -378,70 +387,61 @@ function genBridge(bridgeInfo)
     for i, v in ipairs(parameterSignatures) do
         arg2 = arg2 .. string.format('%s p%d', SToCPPType(v), i) .. ', '
     end
-    local arg5 = FOR(parameterSignatures, function(ps, index) 
-        return TaggedTemplateEngine({1, '' }, {2, IF(not PrimitiveSignatureCppTypeMap[getSignatureWithoutRefAndPrefix(ps)]) }, {1, 'auto TIp' }, {2, index }, {1, ' = GetParameterType(method, ' }, {2, index }, {1, ');' } , {2, ENDIF() })
-    end)
-    local args, len = genBridge(parameterSignatures)
+    local args, len = genBridgeArgs(parameterSignatures)
     return TaggedTemplateEngine({1, [[
-static ]] }, {2, SToCPPType(bridgeInfo.ReturnSignature) }, {1, ' b_' }, {2, bridgeInfo.Signature }, {1, '(void* target, ' }, {2, arg2 }, {1, [[void* method) {
-    // PLog(LogLevel::Log, "Return b_]] }, {2, bridgeInfo.Signature }, {1, [[");
-    
-    ]] }, {2, IF(bridgeInfo.ReturnSignature and not PrimitiveSignatureCppTypeMap[getSignatureWithoutRefAndPrefix(bridgeInfo.ReturnSignature)]) }, 
-            {1, 'auto TIret = GetReturnType(method);' }, 
+static ]] }, {2, SToCPPType(bridgeInfo.ReturnSignature) }, {1, ' b_' }, {2, bridgeInfo.Signature}, {1, '(void* target, ' }, {2, arg2 }, {1, [[void* method) {
+    // PLog(LogLevel::Log, "Return b_]] }, {2, bridgeInfo.Signature }, {1, '");\n' }, 
+            {2, IF(bridgeInfo.ReturnSignature and not PrimitiveSignatureCppTypeMap[getSignatureWithoutRefAndPrefix(bridgeInfo.ReturnSignature)]) }, 
+            {1, '\tauto TIret = GetReturnType(method);' }, 
             {2, ENDIF() },
+            {1, '\n\t'},
+            {2, FOR(parameterSignatures, function(ps, index)
+                return TaggedTemplateEngine({1, '' }, {2, IF(not PrimitiveSignatureCppTypeMap[getSignatureWithoutRefAndPrefix(ps)]) }, {1, 'auto TIp' }, {2, index }, {1, ' = GetParameterType(method, ' }, {2, index }, {1, ');' } , {2, ENDIF() })
+            end)},
             {1, [[
+            
     PersistentObjectInfo* delegateInfo = GetObjectData(target, PersistentObjectInfo);
     if (delegateInfo->LuaEnvLifeCycleTracker.expired())
     {
-        ThrowInvalidOperationException("LuaEnv had been destroy");]] },
+        ThrowInvalidOperationException("LuaEnv had been destroy");
+    ]] },
             {2, IF(bridgeInfo.ReturnSignature ~= 'v')},
-            {1,'return {};' }, 
+            {1,'return {};\n' }, 
             {2, ENDIF() },
-{1, [[}
+{1, [[
+    }
     lua_State* L = delegateInfo->EnvInfo->L;
     int oldTop = lua_gettop(L);
     ]] },
-            {2, args },
-            {1, ' int status = lua_pcall(L, ' },{2, len}, {1, 'delegateInfo->EnvInfo->RetNum' },  {1, [[0);
+            {2, args},
+            {1, '\tint status = lua_pcall(L, ' },{2, len}, {1, [[, delegateInfo->EnvInfo->RetNum, 0);
 
     if (status != LUA_OK) {
         auto msg = DataTransfer::ExceptionToString(L, lua_tostring(L, -1));
-        ThrowInvalidOperationException(msg);]]},
+        ThrowInvalidOperationException(msg);
+    ]]},
             {2, IF(bridgeInfo.ReturnSignature == 'v') },
             {1, '}'},
             {2, ELSE() },
-            {1,[[return {};
-            }
-            if (delegateInfo->EnvInfo->RetNum == 0)
-            {
-                return {};
-            }
-            lua_settop(L, oldTop);]]},
-            {2, returnToCS(bridgeInfo.ReturnSignature) },
-            {2, ENDIF() }) 
+            {1, [[
+            return {};
+    }
+    if (delegateInfo->EnvInfo->RetNum == 0)
+    {
+        return {};
+    }
+    lua_settop(L, oldTop);]]},
+            {2, returnToCS(bridgeInfo.ReturnSignature)},
+            {1, '\n'}, 
+            {2, ENDIF()},
+            {1, '\n}'})
 end
 
 function genFuncWrapper(wrapperInfo) 
     local parameterSignatures = listToLuaArray(wrapperInfo.ParameterSignatures)
-    local arg1 = declareTypeInfo(wrapperInfo)
-    local arg2 = 'true'
-    local ret = table.filter(parameterSignatures, function(s) return s[1] == 'D' end)
-    if #ret == 0 then
-        arg2 = 'checkLuaArgument'
-    end
-    local arg3 = genArgsLenCheck(parameterSignatures)
-    local arg4 = FOR(parameterSignatures, function(x, i) 
-        return TaggedTemplateEngine({ {1, '' },{2, checkLuaArg(x, i) }} )
-    end)
-    local arg5 = getThis(wrapperInfo.ThisSignature)
-    local arg6 = ''
+    local arg6 = '\n'
     for i, v in ipairs(parameterSignatures) do
         arg6 = arg6 .. LuaValToCSVal(v, string.format('info[%d]', i), string.format('p%d', i)) .. '\n'
-    end
-    local arg7 = SToCPPType(wrapperInfo.ReturnSignature)
-    local arg8 = ''
-    if needThis(wrapperInfo) then
-        arg8 = 'void*,'
     end
     local arg9 = ''
     for i, v in ipairs(parameterSignatures) do
@@ -450,13 +450,6 @@ function genFuncWrapper(wrapperInfo)
     if arg9 ~= '' then
         arg9 = string.sub(arg9, 1, #arg9 - 2)    
     end
-    local arg10 = IF(wrapperInfo.ReturnSignature ~= 'V')
-    local arg11 = SToCPPType(wrapperInfo.ReturnSignature)
-    local arg12 = ENDIF()
-    local arg13 = ''
-    if needThis(wrapperInfo) then
-        arg13 = 'self,'
-    end
     local arg14 = ''
     for i, v in ipairs(parameterSignatures) do
         arg14 = arg14 .. string.format('p%d, ', i)
@@ -464,41 +457,36 @@ function genFuncWrapper(wrapperInfo)
     if arg14 ~= '' then
         arg14 = string.sub(arg14, 1, #arg14 - 2)    
     end
-    local arg15 = FOR(parameterSignatures, function(x, i)
-        return TaggedTemplateEngine({1, ''}, {2, refSetback(x, i, wrapperInfo) })
-    end)
-    local arg16 = IF(wrapperInfo.ReturnSignature ~= 'v')
-    local arg17 = returnToLua(wrapperInfo.ReturnSignature)
-    local arg18 = ENDIF()
-    return TaggedTemplateEngine({1, [[
-// ]] }, {1, [[
-
-static bool w_]] }, {1, [[(void* method, MethodPointer methodPointer, const pesapi_callback_info info, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog(LogLevel::Log, "Running w_]], [[");
-    
-    ]] }, {1, [[
+    return TaggedTemplateEngine(
+            {1, '//' }, {2, wrapperInfo.CsName }, 
+            {1, '\nstatic bool w_' }, {2, wrapperInfo.Signature }, {1, [[(void* method, MethodPointer methodPointer, const pesapi_callback_info info, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog(LogLevel::Log, "Running w_]]}, {2, wrapperInfo.Signature }, {1, '");\n\t' },
+            {2, declareTypeInfo(wrapperInfo) },
+            {1, [[
     
     lua_State* L = info.L;
     
-    if (]] }, {1, [[) {
+    if (]] },{2, #table.filter(parameterSignatures, function(s) return s[1] == 'D' end) == 0 and 'checkLuaArgument' or 'true' }, {1, [[) {
         auto length = info.Length();
-        if (]] }, {1, [[) return false;
-        ]] }, {1, [[
-    }
-    ]] }, {1, [[
-]] }, {1, [[
-    
-    typedef ]] }, {1, ' (*FuncToCall)(' }, {1, '' }, {1, [[const void* method);
-    ]] }, {1, '' }, {1, ' ret = ', '((FuncToCall)methodPointer)(', ' ', [[ method);
-    
-    ]] }, {1, [[
-    
-    ]] }, {1, [[
-    ]] }, {1, [[
-    ]] }, {1, [[
-    
-    return true;
-}]] }, {2, wrapperInfo.CsName }, {2, wrapperInfo.Signature }, {2, wrapperInfo.Signature }, {2, arg1 }, {2, arg2 }, { 2,arg3 }, { 2,arg4 }, { 2,arg5 }, { 2,arg6 }, { 2,arg7 }, { 2,arg8 }, { 2,arg9 }, { 2,arg10 }, { 2,arg11 }, { 2,arg12 }, { 2,arg13 }, { 2,arg14 }, { 2,arg15 }, { 2,arg16 }, { 2,arg17 }, { 2,arg18 })
+        if (]] },{ 2,genArgsLenCheck(parameterSignatures) }, {1, ') return false;\n' },
+            {2, FOR(parameterSignatures, function(x, i)
+                return TaggedTemplateEngine({1, '' },{2, checkLuaArg(x, i) })
+            end) }, 
+            {1, '\t}\n\t' },
+            {2, getThis(wrapperInfo.ThisSignature)},
+            {1, '\n'},
+            {2, arg6},
+            {1, '\ttypedef '}, {2, SToCPPType(wrapperInfo.ReturnSignature)}, {1, ' (*FuncToCall)(' }, { 2,needThis(wrapperInfo) and 'void*, ' or '' }, {1, ''}, {2, arg9}, {1, 'const void* method);' },
+            {2, IF(wrapperInfo.ReturnSignature ~= 'V')}, {1, '\n\t'}, {2, SToCPPType(wrapperInfo.ReturnSignature) }, {1, ' ret = '}, {2, ENDIF()}, {1, '((FuncToCall)methodPointer)('}, {2, needThis(wrapperInfo) and 'self, ' or '' }, {1, ''}, { 2,arg14 }, {1, 'method);'},
+            {2, FOR(parameterSignatures, function(x, i)
+                return TaggedTemplateEngine({1, ''}, {2, refSetback(x, i, wrapperInfo)})
+            end)},
+            {2, IF(wrapperInfo.ReturnSignature ~= 'V')},
+            {1, '\n\t'},
+            {2, returnToLua(wrapperInfo.ReturnSignature)},
+            {1, '\n'},
+            {2, ENDIF()},
+            {1, '\n\treturn true;\n}\n'})
 end
 
 function genGetField(fieldWrapperInfo)
@@ -530,14 +518,14 @@ end
 
 function genFieldWrapper(fieldWrapperInfo)
     return TaggedTemplateEngine({1, [[
-static void ifg_]] }, { 1,[[(lua_State *L, void* fieldInfo, size_t offset, void* TIret) {
-    // PLog(LogLevel::Log, "Running ifg_]] }, { 1,[[");
+static void ifg_]] }, { 2,fieldWrapperInfo.Signature }, { 1,[[(lua_State *L, void* fieldInfo, size_t offset, void* TIret) {
+    // PLog(LogLevel::Log, "Running ifg_]] }, { 2,fieldWrapperInfo.Signature }, { 1,[[");
     
     
-    ]] }, { 1,[[
-    ]] }, { 1,[[
-    ]] }, { 1,[[
-    ]] }, { 2,fieldWrapperInfo.Signature }, { 2,fieldWrapperInfo.Signature }, { 2,IF(needThis(fieldWrapperInfo)) }, { 2,getThis(fieldWrapperInfo.ThisSignature) }, { 2,ENDIF() }, { 2,genGetField(fieldWrapperInfo) }
+    ]] }, { 2,IF(needThis(fieldWrapperInfo)) }, { 1,[[
+    ]] }, { 2,getThis(fieldWrapperInfo.ThisSignature) }, { 1,[[
+    ]] }, { 2,ENDIF() }, { 1,[[
+    ]] }, { 2,genGetField(fieldWrapperInfo) }
     )
 end
 
@@ -601,6 +589,13 @@ static WrapFuncInfo g_wrapFuncInfos[] = {
     %s
     {nullptr, nullptr}
 };
+
+%s
+
+static BridgeFuncInfo g_bridgeFuncInfos[] = {
+    %s
+    {nullptr, nullptr}
+);
 
 %s
 
