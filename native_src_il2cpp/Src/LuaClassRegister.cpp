@@ -74,11 +74,35 @@ public:
 
     const LuaClassDefinition* FindClassByID(const void* TypeId);
 
+    void OnClassNotFound(pesapi_class_not_found_callback InCallback)
+    {
+        OnClassNotFound = InCallback;
+    }
+
+    const LuaClassDefinition* LoadClassByID(const void* TypeId)
+    {
+        if (!TypeId)
+        {
+            return nullptr;
+        }
+        auto clsDef = FindClassByID(TypeId);
+        if (!clsDef && ClassNotFoundCallback)
+        {
+            if (!ClassNotFoundCallback(TypeId))
+            {
+                return nullptr;
+            }
+            clsDef = FindClassByID(TypeId);
+        }
+        return clsDef;
+    }
+
     const LuaClassDefinition* FindCppTypeClassByName(const std::string& Name);
 
 private:
     std::map<const void*, LuaClassDefinition*> CDataIdToClassDefinition;
     std::map<std::string, LuaClassDefinition*> CDataNameToClassDefinition;
+    pesapi_class_not_found_callback ClassNotFoundCallback = nullptr;
 };
 
 LuaClassRegister::LuaClassRegister()
@@ -186,8 +210,24 @@ const LuaClassDefinition* FindClassByID(const void* TypeId)
     return GetLuaClassRegister()->FindClassByID(TypeId);
 }
 
+const LuaClassDefinition* LoadClassByID(const void* TypeId)
+{
+    return GetLuaClassRegister()->LoadClassByID(TypeId);
+}
+
 const LuaClassDefinition* FindCppTypeClassByName(const std::string& Name)
 {
     return GetLuaClassRegister()->FindCppTypeClassByName(Name);
+}
+
+bool TraceObjectLifecycle(const void* TypeId, pesapi_on_native_object_enter OnEnter, pesapi_on_native_object_exit OnExit)
+{
+    if (auto clsDef = const_cast<LuaClassDefinition*>(GetLuaClassRegister()->FindClassByID(TypeId)))
+    {
+        clsDef->OnEnter = OnEnter;
+        clsDef->OnExit = OnExit;
+        return true;
+    }
+    return false;
 }
 }    // namespace xlua

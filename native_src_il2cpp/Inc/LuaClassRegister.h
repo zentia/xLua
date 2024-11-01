@@ -24,8 +24,27 @@ namespace xlua
 {
 typedef pesapi_callback FunctionCallback;
 
+MSVC_PRAGMA(warning(push))
+
 struct LUAENV_API LuaFunctionInfo
 {
+    LuaFunctionInfo() : Name(nullptr), Callback(nullptr)
+    {
+    }
+
+    LuaFunctionInfo(
+        const char* InName, pesapi_callback InCallback, void* Indata = nullptr, const FunctionInfo* InReflectionInfo = nullptr)
+        : Name(InName), Callback(reinterpret_cast<pesapi_callback>(InCallback)), Data(Indata), ReflectionInfo(InReflectionInfo)
+    {
+    }
+
+    template <typename CallbackType>
+    LuaFunctionInfo(
+        const char* InName, CallbackType InCallback, void* InData = nullptr, const FunctionInfo* InReflectionInfo = nullptr)
+        : Name(InName), Callback(reinterpret_cast<pesapi_callback>(InCallback)), Data(InData), ReflectionInfo(InReflectionInfo)
+    {
+    }
+
     const char* Name;
     FunctionCallback Callback;
     void* Data = nullptr;
@@ -34,10 +53,32 @@ struct LUAENV_API LuaFunctionInfo
 
 struct LUAENV_API LuaPropertyInfo
 {
+    LuaPropertyInfo() : Name(nullptr), Getter(nullptr), Setter(nullptr)
+    {
+    }
+
+    LuaPropertyInfo(const char* InName, pesapi_callback InGetter, pesapi_callback InSetter, void* InGetterData = nullptr,
+        void* InSetterData = nullptr)
+        : Name(InName), Getter(InGetter), Setter(InSetter), GetterData(InGetterData), SetterData(InSetterData)
+    {
+    }
+
+    template <typename CallbackType>
+    LuaPropertyInfo(const char* InName, CallbackType InGetter, CallbackType InSetter, void* InGetterData = nullptr,
+        void* InSetterData = nullptr)
+        : Name(InName)
+        , Getter(reinterpret_cast<pesapi_callback>)
+        , Setter(reinterpret_cast<pesapi_callback>)
+        , GetterData(InGetterData)
+        , SetterData(InSetterData)
+    {
+    }
+
     const char* Name;
     FunctionCallback Getter;
     FunctionCallback Setter;
-    void* Data = nullptr;
+    void* GetterData = nullptr;
+    void* SetterData = nullptr;
 };
 
 typedef pesapi_finalize FinalizeFunc;
@@ -63,7 +104,10 @@ struct LUAENV_API LuaClassDefinition
     NamedPropertyInfo* PropertyInfos;
     NamedPropertyInfo* VariableInfos;
     void* Data = nullptr;
+    pesapi_on_native_object_enter OnEnter = nullptr;
+    pesapi_on_native_object_exit OnExit = nullptr;
 };
+MSVC_PRAGMA(warning(pop));
 
 #define LuaClassEmptyDefinition {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
 
@@ -77,7 +121,14 @@ void LUAENV_API ForeachRegisterClass(std::function<void(const LuaClassDefinition
 
 LUAENV_API const LuaClassDefinition* FindClassByID(const void* TypeId);
 
-const LuaClassDefinition* FindCppTypeClassByName(const std::string& Name);
+LUAENV_API void OnClassDefinition(pesapi_class_not_found_callback Callback);
+
+LUAENV_API const LuaClassDefinition* LoadClassByID(const void* TypeId);
+
+LUAENV_API LuaClassDefinition* FindCppTypeClassByName(const std::string& Name);
+
+LUAENV_API bool TraceObjectLifecycle(
+    const void* TypeId, pesapi_on_native_object_enter OnEnter, pesapi_on_native_object_exit OnExit);
 
 }    // namespace xlua
 

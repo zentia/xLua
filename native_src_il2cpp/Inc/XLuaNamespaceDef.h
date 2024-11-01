@@ -1,7 +1,7 @@
 #pragma once
 
 #if !defined(XLUA_NAMESPACE)
-#define XLUA_NAMESPACE XLUA_NAMESPACE
+#define XLUA_NAMESPACE xlua
 #endif
 
 #ifndef PRAGMA_DISABLE_UNDEFINED_IDENTIFIER_WARNINGS
@@ -24,3 +24,11 @@
 #define PRAGMA_ENABLE_UNDEFINED_IDENTIFIER_WARNINGS _Pragma("GCC diagnostic pop")
 #endif
 #endif    // PRAGMA_ENABLE_UNDEFINED_IDENTIFIER_WARNINGS
+
+#ifndef MSVC_PRAGMA
+#if !defined(__clang__) && defined(_MSC_VER)
+#define MSVC_PRAGMA(Pragma) __pragma(Pragma)
+#else
+#define MSVC_PRAGMA(...)
+#endif
+#endif

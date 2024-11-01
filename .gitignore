@@ -32,3 +32,11 @@ build/plugin_lua53
 .vscode
 native_src_il2cpp/Src/FunctionBridge.Gen.h
 xLua.sln.DotSettings.user
+native_src_il2cpp/Src/XLuaValueType.h
+native_src_il2cpp/Src/XLuaIl2CppWrapper.cpp
+native_src_il2cpp/Src/XLuaIl2cppBridge.cpp
+com.tencent.xlua/Plugins/xlua_il2cpp/XLua_il2cpp.cpp
+com.tencent.xlua/Plugins/xlua_il2cpp/TDataTrans.h
+com.tencent.xlua/Plugins/xlua_il2cpp/TDataTrans.h.meta
+com.tencent.xlua/Plugins/xlua_il2cpp/pesapi.h
+com.tencent.xlua/Plugins/xlua_il2cpp/pesapi_adpt.c

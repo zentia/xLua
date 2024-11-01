@@ -567,7 +567,7 @@ static pesapi_value TryTranslatePrimitiveWithClass(pesapi_env env, Il2CppObject*
             {
                 return pesapi_create_int32(env, (int32_t)(*((uint8_t*)ptr)));
             }
-            case Il2CPP_TYPE_BOOLEAN:
+            case IL2CPP_TYPE_BOOLEAN:
             {
                 return pesapi_create_boolean(env, (bool)(*((uint8_t*)ptr)));
             }
@@ -597,7 +597,7 @@ static pesapi_value TryTranslatePrimitiveWithClass(pesapi_env env, Il2CppObject*
     #if IL2CPP_SIZEOF_VOID_P == 4            
             case ILL2CPP_TYPE_U:
     #endif
-            case Il2CPP_TYPE_U4:
+            case IL2CPP_TYPE_U4:
             {
                 return pesapi_create_uint32(env, (uint32_t)(*((uint32_t*)ptr)));
             }
@@ -646,7 +646,7 @@ pesapi_value TranslateValueType(pesapi_env env, Il2CppClass* tragetClass, Il2Cpp
     }
 
     auto buff = new uint8_t[len];
-    memccpy(buff, Object::Unbox(obj), len);
+    memcpy(buff, Object::Unbox(obj), len);
     return pesapi_native_object_to_value(env, targetClass, buff, true);
 }
 
@@ -702,6 +702,631 @@ handle_underlying:
         case IL2CPP_TYPE_I1:
         {
             data.i1 = (int8_t)pesapi_get_value_int32(env, luaval);
+            break;
+        }
+        case IL2CPP_TYPE_BOOLEAN:
+        {
+            data.u1 = (uint8_t)pesapi_get_value_bool(env, luaval);
+            break;
+        }
+        case IL2CPP_TYPE_U1:
+        {
+            data.u1 = (uint8_t)pesapi_get_value_uint32(env, luaval);
+            break;
+        }
+        case IL2CPP_TYPE_I2:
+        {
+            data.i2 = (int16_t)pesapi_get_value_int32(env, luaval);
+            break;
+        }
+        case IL2CPP_TYPE_U2:
+        {
+            data.u2 = (uint16_t)pesapi_get_value_uint32(env, luaval);
+            break;
+        }
+        case IL2CPP_TYPE_CHAR:
+        {
+            data.c = (Il2CppChar)pesapi_get_value_uint32(env, luaval);
+            break;
+        }
+#if IL2CPP_SIZEOF_VOID_P == 4
+        case IL2CPP_TYPE_I:
+#endif
+        case IL2CPP_TYPE_I4:
+        {
+            data.i4 = (int32_t)pesapi_get_value_int32(env, luaval);
+            break;
+        }        
+#if IL2CPP_SIZEOF_VOID_P == 4
+        case IL2CPP_TYPE_U:
+#endif
+        case IL2CPP_TYPE_U4:                
+        {
+            data.u4 = (uint32_t)pesapi_get_value_uint32(env, luaval);
+            break;
+        }
+#if IL2CPP_SIZEOF_VOID_P == 8
+        case IL2CPP_TYPE_I:
+#endif
+        case IL2CPP_TYPE_I8:
+        {
+            data.i8 = pesapi_get_value_int64(env, luaval);
+            break;
+        }        
+#if IL2CPP_SIZEOF_VOID_P == 8
+        case IL2CPP_TYPE_U:
+#endif
+        case IL2CPP_TYPE_U8:
+        {
+            data.u8 = pesapi_get_value_uint64(env, luaval);
+            break;
+        }         
+        case IL2CPP_TYPE_R4:
+        {
+            data.r4 = (float)pesapi_get_value_double(env, luaval);
+            break;
+        }       
+        case IL2CPP_TYPE_R8:
+        {
+            data.r8 = pesapi_get_value_double(env, luaval);
+            break;
+        }
+        case IL2CPP_TYPE_STRING:
+        {
+            size_t bufsize = 0;
+            auto str = pesapi_get_value_string_utf8(env, luaval, nullptr, &bufsize);
+            if (str)
+            {
+                return (Il2CppObject*)il2cpp::vm::String::NewWrapper(str);
+            }
+            std::vector<char> buff;
+            buff.resize(bufsize + 1);
+            str = pesapi_get_value_string_utf8(env, luaval, buff.data(), &bufsize);
+            if (str)
+            {
+                buff[buffsize] = '\0';
+                return (Il2CppObject*)il2cpp::vm::String::NewWrapper(str);
+            }
+            return nullptr;
+        }
+        case IL2CPP_TYPE_SZARRAY:
+        case IL2CPP_TYPE_CLASS:
+        case IL2CPP_TYPE_OBJECT:
+        case IL2CPP_TYPE_ARRAY:
+        case IL2CPP_TYPE_FNPTR:
+        case IL2CPP_TYPE_PTR:
+        {
+            if (pesapi_is_function(env, luaval))
+            {
+                if (IsDelegate(klass))
+                {
+                    LuaClassInfoHeader* luaClassInfo = (LuaClassInfoHeader*)pesapi_get_class_data(klass, true);
+                    if (!luaClassInfo)
+                    {
+                        Exception::Raise(Exception::GetInvalidOperationException("call not load type of delegate"));
+                    }
+                    return FunctionToDelegate(env, luaval, luaClassInfo);
+                }
+                return nullptr;
+            }
+            auto ptr = pesapi_get_native_object_ptr(env, luaval);
+            if (!ptr)
+            {
+                if ((klass == g_typeofPersistentObjectInfo || klass == il2cpp_defaults.object_class) && pesapi_is_object(env, luaval))
+                {
+                    Il2CppClass* persistentObjectInfoClass = g_typeofPersistentObjectInfo;
+
+                    pesapi_value_ref value_ref;
+                    Il2CppObject* ret = nullptr;
+                    int32_t* handle_store = FindOrCreateHandleStoreOfValue(env, luaval, &value_ref, &ret);
+                    if (!handle_store) return nullptr;
+
+                    if (ret == nullptr)
+                    {
+                        ret = il2cpp::vm::Object::New(persistentObjectInfoClass);
+
+                        const MethodInfo* ctor = il2cpp_class_get_method_from_name(persistentObjectInfoClass, ".ctor", 0);
+                        typedef void (*NativeCtorPtr)(Il2CppObject* ___this, const MethodInfo* method);
+                        ((NativeCtorPtr)ctor->methodPointer)(ret, ctor);
+
+                        PObjectRefInfo* objectInfo = GetPObjectRefInfo(ret);
+                        auto targetHandle = il2cpp::gc::GCHandle::GetTargetHandle(ret, 0, il2cpp::gc::HANDLE_WEAK);
+                        il2cpp::vm::Exception::RaiseIfError(targetHandle.GetError());
+                        *handle_store = targetHandle.Get();
+                        SetPObjectRefInfoValue(env, objectInfo, value_ref);
+                    }
+                    return ret;
+                }
+                if (klass == il2cpp_defaults.object_class)
+                {
+                    if (pesapi_is_string(env, luaval))
+                    {
+                        t = IL2CPP_TYPE_STRING;
+                        klass = il2cpp_defaults.string_class;
+                    }
+                    else if (pesapi_is_double(env, luaval))
+                    {
+                        t = IL2CPP_TYPE_R8;
+                        klass = il2cpp_defaults.double_class;
+                    }
+                    else if (pesapi_is_int32(env, luaval))
+                    {
+                        t = IL2CPP_TYPE_I4;
+                        klass = il2cpp_defaults.int32_class;
+                    }
+                    else if (pesapi_is_uint32(env, luaval))
+                    {
+                        t = IL2CPP_TYPE_U4;
+                        klass = il2cpp_defaults.uint32_class;
+                    }
+                    else if (pesapi_is_int64(env, luaval))
+                    {
+                        t = IL2CPP_TYPE_I8;
+                        klass = il2cpp_defaults.int64_class;
+                    }
+                    else if (pesapi_is_uint64(env, luaval))
+                    {
+                        t = IL2CPP_TYPE_U8;
+                        klass = il2cpp_defaults.uint64_class;
+                    }
+                    else if (pesapi_is_boolean(env, luaenv))
+                    {
+                        t = IL2CPP_TYPE_BOOLEAN;
+                        klass = il2cpp_defaults.boolean_class;
+                    }
+                    else 
+                    {
+                        goto return_nothing;
+                    }
+                    goto handle_underlying;
+                }
+            return_nothing:
+                return nullptr;
+            }
+            auto objClass = (Il2CppClass *)pesapi_get_native_object_typeid(env, luaval);
+            if (Class::IsAssignableFrom(klass, objClass))
+            {
+                return Class::IsValueType(objClass) ? Object::Box(objClass, ptr) : (Il2CppObject*)ptr;
+            }
+            return nullptr;
+        }
+        case IL2CPP_TYPE_VAUETYPE:
+        {
+            // not that t and type->type can be different
+            if (type->type == IL2CPP_TYPE_VALUETYPE && Type::IsEnum(type))
+            {
+                t = Class::GetEnumBaseType(Type::GetClass(type))->type;
+                goto handle_underlying;
+            }
+            else
+            {
+                auto objClass = (Il2CppClass *)pesapi_get_native_object_typeid(env, luaval);
+                if (!Class::IsAssignableFrom(klass, objClass))
+                {
+                    return nullptr;
+                }
+                toBox = pesapi_get_native_object_ptr(env, luaval);
+                if (!toBox)
+                {
+                    std::string message = "expect ValueType: ";
+                    message += klass->name;
+                    message += ", by got null";
+                    Exception::Raise(Exception::GetInvalidOperationException(message.c_str()));
+                    return nullptr;
+                }
+            }
+            break;
+        }
+        case IL2CPP_TYPE_GENERICINST:
+            t = GenericClass::GetTypeDefinition(type->data.generic_class)->byval_arg.type;
+            goto handle_underlying;
+        default:
+            IL2CPP_ASSERT(0);
+    }
+    return Object::Box(klass, toBox);
+}
+
+pesapi_value CSRefToLuaValue(pesapi_env env, Il2CppClass *targetClass, Il2CppObject* obj)
+{
+    if (targetClass == il2cpp_defaults.void_class) return pesapi_create_undefined(env);
+    if (!obj) return pesapi_create_null(env);
+    if (!targetClass)
+    {
+        targetClass =il2cpp_defaults.object_class;
+    }
+
+    if (Class::IsEnum(targetClass))
+    {
+        targetClass = Class::GetElementClass(targetClass);
+    }
+
+    pesapi_value luaVal = TryTranslatePrimitiveWithClass(env, obj, targetClass != il2cpp_defaults.object_class ? targetClass : nullptr);
+
+    if (luaVal)
+    {
+        return luaVal;
+    }
+
+    if (Class::IsValueType(targetClass))
+    {
+        luaVal = TranslateValueType(env, targetClass, obj);
+        if (luaVal)
+        {
+            return luaVal;
+        }
+    }
+
+    luaVal = TryTranslateValueType(env, obj);
+    if (luaVal)
+    {
+        return luaVal;
+    }
+
+    auto objClass = obj && obj->klass ? obj->klass : targetClass;
+    return pesapi_native_object_to_value(env, objClass, obj, false);
+}
+
+static bool GetValueTypeFromLua(pesapi_env env, pesapi_value luaValue, Il2CppClass* klass, void* storage)
+{
+    bool hasValue = false;
+    uint32_t valueSize = klass->instance_size - sizeof(Il2CppObject);
+    if (!luaValue) return false;
+    void* ptr;
+    if (pesapi_is_object(env, luaValue) && (ptr == pesapi_get_native_object_ptr(env, luaValue)))
+    {
+        auto objClass = (Il2CppClass*) pesapi_get_native_object_typeid(env, luaValue);
+        if (Class::IsAssignableFrom(klass, objClass))
+        {
+            hasValue = true;
+            memcpy(storage, ptr, valueSize);
+        }
+    }
+    else 
+    {
+        const Il2CppType *type = Class::GetType(klass);
+        PrimitiveValueType data;
+        data.i8 = 0;
+        int t = type->type;
+handle_underlying:
+        switch (t)
+        {
+            case IL2CPP_TYPE_I1:
+            {
+                if (pesapi_is_int32(env, luaValue))
+                {
+                    data.i1 = (int8_t)pesapi_get_value_int32(env, luaValue);
+                    hasValue = true;
+                }
+                break;
+            }
+            case IL2CPP_TYPE_BOOLEAN:
+            {
+                if (pesapi_is_boolean(env, luaValue))
+                {
+                    data.u1 = (uint8_t)pesapi_get_value_uint32(env, luaValue);
+                    hasValue = true;
+                }
+                break;
+            }
+            case IL2CPP_TYPE_U1:
+            {
+                if (pesapi_is_uint32(env, luaValue))
+                {
+                    data.u1 = (uint8_t)pesapi_get_value_uint32(env, luaValue);
+                    hasValue = true;
+                }
+                break;
+            }
+            case IL2CPP_TYPE_I2:
+            {
+                if (pesapi_is_int32(env, luaValue))
+                {
+                    data.i2 = (int16_t)pesapi_get_value_int32(env, luaValue);
+                    hasValue = true;
+                }
+                break;
+            }
+            case IL2CPP_TYPE_U2:
+            {
+                if (pesapi_is_uint32(env, luaValue))
+                {
+                    data.u2 = (uint16_t)pesapi_get_value_uint32(env, luaValue);
+                    hasValue = true;
+                }
+                break;
+            }
+            case IL2CPP_TYPE_CHAR:
+            {
+                if (pesapi_is_uint32(env, luaValue))
+                {
+                    data.c = (Il2CppChar)pesapi_get_value_uint32(env, luaValue);
+                    hasValue = true;
+                }
+                break;
+            }
+    #if IL2CPP_SIZEOF_VOID_P == 4
+            case IL2CPP_TYPE_I:
+    #endif
+            case IL2CPP_TYPE_I4:
+            {
+                if (pesapi_is_int32(env, luaValue))
+                {
+                    data.i4 = pesapi_get_value_int32(env, luaValue);
+                    hasValue = true;
+                }
+                break;
+            }
+    #if IL2CPP_SIZEOF_VOID_P == 4
+            case IL2CPP_TYPE_U:
+    #endif 
+            case IL2CPP_TYPE_U4:
+            {
+                if (pesapi_is_uint32(env, luaValue))
+                {
+                    data.u4 = pesapi_get_value_uint32(env, luaValue);
+                    hasValue = true;
+                }
+                break;
+            }
+    #if IL2CPP_SIZEOF_VOID_P == 8
+            case IL2CPP_TYPE_I:
+    #endif
+            case IL2CPP_TYPE_I8:
+            {
+                if (pesapi_is_int64(env, luaValue))
+                {
+                    data.i8 = pesapi_get_value_int64(env, luaValue);
+                    hasValue = true;
+                }
+            }
+    #if IL2CPP_SIZEOF_VOID_P == 8
+            case IL2CPP_TYPE_U:
+    #endif
+            case IL2CPP_TYPE_U8:
+            {
+                if (pesapi_is_uint64(env, luaValue))
+                {
+                    data.u8 = pesapi_get_value_uint64(env, luaValue);
+                    hasValue = true;
+                }
+                break;
+            }
+            case IL2CPP_TYPE_R4:
+            {
+                if (pesapi_is_double(env, luaValue))
+                {
+                    data.r4 = (float)pesapi_get_value_double(env, luaValue);
+                    hasValue = true;
+                }
+                break;
+            }
+            case IL2CPP_TYPE_R8:
+            {
+                if (pesapi_is_double(env, luaValue))
+                {
+                    data.r8 = pesapi_get_value_double(env, luaValue);
+                    hasValue = true;
+                }
+                break;
+            }
+            case IL2CPP_TYPE_VALUETYPE:
+            if (type->type == IL2CPP_TYPE_VALUETYPE && Type::IsEnum(type))
+            {
+                t = Class::GetEnumBaseType(Type::GetClass(type))=>type;
+                goto handle_underlying;
+            }
+        }
+
+        if (hasValue)
+        {
+            memcpy(storage, &data, valueSize);
+        }
+    }
+}
+
+static pesapi_value LuaObjectUnRef(pesapi_env env, pesapi_value luaValue)
+{
+    return pesapi_is_object(env, luaValue) ? pesapi_get_property_uint32(env, luaValue, 0) : nullptr;
+}
+
+static void LuaObjectSetRef(pesapi_env env, pesapi_value outer, pesapi_value val)
+{
+    if (outer && val && pesapi_is_object(env, outer))
+    {
+        pesapi_set_property_uint32(env, outer, 0, val);
+    }
+}
+
+static bool ReflectionWrapper(MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData)
+{
+    int lua_args_len = pesapi_get_args_len(info);
+    bool hasParamArray = wrapData->HasParamArray;
+    bool isExtensionMethod = wrapData->IsExtensionMethod;
+    auto csArgStart = isExtensionMethod ? 1 : 0;
+
+    if (checkLuaArgument || wrapData->OptionalNum > 0)
+    {
+        if (!hasParamArray && wrapData->OptionalNum == 0)
+        {
+            if (lua_args_len != method->parameter_count - csArgStart)
+            {
+                return false;
+            }
+        }
+        else
+        {
+            auto requireNum = method->parameters_count - csArgStart - wrapData->OptionalNum - (hasParamArray ? 1 : 0);
+            if (lua_args_len < requireNum)
+            {
+                return false;
+            }
+        }
+        for (int i = csArgStart; i < method->parameters_count; ++i)
+        {
+            auto parameterType = Method::GetParam(method, i);
+            bool passedByReference = parameterType->byref;
+            bool hasDefault = parameterType->attrs && PARAM_ATTRIBUTE_HAS_DEFAULT;
+            bool isLastArgument = i == (method->parameters_count - 1);
+            Il2CppClass* parameterKlass = Class::FromIl2CppType(parameterType);
+            Class::Init(parameterKlass);
+            pesapi_value luaValue = pesapi_get_arg(info, i - csArgStart);
+
+            if ((hasDefault || (isLastArgument && hasParamArray)) && pesapi_is_undefined(env, luaValue))
+            {
+                continue;
+            }
+            if (passedByReference)
+            {
+                if (pesapi_is_object(env, luaValue))
+                {
+                    continue;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            int t;
+            if (isLastArgument && hasParamArray)
+                t = (int) parameterKlass->element_class->byval_arg.type;
+            else
+                t = parameterType->type;
+handle_underlying:
+            switch (t)
+            {
+                case IL2CPP_TYPE_I1:
+                case IL2CPP_TYPE_I2:
+#if IL2CPP_SIZEOF_VOID_P == 4
+                CASE IL2CPP_TYPE_I:
+#endif
+                case IL2CPP_TYPE_I4:
+                {
+                    IF (!pesapi_is_int32(env, luaValue))
+                    {
+                        return false;
+                    }
+                    break;
+                }
+                case IL2CPP_TYPE_BOOLEAN:
+                {
+                    if (!pesapi_is_boolean(env, luaValue))
+                    {
+                        return false;
+                    }
+                    break;
+                }
+                case IL2CPP_TYPE_U1:
+                case IL2CPP_TYPE_U2:
+                case IL2CPP_TYPE_CHAR:
+#if IL2CPP_SIZEOF_VOID_P == 4
+                case IL2CPP_TYPE_U:
+#endif
+                case IL2CPP_TYPE_U4:
+                {
+                    IF (!pesapi_is_uint32(env, luaValue))
+                    {
+                        return false;
+                    }
+                    break;
+                }
+#if IL2CPP_SIZEOF_VOID_P == 8
+                case IL2CPP_TYPE_I:
+#endif
+                case IL2CPP_TYPE_I8:
+                {
+                    if (!pesapi_is_int64(env, luaValue))
+                    {
+                        return false;
+                    }
+                    break;
+                }
+#if IL2CPP_SIZEOF_VOID_P == 8
+                case IL2CPP_TYPE_U:
+#endif
+                case IL2CPP_TYPE_U8:
+                {
+                    if (!pesapi_is_uint64(env, luaValue))
+                    {
+                        return false;
+                    }
+                    break;
+                }
+                case IL2CPP_TYPE_R4:
+                case IL2CPP_TYPE_R8:
+                {
+                    if (!pesapi_is_double(env, luaValue))
+                    {
+                        return false;
+                    }
+                    break;
+                }
+                case IL2CPP_TYPE_STRING:
+                {
+                    if (!pesapi_is_string(env luaValue))
+                    {
+                        return false;
+                    }
+                    break;
+                }
+                case IL2CPP_TYPE_SZARRAY:
+                case IL2CPP_TYPE_CLASS:
+                case IL2CPP_TYPE_OBJECT:
+                case IL2CPP_TYPE_ARRAY:
+                case IL2CPP_TYPE_FNPTR:
+                case IL2CPP_TYPE_PTR:
+                {
+                    if (pesapi_is_function(env, luaValue) && (!Class::IsAssignableFrom(il2cpp_defaults.multicastdelegate_class, parameterKlass) || parameterKlass == il2cpp_defaults.multicastdelegate_class))
+                    {
+                        return false;
+                    }
+                    if (parameterKlass == il2cpp_defaults.object_class)
+                    {
+                        continue;
+                    }
+                    auto ptr = pesapi_get_native_object_ptr(env, luaValue);
+                    if (ptr)
+                    {
+                        auto objClass = (Il2CppClass *)pesapi_get_native_object-typeid(env, luaValue);
+                        if (!Class::IsAssignableFrom(parameterKlass, objClass))
+                        {
+                            return false;
+                        }
+                    }
+                    //nullptr will match ref type
+                    break;
+                }
+                case IL2CPP_TYPE_VALUETYPE:
+                    if (parameterType->type == IL2CPP_TYPE_VALUETYPE && Type::IsEnum(parameterType))
+                    {
+                        t = Class::GetEnumBaseType(Type::GetClass(parameterType))->type;
+                        goto handle_underlying;
+                    }
+                    else
+                    {
+                        auto objClass = (Il2CppClass *)pesapi_get_native_object_typeid(env, luaValue);
+                        if (!objClass || !Class::IsAssignableFrom(parameterKlass, objClass))
+                        {
+                            return false;
+                        }
+                    }
+                    break;
+                case IL2CPP_TYPE_GENERICINST:
+                    t = GenericClass::GetTypeDefinition(parameterType->data.generic_class)->byval_arg.type;
+                    goto handle_underlying;
+                default:
+                    IL2CPP_ASSERT(0);
+            }
+        }
+    }
+    void** args = method->parameters_count > 0 ? (void**)alloca(sizeof(void*) * method->parameters_count) : nullptr;
+    pesapi_value luaThis = pesapi_get_holder(info);
+    if (self)
+    {
+        Il2CppClass* thisType = method->klas;
+
+        if (Class::IsValueType(thisType))
+        {
+            
         }
     }
 }

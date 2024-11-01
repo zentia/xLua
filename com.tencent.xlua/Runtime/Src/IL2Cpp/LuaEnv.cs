@@ -23,6 +23,17 @@ namespace XLua
 
         ILoader loader;
 
+        public LuaEnv() 
+        {
+            XLuaIl2cpp.NativeAPI.SetLogCallback(XLuaIl2cpp.NativeAPI.Log);
+            XLuaIl2cpp.NativeAPI.InitialXLua(XLuaIl2cpp.NativeAPI.GetPesapiImpl());
+            tryLoadTypeMethodInfo = typeof(TypeRegister).GetMethod("RegisterNoThrow");
+            XLuaIl2cpp.NativeAPI.SetRegisterNoThrow(tryLoadTypeMethodInfo);
+
+            persistentObjectInfoType = typeof(XLua.LuaTable);
+            XLuaIl2cpp.NativeAPI.SetGlobalType_LuaTable(typeof(LuaTable));
+        }
+        
         public void Dispose()
         {
 

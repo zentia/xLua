@@ -732,6 +732,10 @@ void pesapi_define_class(const void* type_id, const void* super_type_id, const c
 }
 MSVC_PRAGMA(warning(pop))
 
+void* pesapi_get_class_data(const void* type_id, bool force_load)
+{
+    auto clsDef = force_load ? xlua::LoadC
+}
 void pesapi_class_type_info(const char* proto_magic_id, const void* type_id, const void* constructor_info, const void* methods_info,
     const void* functions_info, const void* properties_info, const void* variables_info)
 {
