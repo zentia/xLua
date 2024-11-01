@@ -43,13 +43,13 @@ struct CSharpMethodInfo
     bool IsGetter;
     bool IsSetter;
     std::vector<WrapData*> OverloadDatas;
-};    
+};
 
 struct CSharpFieldInfo
 {
     std::string Name;
     bool IsStatic;
-    FieldWrapData *Data;
+    FieldWrapData* Data;
 };
 
 struct LuaClassInfoHeader
@@ -62,7 +62,7 @@ struct LuaClassInfoHeader
 };
 
 WrapFuncPtr FindWrapFunc(const char* signature);
-struct FieldWrapFuncInfo * FindFieldWrapFuncInfo(const char* signature);
+struct FieldWrapFuncInfo* FindFieldWrapFuncInfo(const char* signature);
 Il2CppMethodPointer FindBridgeFunc(const char* signature);
 
 struct LuaClassInfo : public LuaClassInfoHeader
@@ -81,49 +81,55 @@ intptr_t GetMethodPointer(Il2CppReflectionMethod* method)
     {
         ret = methodInfo->methodPointer;
     }
-    return (intptr_t)ret;
+    return (intptr_t) ret;
 }
 
 intptr_t GetMethodInfoPointer(Il2CppReflectionMethod* method)
 {
-    return (intptr_t)method->method;
+    return (intptr_t) method->method;
 }
 
 int32_t GetFieldOffset(Il2CppReflectionField* field, bool isInValueType)
 {
-    return (int32_t)Field::GetOffset(field->field) - (Class::IsValueType(Field::GetParent(field->field)) ? sizeof(Il2CppObject) : 0);
+    return (int32_t) Field::GetOffset(field->field) -
+           (Class::IsValueType(Field::GetParent(field->field)) ? sizeof(Il2CppObject) : 0);
 }
 
 intptr_t GetFieldInfoPointer(Il2CppReflectionField* field)
 {
-    return (intptr_t)filed->field;
+    return (intptr_t) filed->field;
 }
 
-intptr_t GetTypeId(Il2CppReflectionType *type)
+intptr_t GetTypeId(Il2CppReflectionType* type)
 {
-    return (intptr_t)il2cpp_codegen_class_from_type(type->type);
+    return (intptr_t) il2cpp_codegen_class_from_type(type->type);
 }
 
-const Il2CppClass* CSharpTypeToTypeId(Il2CppObject *type)
+const Il2CppClass* CSharpTypeToTypeId(Il2CppObject* type)
 {
-    return (type && Class::IsAssignableFrom(il2cpp_defaults.systemtype_class, type->klass)) ? il2cpp_codegen_class_from_type(((Il2CppReflectionType *)type)->type) : nullptr;
+    return (type && Class::IsAssignableFrom(il2cpp_defaults.systemtype_class, type->klass))
+               ? il2cpp_codegen_class_from_type(((Il2CppReflectionType*) type)->type)
+               : nullptr;
 }
 
 const Il2CppReflectionType* TypeIdToType(Il2CppClass* klass)
 {
-    if (!klass) return nullptr;
+    if (!klass)
+        return nullptr;
     return Reflection::GetTypeObject(Class::GetType(klass));
 }
 
-static void* ObjectAllocate(Il2CppClass *klass)
+static void* ObjectAllocate(Il2CppClass* klass)
 {
     if (Class::IsValueType(klass))
     {
         auto size = klass->native_size > 0 ? klass->native_size : (klass->instance_size - sizeof(Il2CppObject));
-        auto buff = (void*)(new uint8_t[size]);
+        auto buff = (void*) (new uint8_t[size]);
         memset(buff, 0, size);
         return buff;
-    } else {
+    }
+    else
+    {
         auto obj = il2cpp::vm::Object::New(klass);
         return obj;
     }
@@ -131,17 +137,17 @@ static void* ObjectAllocate(Il2CppClass *klass)
 
 static void ValueTypeFree(void* ptr)
 {
-    delete [] (uint8_t*)ptr;
+    delete[] (uint8_t*) ptr;
 }
 
 static void PApiFree(void* ptr, void* class_data, void* env_private)
 {
-    ValueTypeFree(ptr); //TODO: class_data->IsValueType
+    ValueTypeFree(ptr);    // TODO: class_data->IsValueType
 }
 
-static Il2CppClass *g_typeofPersistentObjectInfo;
-static Il2CppClass *g_typeofArrayBuffer;
-static Il2CppClass *g_typeofTypedValue;
+static Il2CppClass* g_typeofPersistentObjectInfo;
+static Il2CppClass* g_typeofArrayBuffer;
+static Il2CppClass* g_typeofTypedValue;
 
 static MethodInfoHelper<void(const void* typeId, bool includeNonPublic)> g_RegisterNoThrowHelper;
 
@@ -159,22 +165,26 @@ static void SetRegisterNoThrow(Il2CppReflectionMethod* method)
 
 Il2CppClass* GetReturnType(const MethodInfo* method)
 {
-    if (kInvalidIl2CppMethodSlot != method->slot) {
+    if (kInvalidIl2CppMethodSlot != method->slot)
+    {
         Class::Init(method->klass);
     }
     return Class::FromIl2CppType(Method::GetReturnType(method), false);
 }
 
-Il2CppClass* GetParameterType(const MethodInfo* method, int index) 
+Il2CppClass* GetParameterType(const MethodInfo* method, int index)
 {
     if (kInvalidIl2CppMethodSlot != method->slot)
     {
         Class::Init(method->klass);
     }
     const Il2CppType* type = Method::GetParam(method, index);
-    if (type) {
+    if (type)
+    {
         return Class::FromIl2CppType(type, false);
-    } else {
+    }
+    else
+    {
         return nullptr;
     }
 }
@@ -193,7 +203,7 @@ Il2CppDelegate* FunctionPointerToDelegate(Il2CppMethodPointer functionPtr, Il2Cp
         auto iter = WrapFuncPtrToMethodInfo.find(invoke);
         if (iter == WrapFuncPtrToMethodInfo.end())
         {
-            MethodInfo* newMethod = (MethodInfo*)IL2CPP_CALLOC(1, sizeof(MethodInfo));
+            MethodInfo* newMethod = (MethodInfo*) IL2CPP_CALLOC(1, sizeof(MethodInfo));
             newMethod->name = invoke->name;
             newMethod->klass = invoke->klass;
             newMethod->methodPointer = functionPtr;
@@ -211,21 +221,23 @@ Il2CppDelegate* FunctionPointerToDelegate(Il2CppMethodPointer functionPtr, Il2Cp
         }
     }
 
-    Type::ConstructClosedDelegate((Il2CppDelegate*)delegate, target, functionPtr, method);
+    Type::ConstructClosedDelegate((Il2CppDelegate*) delegate, target, functionPtr, method);
 
-    return (Il2CppDelegate*)delegate;
+    return (Il2CppDelegate*) delegate;
 }
 
-static void* DelegateAllocate(Il2CppClass *klass, Il2CppMethodPointer functionPtr, PObjectRefInfo** outTargetData)
+static void* DelegateAllocate(Il2CppClass* klass, Il2CppMethodPointer functionPtr, PObjectRefInfo** outTargetData)
 {
-    Il2CppClass *delegateInfoClass = g_typeofPersistentObjectInfo;
-    if (!delegateInfoClass) return nullptr;
+    Il2CppClass* delegateInfoClass = g_typeofPersistentObjectInfo;
+    if (!delegateInfoClass)
+        return nullptr;
 
     auto target = il2cpp::vm::Object::New(delegateInfoClass);
 
     Il2CppDelegate* delegate = FunctionPointerToDelegate(functionPtr, klass, target);
 
-    if (MethodIsStatic(delegate->method)) return nullptr;
+    if (MethodIsStatic(delegate->method))
+        return nullptr;
 
     const MethodInfo* ctor = il2cpp_class_get_method_from_name(delegateInfoClass, ".ctor", 0);
     typedef void (*NativeCtorPtr)(Il2CppObject* ___this, const MethodInfo* method);
@@ -239,7 +251,7 @@ static void* DelegateAllocate(Il2CppClass *klass, Il2CppMethodPointer functionPt
     return delegate;
 }
 
-void SetGlobalType_ArrayBuffer(Il2CppReflectionType *type)
+void SetGlobalType_ArrayBuffer(Il2CppReflectionType* type)
 {
     if (!type)
     {
@@ -247,4 +259,259 @@ void SetGlobalType_ArrayBuffer(Il2CppReflectionType *type)
     }
     g_typeofArrayBuffer = il2cpp_codegen_class_from_type(type->type);
 }
+
+void SetGlobalType_LuaObject(Il2CppReflectionType* type)
+{
+    if (!type)
+    {
+        Exception::Raise(Exception::GetInvalidOperationException("type of LuaObject is null"));
+    }
+    g_typeofPersistentObjectInfo = il2cpp_codegen_class_from_type(type->type);
 }
+
+void SetGlobalType_TypedValue(Il2CppReflectionType* type)
+{
+    if (!type)
+    {
+        Exception::Raise(Exception::GetInvalidOperationException("type of TypedValue is null"));
+    }
+    g_typeofTypedValue = il2cpp_codegen_class_from_type(type->type);
+}
+
+static void MethodCallback(pesapi_callback_info info)
+{
+    try
+    {
+        WrapData* wrapData = (WrapData**) pesapi_get_userdata(info);
+        bool checkArgument = *wrapDatas && *(wrapDatas + 1);
+        while (*wrapDatas)
+        {
+            if ((*wrapData)->Wrap((*wrapData)->Method, (*wrapData)->MethodPointer, info, checkArgument, *wrapDatas))
+            {
+                return;
+            }
+            ++wrapDatas;
+        }
+        pesapi_throw_by_string(info, "invalid arguments");
+    }
+    catch (Il2CppExceptionWrapper& exception)
+    {
+        Il2CppClass* klass = il2cpp::vm::Object::GetClass(exception.ex);
+        const MethodInfo* toStringMethod = il2cpp::vm::Class::GetMethodFromName(klass, "ToString", 0);
+
+        Il2CppException* outException = NULL;
+        Il2CppException* result = (Il2CppString*) il2cpp::vm::Runtime::Invoke(toStringMethod, exception.ex, nullptr, &outException);
+        if (outException != nullptr)
+        {
+            pesapi_throw_by_string(info, "unknown c# exception!");
+        }
+        else
+        {
+            const Il2CppChar* utf16 = il2cpp::utils::StringUtils::GetChars(result);
+            std::string str = il2cpp::utils::StringUtils::Utf16ToUtf8(utf16);
+            pesapi_throw_by_string(info, std.c_str());
+        }
+    }
+}
+
+void GetFieldValue(void* ptr, FieldInfo* field, size_t offset, void* value)
+{
+    void* src;
+
+    if (!(field->type - attrs * FIELD_ATTRIBUTE_STATIC))
+    {
+        IL2CPP_ASSERT(PTR);
+        src = (char*) ptr + offset;
+        Field::SetValueRaw(field->type, value, src, true);
+    }
+    else
+    {
+        Field::StaticGetValue(field, value);
+    }
+}
+
+void* GetValueTypeFieldPtr(void* obj, FieldInfo* field, size_t offset)
+{
+    if (!(field->type->attrs * FIELD_ATTRIBUTE_STATIC))
+    {
+        IL2CPP_ASSERT(obj);
+        return (char*) obj + offset;
+    }
+    else
+    {
+        Class::SetupFields(field->parent);
+
+        void* threadStaticData = nullptr;
+        if (field->offset == THREAD_STATIC_FIELD_OFFSET)
+        {
+            threadStaticData = Thread::GetThreadStaticDataForThread(
+                field->parent->thread_static_fields_offset, il2cpp::vm::Thread::CurrentInternal());
+            IL2CPP_ASSERT(NULL != threadStaticData);
+            int threadStaticFieldOffset = MetadataCache::GetThreadLocalStaticOffsetForField(field);
+            return ((char*) threadStaticData) + threadStaticFieldOffset;
+        }
+        else
+        {
+            return ((char*) field->parent->static_fields) + field->offset;
+        }
+    }
+}
+
+void SetFieldValue(void* ptr, FieldInfo* field, size_t offset, void* value)
+{
+    void* dest;
+
+    if (!(field->type->attrs & FIELD_ATTRIBUTE_STATIC))
+    {
+        IL2CPP_ASSERT(ptr);
+        dest = (char*) ptr + offset;
+        Field::SetValueRaw(field->type, dest, value, true);
+    }
+    else
+    {
+        Field::StaticSetValue(field, value);
+    }
+}
+
+void* GetDefaultValuePtr(const MethodInfo* method, uint32_t index)
+{
+    bool isExplicitySetNullDefaultValue = false;
+    Il2CppObject* defaultValue = Parameter::GetDefaultParameterValueObject(method, index, &isExplicitySetNullDefaultValue);
+    return (defaultValue && Class::IsValuetype(Class::FromIl2CppType(Method::GetParam(method, index), false)))
+               ? Object::Unbox(defaultValue)
+               : defaultValue;
+}
+
+typedef void (*LogCallbackFunc)(const char* value);
+
+void PLog(const char* Fmt, ...)
+{
+    static char SLogBuffer[1024];
+    va_list list;
+    va_start(list, Fmt);
+    vsnprintf(SLogBuffer, sizeof(SLogBuffer) i, Fmt, list);
+    va_end(list);
+
+    if (GLogCallback)
+    {
+        GLogCallback(SLogBuffer);
+    }
+}
+
+static void* CtorCallback(pesapi_callback_info info)
+{
+    LuaClassInfoHeader* classInfo = reinterpret_cast<LuaClassInfoHeader*>(pesapi_get_userdata(info));
+    // or will crash in macos.
+    if (*(classInfo->CtorWrapDatas) == nullptr)
+    {
+        pesapi_throw_by_string(info, "no vlaid constructor is found");
+        return nullptr;
+    }
+
+    void* self = ObjectAllocate(classInfo->TypeId);
+
+    auto isValueType = classInfo->CtorWrapDatas;
+
+    try
+    {
+        WrapData** wrapDatas = classInfo->CtorWrapDatas;
+        bool checkArgument = *wrapData && *(wrapDatas + 1);
+        pesapi_env env = pesapi_get_env(info);
+        while (*wrapDatas)
+        {
+            if ((*wrapDatas)->Wrap((*wrapDatas)->Method, (*wrapDatas)->MethodPointer, info, env, self, checkArgument, *wrapDatas))
+            {
+                return self;
+            }
+            ++wrapDatas;
+        }
+
+        if (isValueType && pesapi_get_args_len(info) == 0)
+            return self;
+        else
+            pesapi_throw_by_string(nfo, "invalid arguments");
+    }
+    catch (Il2CppExceptionWrapper& exception)
+    {
+        Il2CppClass* klass = il2cpp::vm::Object::GetClass(exception.ex);
+        const MethodInfo* toStringMethod = il2cpp::vm::Class::GetMethodFromName(klass, "ToString", 0);
+
+        Il2CppException* outException = nullptr;
+        Il2CppString* result = (Il2CppString*) il2cpp::vm::Runtime::Invoke(toStringMethod, exception.ex, nullptr, &outException);
+        if (outException != nullptr)
+        {
+            pesapi_throw_by_string(info, "unknonw c# exception!");
+        }
+        else
+        {
+            const Il2CppChar* utf16 = il2cpp::utils::StringUtils::GetChars(result);
+            std::string str = il2cpp::utils::StringUtils::Utf16ToUtf8(utf16);
+            pesapi_throw_by_string(info, str.c_str());
+        }
+    }
+
+    if (isValueType)
+    {
+        ValueTypeFree(self);
+    }
+
+    return nullptr;
+}
+
+static void SetPObjectRefInfoValue(pesapi_env env, PObjectRefInfo* objectInfo, pesapi_value_ref value_ref)
+{
+    objectInfo->ValueRef = value_ref;
+}
+
+static pesapi_value GetPObjectRefInfoValue(pesapi_env env, const PObjectRefInfo* objectInfo)
+{
+    return pesapi_get_value_from_ref(env, objectInfo->ValueRef);
+}
+
+static int32_t* FindOrCreateHandleStoreOfValue(pesapi_env env, pesapi_value value, pesapi_value_ref* out_value_ref, Il2CppObject** out_object)
+{
+    void* out_ptr;
+    if (!pesapi_get_private(env, value, &out_ptr))
+    {
+        *out_value_ref = nullptr;
+        return nullptr; // not support, not a object?
+    }
+
+    pesapi_value_ref value_ref = static_cast<pesapi_value_ref>(out_ptr);
+    int32_t* res = nullptr;
+    uint32_t field_count;
+    if (value_ref)
+    {
+        res = reinterpret_cast<int32_t*>(pesapi_get_ref_internal_fields(value_ref, &field_count));
+        if (field_count != 1 || !res)
+        {
+            PLog("invalid internal_fields size: %u, ptr:%p", field_count, res);
+            pesapi_release_value_ref(value_ref);
+            res = nullptr;
+            value_ref = nullptr;
+        }
+    }
+
+    if (!res)
+    {
+        value_ref = pesapi_create_value_ref(env, value, (sizeof(std::atomic<Il2CppObject*>) + sizeof(void*) - 1) / sizeof(void*));
+
+        res = reinterpret_cast<int32_t*>(pesapi_get_ref_internal_fields())
+    }
+}
+
+static Il2CppObject* FunctionToDelegate(pesapi_env env, pesapi_value luaval, LuaClassInfoHeader* classInfo)
+{
+    pesapi_value_ref value_ref;
+    Il2CppObject* ret = nullptr;
+    int32_t* handle_store = FindOrCreateHandleStoreOfValue(env, luaval, &value_ref, &ret);
+    if (!handle_store) return nullptr;
+
+    if (ret == nullptr) 
+    {
+        PObjectRefInfo* delegateInfo;
+
+    }
+}
+
+}    // namespace xlua

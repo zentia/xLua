@@ -9,17 +9,20 @@
 #pragma once
 
 #include "LuaClassRegister.h"
+#include "DataTransfer.h"
 
 #include "lua.hpp"
 #include "xlua.h"
 
 #if !defined(MAPPER_ISOLATE_DATA_POS)
-#define MAPPER_ISOLATE_DATA_POS 0
+#define MAPPER_STATE_DATA_POS "mapper_state_data_pos"
 #endif
 #if !defined(BACKENDENV_DATA_POS)
 #define BACKENDENV_DATA_POS 1
 #endif
-
+#if !defined(PESAPI_PRIVATE_DATA_POS_IN_STATE)
+#define PESAPI_PRIVATE_DATA_POS_IN_STATE "pesapi_private_data_pos_in_state"
+#endif
 #define RELEASED_UOBJECT ((UObject*) 12)
 #define RELEASED_UOBJECT_MEMBER ((void*) 12)
 
@@ -30,142 +33,102 @@ namespace xlua
 template <typename T, typename FT, typename = void>
 struct TOuterLinker
 {
-    inline static void Link(lua_State *L, int Outer, int Inner)
+    inline static void Link(lua_State* L, int Outer, int Inner)
     {
     }
 };
 
-inline void LinkOuterImpl(lua_State *L, int Outer, int Inner)
+inline void LinkOuterImpl(lua_State* L, int Outer, int Inner)
 {
-
 }
 
 class LUAENV_API DataTransfer
 {
 public:
     template <typename T>
-    FORCEINLINE static T* GetPointerFast(lua_State *L, int Index)
+    FORCEINLINE static T* GetPointerFast(lua_State* L, int Index)
     {
         return xlua_tocsobj_fast(L, Index);
     }
 
     template <typename T>
-    FORCEINLINE static T* GetPointerFast(lua_State *L)
+    FORCEINLINE static T* GetPointerFast(lua_State* L)
     {
         return xlua_tocsobj_fast(L, 1);
     }
-    
+
     template <typename T>
-    FORCEINLINE static T* GetPointer(lua_State *L, int Index = 0)
+    FORCEINLINE static T* GetPointer(lua_State* L, int Index = 0)
     {
         return xlua_tocsobj_safe(L, Index);
     }
 
-    //替代 Object->SetAlignedPointerInInternalField(Index, Ptr);
-    FORCEINLINE static void SetPointer(lua_State *L, v8::Local<v8::Object> Object, const void* Ptr, int Index)
+    // 替代 Object->SetAlignedPointerInInternalField(Index, Ptr);
+    FORCEINLINE static void SetPointer(lua_State* L, void* Object, const void* Ptr, int Index)
     {
-        
-    }
-    
-    FORCEINLINE static void SetPointer(v8::Object* Object, const void* Ptr, int Index)
-    {
-        
     }
 
-    static int FindOrAddCData(lua_State *L, const void* TypeId, const void* Ptr, bool PassByPointer);
+    FORCEINLINE static void SetPointer(void* Object, const void* Ptr, int Index)
+    {
+    }
 
-    static bool IsInstanceOf(lua_State *L, const void* TypeId, int ObjectIndex);
+    template <typename T>
+    FORCEINLINE static T* StateData(lua_State* L)
+    {
+        lua_pushlightuserdata(L, (void*) MAPPER_STATE_DATA_POS);
+        lua_gettable(L, LUA_REGISTRYINDEX);
+        T* data = (T*) lua_touserdata(L, -1);
+        lua_pop(L, 1);
+        return data;
+    }
 
-    static void UnRef(lua_State* L, const v8::Local<v8::Value>& Value);
+    FORCEINLINE static void* GetStatePrivateData(lua_State* L)
+    {
+        lua_pushlightuserdata(L, (void*) PESAPI_PRIVATE_DATA_POS_IN_STATE);
+        lua_gettable(L, LUA_REGISTRYINDEX);
+        void* data = lua_touserdata(L, -1);
+        lua_pop(L, 1);
+        return data;
+    }
 
-    static void UpdateRef(v8::Isolate* Isolate, v8::Local<v8::Value> Outer, const v8::Local<v8::Value>& Value);
+    FORCEINLINE static void* SetStatePrivateData(lua_State* L, void* PrivateData)
+    {
+        lua_pushlightuserdata(L, (void*) PESAPI_PRIVATE_DATA_POS_IN_STATE);
+        lua_pushlightuserdata(L, (void*) PrivateData);
+        lua_settable(L, LUA_REGISTRYINDEX);
+    }
 
-    static std::weak_ptr<int> GetJsEnvLifeCycleTracker(v8::Isolate* Isolate);
+    static int FindOrAddCData(lua_State* L, const void* TypeId, const void* Ptr, bool PassByPointer);
 
-    static struct FPersistentObjectEnvInfo* GetPersistentObjectEnvInfo(v8::Isolate* Isolate);
+    static bool IsInstanceOf(lua_State* L, const void* TypeId, int ObjectIndex);
+
+    static void UnRef(lua_State* L, void* Value);
+
+    static void UpdateRef(lua_State* L, void* Outer, void* Value);
+
+    static std::weak_ptr<int> GetLuaEnvLifeCycleTracker(lua_State* L);
+
+    static struct FPersistentObjectEnvInfo* GetPersistentObjectEnvInfo(lua_State* L);
 
     template <typename T1, typename T2>
-    FORCEINLINE static void LinkOuter(v8::Local<v8::Context> Context, v8::Local<v8::Value> Outer, v8::Local<v8::Value> Inner)
+    FORCEINLINE static void LinkOuter(lua_State* L, void* Outer, void* Inner)
     {
         TOuterLinker<T1, T2>::Link(Context, Outer, Inner);
     }
 
-    FORCEINLINE static v8::Local<v8::ArrayBuffer> NewArrayBuffer(v8::Local<v8::Context> Context, void* Data, size_t DataLength)
+    FORCEINLINE static void ThrowException(lua_State* L, const char* Message)
     {
-#if defined(HAS_ARRAYBUFFER_NEW_WITHOUT_STL)
-        return v8::ArrayBuffer_New_Without_Stl(Context->GetIsolate(), Data, DataLength);
-#else
-        auto Backing = v8::ArrayBuffer::NewBackingStore(Data, DataLength, v8::BackingStore::EmptyDeleter, nullptr);
-        return v8::ArrayBuffer::New(Context->GetIsolate(), std::move(Backing));
-#endif
+        luaL_error(L, "%s", Message);
     }
 
-    FORCEINLINE static void* GetArrayBufferData(v8::Local<v8::ArrayBuffer> InArrayBuffer)
+    FORCEINLINE static std::string ExceptionToString(lua_State* L, int oldTop)
     {
-        size_t DataLength;
-        return GetArrayBufferData(InArrayBuffer, DataLength);
+        return std::string();
     }
 
-    FORCEINLINE static void* GetArrayBufferData(v8::Local<v8::ArrayBuffer> InArrayBuffer, size_t& DataLength)
+    template <typename T>
+    FORCEINLINE void PushByType(lua_State* L, T v)
     {
-#if defined(HAS_ARRAYBUFFER_NEW_WITHOUT_STL)
-        return v8::ArrayBuffer_Get_Data(InArrayBuffer, DataLength);
-#else
-#if USING_IN_UNREAL_ENGINE
-        DataLength = InArrayBuffer->GetContents().ByteLength();
-        return InArrayBuffer->GetContents().Data();
-#else
-        auto BS = InArrayBuffer->GetBackingStore();
-        DataLength = BS->ByteLength();
-        return BS->Data();
-#endif
-#endif
-    }
-    
-    FORCEINLINE static void ThrowException(lua_State *L, const char* Message)
-    {
-        lua_error(L, "%s", Message);
-    }
-    
-    FORCEINLINE static std::string ExceptionToString(lua_State *L, int oldTop)
-    {
-        v8::String::Utf8Value Exception(Isolate, ExceptionValue);
-        const char * StrException = *Exception;
-        std::string ExceptionStr(StrException == nullptr ? "" : StrException);
-        v8::Local<v8::Message> Message = v8::Exception::CreateMessage(Isolate, ExceptionValue);
-        if (Message.IsEmpty())
-        {
-            // 如果没有提供更详细的信息，直接输出Exception
-            return ExceptionStr;
-        }
-        else
-        {
-            v8::Local<v8::Context> Context(Isolate->GetCurrentContext());
-
-            // 输出 (filename):(line number): (message).
-            std::ostringstream stm;
-            v8::String::Utf8Value FileName(Isolate, Message->GetScriptResourceName());
-            int LineNum = Message->GetLineNumber(Context).FromJust();
-            const char * StrFileName = *FileName;
-            stm << (StrFileName == nullptr ? "unknow file" : StrFileName) << ":" << LineNum << ": " << ExceptionStr;
-
-            stm << std::endl;
-
-            // 输出调用栈信息
-            v8::MaybeLocal<v8::Value> MaybeStackTrace = v8::TryCatch::StackTrace(Context, ExceptionValue);
-            if (!MaybeStackTrace.IsEmpty())
-            {
-                v8::String::Utf8Value StackTraceVal(Isolate, MaybeStackTrace.ToLocalChecked());
-                stm << std::endl << *StackTraceVal;
-            }
-            return stm.str();
-        }
-    }
-
-    template<typename T>
-    FORCEINLINE void PushByType(lua_State *L, T v)
-    {
-        
     }
 };
-}    // namespace PUERTS_NAMESPACE
+}    // namespace xlua

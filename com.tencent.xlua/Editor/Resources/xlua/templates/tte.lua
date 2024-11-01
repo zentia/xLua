@@ -1,3 +1,21 @@
+sigs = CS.XLuaIl2cpp.TypeUtils.TypeSignatures
+
+PrimitiveSignatureCppTypeMap = {
+    v = 'void',
+    b = 'bool',
+    u1 = 'uint8_t',
+    i1 = 'int8_t',
+    i2 = 'int16_t',
+    u2 = 'uint16_t',
+    i4 = 'int32_t',
+    u4 = 'uint32_t',
+    i8 = 'int64_t',
+    u8 = 'uint64_t',
+    c = 'Il2CppChar',
+    r8 = 'double',
+    r4 = 'float'
+}
+
 local TTFor = {}
 TTFor.__index = TTFor
 function TTFor:new(str)
@@ -130,6 +148,45 @@ function table.filter(tbl, fn)
     return t
 end
 
+function table.map(tbl, fn)
+    local t = {}
+    for i, v in ipairs(tbl) do
+        table.insert(t, fn(v, i))
+    end
+    return t
+end
+
+function table.join(tbl, sep)
+    local ret = ''
+    if #tbl > 0 then
+        for i = 1, #tbl - 1 do
+            ret = ret .. tbl[i] .. sep
+        end
+        ret = ret .. tbl[#tbl]    
+    end
+    return ret
+end
+
+function table.slice(tbl, b, e)
+    local t = {}
+    if e < 0 then
+        e = #tbl + e
+    end
+    for i = b, e do
+        table.insert(t, tbl[i])
+    end
+    return t
+end
+
+function table.indexOf(tbl, value)
+    for i, v in ipairs(tbl) do
+        if v == value then
+            return i
+        end
+    end
+    return -1
+end
+
 function ternary(condition, true_value, false_value)
     if condition then
         return true_value
@@ -142,10 +199,10 @@ function TaggedTemplateEngine(...)
     local str = {}
     local exps = {}
     for i, v in ipairs({ ... }) do
-        if v[1] == 2 then
-            table.insert(exps, v[2])
+        if i % 2 == 0 then
+            table.insert(exps, v)
         else
-            table.insert(str, v[2])
+            table.insert(str, v)
         end    
     end
     
@@ -176,6 +233,9 @@ function TaggedTemplateEngine(...)
                 ret = string.sub(ret, 1, retLastLineSeq)
                 s = string.sub(s, strFirstLineSeq)
             end
+        end
+        if type(s) == 'table' then
+            error('error table, need string')
         end
         ret = ret .. s
     end
@@ -354,4 +414,16 @@ function listToLuaArray(csArr)
         table.insert(arr, csArr[i - 1])
     end
     return arr
+end
+
+function needThis(wrapperInfo)
+    return wrapperInfo.ThisSignature == 't' or wrapperInfo.ThisSignature == 'T'
+end
+
+function getSignatureWithoutRefAndPrefix(signature)
+    if signature[1] == 'P' or signature[1] == 'D' then
+        return string.sub(signature, 1)
+    else
+        return signature
+    end
 end

@@ -28,9 +28,9 @@
 
 #ifndef MSVC_PRAGMA
 #if !defined(__clang__) && defined(_MSC_VER)
-	#define MSVC_PRAGMA(Pragma) __pragma(Pragma)
+#define MSVC_PRAGMA(Pragma) __pragma(Pragma)
 #else
-	#define MSVC_PRAGMA(...)
+#define MSVC_PRAGMA(...)
 #endif
 #endif
 
@@ -64,6 +64,7 @@ static pesapi_func_ptr funcs[] = {(pesapi_func_ptr) &pesapi_create_null, (pesapi
     (pesapi_func_ptr) &pesapi_set_ref_weak, (pesapi_func_ptr) &pesapi_set_owner, (pesapi_func_ptr) &pesapi_get_property,
     (pesapi_func_ptr) &pesapi_set_property, (pesapi_func_ptr) &pesapi_get_property_uint32,
     (pesapi_func_ptr) &pesapi_set_property_uint32, (pesapi_func_ptr) &pesapi_call_function, (pesapi_func_ptr) &pesapi_eval,
+    (pesapi_func_ptr) &pesapi_get_env_private, (pesapi_func_ptr) &pesapi_set_env_private,
     (pesapi_func_ptr) &pesapi_alloc_type_infos, (pesapi_func_ptr) &pesapi_set_type_info,
     (pesapi_func_ptr) &pesapi_create_signature_info, (pesapi_func_ptr) &pesapi_alloc_property_descriptors,
     (pesapi_func_ptr) &pesapi_set_method_info, (pesapi_func_ptr) &pesapi_set_property_info, (pesapi_func_ptr) &pesapi_define_class,
@@ -78,25 +79,30 @@ int pesapi_load_addon(const char* path, const char* module_name)
 
 extern const char* GPesapiModuleName;
 
-int load_dll(lua_State *L) {
-    if (!lua_isstring(L, 1)) {
+int load_dll(lua_State* L)
+{
+    if (!lua_isstring(L, 1))
+    {
         return luaL_error(L, "#0 argument expect a string");
     }
     std::string path = lua_tostring(L, 1);
 
-    if (GHandlers.find(path) != GHandlers.end()) {
+    if (GHandlers.find(path) != GHandlers.end())
+    {
         return luaL_error(L, "loaded!");
     }
 
     void* handle = dlopen(path.c_str(), RTLD_LAZY);
-    if (!handle) {
+    if (!handle)
+    {
         return luaL_error(L, "dlopen fail for %s, error:%s", path.c_str(), dlerror());
     }
-    
-    std::string EntryName = STRINGIFY(PESAPI_MODULE_INITIALIZER(dynamic));
-    auto Init = (const char* (*)(pesapi_func_ptr*))(uintptr_t)dlsym(handle, EntryName.c_str()); 
 
-    if (Init)  {
+    std::string EntryName = STRINGIFY(PESAPI_MODULE_INITIALIZER(dynamic));
+    auto Init = (const char* (*) (pesapi_func_ptr*) )(uintptr_t) dlsym(handle, EntryName.c_str());
+
+    if (Init)
+    {
         const char* mn = Init(nullptr);
         GPesapiModuleName = mn;
         Init(funcs);
@@ -104,13 +110,18 @@ int load_dll(lua_State *L) {
         GHandlers[path] = handle;
         lua_pushstring(L, mn);
         return 1;
-    } else {
+    }
+    else
+    {
         std::string VersionEntryName = STRINGIFY(PESAPI_MODULE_VERSION());
-        auto Ver = (int (*)())(uintptr_t)dlsym(handle, VersionEntryName.c_str()); 
-        if (!Ver) {
+        auto Ver = (int (*)())(uintptr_t) dlsym(handle, VersionEntryName.c_str());
+        if (!Ver)
+        {
             dlclose(handle);
             return luaL_error(L, "can find entry");
-        } else {
+        }
+        else
+        {
             int pesapi_ver = Ver();
             dlclose(handle);
             return luaL_error(L, "pesapi version mismatch, expect: %d, but got: %d", PESAPI_VERSION, pesapi_ver);
@@ -118,26 +129,25 @@ int load_dll(lua_State *L) {
     }
 }
 
-int load_type(lua_State *L) {
-    puerts::FCppObjectMapper * cppObjectMapper = (puerts::FCppObjectMapper *)lua_touserdata(L, lua_upvalueindex(1));
+int load_type(lua_State* L)
+{
+    puerts::FCppObjectMapper* cppObjectMapper = (puerts::FCppObjectMapper*) lua_touserdata(L, lua_upvalueindex(1));
     return cppObjectMapper->LoadCppType(L);
 }
 
-int luaopen_puerts_lua(lua_State *L) {
-    luaL_Reg fns [] = {
-        {"load", load_dll},
-        {NULL, NULL}
-    };
-    
+int luaopen_puerts_lua(lua_State* L)
+{
+    luaL_Reg fns[] = {{"load", load_dll}, {NULL, NULL}};
+
     luaL_newlib(L, fns);
-    
-    puerts::FCppObjectMapper *cppObjectMapper = new puerts::FCppObjectMapper();
-    //printf("cppObjectMapper:%p\n", cppObjectMapper);
+
+    puerts::FCppObjectMapper* cppObjectMapper = new puerts::FCppObjectMapper();
+    // printf("cppObjectMapper:%p\n", cppObjectMapper);
     cppObjectMapper->Initialize(L);
     lua_pushlightuserdata(L, cppObjectMapper);
     lua_pushcclosure(L, load_type, 1);
     lua_setfield(L, -2, "loadType");
-    
+
     return 1;
 }
 

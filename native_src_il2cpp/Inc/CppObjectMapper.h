@@ -14,16 +14,17 @@
 #include "LuaClassRegister.h"
 #include "ObjectCacheNode.h"
 
-typedef struct {
-	void* Ptr;
+typedef struct
+{
+    void* Ptr;
     const void* TypeId;
     bool NeedDelete;
 } CppObject;
 
 struct pesapi_callback_info__
 {
-    lua_State * L;
-    int ArgStart; // 0 or 1
+    lua_State* L;
+    int ArgStart;    // 0 or 1
     int RetNum;
 };
 
@@ -31,43 +32,49 @@ typedef pesapi_callback_info__ PersistentObjectEnvInfo;
 
 namespace xlua
 {
-    class CppObjectMapper
-    {
-    public:
-        void Initialize(lua_State *L);
+class CppObjectMapper
+{
+public:
+    void Initialize(lua_State* L);
 
-        int LoadCppType(lua_State *L);
+    int LoadCppType(lua_State* L);
 
-        bool IsInstanceOfCppObject(lua_State *L, const void* TypeId, int ObjectIndex);
+    bool IsInstanceOfCppObject(lua_State* L, const void* TypeId, int ObjectIndex);
 
-        std::weak_ptr<int> GetLuaEnvLifeCycleTracker();
+    std::weak_ptr<int> GetLuaEnvLifeCycleTracker();
 
-        int FindOrAddCppObject(lua_State *L, const void* TypeId, void* Ptr, bool PassByPointer);
+    int FindOrAddCppObject(lua_State* L, const void* TypeId, void* Ptr, bool PassByPointer);
 
-        void UnBindCppObject(lua_State *L, LuaClassDefinition* ClassDefinition, void* Ptr);
+    void UnBindCppObject(lua_State* L, LuaClassDefinition* ClassDefinition, void* Ptr);
 
-        void BindCppObject(lua_State *L, LuaClassDefinition* ClassDefinition, void* Ptr, bool PassByPointer);
+    void BindCppObject(lua_State* L, LuaClassDefinition* ClassDefinition, void* Ptr, bool PassByPointer);
 
-        void UnInitialize(lua_State *L);
-        
-        static CppObjectMapper* Get(lua_State *L);
+    void* GetPrivateData(lua_State* L, int index);
 
-    private:
-        std::map<void*, ObjectCacheNode> CDataCache;
+    void SetPrivateData(lua_State* L, int index, void* Ptr);
 
-        std::map<const void*, int> TypeIdToMetaMap;
+    void UnInitialize(lua_State* L);
 
-        int PointerConstructor;
+    static CppObjectMapper* Get(lua_State* L);
 
-        std::map<void*, FinalizeFunc> CDataFinalizeMap;
+private:
+    std::map<void*, ObjectCacheNode> CDataCache;
 
-        std::shared_ptr<int> Ref = std::make_shared<int>(0);
-        
-        int CacheRef = 0;;
-        
-        int GetMetaRefOfClass(lua_State *L, const LuaClassDefinition* ClassDefinition);
-            
-        void BindCppObject(lua_State *L, LuaClassDefinition* ClassDefinition, void* Ptr, bool PassByPointer, ObjectCacheNode* CacheNodePtr);
-    };
+    std::map<const void*, int> TypeIdToMetaMap;
 
-}    // namespace puerts
+    int PointerConstructor;
+
+    std::map<void*, FinalizeFunc> CDataFinalizeMap;
+
+    std::shared_ptr<int> Ref = std::make_shared<int>(0);
+
+    int CacheRef = 0;
+    ;
+
+    int GetMetaRefOfClass(lua_State* L, const LuaClassDefinition* ClassDefinition);
+
+    void BindCppObject(
+        lua_State* L, LuaClassDefinition* ClassDefinition, void* Ptr, bool PassByPointer, ObjectCacheNode* CacheNodePtr);
+};
+
+}    // namespace xlua

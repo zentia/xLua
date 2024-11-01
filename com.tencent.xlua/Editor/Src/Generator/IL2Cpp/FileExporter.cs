@@ -367,21 +367,99 @@ namespace XLuaIl2cpp.Editor
                     var assetPath = Path.GetFullPath("Packages/com.tencent.xlua/");
                     assetPath = assetPath.Replace("\\", "/");
                     luaEnv.DoString($"package.path = package.path..';{assetPath + "Editor/Resources/xlua/templates"}/?.lua'");
-                    var path = Path.Combine(assetPath, "Editor/Resources/xlua/templates/cppwrapper.tpl.lua");
-                    var bytes = File.ReadAllBytes(path);
-                    luaEnv.DoString(bytes, path);
-                    var gen = luaEnv.Global.Get<LuaFunction>("Gen");
-                    using (var textWriter = new StreamWriter(Path.Combine(saveTo, "FunctionBridge.Gen.h"), false, Encoding.UTF8))
+
+                    var cppWrapInfo = new CppWrappersInfo
                     {
-                        var fileContext = gen.Func<CppWrappersInfo, string>(new CppWrappersInfo
-                        {
-                            ValueTypeInfos = valueTypeInfos,
-                            WrapperInfos = wrapperInfos,
-                            BridgeInfos = bridgeInfos,
-                            FieldWrapperInfos = fieldWrapperInfos
-                        });
+                        ValueTypeInfos = valueTypeInfos,
+                        WrapperInfos = wrapperInfos,
+                        BridgeInfos = bridgeInfos,
+                        FieldWrapperInfos = fieldWrapperInfos
+                    };
+                    
+                    using (var textWriter = new StreamWriter(Path.Combine(saveTo, "XLuaIl2CppWrapper.cpp"), false, Encoding.UTF8))
+                    {
+                        var path = Path.Combine(assetPath, "Editor/Resources/xlua/templates/il2cppwrapper.tpl.lua");
+                        var bytes = File.ReadAllBytes(path);
+                        luaEnv.DoString(bytes, path);
+                        var gen = luaEnv.Global.Get<LuaFunction>("Gen");
+                        var fileContext = gen.Func<CppWrappersInfo, string>(cppWrapInfo);
                         textWriter.Write(fileContext);
                         textWriter.Flush();
+                    }
+
+                    using (var textWriter = new StreamWriter(Path.Combine(saveTo, "XLuaValueType.h"), false, Encoding.UTF8))
+                    {
+                        var path = Path.Combine(assetPath, "Editor/Resources/xlua/templates/il2cppvaluetype.tpl.lua");
+                        var bytes = File.ReadAllBytes(path);
+                        luaEnv.DoString(bytes, path);
+                        var gen = luaEnv.Global.Get<LuaFunction>("Gen");
+                        var fileContext = gen.Func<CppWrappersInfo, string>(cppWrapInfo);
+                        textWriter.Write(fileContext);
+                        textWriter.Flush();
+                    }
+
+                    using (var textWriter = new StreamWriter(Path.Combine(saveTo, "XLuaIl2CppFieldWrapper.cpp"), false, Encoding.UTF8))
+                    {
+                        var path = Path.Combine(assetPath, "Editor/Resources/xlua/templates/il2cppfieldwrapper.tpl.lua");
+                        var bytes = File.ReadAllBytes(path);
+                        luaEnv.DoString(bytes, path);
+                        var gen = luaEnv.Global.Get<LuaFunction>("Gen");
+                        var fileContext = gen.Func<CppWrappersInfo, string>(cppWrapInfo);
+                        textWriter.Write(fileContext);
+                        textWriter.Flush();
+                    }
+                    
+                    using (var textWriter = new StreamWriter(Path.Combine(saveTo, "XLuaIl2cppBridge.cpp"), false, Encoding.UTF8))
+                    {
+                        var path = Path.Combine(assetPath, "Editor/Resources/xlua/templates/il2cppbridge.tpl.lua");
+                        var bytes = File.ReadAllBytes(path);
+                        luaEnv.DoString(bytes, path);
+                        var gen = luaEnv.Global.Get<LuaFunction>("Gen");
+                        var fileContext = gen.Func<CppWrappersInfo, string>(cppWrapInfo);
+                        textWriter.Write(fileContext);
+                        textWriter.Flush();
+                    }
+                    
+                    // clear prev gen
+                    if (Directory.Exists(saveTo))
+                    {
+                        string[] files = Directory.GetFiles(saveTo);
+
+                        string pattern = @"^XLuaIl2cppWrapperDef\d+\.cpp(.meta)?$";
+
+                        foreach (var file in files)
+                        {
+                            string fileName = Path.GetFileName(file);
+                            if (System.Text.RegularExpressions.Regex.IsMatch(fileName, pattern))
+                            {
+                                try
+                                {
+                                    File.Delete(file);
+                                }
+                                catch (Exception e)
+                                {
+                                    Console.WriteLine($"Error deleting file {fileName}: {e.Message}");
+                                }
+                            }
+                        }
+                    }
+
+                    const int MAX_WRAPPER_PER_FILE = 1000;
+                    for (int i = 0; i < wrapperInfos.Count; i += MAX_WRAPPER_PER_FILE)
+                    {
+                        var saveFileName = "XLuaIl2cppWrapperDef" + (i / MAX_WRAPPER_PER_FILE) + ".cpp";
+                        using (StreamWriter textWriter = new StreamWriter(Path.Combine(saveTo, saveFileName), false, Encoding.UTF8))
+                        {
+                            cppWrapInfo.WrapperInfos = wrapperInfos.GetRange(i, Math.Min(MAX_WRAPPER_PER_FILE, wrapperInfos.Count - i));
+                            Debug.Log("XLuaIl2cppWrapperDef" + saveFileName + " with " + cppWrapInfo.WrapperInfos.Count + " wrappers!");
+                            var path = Path.Combine(assetPath, "Editor/Resources/xlua/templates/il2cppwrapperdef.tpl.lua");
+                            var bytes = File.ReadAllBytes(path);
+                            luaEnv.DoString(bytes, path);
+                            var gen = luaEnv.Global.Get<LuaFunction>("Gen");
+                            var fileContext = gen.Func<CppWrappersInfo, string>(cppWrapInfo);
+                            textWriter.Write(fileContext);
+                            textWriter.Flush();
+                        }
                     }
                 }
             }
@@ -465,7 +543,7 @@ namespace XLuaIl2cpp.Editor
                     { "pesapi_adpt.c", Resources.Load<TextAsset>("xlua/xil2cpp/pesapi_adpt.c").text },
                     { "pesapi.h", Resources.Load<TextAsset>("xlua/xil2cpp/pesapi.h").text },
                     { "Puerts_il2cpp.cpp", Resources.Load<TextAsset>("xlua/xil2cpp/XLua_il2cpp.cpp").text },
-                    { "UnityExports4XLua.h", Resources.Load<TextAsset>("xlua/xil2cpp/UnityExports4XLua.h").text }
+                    { "TDataTrans.h", Resources.Load<TextAsset>("xlua/xil2cpp/TDataTrans.h").text }
                 };
 
                 foreach (var cPlugin in cPluginCode)
