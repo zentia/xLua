@@ -10,7 +10,7 @@ function genBridgeArgs(parameterSignatures)
                 table.join(
                     table.map(parameterSignatures,
                         function(ps, i)
-                            return CSValToLuaVal(ps, string.format('p%d', i)) or
+                            return CSValToLuaVal(ps[1] == 'D' and string.sub(ps, 2) or ps, string.format('p%d', i)) or
                                 'pesapi_create_undefined(env)'
                         end),
                     [[,
@@ -53,19 +53,20 @@ function genBridge(bridgeInfo)
     return TaggedTemplateEngine([[
 static ]], SToCPPType(bridgeInfo.ReturnSignature), ' b_', bridgeInfo.Signature, '(void* target, ',
         table.join(
-            table.map(table.map(parameterSignatures, function(S, i) return string.format('%s p%d', SToCPPType(S), i) end),
+            table.map(
+                table.map(parameterSignatures, function(S, i) return string.format('%s p%d', SToCPPType(S), i) end),
                 function(s) return string.format('%s, ', s) end), ''), [[MethodInfo* method) {
     // PLog("Running b_]], bridgeInfo.Signature, [[");
     ]],
         IF(bridgeInfo.ReturnSignature and
             not PrimitiveSignatureCppTypeMap[getSignatureWithoutRefAndPrefix(bridgeInfo.ReturnSignature)]), [[
-            
+
     auto TIret = GetReturnType(method);
     ]], ENDIF(), '',
         FOR(parameterSignatures, function(ps, index)
             return TaggedTemplateEngine([[
         ]], IF(not PrimitiveSignatureCppTypeMap[getSignatureWithoutRefAndPrefix(ps)]), [[
-        
+
     auto Tip]], index, ' = GetParameterType(method, ', index, [[);
         ]], ENDIF(), [[
     ]])

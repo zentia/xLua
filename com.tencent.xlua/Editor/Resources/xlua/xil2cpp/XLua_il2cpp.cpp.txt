@@ -496,8 +496,18 @@ static int32_t* FindOrCreateHandleStoreOfValue(pesapi_env env, pesapi_value valu
     {
         value_ref = pesapi_create_value_ref(env, value, (sizeof(std::atomic<Il2CppObject*>) + sizeof(void*) - 1) / sizeof(void*));
 
-        res = reinterpret_cast<int32_t*>(pesapi_get_ref_internal_fields())
+        res = reinterpret_cast<int32_t*>(pesapi_get_ref_internal_fields(value_ref, &field_count));
+        pesapi_set_private(env, vlaue, value_ref);
+        *out_object = nullptr;
     }
+    else
+    {
+        *out_object = il2cpp::gc::GCHandle::GetTarget(*res);
+        //PLog("found existed luaobject:%p", *out_object);
+    }
+
+    *out_value_ref = value_ref;
+    return res;
 }
 
 static Il2CppObject* FunctionToDelegate(pesapi_env env, pesapi_value luaval, LuaClassInfoHeader* classInfo)
@@ -510,8 +520,189 @@ static Il2CppObject* FunctionToDelegate(pesapi_env env, pesapi_value luaval, Lua
     if (ret == nullptr) 
     {
         PObjectRefInfo* delegateInfo;
-
+        ret = (Il2CppObject *)DelegateAllocate(classInfo->TypeId, classInfo->DelegateBridge, &delegateInfo);
+        auto targetHandle = il2cpp::gc::GCHandle::GetTargetHandle(ret, 0, il2cpp::gc::HANDLE_WEAK);
+        il2cpp::vm::Exception::RaiseIfError(targetHandle.GetError());
+        *handle_store = targetHandle.Get();
+        SetPObjectRefInfoValue(env, delegateInfo, value_ref);
     }
+    return ret;
 }
 
+static void* DeleagteCtorCallback(pesapi_callback_info info)
+{
+    pesapi_env env = pesapi_get_env(info);
+    pesapi_value luaval = pesapi_get_arg(info, 0);
+    if (!pesapi_is_function(env, luaval))
+    {
+        pesapi_throw_by_string(info, "except a function");
+        return nullptr;
+    }
+    LuaClassInfoHeader* classInfo = reinterpret_cast<LuaClassInfoHeader*>(pesapi_get_userdata(info));
+
+    return FunctionToDelegate(env, luaval, classInfo);
+}
+
+bool IsDelegate(Il2CppClass *klass)
+{
+    return Class::IsAssignableFrom(il2cpp_defaults.delegate_class, klass) && klass != il2cpp_defaults.delegate_class && klass != il2cpp_defaults.multicastdelegate_class;
+}
+
+static pesapi_value TryTranslatePrimitiveWithClass(pesapi_env env, Il2CppObject* obj, Il2CppClass* klass = nullptr)
+{
+    if (obj)
+    {
+        const Il2CppType *type = Class::GetType(klass ? klass : obj->klass);
+        int t = type->type;
+        if (t == IL2CPP_TYPE_STRING)
+        {
+            const Il2CppChar* utf16 = il2cpp::utils::StringUtils::GetChars((Il2CppString*)obj);
+            std::string str = il2cpp::utils::StringUtils::Utf16ToUtf8(utf16);
+            return pesapi_create_string_utf8(env, str.c_str(), str.size());
+        }
+        void* ptr = Object::Unbox(obj);
+        switch (t)
+        {
+            case IL2CPP_TYPE_I1:
+            {
+                return pesapi_create_int32(env, (int32_t)(*((uint8_t*)ptr)));
+            }
+            case Il2CPP_TYPE_BOOLEAN:
+            {
+                return pesapi_create_boolean(env, (bool)(*((uint8_t*)ptr)));
+            }
+            case IL2CPP_TYPE_U1:
+            {
+                return pesapi_create_uint32(env, (uint32_t)(*((uint32_t*)ptr)));
+            }
+            case IL2CPP_TYPE_I2:
+            {
+                return pesapi_create_int32(env, (int32_t)(*((uint16_t*)ptr)));
+            }
+            case IL2CPP_TYPE_U2:
+            {
+                return pesapi_create_uint32(env, (uint32_t)(*((uint32_t*)ptr)));
+            }
+            case IL2CPP_TYPE_CHAR:
+            {
+                return pesapi_ceate_int32(env, (int32_t)(*((Il2CppChar*)ptr)));
+            }
+    #if IL2CPP_SIZEOF_VOID_P == 4
+            case IL2CPP_TYPE_I:
+    #endif            
+            case IL2CPP_TYPE_I4:
+            {
+                return pesapi_create_int32(env, (int32_t)(*((int32_t*)ptr)));
+            }
+    #if IL2CPP_SIZEOF_VOID_P == 4            
+            case ILL2CPP_TYPE_U:
+    #endif
+            case Il2CPP_TYPE_U4:
+            {
+                return pesapi_create_uint32(env, (uint32_t)(*((uint32_t*)ptr)));
+            }
+    #if IL2CPP_SIZEOF_VOID_P == 8
+            case IL2CPP_TYPE_I:
+    #endif
+            case IL2CPP_TYPE_I8:
+            {
+                return pesapi_create_int64(env, *((int64_t*)ptr));
+            }
+    #if IL2CPP_SIZEOF_VOID_P == 8
+            case IL2CPP_TYPE_U:
+    #endif
+            case IL2CPP_TYPE_U8:
+            {
+                return pesapi_create_uint64(env, *((uint64_t*)ptr));
+            }
+            case IL2CPP_TYPE_R4:
+            {
+                return pesapi_create_double(env, (double)(*((float*)ptr)));
+            }
+            case IL2CPP_TYPE_R8:
+            {
+                return pesapi_create_double(env, *((double*)ptr));
+            }
+
+            default:
+                return nullptr;
+        }
+    }
+
+    return nullptr;
+}
+
+pesapi_value TryTranslatePrimitive(pesapi_env env, Il2CppObject* obj)
+{
+    return TryTranslatePrimitiveWithClass(env, obj);
+}
+
+pesapi_value TranslateValueType(pesapi_env env, Il2CppClass* tragetClass, Il2CppObject* obj)
+{
+    auto len = targetClass->native_size;
+    if (len < 0)
+    {
+        len = targetClass->instance_size - sizeof(Il2CppObject);
+    }
+
+    auto buff = new uint8_t[len];
+    memccpy(buff, Object::Unbox(obj), len);
+    return pesapi_native_object_to_value(env, targetClass, buff, true);
+}
+
+peaspi_value TryTranslateValueType(pesapi_env env, Il2CppObject* obj)
+{
+    if (obj && obj->klass)
+    {
+        auto objClass = obj->klass;
+        if (Class::IsValueType(objClass))
+        {
+            return TranslateValueType(env, objClass, obj);
+        }
+    }
+    return nullptr;
+}
+
+union PrimitiveValueType
+{
+    int8_t i1;
+    uint8_t u1;
+    int16_t i2;
+    uint16_t u2;
+    int32_t i4;
+    uint32_t u4;
+    int64_t i8;
+    uint64_t u8;
+    Il2CppChar c;
+    float r4;
+    double r8;
+};
+
+Il2CppObject* LuaValueToCSRef(Il2CppClass *klass, pesapi_env env, pesapi_value luaval)
+{
+    if (klass == il2cpp_defaults.void_class) return nullptr;
+
+    if (!klass)
+    {
+        klass = il2cpp_defaults.object_class;
+    }
+
+    const Il2CppType *type = Class::GetType(klass);
+    int t = type->type;
+
+    PrimitiveValueType data;
+
+    void* toBox = &data;
+
+    Il2CppObject* ret = nullptr;
+
+handle_underlying:
+    switch (t)
+    {
+        case IL2CPP_TYPE_I1:
+        {
+            data.i1 = (int8_t)pesapi_get_value_int32(env, luaval);
+        }
+    }
+}
 }    // namespace xlua
