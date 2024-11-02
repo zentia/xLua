@@ -1,10 +1,3 @@
-/*
-* Tencent is pleased to support the open source community by making XLua available.
-* Copyright (C) 2020 THL A29 Limited, a Tencent company.  All rights reserved.
-* XLua is licensed under the BSD 3-Clause License, except for the third-party components listed in the file 'LICENSE' which may be subject to their corresponding license terms. 
-* This file is subject to the terms and conditions defined in file 'LICENSE', which is part of this source code package.
-*/
-
 using System.IO;
 using System;
 #if !XLUA_GENERAL
@@ -36,7 +29,7 @@ namespace XLuaIl2cpp.Editor
                 FileExporter.GenMarcoHeader(saveTo);
             }
 
-            [MenuItem("XLua/Generate/xIl2cpp FunctionBridge.Gen.h", false, 6)]
+            [MenuItem("XLua/Generate/xIl2cpp wrapper bridge", false, 6)]
             public static void GenerateCppWrappers()
             {   
                 var start = DateTime.Now;
@@ -45,17 +38,7 @@ namespace XLuaIl2cpp.Editor
                 FileExporter.GenCPPWrap(saveTo);
                 Debug.Log("finished! use " + (DateTime.Now - start).TotalMilliseconds + " ms Outputed to " + saveTo);
             }
-            
-            [MenuItem("XLua/Generate/xIl2cpp FunctionBridge.Gen.h(Configure)", false, 6)]
-            public static void GenerateCppWrappersInConfigure()
-            {
-                var start = DateTime.Now;
-                var saveTo = Path.Combine(Path.GetFullPath("Packages/com.tencent.xlua/"), "../", "native_src_il2cpp", "Src");
-                Directory.CreateDirectory(saveTo);
-                FileExporter.GenCPPWrap(saveTo, true);
-                Debug.Log("finished! use " + (DateTime.Now - start).TotalMilliseconds + " ms Outputed to " + saveTo);
-            }
-
+  
             [MenuItem("XLua/Generate/xIl2cpp ExtensionMethodInfos_Gen.cs", false, 6)]
             public static void GenerateExtensionMethodInfos()
             {

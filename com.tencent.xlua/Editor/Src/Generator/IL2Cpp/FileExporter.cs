@@ -1,9 +1,3 @@
-/*
-* Tencent is pleased to support the open source community by making XLua available.
-* Copyright (C) 2020 THL A29 Limited, a Tencent company.  All rights reserved.
-* XLua is licensed under the BSD 3-Clause License, except for the third-party components listed in the file 'LICENSE' which may be subject to their corresponding license terms. 
-* This file is subject to the terms and conditions defined in file 'LICENSE', which is part of this source code package.
-*/
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -38,7 +32,7 @@ namespace XLuaIl2cpp.Editor
                     // }
                     // else
                     // {
-                        ret.Add(XLuaIl2cpp.TypeUtils.GetTypeSignature(field.FieldType));
+                    ret.Add(XLuaIl2cpp.TypeUtils.GetTypeSignature(field.FieldType));
                     // }
                 }
                 return ret;
@@ -77,7 +71,7 @@ namespace XLuaIl2cpp.Editor
                 return (parameterInfo.ParameterType.IsByRef || parameterInfo.ParameterType.IsPointer) ? parameterInfo.ParameterType.GetElementType() : parameterInfo.ParameterType;
             }
 
-            public static void GenericArgumentInInstructions(MethodBase node, HashSet<Type> result, HashSet<MethodBase> proceed, Func<MethodBase, IEnumerable<MethodBase>> callingMethodsGetter)
+            private static void GenericArgumentInInstructions(MethodBase node, HashSet<Type> result, HashSet<MethodBase> proceed, Func<MethodBase, IEnumerable<MethodBase>> callingMethodsGetter)
             {
                 var declaringType = node.DeclaringType;
                 if (proceed.Contains(node)) return;
@@ -105,21 +99,23 @@ namespace XLuaIl2cpp.Editor
             private static bool IterateAllValueType(Type type, List<ValueTypeInfo> list)
             {
                 if (Utils.isDisallowedType(type)) return false;
-                if (type.IsPrimitive) {
+                if (type.IsPrimitive)
+                {
                     return true;
                 }
                 Type baseType = type.BaseType;
                 while (baseType != null && baseType != typeof(System.Object))
                 {
-                    if (baseType.IsValueType) {
+                    if (baseType.IsValueType)
+                    {
                         if (!IterateAllValueType(baseType, list)) return false;
                     }
                     baseType = baseType.BaseType;
                 }
-                
+
                 foreach (var field in type.GetFields(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic))
                 {
-                    if (field.FieldType.IsValueType && !field.FieldType.IsPrimitive) 
+                    if (field.FieldType.IsValueType && !field.FieldType.IsPrimitive)
                         if (!IterateAllValueType(field.FieldType, list)) return false;
                 }
 
@@ -129,7 +125,7 @@ namespace XLuaIl2cpp.Editor
                     var fields = type.GetFields(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
                     for (var i = 0; i < fields.Length; i++)
                     {
-                        if (fields[i].Name == "hasValue" || fields[i].Name == "has_value") 
+                        if (fields[i].Name == "hasValue" || fields[i].Name == "has_value")
                         {
                             value = i;
                             break;
@@ -137,58 +133,82 @@ namespace XLuaIl2cpp.Editor
                     }
                 }
 
-                list.Add(new ValueTypeInfo { 
-                    Signature = XLuaIl2cpp.TypeUtils.GetTypeSignature(type), 
-                    CsName = type.Name, 
+                list.Add(new ValueTypeInfo
+                {
+                    Signature = XLuaIl2cpp.TypeUtils.GetTypeSignature(type),
+                    CsName = type.Name,
                     FieldSignatures = GetValueTypeFieldSignatures(type),
                     NullableHasValuePosition = value
                 });
                 return true;
             }
 
-            private static readonly string[] AssemblyFullNameArray = 
+            private static readonly Dictionary<string, Dictionary<string, List<string>>> AssemblyFullName = new Dictionary<string, Dictionary<string, List<string>>>()
             {
-                "Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"
+                {"UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null", new Dictionary<string, List<string>>(){{typeof(Application).FullName, new List<string>(){"isEditor"}}}},
             };
 
-            private static readonly string[] TypeFullNameArray =
-            {
-                "PeformentTestConfig",
-            };
-            public static void GenCPPWrap(string saveTo, bool onlyConfigure = false)
+            public static void GenCPPWrap(string saveTo)
             {
                 Utils.SetFilters(XLua.Configure.GetFilters());
                 var assemblies = AppDomain.CurrentDomain.GetAssemblies();
-                var targetAssemblies = assemblies.Where(a => AssemblyFullNameArray.Any(e=>e==a.FullName));
-                var types = (from assembly in targetAssemblies
-                            from type in assembly.GetTypes()
-                            select type).Where(t=>TypeFullNameArray.Any(e=>e==t.FullName));
-
+                var ctorToWrapper = new List<ConstructorInfo>();
+                var methodToWrap = new List<MethodInfo>();
+                var fieldToWrapper = new List<FieldInfo>();
                 const BindingFlags flag = BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public;
-                const BindingFlags flagForXLua = BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic;
+                foreach (var assembly in assemblies)
+                {
+                    if (!AssemblyFullName.TryGetValue(assembly.FullName, out var typeFullName))
+                    {
+                        continue;
+                    }
 
-                var typeExcludeDelegate = types
-                    .Where(t => !typeof(MulticastDelegate).IsAssignableFrom(t));
+                    foreach (var type in assembly.GetTypes())
+                    {
+                        if (!typeFullName.TryGetValue(type.FullName, out var typeInfo))
+                        {
+                            continue;
+                        }
 
-                var ctorToWrapper = typeExcludeDelegate
-                    .SelectMany(t => t.GetConstructors(t.FullName.Contains("XLua") ? flagForXLua : flag))
-                    .Where(m => Utils.getBindingMode(m) != XLua.BindingMode.DontBinding);
+                        foreach (var constructorInfo in type.GetConstructors(flag))
+                        {
+                            if (!typeInfo.Contains(constructorInfo.Name))
+                            {
+                                continue;
+                            }
+                            ctorToWrapper.Add(constructorInfo);
+                        }
 
-                var methodToWrap = typeExcludeDelegate
-                    .SelectMany(t => t.GetMethods(t.FullName.Contains("XLua") ? flagForXLua : flag))
-                    .Where(m => Utils.getBindingMode(m) != XLua.BindingMode.DontBinding);
+                        foreach (var methodInfo in type.GetMethods(flag))
+                        {
+                            if (!typeInfo.Contains(methodInfo.Name))
+                            {
+                                continue;
+                            }
+                            methodToWrap.Add(methodInfo);
+                        }
 
-                var fieldToWrapper = typeExcludeDelegate
-                    .SelectMany(t => t.GetFields(t.FullName.Contains("XLua") ? flagForXLua : flag))
-                    .Where(m => Utils.getBindingMode(m) != XLua.BindingMode.DontBinding);
+                        foreach (var fieldInfo in type.GetFields(flag))
+                        {
+                            if (!typeInfo.Contains(fieldInfo.Name))
+                            {
+                                continue;
+                            }
+                            fieldToWrapper.Add(fieldInfo);
+                        }
+                    }
+                }
+                var targetAssemblies = assemblies.Where(a => AssemblyFullName.ContainsKey(a.FullName));
+                var types = from assembly in targetAssemblies from type in assembly.GetTypes() select type;
+                var targetTypes = types.Where(t => AssemblyFullName[t.Assembly.FullName].ContainsKey(t.FullName));
 
-                var wrapperUsedTypes = types
+                var wrapperUsedTypes = targetTypes
                     .Concat(ctorToWrapper.SelectMany(c => c.GetParameters()).Select(pi => GetUnrefParameterType(pi)))
                     .Concat(methodToWrap.SelectMany(m => m.GetParameters()).Select(pi => GetUnrefParameterType(pi)))
                     .Concat(methodToWrap.Select(m => m.ReturnType))
                     .Concat(fieldToWrapper.Select(f => f.FieldType))
                     .Distinct();
-                
+
 
                 Type[] XLuaDelegates = {
                     typeof(Func<string, XLua.LuaTable>),
@@ -245,7 +265,7 @@ namespace XLuaIl2cpp.Editor
                 {
                     IterateAllValueType(type, valueTypeInfos);
                 }
-                
+
                 valueTypeInfos = valueTypeInfos
                     .GroupBy(s => s.Signature)
                     .Select(s => s.FirstOrDefault())
@@ -254,7 +274,7 @@ namespace XLuaIl2cpp.Editor
                 var bridgeInfos = delegateInvokes
                     .Select(m => new SignatureInfo
                     {
-                        Signature = XLuaIl2cpp.TypeUtils.GetMethodSignature(m, true),
+                        Signature = TypeUtils.GetMethodSignature(m, true),
                         CsName = m.ToString(),
                         ReturnSignature = XLuaIl2cpp.TypeUtils.GetTypeSignature(m.ReturnType),
                         ThisSignature = null,
@@ -265,63 +285,7 @@ namespace XLuaIl2cpp.Editor
                     .ToList();
                 bridgeInfos.Sort((x, y) => string.CompareOrdinal(x.Signature, y.Signature));
 
-                var genWrapperCtor = ctorToWrapper;
-                var genWrapperMethod = methodToWrap;
-                var genWrapperField = fieldToWrapper;
-
-                if (onlyConfigure)
-                {
-                    var configure = XLua.Configure.GetConfigureByTags(new List<string>() {
-                        "XLua.BindingAttribute",
-                    });
-
-                    var configureTypes = new HashSet<Type>(configure["XLua.BindingAttribute"].Select(kv => kv.Key)
-                        .Where(o => o is Type)
-                        .Cast<Type>()
-                        .Where(t => !typeof(MulticastDelegate).IsAssignableFrom(t))
-                        .Where(t => !t.IsGenericTypeDefinition && !t.Name.StartsWith("<"))
-                        .Distinct()
-                        .ToList());
-
-                    // configureTypes.Clear();
-
-                    genWrapperCtor = configureTypes
-                        .SelectMany(t => t.GetConstructors(flag))
-                        .Where(m => !Utils.IsNotSupportedMember(m, true))
-                        .Where(m => Utils.getBindingMode(m) != XLua.BindingMode.DontBinding);
-
-                    genWrapperMethod = configureTypes
-                        .SelectMany(t => t.GetMethods(flag))
-                        .Where(m => !Utils.IsNotSupportedMember(m, true))
-                        .Where(m => Utils.getBindingMode(m) != XLua.BindingMode.DontBinding);
-
-                    genWrapperField = configureTypes
-                        .SelectMany(t => t.GetFields(flag))
-                        .Where(m => !Utils.IsNotSupportedMember(m, true))
-                        .Where(m => Utils.getBindingMode(m) != XLua.BindingMode.DontBinding);
-
-                    var configureUsedTypes = configureTypes
-                        .Concat(genWrapperCtor.SelectMany(c => c.GetParameters()).Select(pi => GetUnrefParameterType(pi)))
-                        .Concat(genWrapperMethod.SelectMany(m => m.GetParameters()).Select(pi => GetUnrefParameterType(pi)))
-                        .Concat(genWrapperMethod.Select(m => m.ReturnType))
-                        .Concat(genWrapperField.Select(f => f.FieldType))
-                        .Distinct();
-                    
-                    valueTypeInfos = new List<ValueTypeInfo>();
-                    foreach (var type in configureUsedTypes.Concat(delegateUsedTypes))
-                    {
-                        IterateAllValueType(type, valueTypeInfos);
-                    }
-                    
-                    valueTypeInfos = valueTypeInfos
-                        .GroupBy(s => s.Signature)
-                        .Select(s => s.FirstOrDefault())
-                        .ToList();
-
-                    Utils.SetFilters(null);
-                }
-
-                var wrapperInfos = genWrapperMethod
+                var wrapperInfos = methodToWrap
                     .Where(m => !m.IsGenericMethodDefinition && !m.IsAbstract)
                     .Select(m =>
                     {
@@ -336,7 +300,7 @@ namespace XLuaIl2cpp.Editor
                         };
                     })
                     .Concat(
-                        genWrapperCtor
+                        ctorToWrapper
                             .Select(m =>
                             {
                                 var isExtensionMethod = false;
@@ -355,12 +319,12 @@ namespace XLuaIl2cpp.Editor
                     .ToList();
                 wrapperInfos.Sort((x, y) => string.CompareOrdinal(x.Signature, y.Signature));
 
-                var fieldWrapperInfos = genWrapperField
+                var fieldWrapperInfos = fieldToWrapper
                     .Select(f => new SignatureInfo
                     {
-                        Signature = (f.IsStatic ? "" : "t") + XLuaIl2cpp.TypeUtils.GetTypeSignature(f.FieldType),
+                        Signature = (f.IsStatic ? "" : "t") + TypeUtils.GetTypeSignature(f.FieldType),
                         CsName = f.ToString(),
-                        ReturnSignature = XLuaIl2cpp.TypeUtils.GetTypeSignature(f.FieldType),
+                        ReturnSignature = TypeUtils.GetTypeSignature(f.FieldType),
                         ThisSignature = (f.IsStatic ? "" : "t"),
                         ParameterSignatures = null
                     })
@@ -382,7 +346,7 @@ namespace XLuaIl2cpp.Editor
                         BridgeInfos = bridgeInfos,
                         FieldWrapperInfos = fieldWrapperInfos
                     };
-                    
+
                     using (var textWriter = new StreamWriter(Path.Combine(saveTo, "XLuaIl2CppWrapper.cpp"), false, Encoding.UTF8))
                     {
                         var path = Path.Combine(assetPath, "Editor/Resources/xlua/templates/il2cppwrapper.tpl.lua");
@@ -415,7 +379,7 @@ namespace XLuaIl2cpp.Editor
                         textWriter.Write(fileContext);
                         textWriter.Flush();
                     }
-                    
+
                     using (var textWriter = new StreamWriter(Path.Combine(saveTo, "XLuaIl2cppBridge.cpp"), false, Encoding.UTF8))
                     {
                         var path = Path.Combine(assetPath, "Editor/Resources/xlua/templates/il2cppbridge.tpl.lua");
@@ -426,7 +390,7 @@ namespace XLuaIl2cpp.Editor
                         textWriter.Write(fileContext);
                         textWriter.Flush();
                     }
-                    
+
                     // clear prev gen
                     if (Directory.Exists(saveTo))
                     {

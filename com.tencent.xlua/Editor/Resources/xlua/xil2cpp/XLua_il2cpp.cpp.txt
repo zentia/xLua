@@ -1370,6 +1370,644 @@ handle_underlying:
         }
 
         pesapi_value luaValue = pesapi_get_arg(info, i - csArgStart);
+
+        if (Class::IsValuetype(parameterKlass))
+        {
+            if (Class::IsNullable(parameterKlass))
+            {
+                void* storage = alloca(parameterKlass->instance_size - sizeof(Il2CppObject));
+                auto underlyClass = Class::GettNullableArgument(parameterKlass);
+                uint32_t valueSize = underlyClass->instance_size - sizeof(Il2CppObject);
+                bool hasValue = GetValueTypeFromLua(env, luaValue, underlyClass, storage);
+                *(static_cast<uint8_t*>(storage) + valueSize) = hasValue;
+                args[i] = storage;
+            }
+            else if (passedByReference)
+            {
+                auto underlyClass = Class::FromIl2CppType(&parameterKlass->byval_arg);
+                void* storage = alloca(underlyClass->instance_size - sizeof(Il2CppObject));
+                luaValue = LuaObjectUnRef(env, luaValue);
+                GetValueTypeFromLua(env, luaVal, underlyClass, storage);
+                args[i] = storage;
+            }
+            else if (hasDefault && pesapi_is_undefined(env, luaValue))
+            {
+                void* storage = GetDefaultValuePtr(method, i);
+                if (!storage)
+                {
+                    auto valueSize = parameterKlass->instance_size - sizeof(Il2CppObject);
+                    storage = alloca(valueSize);
+                    memset(storage, 0, valueSize);
+                }
+                args[i] = storage;
+            }
+            else
+            {
+                auto valueSize = parameterKlass->instance_size - sizeof(Il2CppObject);
+                void* storage = alloca(valueSize);
+                bool hasValue = GetValueTypeFromLua(env, luaValue, parameterKlass, storage);
+                if (!hasValue)
+                {
+                    memset(storage, 0, valueSize);
+                }
+                args[i] = storage;
+            }
+        }
+        else if (passedByReference)
+        {
+            void** arg = (void**)alloca(sizeof(void*));
+            *arg = nullptr;
+            auto underlyClass = Class::FromIl2CppType(&parameterKlass->byval_arg);
+            luaValue = LuaObjectUnRef(env, luaValue);
+            if (luaValue)
+            {
+                auto ptr = pesapi_get_native_object_ptr(env, luaValue);
+                if (ptr)
+                {
+                    auto objClass = (Il2CppClass *)pesapi_get_native_object_typeid(env, luaValue);
+                    if (Class::IsAssignableFrom(underlyClass, objClass))
+                    {
+                        *arg = ptr;
+                    }
+                }
+                else if (underlyClass == il2cpp_defaults.object_class) // any type
+                {
+                    *arg = LuaValueToCSRef(underlyClass, env, luaValue);
+                }
+            }
+            args[i] = arg;
+        }
+        else if (parameterKlass->byval_arg.type == IL2CPP_TYPE_PTR)
+        {
+            auto underlyClass = Class::FromIl2CppType(&parameterKlass->element_class->byval_arg);
+            void* storage = alloca(underlyClass->instance_size - sizeof(Il2CppObject));
+            luaValue = LuaObjectUnRef(env, luaValue);
+            args[i] = GetValueTypeFromLua(env, luaValue, underlyClass, storage) ? storage : nullptr;
+        }
+        else
+        {
+            args[i] = (hasDefault && pesapi_is_undefined(env, luaValue)) ? GetDefaultValuePtr(method, i) : LuaValueToCSRef(parameterKlass, env, luaValue);
+        }
+    }
+
+    Il2CppObject* ret = Runtime::InvokeWithThrow(method, self, args);
+
+    for (int i = csArgStart; i < method->parameter_count; ++i)
+    {
+        auto parameterType = Method::GetParam(method, i);
+        bool passedByReference = parameterType->byref;
+        Il2CppClass* parameterKlass = Class::FromIl2CppType(parameterType);
+
+        pesapi_value luaValue = pesapi_get_arg(info, i - csArgStart);
+
+        if (Class::IsValueType(parameterKlass) && passedByReference)
+        {
+            if (Class::IsNullable(parameterKlass))
+            {
+                bool hasValue = !!*(static_cast<uint8_t*>(args[i]) + parameterKlass->instance_size - sizeof(Il2CppObject));
+                if (!hasValue)
+                {
+                    LuaObjectSetRef(env, luaValue, pesapi_create_null(env));
+                    continue;
+                }
+            }
+            auto underlyClass = Class::FromIl2CppType(&parameterKlass->byval_arg);
+            LuaObjectSetRef(env, luaValue, CSRefToLuaValue(env, underlyClass, (Il2CppObject*)(((uint8_t*)args[i]) - sizeof(Il2CppObject))));
+        }
+        else if (passedByReference)
+        {
+            Il2CppObject** arg = (Il2CppObject**)args[i];
+            auto underlyClass = Class::FromIl2CppType(&parameterKlass->byval_arg);
+            LuaObjectSetRef(env, luaValue, CSRefToLuaValue(env, underlyClass, *arg));
+        }
+        else if (parameterKlass->byval_arg.type == IL2CPP_TYPE_PTR)
+        {
+            auto underlyClass = Class::FromIl2CppType(&parameterKlass->element_class->byval_arg);
+            LuaObjectSetRef(env, luaValue, CSRefToLuaValue(env, underlyClass, (Il2CppObject*)(((uint8_t*)args[i]) - sizeof(Il2CppObject))));
+        }
+    }
+
+    auto returnType = Class::FromIl2CppType(method->return_type);
+    if (returnType != il2cpp_defaults.void_class)
+    {
+        pesapi_add_return(info, CSRefToLuaValue(env, returnType, ret));
+    }
+
+    return true;
+}
+
+static void ReflectionGetFieldWrapper(pesapi_callback_info info, FieldInfo* field, size_t offset, Il2CppClass* fieldType)
+{
+    pesapi_env env = pesapi_get_env(info);
+    pesapi_value luaThis = pesapi_get_holder(info);
+    void* csThis = nullptr;
+    if (!(field->type->attrs & FIELD_ATTRIBUTE_STATIC))
+    {
+        csThis = pesapi_get_native_object_ptr(env, luaThis);
+    }
+
+    if (Class::IsValuetype(fieldType))
+    {
+        void* storage = nullptr;
+        bool isFieldPtr = true;
+        auto expectType = fieldType;
+        if (Class::IsNullable(fieldType))
+        {
+            expectType = Class::GettNullableArgument(fieldType);
+        }
+        if (Class::IsEnum(fieldType))
+        {
+            expectType = Class::GetElementClass(fieldType);
+        }
+
+        if ((field->type->attrs & FIELD_ATTRIBUTE_STATIC))
+        {
+            int t = Class::GetType(fieldType)->type;
+            if (t >= IL2CPP_TYPE_BOOLEAN && t <= IL2CPP_TYPE_R8 || t = IL2CPP_TYPE_I || t == IL2CPP_TYPE_U)
+            {
+                storage = alloca(expectType->instance_size - sizeof(Il2CppObject));
+                GetFieldValue(csThis, field, offset, storage);
+                isFieldPtr = false;
+            }
+            else
+            {
+                storage = GetValueTypeFieldPtr(csThis, field, offset);
+            }
+        }
+        else if (csThis)
+        {
+            storage = (char*)csThis + offset;
+        }
+        if (!storage)
+        {
+            storage = alloca(expectType->instance_size - sizeof(Il2CppObject));
+            GetFieldValue(csThis, field, offset, storage);
+            isFieldPtr = false;
+        }
+
+        Il2CppObject* obj = (Il2CppObject*) storage - 1;
+        pesapi_value luaVal = TryTranslatePrimitiveWithClass(env, obj, expectType);
+
+        if (!luaVal)
+        {
+            if (isFieldPtr)
+            {
+                luaVal = pesapi_native_object_to_value(env, expectType, storage, false);
+            }
+            else
+            {
+                auto valueSize = expectType->instance_size - sizeof(Il2CppObject);
+                auto buff = new uint8_t[valueSize];
+                memcpy(buff, storage, valueSize);
+                luaVal = pesapi_native_object_to_value(env, expectType, buff, true);
+            }
+        }
+
+        if (luaVal)
+        {
+            pesapi_add_return(info, luaVal);
+        }
+    }
+    else
+    {
+        void* storage = nullptr;
+        GetFieldValue(csThis, field, offset, &storage);
+        pesapi_add_return(info, CSRefToLuaValue(env, fieldType, (Il2CppObject*)storage));
     }
 }
+
+static void ReflectionSetFieldWrapper(pesapi_callback_info info, FieldInfo* field, size_t offset, Il2CppClass* fieldType)
+{
+    pesapi_env env = pesapi_get_env(info);
+    pesapi_value luaThis = pesapi_get_holder(info);
+    void* csThis = nullptr;
+    if (!(field->type->attrs & FIELD_ATTRIBUTE_STATIC))
+    {
+        csThis = pesapi_get_native_object_ptr(env, luaThis);
+    }
+    pesapi_value luaValue = pesapi_get_arg(info, 0);
+    if (Class::IsValuetype(fieldType))
+    {
+        if (Class::IsNullable(fieldType))
+        {
+            void* storage = alloca(fieldType->instance_size - sizeof(Il2CppObject));
+            auto  underlyClass = Class::GettNullableArgument(fieldType);
+            uint32_t valueSize = underlyClass->instance_size - sizeof(Il2CppObject);
+            bool hasValue = GetValueTypeFromLua(env, luaVal, underlyClass, storage);
+            *(static_cast<uint8_t*>(storage) + valueSize) = hasValue;
+            SetFieldValue(csThis, field, offset, storage);
+        }
+        else
+        {
+            auto valueSize = fieldType->instance_size - sizeof(Il2CppObject);
+            void* storage = alloca(valueSize);
+            bool hasValue = GetValueTypeFromLua(env, luaVal, fieldType, storage);
+            if (!hasValue)
+            {
+                memset(storage, 0, valueSize);
+            }
+            SetFieldValue(csThis, field, offset, storage);
+        }
+    }
+    else
+    {
+        void* val = LuaValueToCSRef(fieldType, env, luaValue);
+
+        if (!(field->type->attrs & FIELD_ATTRIBUTE_STATIC))
+        {
+            SetFieldValue(csThis, field, offset, &val);
+        }
+        else
+        {
+            SetFieldValue(csThis, field, offset, val);
+        }
+    }
+}
+
+Il2CppObject* GetLuaObjectValue(Il2CppObject* luaObject, Il2CppString* key, Il2CppReflectionType* rtype)
+{
+    PObjectRefInfo* objectInfo = GetPObjectRefInfo(luaObject);
+
+    const Il2CppChar* utf16 = il2cpp::utils::StringUtils::GetChars(key);
+    std::string key_str = il2cpp::utils::StringUtils::Utf16ToUtf8(utf16);
+
+    auto type = il2cpp_codegen_class_from_type(rtype->type);
+
+    pesapi_env_ref envRef = pesapi_get_ref_associated_env(objectInfo->ValueRef);
+    AutoValueScope ValueScope(envRef);
+    auto env = pesapi_get_env_from_ref(envRef);
+    auto obj = pesapi_get_value_from_ref(env, objectInfo->ValueRef);
+    auto val = pesapi_get_property(env, obj, key_std.c_str());
+    if (!val)
+    {
+        return nullptr;
+    }
+    return LuaValueToCSRef(type, env, val);
+}
+
+Il2CppObject* EvalInternal(intptr_t ptr, Il2CppArray * __code, Il2CppString* __path, Il2CppReflectionType* __type)
+{
+    pesapi_env_ref envRef = reinterpret_cast<pesapi_env_ref>(ptr);
+
+    AutoValueScope ValueScope(envRef);
+    auto env = pesapi_get_env_from_ref(envRef);
+
+    const Il2CppChar* utf16 = il2cpp::utils::StringUtils::GetChars(__path);
+    std::string path = il2cpp::utils::StringUtils::Utf16ToUtf8(utf16);
+
+    auto codeSize = il2cpp_array_length(__code);
+    uint8_t* code = (uint8_t*)il2cpp_array_addr_with_size(__code, il2cpp_array_element_size(__code->klass), 0);
+
+    auto ret = pesapi_env(env, code, codeSize, path.c_str());
+
+    if (pesapi_has_caught(ValueScope.scope()))
+    {
+        Exception::Raise(Exception::GetInvalidOperationException(pesapi_get_exception_as_string(ValueScope.scope(), true)));
+        return nullptr;
+    }
+    if (__type)
+    {
+        auto csRet = LuaValueToCSRef(il2cpp_codegen_class_from_type(__type->type), env, ret);
+        if  (pesapi_has_caught(ValueScope.scope()))
+        {
+            Exception::Raise(Exception::GetInvalidOperationException(pesapi_get_exception_as_string(ValueScope.scope(), true)));
+            return nullptr;
+        }
+        return csRet;
+    }
+    return nullptr;
+}
+
+void SetObjectToGlobal(pesapi_env_ref envRef, Il2CppString* __key, Il2CppObject *obj)
+{
+    AutoValueScope ValueScope(envRef);
+    auto env = pesapi_get_env_from_ref(envRef);
+
+    const Il2CppChar* utf16 = il2cpp::utils::StringUtils::GetChars(__key);
+    std::string key = il2cpp::utils::StringUtils::Utf16ToUtf8(utf16);
+
+    pesapi_value global = pesapi_global(env);
+    if (global)
+    {
+        pesapi_set_property(env, global, key.c_str(), CSRefToLuaValue(env, obj->klas, obj));
+    }
+}
+
+struct LuaEnvPrivate
+{
+    pesapi_env_ref envRef;
+    std::mutex pendingKillRefsMutex;
+    std::unordered_set<pesapi_value_ref> pendingKillRefs;
+    MethodInfoHelper<int32_t(Il2CppObject* obj)> objPoolAdd;
+    MethodInfoHelper<Il2CppObject*(int32_t index)> objPoolRemove;
+
+    LuaEnvPrivate(pesapi_env_ref inEnvRef, Il2CppObject *objPool, Il2CppReflectionMethod* objPoolAddMethodInfo, Il2CppReflectionMethod* objPoolRemoveMethodInfo)
+        : envRef(inEnvRef), objPoolAdd(objPoolAddMethodInfo, objPool), objPoolRemove(objPoolRemoveMethodInfo, objPool)
+    {
+    }
+
+    void AddPendingKillScriptObjects(pesapi_value_ref valueRef)
+    {
+        uint32_t fieldCount;
+        void** store = pesapi_get_ref_internal_fields(valueRef, &fieldCount);
+        if (fieldCount == 1 && store)
+        {
+            std::lock_guard<std::mutex> guard(pendingKillRefsMutex);
+            pendingKillRefs.insert(valueRef);
+        }
+        else
+        {
+            pesapi_release_value_ref(valueRef);
+        }
+    }
+
+    void CleanupPendingKillScriptObjects()
+    {
+
+    }
+};
+
 }    // namespace xlua
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+void pesapi_init(pesapi_func_ptr* func_array);
+
+void InitialXLua(pesapi_func_ptr* func_array)
+{
+    InternalCalls::Add("XLuaIl2cpp.NativeAPI::GetMethodPointer(System.Reflection.MethodBase)", (Il2CppMethodPointer)xlua::GetMethodPointer);
+    InternalCalls::Add("XLuaIl2cpp.NativeAPI::GetMethodInfoPointer(System.Reflection.MethodBase)", (Il2CppMethodPointer)xlua::GetMethodInfoPointer);
+    InternalCalls::Add("XLuaIl2cpp.NativeAPI::GetTypeId(System.Type)", (Il2CppMethodPointer)xlua::GetTypeId);
+    InternalCalls::Add("XLuaIl2cpp.NativeAPI::GetFieldOffset(System.Reflection.FieldInfo,System.Boolean)", (Il2CppMethodPointer)xlua::GetFieldOffset);
+    InternalCalls::Add("XLuaIl2cpp.NativeAPI::GetFieldInfoPointer(System.Reflection.FieldInfo)", (Il2CppMethodPointer)xlua::GetFieldInfoPointer);
+    InternalCalls::Add("XLuaIl2cpp.NativeAPI::SetGlobalType_LuaObject(System.Type)", (Il2CppMethodPointer)xlua::SetGlobalType_LuaObject);
+    InternalCalls::Add("XLuaIl2cpp.NativeAPI::EvalInternal(System.IntPtr,System.Byte[],System.String,System.Type)", (Il2CppMethodPointer)xlua::EvalInternal);
+    InternalCalls::Add("XLuaIl2cpp.NativeAPI::SetObjectToGlobal(System.IntPtr,System.String,System.Object)", (Il2CppMethodPointer)xlua::SetObjectToGlobal);
+    InternalCalls::Add("XLuaIl2cpp.NativeAPI::TypeIdToType(system.IntPtr)", (Il2CppMethodPointer)xlua::TypeIdToType);
+    InternalCalls::Add("XLuaIl2cpp.NativeAPI::InitialPapiEnvRef(System.IntPtr,System.Object,System.Reflection.MethodBase,System.Reflection.MethodBase)", (Il2CppMethodPointer)xlua::InitialPapiEnvRef);
+    InternalCalls::Add("XLuaIl2cpp.NativeAPI::CleanupPapiEnvRef(System.IntPtr)", (Il2CppMethodPointer)xlua::CleanupPapiEnvRef);
+    InternalCalls::Add("XLua.LuaObject::GetLuaObjectValue(System.String,System.Type)", (Il2CppMethodPointer)xlua::GetLuaObjectValue);
+    InternalCalls::Add("XLuaIl2cpp.NativeAPI::SetRegisterNoThrow(System.Reflection.MethodBase)", (Il2CppMethodPointer)xlua::SetRegisterNoThrow);
+    pesapi_init(func_array);
+}
+
+void AddPendingKillScriptObjects(xlua::LuaEnvPrivate* luaEnvPrivate, pesapi_value_ref valueRef)
+{
+    pesapi_env_ref envRef = pesapi_get_ref_associated_env(valueRef);
+    if (!pesapi_env_ref_is_valid(envRet))
+    {
+        pesapi_release_value_ref(valueRef);
+        return;
+    }
+    luaEnvPrivate->AddPendingKillScriptObjects(valueRef);
+}
+
+void CleanupPendingKillScriptObjects(xlua::LuaEnvPrivate* LuaEnvPrivate)
+{
+    LuaEnvPrivate->CleanupPendingKillScriptObjects();
+}
+
+xlua::WrapFuncPtr FindWrapFunc(const char* signature)
+{
+    if (signature == nullptr)
+    {
+        return &xlua::ReflectionWrapper;
+    }
+    else
+    {
+        return &xlua::FindWrapFunc(signature);
+    }
+}
+
+void FindFieldWrap(const char* signature, xlua::FieldWrapFuncPtr *getter, xlua::FieldWrapFuncPtr *setter)
+{
+    if (signature == nullptr)
+    {
+        *getter = &xlua::ReflectionGetFieldWrapper;
+        *setter = &xlua::ReflectionSetFieldWrapper;
+    }
+    else
+    {
+        auto fieldWrapInfo = xlua::FindFieldWrapFuncInfo(signature);
+        if (fieldWrapInfo)
+        {
+            *getter = fieldWrapInfo->Getter;
+            *setter = fieldWrapInfo->Setter;
+        }
+        else
+        {
+            *getter = nullptr;
+            *setter = nullptr;
+        }
+    }
+}
+
+xlua::LuaClassInfo* CreateCSharpTypeInfo(const char* name,  Il2CppClass* type_id, Il2CppClass* super_tpye_id, bool isValueType, bool isDelegate, const char* delegateSignature)
+{
+    Il2CppMethodPointer delegateBridge = nullptr;
+    if (isDelegate)
+    {
+        delegateBridge = xlua::FindBridgeFunc(delegateSignature);
+        if (!delegateBridge) return nullptr;
+    }
+    xlua::LuaClassInfo* ret = new xlua::luaClassInfo();
+    ret->Name = name;
+    ret->TypeId = type_id;
+    ret->SuperTypeId = super_tpye_id;
+    ret->IsValueType = isValueType;
+    ret->DelegateBridge = delegateBridge;
+
+    return ret;
+}
+
+void ReleaseCSharpTypeInfo(xlua::LuaClassInfo* classInfo)
+{
+    delete classInfo;
+}
+
+static void SetParamArrayFlagAndOptionalNum(xlua::WrapData* data, const char* signature)
+{
+    data->HasParamArray = false;
+    data->OptionalNum = 0;
+    data->NeedBoxing = false;
+
+    const char* p = signature;
+    while (*p)
+    {
+        if (*p == 'V)
+        {
+            data->HasParamArray = true;
+        }
+        else if (*p == 'T')
+        {
+            data->NeedBoxing = true;
+        }
+        else if (*p == 'D')
+        {
+            ++data->OptionalNum;
+        }
+        ++P;
+    }
+}
+
+xlua::WrapData* AddConstructor(xlua::LuaClassInfo* classInfo, const char* signature, xlua::WrapFuncPtr WrapFunc, MethodInfo* method, Il2CppMethodPointer methodPointer, int typeInfoNum)
+{
+    if (!WrapFunc) return nullptr;
+    int allocSize = sizeof(xlua::WrapData) + sizeof(void*) * typeInfoNum;
+    xlua::WrapData* data = (xlua::WrapData*)malloc(allocaSize);
+    memset(data, 0, allocaSize);
+    data->Method = method;
+    data->MethodPointer = methodPointer;
+    data->Wrap = WrapFunc;
+    data->IsStatic = false;
+    data->IsExtensionMethod = false;
+    SetParamArrayFlagAndOptionalNum(data, signature);
+
+    classInfo->Ctors.push_back(data);
+    return data;
+}
+
+xlua::WrapData* AddMethod(xlua::LuaClassInfo* classInfo, const char* signature, xlua::WrapFuncPtr WrapFunc, const char* name, bool isStatic, bool isExtensionMethod, bool isGetter, bool isSetter, MethodInfo* method, Il2CppMethodPointer methodPointer, int typeInfoNum)
+{
+    if (!WrapFunc) return nullptr;
+    int allocSize = sizeof(xlua::WrapData) + sizeof(void) * typeInfoNum;
+    xlua::WrapData* data = (xlua::WrapData*)malloc(allocSize);
+    memset(data, 0, allocaSize);
+    data->Method = method;
+    data->MethodPointer = methodPointer;
+    data->Wrap = WrapFunc;
+    data->IsStatic = isStatic;
+    data->IsExtensionMethod = isExtensionMethod;
+    SetParamArrayFlagAndOptionalNum(data, signature);
+
+    for (int i = 0; i < classInfo->Method.size(); ++i)
+    {
+        if (classInfo->Methods[i].IsStatic == isStatic && classInfo->Methods[i].IsGetter == isGetter && classInfo->Methods[i].IsGetter == isSetter && classInfo->Method[i].Name == name)
+        {
+            if (isGetter || isSetter)
+            {
+                free(data);
+                return nullptr;
+            }
+            classInfo->Methods[i].OverloadDatas.push_back(data);
+            return data;
+        }
+    }
+
+    std::vector<xlua::WrapData*> OverloadDatas;
+    OverloadDatas.push_back(data);
+    classInfo->Method.push_back({std::string(name), isStatic, isGetter, isSetter, std::move(OverloadDatas)});
+    return data;
+}
+
+bool AddField(xlua::LuaClassInfo* classInfo, xlua::FieldWrapFuncPtr getter, xlua::FieldWrapFuncPtr setter, const char* name bool is_static, FieldInfo* fieldInfo, int offset, Il2CppClass* fieldTypeInfo)
+{
+    if (!getter && !setter)
+    {
+        return false;
+    }
+    xlua::FieldWrapData* data = new xlua::FieldWrapData();
+    data->Getter = getter;
+    data->Setter = setter;
+    data->FieldInfo = fieldInfo;
+    data->Offset = offset;
+    data->TypeInfo = fieldTypeInfo;
+
+    classInfo->Fields.push_back({std::string(name), is_static, data});
+    return true;
+}
+
+void SetTypeInfo(xlua::WrapData* data, int index, Il2CppClass* typeInfo)
+{
+    data->TypeInfos[index] = typeInfo;
+}
+
+bool RegisterCSharpType(xlua::LuaClassInfo* classInfo)
+{
+    if (pesapi_get_class_data(classInfo->TypeId, false))
+    {
+        ReleaseCSharpTypeInfo(classInfo);
+        return true;
+    }
+
+    classInfo->Ctors.push_back(nullptr);
+    classInfo->CtorWrapDatas = classInfo->Ctors.data();
+
+    std::map<std::string, std::pair<xlua::CSharpMethodInfo*, xlua::CSharpMethodInfo*>> gseters;
+    std::vector<xlua::CSharpMethodInfo*> methods;
+
+    for (auto & method : classInfo->Methods)
+    {
+        method.OverloadDatas.push_back(nullptr);
+
+        if (method.IsGetter || method.IsSetter)
+        {
+            auto iter = gseters.find(method.Name);
+            if (iter == gseters.end())
+            {
+                gseters[method.Name] = std::make_pair<xlua::CSharpMethodInfo*, xlua::CSharpMethodInfo*>(method.IsGetter ? &method : nullptr, method.IsSetter ? &method : nullptr);
+            }
+            else
+            {
+                if (method.IsGetter)
+                {
+                    iter->second.first = &method;
+                }
+                else
+                {
+                    iter->second.second = &method;
+                }
+            }
+        }
+        else
+        {
+            methods.push_back(&method);
+        }
+    }
+
+    size_t propertiesCount = gseters.size() + methods.size() + classInfo->Fields.size();
+    auto properties = pesapi_alloc_property_descriptors(propertiesCount);
+    size_t pos = 0;
+
+    for (auto const& method: methods)
+    {
+        pesapi_set_method_info(properties, pos++, method->Name.c_str(), method->IsStatic, &xlua::MethodCallback, method->OverloadDatas.data(), nullptr);
+    }
+
+    for (auto const& kv: gseters)
+    {
+        auto geter_or_setter = kv.second.first ? kv.second.first : kv.second.second;
+        pesapi_set_property_info(properties, pos++, geter_or_setter->Name.c_str(), geter_or_setter->IsStatic,
+            kv.second.first ? &xlua::MethodCallback : nullptr,
+            kv.second.second ? &xlua::MethodCallback : nullptr,
+            kv.second.first ? kv.second.first->OverloadDatas.data() : nullptr,
+            kv.second.second ? kv.second.second->OverloadDatas.data() : nullptr,
+            nullptr);
+    }
+
+    for (auto & field : classInfo->Fields)
+    {
+        pesapi_set_property_info(properties, pos++, field.Name.c_str(), field.IsStatic,
+            xlua::GetterCallback, xlua::SetterCallback, field.Data, field.Data, nullptr);
+    }
+
+    pesapi_define_class(classInfo->TypeId, classInfo->SuperTypeId, classInfo->Name.c_str(),
+            classInfo->DelegateBridge ? &xlua::DeleagteCtorCallback : &xlua::CtorCallback, classInfo->IsValueType ? (pesapi_finalize)&puerts::PApiFree : (pesapi_finalize)nullptr, propertiesCount, properties, classInfo);
+
+    if (!classInfo->IsValueType)
+    {
+        pesapi_trace_native_object_lifecycle(classInfo->TypeId, (pesapi_on_native_object_enter)&xlua::OnCsObjectEnter, (pesapi_on_native_object_exit)&xlua::OnCsObjectExit);
+    }
+
+    return true;
+}
+
+void SetLogCallbackInternal(xlua::LogCallbackFunc Log)
+{
+    xlua::GLogCallback = Log;
+}
+#ifdef __cplusplus
+}
+#endif
