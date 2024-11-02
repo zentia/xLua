@@ -40,3 +40,14 @@ com.tencent.xlua/Plugins/xlua_il2cpp/TDataTrans.h
 com.tencent.xlua/Plugins/xlua_il2cpp/TDataTrans.h.meta
 com.tencent.xlua/Plugins/xlua_il2cpp/pesapi.h
 com.tencent.xlua/Plugins/xlua_il2cpp/pesapi_adpt.c
+Packages/ProjectCache
+Packages/ProjectCache.md5
+*.user
+native_src_il2cpp/Src/XLuaIl2CppFieldWrapper.cpp
+native_src_il2cpp/Src/XLuaIl2cppWrapperDef0.cpp
+native_src_il2cpp/Src/XLuaIl2cppWrapperDef1.cpp
+native_src_il2cpp/Src/XLuaIl2cppWrapperDef2.cpp
+native_src_il2cpp/Src/XLuaIl2cppWrapperDef3.cpp
+native_src_il2cpp/Src/XLuaIl2cppWrapperDef4.cpp
+native_src_il2cpp/Src/XLuaIl2cppWrapperDef5.cpp
+native_src_il2cpp/Src/XLuaIl2cppWrapperDef6.cpp

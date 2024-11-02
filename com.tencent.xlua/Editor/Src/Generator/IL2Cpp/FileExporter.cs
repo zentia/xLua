@@ -146,16 +146,23 @@ namespace XLuaIl2cpp.Editor
                 return true;
             }
 
+            private static readonly string[] AssemblyFullNameArray = 
+            {
+                "Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"
+            };
+
+            private static readonly string[] TypeFullNameArray =
+            {
+                "PeformentTestConfig",
+            };
             public static void GenCPPWrap(string saveTo, bool onlyConfigure = false)
             {
                 Utils.SetFilters(XLua.Configure.GetFilters());
-                
-                var types = from assembly in AppDomain.CurrentDomain.GetAssemblies()
-                                // where assembly.FullName.Contains("xlua") || assembly.FullName.Contains("Assembly-CSharp") || assembly.FullName.Contains("Unity")
-                            where !(assembly.ManifestModule is System.Reflection.Emit.ModuleBuilder)
+                var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+                var targetAssemblies = assemblies.Where(a => AssemblyFullNameArray.Any(e=>e==a.FullName));
+                var types = (from assembly in targetAssemblies
                             from type in assembly.GetTypes()
-                            where type.IsPublic
-                            select type;
+                            select type).Where(t=>TypeFullNameArray.Any(e=>e==t.FullName));
 
                 const BindingFlags flag = BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public;
                 const BindingFlags flagForXLua = BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic;

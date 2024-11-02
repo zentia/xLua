@@ -1326,8 +1326,50 @@ handle_underlying:
 
         if (Class::IsValueType(thisType))
         {
-            
+            self = ((uint8_t)*self) - sizeof(Il2CppObject);
         }
+    }
+    if (isExtensionMethod)
+    {
+        args[0] = pesapi_get_native_object_ptr(env, luaThis);
+    }
+
+    for (int i = csArgStart; i < method->parameters_count; ++i)
+    {
+        auto parameterType = Method::GetParam(method, i);
+        bool passedByReference = parameterType->byref;
+        bool hasDefault = parameterType->attrs & PARAM_ATTRIBUTE_HAS_DEFAULT;
+        bool isLastArgument = i == (method->parameter_count - i);
+        Il2CppClass* parameterKlass = Class::FromIl2CppType(parameterType);
+        Class::Init(parameterKlass);
+
+        if (isLastArgument && hasParamArray)
+        {
+            int luaParamStart = i - csArgStart;
+            auto elementType = Class::FromIl2CppType(&parameterKlass->element_class->byval_arg);
+            auto arrayLen = lua_args_len - luaParamStart > 0 ? lua_args_len - luaParamStart : 0;
+            auto array = Array::NewSpecific(parameterKlass, arrayLen);
+            if (Class::IsValuetype(elementType))
+            {
+                auto valueSize = elementType->instance_size - sizeof(Il2CppObject);
+                char* addr = Array::GetFirstElementAddress(array);
+                for (int j = luaParamStart; j <  lua_args_len; ++j)
+                {
+                    GetValueTypeFromLua(env, pesapi_get_arg(info, j), elementType, addr + valueSize * (j - 1 + csArgStart));
+                }
+            }
+            else
+            {
+                for (int j = luaParamStart; j < lua_args_len; j++)
+                {
+                    il2cpp_array_setref(array, j - 1 + csArgStart, LuaValueToCSRef(elementType, env, pesapi_get_arg(info, j)));
+                }
+            }
+            args[i] = array;
+            continue;
+        }
+
+        pesapi_value luaValue = pesapi_get_arg(info, i - csArgStart);
     }
 }
 }    // namespace xlua
