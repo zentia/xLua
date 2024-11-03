@@ -55,6 +55,22 @@ void PLog(const char* Fmt, ...);
 
 #define GetPObjectRefInfo(value) ((PObjectRefInfo*) (((uint8_t*) value + sizeof(Il2CppObject))))
 
+class AutoValueScope
+{
+public:
+    AutoValueScope(pesapi_env_ref envRef)
+    {
+        scope = pesapi_open_scope(envRef);
+    }
+
+    ~AutoValueScope()
+    {
+        pesapi_close_scope(scope);
+    }
+
+    pesapi_scope scope;
+};
+
 struct DataTransfer
 {
     static bool IsDelegate(Il2CppClass* klass)

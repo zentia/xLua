@@ -1727,6 +1727,43 @@ struct LuaEnvPrivate
     }
 };
 
+static void LoadTypeWrapper(pesapi_callback_info info)
+{
+    pesapi_env env = pesapi_get_env(info);
+    Il2CppObject* type = (Il2CppObject*)pesapi_get_native_object_ptr(env, pesapi_get_arg(info, 0));
+    auto type_id = CSharpTypeToTypeId(type);
+    auto ret = pesapi_create_class(env, type_id);
+    pesapi_add_return(info, ret);
+}
+
+xlua::LuaEnvPrivate* InitialPapiEnvRef(pesapi_env_ref envRef, Il2CppObject *objPool, Il2CppReflectionMethod* objPoolAddMethodInfo, Il2CppReflectionMethod* objPoolRemoveMethodInfo)
+{
+    xlua::AutoValueScope ValueScope(envRef);
+    auto env = pesapi_get_env_from_ref(envRef);
+    auto luaEnvPrivate = new xlua::LuaEnvPrivate(envRef, objPool, objPoolAddMethodInfo, objPoolRemoveMethodInfo);
+    pesapi_set_env_private(env, luaEnvPrivate);
+    auto func = pesapi_create_function(env, LoadTypeWrapper, nullptr);
+    if (func)
+    {
+        pesapi_value global = pesapi_global(env);
+        if (global)
+        {
+            pesapi_set_property(env, global, "loadType", func);
+            return luaEnvPrivate;
+        }
+    }
+    Exception::Raise(Exception::GetInvalidOperationException("can not init global.loadTYpe"));
+    return nullptr;
+}
+
+void CleanupPapiEnvRef(pesapi_env_ref envRef)
+{
+    xlua::AutoValueScope ValueScope(envRef);
+    auto env = pesapi_get_env_from_ref(envRef);
+    auto luaEnvPrivate = (xlua::LuaEnvPrivate)pesapi_get_env_private(env);
+    delete luaEnvPrivate;
+    pesapi_release_value_ref(envRef);
+}
 }    // namespace xlua
 
 #ifdef __cplusplus
