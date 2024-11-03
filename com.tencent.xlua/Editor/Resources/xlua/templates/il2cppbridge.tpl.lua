@@ -79,7 +79,7 @@ static ]], SToCPPType(bridgeInfo.ReturnSignature), ' b_', bridgeInfo.Signature, 
     auto env = pesapi_get_env_from_ref(envRef);
     if (!env)
     {
-        il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException("LuaEnv had been destroy");
+        il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException("LuaEnv had been destroy"));
         ]], IF(bridgeInfo.ReturnSignature ~= 'v'), [[
         return {};
         ]], ENDIF(), [[
@@ -90,7 +90,7 @@ static ]], SToCPPType(bridgeInfo.ReturnSignature), ' b_', bridgeInfo.Signature, 
     auto luaRet = pesapi_call_function(env, func, nullptr, ]], #parameterSignatures, '',
         hasVarArgs and ' + arrayLength - 1' or '', [[, argv
 
-    if (pesapi_has_caught(valueScope.scope())
+    if (pesapi_has_caught(valueScope.scope()))
     {
         auto msg = pesapi_get_exception_as_string(valueScope.scope(), true);
         il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException(msg));
@@ -100,7 +100,9 @@ static ]], SToCPPType(bridgeInfo.ReturnSignature), ' b_', bridgeInfo.Signature, 
         return {};
     }
     ]], returnToCS(bridgeInfo.ReturnSignature), [[
-    ]], ENDIF()
+    ]], ENDIF(), [[
+
+}]]
     )
 end
 
@@ -142,7 +144,7 @@ static BridgeFuncInfo g_bridgeFunctionInfos[] = {
     ]])
     end), [[
     {nullptr, nullptr}
-);
+};
 
 Il2CppMethodPointer FindBridgeFunc(const char* signature)
 {
@@ -156,6 +158,7 @@ Il2CppMethodPointer FindBridgeFunc(const char* signature)
 }
 
 }
+
 ]]
     )
 end

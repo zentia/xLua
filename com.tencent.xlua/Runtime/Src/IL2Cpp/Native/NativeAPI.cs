@@ -38,22 +38,16 @@ namespace XLuaIl2cpp
         public static extern void InitialXLua(IntPtr PesapiImpl);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public static extern int GetLibBackend();
-
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr CreateNativeLuaEnv();
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public static extern void DestroyNativeLuaEnv(IntPtr jsEnv);
+        public static extern void DestroyNativeLuaEnv(IntPtr luaEnv);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr GetPesapiImpl();
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public static extern IntPtr GetPesapiEnvHolder(IntPtr jsEnv);
-
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public static extern IntPtr GetIsolate(IntPtr jsEnv);
+        public static extern IntPtr GetPesapiEnvHolder(IntPtr luaEnv);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr CreateCSharpTypeInfo(string name, IntPtr type_id, IntPtr super_type_id, IntPtr klass, bool isValueType, bool isDelegate, string delegateSignature);
@@ -95,22 +89,13 @@ namespace XLuaIl2cpp
         public static extern void SetObjectToGlobal(IntPtr jsEnv, string key, IntPtr objPtr);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public static extern void ReleasePendingJsObjects(IntPtr jsEnv);
+        public static extern void ReleasePendingLuaObjects(IntPtr luaEnv);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public static extern void CreateInspector(IntPtr jsEnv, int port);
-
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public static extern void DestroyInspector(IntPtr jsEnv);
-
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public static extern bool InspectorTick(IntPtr jsEnv);
-        
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public static extern bool LogicTick(IntPtr jsEnv);
+        public static extern bool LogicTick(IntPtr luaEnv);
 
         [MethodImpl(MethodImplOptions.InternalCall)]
-        public static Func<string, Puerts.JSObject> GetModuleExecutor(IntPtr NativeJsEnvPtr, Type type)
+        public static Func<string, XLua.LuaObject> GetModuleExecutor(IntPtr NativeLuaEnvPtr, Type type)
         {
             throw new NotImplementedException();
         }
@@ -164,13 +149,7 @@ namespace XLuaIl2cpp
         }
 
         [MethodImpl(MethodImplOptions.InternalCall)]
-        public static void SetGlobalType_JSObject(Type type)
-        {
-            throw new NotImplementedException();
-        }
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static void SetGlobalType_ArrayBuffer(Type type)
+        public static void SetGlobalType_LuaObject(Type type)
         {
             throw new NotImplementedException();
         }

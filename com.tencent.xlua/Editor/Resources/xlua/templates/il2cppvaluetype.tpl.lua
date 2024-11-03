@@ -6,24 +6,26 @@ function defineValueType(valueTypeInfo)
         return ''
     end
     return TaggedTemplateEngine('// ', valueTypeInfo.CsName, [[
+
 struct ]], valueTypeInfo.Signature, [[
 {
-    ]], FOR(listToLuaArray(valueTypeInfo.FieldSignatures), function(s, i) return TaggedTemplateEngine([[
+    ]], FOR(listToLuaArray(valueTypeInfo.FieldSignatures), function(s, i)
+        return TaggedTemplateEngine([[
     ]], IF(isNullableStruct(valueTypeInfo.Signature) and i == valueTypeInfo.NullableHasValuePosition), [[
     ]], SToCPPType(s), [[ hasValue;
     ]], ELSE(), [[
     ]], SToCPPType(s), ' p', i, [[;
-    ]], ENDIF())  
+    ]], ENDIF())
     end), [[
 };
     ]])
-end 
+end
 
 function Gen(genInfos)
     local valueTypeInfos = listToLuaArray(genInfos.ValueTypeInfos)
     print(string.format('valuetypes:%d', #valueTypeInfos))
     return TaggedTemplateEngine([[// Auto Gen
-    
+
 #if !__SNC__
 #ifndef __has_feature
 #define __has_feature(x) 0
@@ -41,7 +43,7 @@ typedef uint16_t Il2CppChar;
 namespace xlua
 {
     ]], table.join(table.map(valueTypeInfos, defineValueType), '\n'), [[
-    
+
 }
 
 ]])

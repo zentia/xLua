@@ -1,11 +1,3 @@
-/*
- * Tencent is pleased to support the open source community by making Puerts available.
- * Copyright (C) 2020 THL A29 Limited, a Tencent company.  All rights reserved.
- * Puerts is licensed under the BSD 3-Clause License, except for the third-party components listed in the file 'LICENSE' which may
- * be subject to their corresponding license terms. This file is subject to the terms and conditions defined in file 'LICENSE',
- * which is part of this source code package.
- */
-
 #include "CppObjectMapper.h"
 #include <memory>
 
@@ -481,7 +473,7 @@ int CppObjectMapper::GetMetaRefOfClass(lua_State* L, const LuaClassDefinition* C
             {
                 lua_pushstring(L, PropertyInfo->Name);
                 lua_pushlightuserdata(L, PropertyInfo);
-                lua_pushlightuserdata(L, PropertyInfo->Data);
+                lua_pushlightuserdata(L, PropertyInfo->GetterData);
                 // printf("p get %s, %p \n", PropertyInfo->Name, PropertyInfo);
                 lua_pushcclosure(L, property_getter_wrap, 2);
                 lua_rawset(L, obj_getters);
@@ -490,7 +482,7 @@ int CppObjectMapper::GetMetaRefOfClass(lua_State* L, const LuaClassDefinition* C
             {
                 lua_pushstring(L, PropertyInfo->Name);
                 lua_pushlightuserdata(L, PropertyInfo);
-                lua_pushlightuserdata(L, PropertyInfo->Data);
+                lua_pushlightuserdata(L, PropertyInfo->SetterData);
                 // printf("p set %s, %p \n", PropertyInfo->Name, PropertyInfo);
                 lua_pushcclosure(L, property_setter_wrap, 2);
                 lua_rawset(L, obj_setters);
@@ -505,7 +497,7 @@ int CppObjectMapper::GetMetaRefOfClass(lua_State* L, const LuaClassDefinition* C
             {
                 lua_pushstring(L, PropertyInfo->Name);
                 lua_pushlightuserdata(L, PropertyInfo);
-                lua_pushlightuserdata(L, PropertyInfo->Data);
+                lua_pushlightuserdata(L, PropertyInfo->GetterData);
                 // printf("v get %s, %p \n", PropertyInfo->Name, PropertyInfo);
                 lua_pushcclosure(L, variable_getter_wrap, 2);
                 lua_rawset(L, static_getters);
@@ -514,7 +506,7 @@ int CppObjectMapper::GetMetaRefOfClass(lua_State* L, const LuaClassDefinition* C
             {
                 lua_pushstring(L, PropertyInfo->Name);
                 lua_pushlightuserdata(L, PropertyInfo);
-                lua_pushlightuserdata(L, PropertyInfo->Data);
+                lua_pushlightuserdata(L, PropertyInfo->SetterData);
                 // printf("v set %s, %p \n", PropertyInfo->Name, PropertyInfo);
                 lua_pushcclosure(L, variable_setter_wrap, 2);
                 lua_rawset(L, static_setters);

@@ -1,33 +1,30 @@
 require('tte')
 
 function TypingTemplate(rawInfo)
-    local arg1 = FOR(getExtendedTypeToExtensionTypeInfo(rawInfo), function(e)
-        return string.format([[
-        else if (type == typeof(%s))
-        {
-            return ExtensionMethod.GetExtensionMethods(typeof(%s)%s);
-        }]], e.extendedType, e.extendedType, FOR(e.extendedType, function(extendedType)
-            return string.format(', typeof(%s)', extendedType)
-        end))
-    end)
-    return string.format([[
+    return TaggedTemplateEngine([[
 #if EXPERIMENTAL_IL2CPP_XLUA && ENABLE_IL2CPP
 using System;
-using System.Collections.Generaic;
+using System.Collections.Generic;
 using System.Reflection;
 namespace XLua2Il2cpp
 {
-    public static class ExtensionMethodInfos_Gen
+public static class ExtensionMethodInfos_Gen
+{
+    [UnityEngine.Scripting.Preserve]
+    public static IEnumerable<MethodInfo> TryLoadExtensionMethod(Type type)
     {
-        [UnityEngine.Scripting.Preserve]
-        public static IEnumerable<MethodInfo> TryLoadExtensionMethod(Type type)
+        if (false) {}]], FOR(getExtendedTypeToExtensionTypeInfo(rawInfo), function(e) return TaggedTemplateEngine([[
+        else if (type == typeof(]], e.extendedType, [[))
         {
-            if (false) {}%s
-            return null;
-        }
+            return ExtensionMethodInfo.GetExtensionMethods(typeof(]],e.extendedType,')',FOR(e.extendedTypes, function(extensionType) return string.format(', typeof(%s)', extensionType) end), [[);
+        }]]) end),
+        [[
+        
+        return null;
     }
 }
-#endif]], arg1)
+}
+#endif]])
 end
 
 -- List<KeyValuePair<Type, List<Type>>> extendedType2extensionType

@@ -136,7 +136,7 @@ xIl2cpp模式在使用方式上会有较大的变化，比如需要自己编译P
 
 ## 使用步骤
 1. 按照上述步骤安装好XLua的upm包。
-2. 编译mono版本plugin：cd到`xlua目录/unity/native_src/`，输入符合你平台的编译命令，比如`lua ../cli make --backend lua --platform win --arch x64 --config Debug`。（编译命令本身其实也会识别你的平台，所以你也可以只输入`lua ../cli/make.lua make --backend lua --config Debug`）
+2. 编译mono版本plugin：cd到`xlua目录/unity/native_src/`，输入符合你平台的编译命令，比如`lua ../cli/cmd.lua make --platform win --arch x64 --config Debug`。（编译命令本身其实也会识别你的平台，所以你也可以只输入`lua ../cli/cmd.lua make --config Debug`）
 3. 进入Unity的`Player Settings`，添加两个Scripting Define Symbols: `EXPERIMENTAL_IL2CPP_XLUA`。顺便可将script backend切换为`il2cpp`。等待脚本编译。
 4. 生成编译所需的代码：点击Unity的`XLua/Generate for xIl2cpp mode(All in One)`。然后切出去cd到`xlua目录/unity/native_src_il2cpp`，输入和步骤2相同的编译命令。
 
@@ -145,10 +145,8 @@ xIl2cpp模式在使用方式上会有较大的变化，比如需要自己编译P
 * FunctionBridge.h目前是需要编译进nativePlugins的，所以xIl2cpp模式需要你经常自行编译native plugin。
 * 不同函数签名的函数会在FunctionBridge.h里生成一个对应的wrapper函数。当然我们也支持反射的方式调用，性能略有损耗。
 * `Generate for xIl2cpp mode`中，会全量遍历所有Assembly，生成所有函数的wrapper。另外也提供了`generate/FunctionBridge.h(Configure)`，只会为生成列表中配置的类生成wrapper，其余使用反射机制调用。
-* `Generate/FunctionBridge.h`同时还会生成C#到JS调用的bridge，因此不再需要UsingFunc和UsingAction
+* `Generate/FunctionBridge.h`同时还会生成C#到Lua调用的bridge，因此不再需要UsingFunc和UsingAction
 
 ### FAQ
 1. ios构建时报hash_map头找不到。
     Unity构建时，一部分头文件不会自动打包到产物xcode项目里(在2021及以下版本常见)。你可以在`你的Unity.app/Contents/il2cpp/external/`下找到缺失的内容，复制到`iosbuild目录/Libraries/external/`即可
-2. ios构建时报 `ReentrantLock is ambigious`
-    在2022常见。解决办法参见https://github.com/zentia/xlua/issues/1428

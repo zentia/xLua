@@ -1,29 +1,38 @@
 require("tte")
 require("il2cpp_snippets")
 
-function Gen(genInfos) 
+function Gen(genInfos)
     local wrapperInfos = listToLuaArray(genInfos.WrapperInfos)
     print(string.format('wrappers:%d', #wrapperInfos))
     return TaggedTemplateEngine([[// Auto Gen
-    
+
 #include <memory>
 #include "il2cpp-api.h"
 #include "il2cpp-class-internals.h"
 #include "il2cpp-object-internals.h"
 #include "vm/Object.h"
-#inculde "pesapi.h"
+#include "pesapi.h"
 #include "TDataTrans.h"
 
 namespace xlua
 {
-]], table.join(table.map(wrapperInfos, function(wrapperInfo)  return string.format('bool w_%s(MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);', wrapperInfo)  end), '\n'), [[
+]],
+        table.join(
+            table.map(wrapperInfos,
+                function(wrapperInfo)
+                    return string.format(
+                        'bool w_%s(MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);',
+                        wrapperInfo)
+                end), '\n'), [[
 
 static WrapFuncInfo g_wrapFuncInfos[] = {
-    ]], FOR(wrapperInfos, function(info) return TaggedTemplateEngine([[
+    ]], FOR(wrapperInfos, function(info)
+            return TaggedTemplateEngine([[
     {"]], info.Signature, '", w_', info.Signature, [[},
-    ]]) end), [[
+    ]])
+        end), [[
     {nullptr, nullptr}
-);
+};
 
 WrapFuncPtr FindWrapFunc(const char* signature)
 {
