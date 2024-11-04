@@ -6,27 +6,42 @@ using System.Runtime.CompilerServices;
 
 namespace XLuaIl2cpp
 {
-	public static class ExtensionMethodInfo
-	{
+    public static class ExtensionMethodInfo
+    {
         private static Type GetExtendedType(MethodInfo method)
         {
+            var paramInfo = method.GetParameters();
+            if (paramInfo.Length == 0)
+            {
+                return null;
+            }
+            if (method.GetCustomAttribute<ExtensionAttribute>() == null)
+            {
+                return null;
+            }
             var type = method.GetParameters()[0].ParameterType;
             if (!type.IsGenericParameter)
                 return type;
             var parameterConstraints = type.GetGenericParameterConstraints();
             if (parameterConstraints.Length == 0)
-                throw new InvalidOperationException();
+            {
+                return null;
+            }
             var firstParameterConstraint = parameterConstraints[0];
             if (!firstParameterConstraint.IsClass)
-                throw new InvalidOperationException();
+            {
+                return null;
+            }
             return firstParameterConstraint;
         }
-        
+
         // Call By Gen Code
         public static IEnumerable<MethodInfo> GetExtensionMethods(Type type, params Type[] extensions)
         {
-            return from e in extensions from m in e.GetMethods(BindingFlags.Static | BindingFlags.Public) 
-                where !m.IsSpecialName && GetExtendedType(m) == type select m;
+            return from e in extensions
+                   from m in e.GetMethods(BindingFlags.Static | BindingFlags.Public)
+                   where !m.IsSpecialName && GetExtendedType(m) == type
+                   select m;
         }
 
         public static IEnumerable<MethodInfo> Get(Type type)
@@ -38,20 +53,21 @@ namespace XLuaIl2cpp
 
         public static Func<Type, IEnumerable<MethodInfo>> LoadExtensionMethod;
 
-        public static bool LoadExtensionMethodInfo() {
+        public static bool LoadExtensionMethodInfo()
+        {
             var ExtensionMethodInfos_Gen = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
-                select assembly.GetType("PuertsIl2cpp.ExtensionMethodInfos_Gen")).FirstOrDefault(x => x != null);
+                                            select assembly.GetType("PuertsIl2cpp.ExtensionMethodInfos_Gen")).FirstOrDefault(x => x != null);
             if (ExtensionMethodInfos_Gen == null)
                 ExtensionMethodInfos_Gen = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
-                select assembly.GetType("PuertsIl2cpp.ExtensionMethodInfos_Gen_Internal")).FirstOrDefault(x => x != null);
+                                            select assembly.GetType("PuertsIl2cpp.ExtensionMethodInfos_Gen_Internal")).FirstOrDefault(x => x != null);
             var TryLoadExtensionMethod = ExtensionMethodInfos_Gen.GetMethod("TryLoadExtensionMethod");
             if (TryLoadExtensionMethod == null) return false;
             LoadExtensionMethod = (Func<Type, IEnumerable<MethodInfo>>)Delegate.CreateDelegate(
                 typeof(Func<Type, IEnumerable<MethodInfo>>), null, TryLoadExtensionMethod);
             return true;
         }
-	}
-	
+    }
+
     public static class TypeUtils
     {
         public class TypeSignatures
@@ -140,9 +156,10 @@ namespace XLuaIl2cpp
                 if (
                     (field.FieldType.IsByRef || field.FieldType.IsPointer) &&
                     field.FieldType.GetElementType() == type
-                ) {
+                )
+                {
                     sb.Append("Pv");
-                } 
+                }
                 else
                     sb.Append(GetTypeSignature(field.FieldType));
             }
@@ -237,9 +254,9 @@ namespace XLuaIl2cpp
             else if (type.IsValueType && !type.IsPrimitive)
             {
                 //return "s" + Marshal.SizeOf(type);
-                if (Nullable.GetUnderlyingType(type) != null) 
+                if (Nullable.GetUnderlyingType(type) != null)
                     return TypeSignatures.NullableStructPrefix + GetValueTypeFieldsSignature(type) + "_";
-                else 
+                else
                     return TypeSignatures.StructPrefix + GetValueTypeFieldsSignature(type) + "_";
             }
             throw new NotSupportedException("no support type: " + type);
@@ -257,7 +274,7 @@ namespace XLuaIl2cpp
             {
                 return "D" + GetTypeSignature(parameterInfo.ParameterType);
             }
-            
+
             return GetTypeSignature(parameterInfo.ParameterType);
         }
 
@@ -361,13 +378,14 @@ namespace XLuaIl2cpp
 
             List<Type> validGenericParameter = new List<Type>();
 
-            if (pinfos == null) pinfos = method.GetParameters(); 
+            if (pinfos == null) pinfos = method.GetParameters();
             foreach (var parameters in pinfos)
             {
                 Type parameterType = parameters.ParameterType;
 
-                if (!HasValidContraint(parameterType, validGenericParameter)) { 
-                    return false; 
+                if (!HasValidContraint(parameterType, validGenericParameter))
+                {
+                    return false;
                 }
             }
 
