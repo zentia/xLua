@@ -198,7 +198,7 @@ struct Converter<T, typename std::enable_if<std::is_integral<T>::value && sizeof
         return static_cast<T>(pesapi_get_value_int32(env, value));
     }
 
-    static bool accept(pesapi_env env, peapi_value value)
+    static bool accept(pesapi_env env, pesapi_value value)
     {
         return pesapi_is_int32(env, value);
     }
@@ -226,7 +226,7 @@ struct Converter<T, typename std::enable_if<std::is_integral<T>::value && sizeof
 template <typename T>
 struct Converter<T, typename std::enable_if<std::is_enum<T>::value>::type>
 {
-    static peaspi_value toScript(pesapi_env env, T value)
+    static pesapi_value toScript(pesapi_env env, T value)
     {
         return pesapi_create_int32(env, static_cast<int>(value));
     }
@@ -475,7 +475,7 @@ struct Params
         return ret;
     }
 
-    static Il2CppArray* PackValueType(pesapi_env env, pesapi_callbcak_info info, Il2CppClass* typeId, int length, int start)
+    static Il2CppArray* PackValueType(pesapi_env env, pesapi_callback_info info, Il2CppClass* typeId, int length, int start)
     {
         Il2CppArray* ret = il2cpp::vm::Array::NewSpecific(typeId, length - start > 0 ? length - start : 0);
         T* arr = reinterpret_cast<T*>(il2cpp::vm::Array::GetFirstElementAddress(ret));
@@ -568,7 +568,7 @@ struct MethodInfoHelper<_Ret(_Args...)>
         funcPtr(instance, args..., methodInfo);
     }
 
-    template <typename T - _Ret>
+    template <typename T = _Ret>
     typename std::enable_if<!std::is_same<T, void>::value>::type CallWithInstance(_Args... args)
     {
         FuncTypeWithInstance funcPtr = (FuncTypeWithInstance) func;

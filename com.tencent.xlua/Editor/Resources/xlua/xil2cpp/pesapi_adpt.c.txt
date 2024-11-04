@@ -362,10 +362,10 @@ void pesapi_close_scope (pesapi_scope scope) {
     pesapi_close_scope_ptr(scope);
 }
 
-typedef pesapi_value_ref (*pesapi_create_value_refType)(pesapi_env env, pesapi_value value);
+typedef pesapi_value_ref (*pesapi_create_value_refType)(pesapi_env env, pesapi_value value, uint32_t internal_field_count);
 static pesapi_create_value_refType pesapi_create_value_ref_ptr;
-pesapi_value_ref pesapi_create_value_ref (pesapi_env env, pesapi_value value) {
-    return pesapi_create_value_ref_ptr(env, value);
+pesapi_value_ref pesapi_create_value_ref (pesapi_env env, pesapi_value value, uint32_t internal_field_count) {
+    return pesapi_create_value_ref_ptr(env, value, internal_field_count);
 }
 
 typedef pesapi_value_ref (*pesapi_duplicate_value_refType)(pesapi_value_ref value_ref);
@@ -398,6 +398,12 @@ bool pesapi_set_owner (pesapi_env env, pesapi_value value, pesapi_value owner) {
     return pesapi_set_owner_ptr(env, value, owner);
 }
 
+typedef pesapi_env_ref (*pesapi_get_ref_associated_envType)(pesapi_value_ref value_ref);
+static pesapi_get_ref_associated_envType pesapi_get_ref_associated_env_ptr;
+pesapi_env_ref pesapi_get_ref_associated_env (pesapi_value_ref value_ref) {
+    return pesapi_get_ref_associated_env_ptr(value_ref);
+}
+
 typedef void** (*pesapi_get_ref_internal_fieldsType)(pesapi_value_ref value_ref, uint32_t* pinternal_field_count);
 static pesapi_get_ref_internal_fieldsType pesapi_get_ref_internal_fields_ptr;
 void** pesapi_get_ref_internal_fields (pesapi_value_ref value_ref, uint32_t* pinternal_field_count) {
@@ -416,7 +422,7 @@ void pesapi_set_property (pesapi_env env, pesapi_value object, const char* key, 
     pesapi_set_property_ptr(env, object, key, value);
 }
 
-typedf bool (*pesapi_get_privateType)(pesapi_env env, pesapi_value object, void** out_ptr);
+typedef bool (*pesapi_get_privateType)(pesapi_env env, pesapi_value object, void** out_ptr);
 static pesapi_get_privateType pesapi_get_private_ptr;
 bool pesapi_get_private (pesapi_env env, pesapi_value object, void** out_ptr) {
     return pesapi_get_private_ptr(env, object, out_ptr);
@@ -452,9 +458,9 @@ pesapi_value pesapi_eval (pesapi_env env, const uint8_t* code, size_t code_size,
     return pesapi_eval_ptr(env, code, code_size, path);
 }
 
-typedef cosnt void* (*pesapi_get_env_privateType)(pesapi_env env);
+typedef const void* (*pesapi_get_env_privateType)(pesapi_env env);
 static pesapi_get_env_privateType pesapi_get_env_private_ptr;
-cosnt void* pesapi_get_env_private (pesapi_env env) {
+const void* pesapi_get_env_private (pesapi_env env) {
     return pesapi_get_env_private_ptr(env);
 }
 
@@ -588,26 +594,27 @@ void pesapi_init(pesapi_func_ptr* func_array){
     pesapi_get_value_from_ref_ptr = (pesapi_get_value_from_refType)func_array[62];
     pesapi_set_ref_weak_ptr = (pesapi_set_ref_weakType)func_array[63];
     pesapi_set_owner_ptr = (pesapi_set_ownerType)func_array[64];
-    pesapi_get_ref_internal_fields_ptr = (pesapi_get_ref_internal_fieldsType)func_array[65];
-    pesapi_get_property_ptr = (pesapi_get_propertyType)func_array[66];
-    pesapi_set_property_ptr = (pesapi_set_propertyType)func_array[67];
-    pesapi_get_private_ptr = (pesapi_get_privateType)func_array[68];
-    pesapi_set_private_ptr = (pesapi_set_privateType)func_array[69];
-    pesapi_get_property_uint32_ptr = (pesapi_get_property_uint32Type)func_array[70];
-    pesapi_set_property_uint32_ptr = (pesapi_set_property_uint32Type)func_array[71];
-    pesapi_call_function_ptr = (pesapi_call_functionType)func_array[72];
-    pesapi_eval_ptr = (pesapi_evalType)func_array[73];
-    pesapi_get_env_private_ptr = (pesapi_get_env_privateType)func_array[74];
-    pesapi_set_env_private_ptr = (pesapi_set_env_privateType)func_array[75];
-    pesapi_alloc_type_infos_ptr = (pesapi_alloc_type_infosType)func_array[76];
-    pesapi_set_type_info_ptr = (pesapi_set_type_infoType)func_array[77];
-    pesapi_create_signature_info_ptr = (pesapi_create_signature_infoType)func_array[78];
-    pesapi_alloc_property_descriptors_ptr = (pesapi_alloc_property_descriptorsType)func_array[79];
-    pesapi_set_method_info_ptr = (pesapi_set_method_infoType)func_array[80];
-    pesapi_set_property_info_ptr = (pesapi_set_property_infoType)func_array[81];
-    pesapi_define_class_ptr = (pesapi_define_classType)func_array[82];
-    pesapi_class_type_info_ptr = (pesapi_class_type_infoType)func_array[83];
-    pesapi_find_type_id_ptr = (pesapi_find_type_idType)func_array[84];
+    pesapi_get_ref_associated_env_ptr = (pesapi_get_ref_associated_envType)func_array[65];
+    pesapi_get_ref_internal_fields_ptr = (pesapi_get_ref_internal_fieldsType)func_array[66];
+    pesapi_get_property_ptr = (pesapi_get_propertyType)func_array[67];
+    pesapi_set_property_ptr = (pesapi_set_propertyType)func_array[68];
+    pesapi_get_private_ptr = (pesapi_get_privateType)func_array[69];
+    pesapi_set_private_ptr = (pesapi_set_privateType)func_array[70];
+    pesapi_get_property_uint32_ptr = (pesapi_get_property_uint32Type)func_array[71];
+    pesapi_set_property_uint32_ptr = (pesapi_set_property_uint32Type)func_array[72];
+    pesapi_call_function_ptr = (pesapi_call_functionType)func_array[73];
+    pesapi_eval_ptr = (pesapi_evalType)func_array[74];
+    pesapi_get_env_private_ptr = (pesapi_get_env_privateType)func_array[75];
+    pesapi_set_env_private_ptr = (pesapi_set_env_privateType)func_array[76];
+    pesapi_alloc_type_infos_ptr = (pesapi_alloc_type_infosType)func_array[77];
+    pesapi_set_type_info_ptr = (pesapi_set_type_infoType)func_array[78];
+    pesapi_create_signature_info_ptr = (pesapi_create_signature_infoType)func_array[79];
+    pesapi_alloc_property_descriptors_ptr = (pesapi_alloc_property_descriptorsType)func_array[80];
+    pesapi_set_method_info_ptr = (pesapi_set_method_infoType)func_array[81];
+    pesapi_set_property_info_ptr = (pesapi_set_property_infoType)func_array[82];
+    pesapi_define_class_ptr = (pesapi_define_classType)func_array[83];
+    pesapi_class_type_info_ptr = (pesapi_class_type_infoType)func_array[84];
+    pesapi_find_type_id_ptr = (pesapi_find_type_idType)func_array[85];
 
 #endif
 }

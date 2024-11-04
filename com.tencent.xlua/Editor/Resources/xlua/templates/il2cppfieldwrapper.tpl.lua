@@ -10,53 +10,57 @@ function genGetField(fieldWrapperInfo)
     if isStructOrNullableStruct(signature) then
         if needThis(fieldWrapperInfo) then
             return [[auto ret = (char*)self + offset;
-            
+
     pesapi_add_return(info, pesapi_native_object_to_vaue(env, TIret, ret, false));]]
         else
             return [[auto ret = GetValueTypeFieldPre(nullptr, fieldInfo, offset);
-            
+
     pesapi_add_return(info, pesapi_native_object_to_value(env, TIret, ret, false));]]
         end
     else
         return string.format([[%s ret;
     GetFieldValue(%sfieldInfo, offset, &ret);
-    
-    %s]], SToCPPType(fieldWrapperInfo.ReturnSignature), needThis(fieldWrapperInfo) and 'self' or 'nullptr', returnToLua(fieldWrapperInfo.ReturnSignature))
-    end
-end 
 
-function genFieldWrapper(fieldWrapperInfo) 
+    %s]], SToCPPType(fieldWrapperInfo.ReturnSignature), needThis(fieldWrapperInfo) and 'self' or 'nullptr',
+            returnToLua(fieldWrapperInfo.ReturnSignature))
+    end
+end
+
+function genFieldWrapper(fieldWrapperInfo)
     return TaggedTemplateEngine([[
-static void ifg_]], fieldWrapperInfo.signature, [[(pesapi_callback_info info, FieldInfo* fieldInfo, size_t offset, Il2CppClass* TIret) {
+static void ifg_]], fieldWrapperInfo.signature,
+        [[(pesapi_callback_info info, FieldInfo* fieldInfo, size_t offset, Il2CppClass* TIret) {
     // PLog("Running ifg_]], fieldWrapperInfo.Signature, [[");
-    
+
     pesapi_env env = pesapi_get_env(info);
     ]], IF(needThis(fieldWrapperInfo)), [[
-    
+
     ]], getThis(fieldWrapperInfo.ThisSignature), [[
-    
+
     ]], ENDIF(), [[
     ]], genGetField(fieldWrapperInfo), [[
 }
 
-static void ifs_]], fieldWrapperInfo.Signature, [[(pesapi_callback_info info, FieldInfo* fieldInfo, size_t offset, Il2CppClass* Tip) {
+static void ifs_]], fieldWrapperInfo.Signature,
+        [[(pesapi_callback_info info, FieldInfo* fieldInfo, size_t offset, Il2CppClass* Tip) {
     // PLog("Running ifs_]], fieldWrapperInfo.Signature, [[");
-    
+
     pesapi_env env = pesapi_get_env(info);
     ]], IF(needThis(fieldWrapperInfo)), [[
-    
+
     ]], getThis(fieldWrapperInfo.ThisSignature), [[
-    
+
     ]], ENDIF(), [[
     ]], LuaValToCSVal(fieldWrapperInfo.ReturnSignature, "pesapi_get_arg(info, 0)", "p"), [[
-    SetFieldValue(]], needThis(fieldWrapperInfo) and 'self, ' or 'nullptr, ', 'fieldInfo, offset, ', table.indexOf({'o', 's', 'p', 'a'}, fieldWrapperInfo.Signature) ~= -1 and 'p' or '&p')
+    SetFieldValue(]], needThis(fieldWrapperInfo) and 'self, ' or 'nullptr, ', 'fieldInfo, offset, ',
+        table.indexOf({ 'o', 's', 'p', 'a' }, fieldWrapperInfo.Signature) ~= -1 and 'p' or '&p')
 end
 
 function Gen(genInfos)
     local fieldWrapperInfos = listToLuaArray(genInfos.FieldWrapperInfos)
     print(string.format('fieldWrapper:%d', #fieldWrapperInfos))
     return TaggedTemplateEngine([[// Auto Gen
-    
+
 #include "il2cpp-api.h"
 #include "il2cpp-class-internals.h"
 #include "il2cpp-object-internals.h"
@@ -83,16 +87,18 @@ namespace xlua
 ]], table.join(table.map(fieldWrapperInfos, genFieldWrapper), '\n'), [[
 
 static FieldWrapFuncInfo g_fieldWrapFuncInfos[] = {
-    ]], FOR(fieldWrapperInfos, function(info) return TaggedTemplateEngine([[
+    ]], FOR(fieldWrapperInfos, function(info)
+        return TaggedTemplateEngine([[
     {"]], info.Signature, '", ifg_', info.Signature, ', ifs_', info.Signature, [[},
-    ]]) end), [[
+    ]])
+    end), [[
     {nullptr, nullptr, nullptr}
 };
 
 FieldWrapFuncInfo * FindFieldWrapFuncInfo(const char* signature)
 {
     auto begin = &g_fieldWrapFuncInfos[0];
-    auto end = &g_fieldWrapFuncInfos(sizeof(g_fieldWrapFuncInfos) / sizeof(FieldWrapFuncInfo) - 1];
+    auto end = &g_fieldWrapFuncInfos[sizeof(g_fieldWrapFuncInfos) / sizeof(FieldWrapFuncInfo) - 1];
     auto first = std::lower_bound(begin, end, signature, [](const FieldWrapFuncInfo& x, const char* signature) {return strcmp(x.Signature, signature) < 0;});
     if (first != end && strcmp(first->Signature, signature) == 0) {
         return first;

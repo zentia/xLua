@@ -1,11 +1,4 @@
-﻿/*
-* Tencent is pleased to support the open source community by making Puerts available.
-* Copyright (C) 2020 THL A29 Limited, a Tencent company.  All rights reserved.
-* Puerts is licensed under the BSD 3-Clause License, except for the third-party components listed in the file 'LICENSE' which may be subject to their corresponding license terms. 
-* This file is subject to the terms and conditions defined in file 'LICENSE', which is part of this source code package.
-*/
-
-#if ENABLE_IL2CPP
+﻿#if ENABLE_IL2CPP
 
 using System;
 using System.Runtime.InteropServices;
@@ -28,7 +21,7 @@ namespace XLuaIl2cpp
 
     public class NativeAPI
     {
-#if (UNITY_ANDROID || UNITY_IPHONE || UNITY_TVOS || UNITY_WEBGL || UNITY_SWITCH) && !UNITY_EDITOR
+#if (UNITY_IPHONE || UNITY_TVOS || UNITY_WEBGL || UNITY_SWITCH) && !UNITY_EDITOR
         const string DLLNAME = "__Internal";
 #else
         const string DLLNAME = "xlua_il2cpp";
@@ -47,55 +40,69 @@ namespace XLuaIl2cpp
         public static extern IntPtr GetPesapiImpl();
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public static extern IntPtr GetPesapiEnvHolder(IntPtr luaEnv);
+        public static extern IntPtr GetPapiEnvRef(IntPtr luaEnv);
 
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public static extern IntPtr CreateCSharpTypeInfo(string name, IntPtr type_id, IntPtr super_type_id, IntPtr klass, bool isValueType, bool isDelegate, string delegateSignature);
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static IntPtr InitialPapiEnvRef(IntPtr envRef, Object obj, MethodBase addMethodBase, MethodBase removeMethodBase)
+        {
+            throw new NotImplementedException();
+        }
 
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static void CleanupPapiEnvRef(IntPtr envRef)
+        {
+            throw new NotImplementedException();
+        }
+
+        [DllImport("__Internal", CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr CreateCSharpTypeInfo(string name, IntPtr type_id, IntPtr super_type_id, bool isValueType, bool isDelegate, string delegateSignature);
+
+        [DllImport("__Internal", CallingConvention = CallingConvention.Cdecl)]
         public static extern void ReleaseCSharpTypeInfo(IntPtr classInfo);
 
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport("__Internal", CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr FindWrapFunc(string signature);
 
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public static extern IntPtr FindFieldWrap(string signature);
+        [DllImport("__Internal", CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr FindFieldWrap(string signature, out IntPtr getter, out IntPtr setter);
 
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport("__Internal", CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr AddConstructor(IntPtr classInfo, string signature, IntPtr WrapFunc, IntPtr method, IntPtr methodPointer, int typeInfoNum);
 
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport("__Internal", CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr AddMethod(IntPtr classInfo, string signature, IntPtr WrapFunc, string name, bool isStatic, bool isExtensionethod, bool isGetter, bool isSetter, IntPtr method, IntPtr methodPointer, int typeInfoNum);
 
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public static extern bool AddField(IntPtr classInfo, IntPtr FieldWrap, string name, bool isStatic, IntPtr fieldInfo, int offset, IntPtr fieldTypeInfo);
+        [DllImport("__Internal", CallingConvention = CallingConvention.Cdecl)]
+        public static extern bool AddField(IntPtr classInfo, IntPtr getter, IntPtr setter, string name, bool isStatic, IntPtr fieldInfo, int offset, IntPtr fieldTypeInfo);
 
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport("__Internal", CallingConvention = CallingConvention.Cdecl)]
         public static extern void SetTypeInfo(IntPtr wrapData, int index, IntPtr typeId);
 
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public static extern void ExchangeAPI(IntPtr exports);
-
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport("__Internal", CallingConvention = CallingConvention.Cdecl)]
         public static extern bool RegisterCSharpType(IntPtr classInfo);
 
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public static extern void SetObjectPool(IntPtr jsEnv, IntPtr objectPoolAddMethodInfo, IntPtr objectPoolAdd, IntPtr objectPoolRemoveMethodInfo, IntPtr objectPoolRemove, IntPtr objectPoolInstance);
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static void SetRegisterNoThrow(MethodBase methodInfo)
+        {
+        }
 
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public static extern void SetTryLoadCallback(IntPtr tryLoadMethodInfo, IntPtr tryLoad);
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static void SetObjectToGlobal(IntPtr luaEnv, string key, Object obj)
+        {
+            throw new NotImplementedException();
+        }
 
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public static extern void SetObjectToGlobal(IntPtr jsEnv, string key, IntPtr objPtr);
+        [DllImport("__Internal", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AddPendingKillScriptObjects(IntPtr luaEnv, IntPtr valueRef);
 
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public static extern void ReleasePendingLuaObjects(IntPtr luaEnv);
+        [DllImport("__Internal", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void CleanupPendingKillScriptObjects(IntPtr luaEnv);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public static extern bool LogicTick(IntPtr luaEnv);
 
         [MethodImpl(MethodImplOptions.InternalCall)]
-        public static Func<string, XLua.LuaObject> GetModuleExecutor(IntPtr NativeLuaEnvPtr, Type type)
+        public static object GetModuleExecutor(IntPtr NativeLuaEnvPtr, Type type)
         {
             throw new NotImplementedException();
         }
@@ -125,12 +132,6 @@ namespace XLuaIl2cpp
         }
 
         [MethodImpl(MethodImplOptions.InternalCall)]
-        public static IntPtr GetObjectPointer(Object obj)
-        {
-            throw new NotImplementedException();
-        }
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
         public static IntPtr GetTypeId(Type type)
         {
             throw new NotImplementedException();
@@ -138,12 +139,6 @@ namespace XLuaIl2cpp
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static Type TypeIdToType(IntPtr typeId)
-        {
-            throw new NotImplementedException();
-        }
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static IntPtr GetUnityExports()
         {
             throw new NotImplementedException();
         }

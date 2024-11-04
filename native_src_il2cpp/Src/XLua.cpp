@@ -73,6 +73,8 @@ struct LuaEnv
     ~LuaEnv()
     {
     }
+
+    lua_State* L;
 };
 }    // namespace xlua
 /*
@@ -1510,6 +1512,14 @@ extern "C"
     LUA_API void SetLogCallback(xlua::LogCallback Log)
     {
         xlua::GLogCallback = Log;
+    }
+
+    LUA_API pesapi_env_ref GetPapiEnvRef(xlua::LuaEnv* luaEnv)
+    {
+        lua_State* L = luaEnv->L;
+
+        auto env = reinterpret_cast<pesapi_env>(L);
+        return pesapi_create_env_ref(env);
     }
 
 #ifdef __cplusplus

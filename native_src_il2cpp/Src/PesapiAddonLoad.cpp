@@ -50,7 +50,7 @@ static pesapi_func_ptr funcs[] = {(pesapi_func_ptr) &pesapi_create_null, (pesapi
     (pesapi_func_ptr) &pesapi_has_caught, (pesapi_func_ptr) &pesapi_get_exception_as_string, (pesapi_func_ptr) &pesapi_close_scope,
     (pesapi_func_ptr) &pesapi_create_value_ref, (pesapi_func_ptr) &pesapi_duplicate_value_ref,
     (pesapi_func_ptr) &pesapi_release_value_ref, (pesapi_func_ptr) &pesapi_get_value_from_ref,
-    (pesapi_func_ptr) &pesapi_set_ref_weak, (pesapi_func_ptr) &pesapi_set_owner, (pesapi_func_ptr) &pesapi_get_property,
+    (pesapi_func_ptr) &pesapi_set_ref_weak, (pesapi_func_ptr) &pesapi_set_owner, (pesapi_func_ptr) &pesapi_get_ref_associated_env, (pesapi_func_ptr) &pesapi_get_property,
     (pesapi_func_ptr) &pesapi_set_property, (pesapi_func_ptr) &pesapi_get_property_uint32,
     (pesapi_func_ptr) &pesapi_set_property_uint32, (pesapi_func_ptr) &pesapi_call_function, (pesapi_func_ptr) &pesapi_eval,
     (pesapi_func_ptr) &pesapi_get_env_private, (pesapi_func_ptr) &pesapi_set_env_private,
@@ -60,84 +60,20 @@ static pesapi_func_ptr funcs[] = {(pesapi_func_ptr) &pesapi_create_null, (pesapi
     (pesapi_func_ptr) &pesapi_class_type_info};
 MSVC_PRAGMA(warning(pop))
 
-EXTERN_C_START
-int pesapi_load_addon(const char* path, const char* module_name)
+static int LoadAddon(const char* path, const char* module_name)
 {
     return -1;
 }
 
-extern const char* GPesapiModuleName;
+EXTERN_C_START
+int pesapi_load_addon(const char* path, const char* module_name)
+{
+    return LoadAddon(path, module_name);
+}
 
-// int load_dll(lua_State* L)
-// {
-//     if (!lua_isstring(L, 1))
-//     {
-//         return luaL_error(L, "#0 argument expect a string");
-//     }
-//     std::string path = lua_tostring(L, 1);
-//
-//     if (GHandlers.find(path) != GHandlers.end())
-//     {
-//         return luaL_error(L, "loaded!");
-//     }
-//
-//     void* handle = dlopen(path.c_str(), RTLD_LAZY);
-//     if (!handle)
-//     {
-//         return luaL_error(L, "dlopen fail for %s, error:%s", path.c_str(), dlerror());
-//     }
-//
-//     std::string EntryName = STRINGIFY(PESAPI_MODULE_INITIALIZER(dynamic));
-//     auto Init = (const char* (*) (pesapi_func_ptr*) )(uintptr_t) dlsym(handle, EntryName.c_str());
-//
-//     if (Init)
-//     {
-//         const char* mn = Init(nullptr);
-//         GPesapiModuleName = mn;
-//         Init(funcs);
-//         GPesapiModuleName = nullptr;
-//         GHandlers[path] = handle;
-//         lua_pushstring(L, mn);
-//         return 1;
-//     }
-//     else
-//     {
-//         std::string VersionEntryName = STRINGIFY(PESAPI_MODULE_VERSION());
-//         auto Ver = (int (*)())(uintptr_t) dlsym(handle, VersionEntryName.c_str());
-//         if (!Ver)
-//         {
-//             dlclose(handle);
-//             return luaL_error(L, "can find entry");
-//         }
-//         else
-//         {
-//             int pesapi_ver = Ver();
-//             dlclose(handle);
-//             return luaL_error(L, "pesapi version mismatch, expect: %d, but got: %d", PESAPI_VERSION, pesapi_ver);
-//         }
-//     }
-// }
-//
-// int load_type(lua_State* L)
-// {
-//     puerts::FCppObjectMapper* cppObjectMapper = (puerts::FCppObjectMapper*) lua_touserdata(L, lua_upvalueindex(1));
-//     return cppObjectMapper->LoadCppType(L);
-// }
-//
-// int luaopen_puerts_lua(lua_State* L)
-// {
-//     luaL_Reg fns[] = {{"load", load_dll}, {NULL, NULL}};
-//
-//     luaL_newlib(L, fns);
-//
-//     puerts::FCppObjectMapper* cppObjectMapper = new puerts::FCppObjectMapper();
-//     // printf("cppObjectMapper:%p\n", cppObjectMapper);
-//     cppObjectMapper->Initialize(L);
-//     lua_pushlightuserdata(L, cppObjectMapper);
-//     lua_pushcclosure(L, load_type, 1);
-//     lua_setfield(L, -2, "loadType");
-//
-//     return 1;
-// }
+pesapi_func_ptr* GetPesapiImpl()
+{
+    return funcs;
+}
 
 EXTERN_C_END

@@ -33,7 +33,7 @@ namespace XLuaIl2cpp.Editor
             public static void GenerateCppWrappers()
             {   
                 var start = DateTime.Now;
-                var saveTo = Path.Combine(Path.GetFullPath("Packages/com.tencent.xlua/"), "../", "native_src_il2cpp", "Src");
+                var saveTo = Path.Combine(Path.GetFullPath("Packages/com.tencent.xlua/"), "Plugins/xlua_il2cpp/");
                 Directory.CreateDirectory(saveTo);
                 FileExporter.GenCPPWrap(saveTo);
                 Debug.Log("finished! use " + (DateTime.Now - start).TotalMilliseconds + " ms Outputed to " + saveTo);

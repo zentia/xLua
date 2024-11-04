@@ -459,6 +459,11 @@ bool pesapi_set_owner(pesapi_env env, pesapi_value pvalue, pesapi_value powner)
     return false;
 }
 
+pesapi_env_ref pesapi_get_ref_associated_env(pesapi_value_ref value_ref)
+{
+    return pesapi_env_ref(value_ref->L);
+}
+
 void** pesapi_get_ref_internal_fields(pesapi_value_ref value_ref, uint32_t* pinternal_field_count)
 {
     *pinternal_field_count = value_ref->internal_field_count;
@@ -563,7 +568,7 @@ struct pesapi_property_descriptor__
     pesapi_callback setter;
     void* data0;
     void* data1;
-    
+
     union
     {
         pesapi_type_info type_info;
@@ -762,8 +767,7 @@ void pesapi_class_type_info(const char* proto_magic_id, const void* type_id, con
 
     xlua::SetClassTypeInfo(type_id, static_cast<const xlua::NamedFunctionInfo*>(constructor_info),
         static_cast<const xlua::NamedFunctionInfo*>(methods_info), static_cast<const xlua::NamedFunctionInfo*>(functions_info),
-        static_cast<const xlua::NamedPropertyInfo*>(properties_info),
-        static_cast<const xlua::NamedPropertyInfo*>(variables_info));
+        static_cast<const xlua::NamedPropertyInfo*>(properties_info), static_cast<const xlua::NamedPropertyInfo*>(variables_info));
 }
 
 const void* pesapi_find_type_id(const char* module_name, const char* type_name)
