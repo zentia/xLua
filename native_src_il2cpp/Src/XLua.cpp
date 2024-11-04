@@ -26,7 +26,6 @@
 #include "xlua.h"
 #include <string>
 #include <vector>
-#include <UnityExports4XLua.h>
 #include <thread>
 #include <mutex>
 #include "LuaClassRegister.h"

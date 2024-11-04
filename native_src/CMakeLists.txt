@@ -80,7 +80,6 @@ set ( XLUA_CORE
 )
 
 set ( XLUA_INC
-    Inc/UnityExports4XLua.h
 )
 
 set ( XLUA_SRC

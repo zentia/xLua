@@ -49,7 +49,6 @@ set ( XLUA_INC
     Inc/PesapiObject.hpp
     Inc/StaticCall.hpp
     Inc/Typeinfo.hpp
-    Inc/UnityExports4XLua.h
     Inc/XLuaNamespaceDef.h
 )
 
