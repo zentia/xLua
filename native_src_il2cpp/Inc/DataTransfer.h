@@ -12,7 +12,6 @@
 #include "DataTransfer.h"
 
 #include "lua.hpp"
-#include "xlua.h"
 
 #if !defined(MAPPER_ISOLATE_DATA_POS)
 #define MAPPER_STATE_DATA_POS "mapper_state_data_pos"
