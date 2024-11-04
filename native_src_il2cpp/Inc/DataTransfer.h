@@ -91,7 +91,7 @@ public:
         return data;
     }
 
-    FORCEINLINE static void* SetStatePrivateData(lua_State* L, void* PrivateData)
+    FORCEINLINE static void SetStatePrivateData(lua_State* L, void* PrivateData)
     {
         lua_pushlightuserdata(L, (void*) PESAPI_PRIVATE_DATA_POS_IN_STATE);
         lua_pushlightuserdata(L, (void*) PrivateData);
@@ -102,13 +102,11 @@ public:
 
     static bool IsInstanceOf(lua_State* L, const void* TypeId, int ObjectIndex);
 
-    static void UnRef(lua_State* L, void* Value);
+    static void UnRef(lua_State* L, int Ref);
 
-    static void UpdateRef(lua_State* L, void* Outer, void* Value);
+    static void UpdateRef(lua_State* L, int Outer, int Value);
 
     static std::weak_ptr<int> GetLuaEnvLifeCycleTracker(lua_State* L);
-
-    static struct FPersistentObjectEnvInfo* GetPersistentObjectEnvInfo(lua_State* L);
 
     template <typename T1, typename T2>
     FORCEINLINE static void LinkOuter(lua_State* L, void* Outer, void* Inner)

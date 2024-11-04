@@ -249,7 +249,7 @@ static int obj_indexer(lua_State* L)
 
 // upvalue --- [1]:setters, [2]:base_newindex
 // param   --- [1]: obj, [2]: key, [3]: value
-LUA_API int obj_newindexer(lua_State* L)
+int obj_newindexer(lua_State* L)
 {
     if (!lua_isnil(L, lua_upvalueindex(1)))
     {

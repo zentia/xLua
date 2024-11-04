@@ -67,8 +67,8 @@ struct LUAENV_API LuaPropertyInfo
     LuaPropertyInfo(const char* InName, CallbackType InGetter, CallbackType InSetter, void* InGetterData = nullptr,
         void* InSetterData = nullptr)
         : Name(InName)
-        , Getter(reinterpret_cast<pesapi_callback>)
-        , Setter(reinterpret_cast<pesapi_callback>)
+        , Getter(reinterpret_cast<pesapi_callback>(InGetter))
+        , Setter(reinterpret_cast<pesapi_callback>(InSetter))
         , GetterData(InGetterData)
         , SetterData(InSetterData)
     {
@@ -121,11 +121,11 @@ void LUAENV_API ForeachRegisterClass(std::function<void(const LuaClassDefinition
 
 LUAENV_API const LuaClassDefinition* FindClassByID(const void* TypeId);
 
-LUAENV_API void OnClassDefinition(pesapi_class_not_found_callback Callback);
+LUAENV_API void OnClassNotFound(pesapi_class_not_found_callback Callback);
 
 LUAENV_API const LuaClassDefinition* LoadClassByID(const void* TypeId);
 
-LUAENV_API LuaClassDefinition* FindCppTypeClassByName(const std::string& Name);
+LUAENV_API const LuaClassDefinition* FindCppTypeClassByName(const std::string& Name);
 
 LUAENV_API bool TraceObjectLifecycle(
     const void* TypeId, pesapi_on_native_object_enter OnEnter, pesapi_on_native_object_exit OnExit);

@@ -33,7 +33,7 @@ public:
     }
 
     template <std::size_t... Indexes>
-    constexpr StringLiteral(const char (&value)[N + 1]) : StringLiteral(value, std::make_index_sequence<N>{})
+    constexpr StringLiteral(const char (&value)[N + 1], std::index_sequence<Indexes...> dummy) : StringLiteral(value[Indexes]...)
     {
     }
 
@@ -329,7 +329,7 @@ protected:
 
     FunctionInfoImpl()
         : return_(TypeInfoImpl<Ret, ScriptTypePtrAsRef>::get())
-        , argCount_(sizeof..(Args))
+        , argCount_(sizeof...(Args))
         , arguments_{TypeInfoImpl<Args, ScriptTypePtrAsRef>::get()...}
         , defaultCount_(0)
     {
@@ -410,14 +410,14 @@ public:
 
 template <typename Inc, typename Ret, typename... Args, Ret (Inc::*func)(Args...) const, bool ScriptTypePtrAsRef>
 class FunctionInfoByPtrImpl<Ret (Inc::*)(Args...) const, func, ScriptTypePtrAsRef>
-    : public FunctionInfoImpl<Ret, ScritpTypePtrAsRef, 8, Args..>
+    : public FunctionInfoImpl<Ret, ScriptTypePtrAsRef, 8, Args...>
 {
 public:
     virtual ~FunctionInfoByPtrImpl()
     {
     }
 
-    static const FunctionInfo* get(unsigned int defatulCount)
+    static const FunctionInfo* get(unsigned int defaultCount)
     {
         static FunctionInfoByPtrImpl instance{};
         instance.defaultCount_ = defaultCount;

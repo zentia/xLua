@@ -76,7 +76,7 @@ public:
 
     void OnClassNotFound(pesapi_class_not_found_callback InCallback)
     {
-        OnClassNotFound = InCallback;
+        ClassNotFoundCallback = InCallback;
     }
 
     const LuaClassDefinition* LoadClassByID(const void* TypeId)
@@ -213,6 +213,11 @@ const LuaClassDefinition* FindClassByID(const void* TypeId)
 const LuaClassDefinition* LoadClassByID(const void* TypeId)
 {
     return GetLuaClassRegister()->LoadClassByID(TypeId);
+}
+
+void OnClassNotFound(pesapi_class_not_found_callback Callback)
+{
+    GetLuaClassRegister()->OnClassNotFound(Callback);
 }
 
 const LuaClassDefinition* FindCppTypeClassByName(const std::string& Name)

@@ -28,6 +28,8 @@
 #include <vector>
 #include <thread>
 #include <mutex>
+
+#include "Log.h"
 #include "LuaClassRegister.h"
 
 #define GetObjectData(Value, Type) ((Type*) (((uint8_t*) Value) + GUnityExports.SizeOfRuntimeObject))
@@ -1457,38 +1459,23 @@ LUA_API void luaopen_xlua(lua_State* L)
 }
 namespace xlua
 {
-struct CSharpMethodInfo
-{
-    std::string Name;
-    bool IsStatic;
-    bool IsGetter;
-    bool IsSetter;
-    std::vector<WrapData*> OverloadDatas;
-};
+typedef void(*LogCallback)(const char* value);
 
-struct FieldWrapData
-{
-    FieldWrapFuncPtr Getter;
-    FieldWrapFuncPtr Setter;
-    void* FieldInfo;
-    size_t Offset;
-    void* TypeInfo;
-};
+static LogCallback GLogCallback = nullptr;
 
-struct CSharpFieldInfo
+void PLog(LogLevel level, const std::string Fmt, ...)
 {
-    std::string Name;
-    bool IsStatic;
-    FieldWrapData* Data;
-};
+    static char SLogBuffer[1024];
+    va_list list;
+    va_start(list, Fmt);
+    vsnprintf(SLogBuffer, sizeof(SLogBuffer), Fmt.c_str(), list);
+    va_end(list);
 
-struct LuaClassInfo : public LuaClassInfoHeader
-{
-    std::string Name;
-    std::vector<WrapData*> Ctors;
-    std::vector<CSharpMethodInfo> Methods;
-    std::vector<CSharpFieldInfo> Fields;
-};
+    if (GLogCallback)
+    {
+        GLogCallback(SLogBuffer);
+    }
+}
 
 struct LuaEnv
 {
@@ -1502,38 +1489,7 @@ struct LuaEnv
 };
 }    // namespace xlua
 
-inline static void CopyValueType(lua_State* L, const void* TypeId, const void* Ptr, size_t SizeOfValueType)
-{
-    void* buff = GUnityExports.ObjectAllocate(TypeId);
-    memcpy(buff, Ptr, SizeOfValueType);
-    return DataTransfer::FindOrAddCData(L, TypeId, buff, false);
-}
-
-inline static int CSRefToLuaValue(lua_State* L, void* Obj)
-{
-    if (!Obj)
-    {
-        lua_pushnil(L);
-        return lua_gettop(L);
-    }
-
-    pesapi_value luaValue = GUnityExports.TryTranslateBuiltin(L, Obj);
-}
-
-static void UnrefLuaObject(PersistentObjectInfo* objectInfo)
-{
-}
-
-LUA_API void ReleaseCSharpTypeInfo(xlua::LuaClassInfo* classInfo)
-{
-    delete classInfo;
-}
-
-static void* DeleagteCtorCallback(lua_State* L)
-{
-}
-
-LUA_API bool xlua::LuaEnv* CreateNativeLuaEnv()
+LUA_API xlua::LuaEnv* CreateNativeLuaEnv()
 {
     return new xlua::LuaEnv();
 }
@@ -1541,4 +1497,9 @@ LUA_API bool xlua::LuaEnv* CreateNativeLuaEnv()
 LUA_API void DestroyNativeLuaEnv(xlua::LuaEnv* luaEnv)
 {
     delete luaEnv;
+}
+
+LUA_API void SetLogCallback(xlua::LogCallback Log)
+{
+    xlua::GLogCallback = Log;
 }

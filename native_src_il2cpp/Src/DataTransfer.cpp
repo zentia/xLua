@@ -21,7 +21,7 @@ namespace xlua
     bool DataTransfer::IsInstanceOf(lua_State *L, const void* TypeId, int ObjectIndex)
     {
         xlua::CppObjectMapper *cppObjectMapper = xlua::CppObjectMapper::Get(L);
-        return cppObjectMapper->IsInstanceOfCppObject(TypeId, ObjectIndex);
+        return cppObjectMapper->IsInstanceOfCppObject(L, TypeId, ObjectIndex);
     }
 
     void DataTransfer::UnRef(lua_State *L, int Ref)
@@ -39,11 +39,5 @@ namespace xlua
     {
         xlua::CppObjectMapper *cppObjectMapper = xlua::CppObjectMapper::Get(L);
         return cppObjectMapper->GetLuaEnvLifeCycleTracker();
-    }
-
-    struct PersistentObjectEnvInfo* DataTransfer::GetPersistentObjectEnvInfo(lua_State *L)
-    {
-        xlua::CppObjectMapper *cppObjectMapper = xlua::CppObjectMapper::Get(L);
-        return cppObjectMapper->GetPersistentObjectEnvInfo();
     }
 }    // namespace XLUA_NAMESPACE

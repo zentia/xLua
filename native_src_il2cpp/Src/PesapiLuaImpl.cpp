@@ -16,8 +16,9 @@
 #include <vector>
 #include <cstring>
 
-EXTERN_C_START
+#include "DataTransfer.h"
 
+EXTERN_C_START
 // value process
 pesapi_value pesapi_create_null(pesapi_env env)
 {
@@ -560,8 +561,9 @@ struct pesapi_property_descriptor__
     pesapi_callback method;
     pesapi_callback getter;
     pesapi_callback setter;
-    void* data;
-
+    void* data0;
+    void* data1;
+    
     union
     {
         pesapi_type_info type_info;
@@ -601,18 +603,19 @@ void pesapi_set_method_info(pesapi_property_descriptor properties, size_t index,
     properties[index].name = name;
     properties[index].is_static = is_static;
     properties[index].method = method;
-    properties[index].data = data;
+    properties[index].data0 = data;
     properties[index].info.signature_info = signature_info;
 }
 
 void pesapi_set_property_info(pesapi_property_descriptor properties, size_t index, const char* name, bool is_static,
-    pesapi_callback getter, pesapi_callback setter, void* data, pesapi_type_info type_info)
+    pesapi_callback getter, pesapi_callback setter, void* getter_data, void* setter_data, pesapi_type_info type_info)
 {
     properties[index].name = name;
     properties[index].is_static = is_static;
     properties[index].getter = getter;
     properties[index].setter = setter;
-    properties[index].data = data;
+    properties[index].data0 = getter_data;
+    properties[index].data1 = setter_data;
     properties[index].info.type_info = type_info;
 }
 
@@ -694,17 +697,17 @@ void pesapi_define_class(const void* type_id, const void* super_type_id, const c
             if (p->is_static)
             {
                 p_variables.push_back({p->name, reinterpret_cast<xlua::FunctionCallback>(p->getter),
-                    reinterpret_cast<xlua::FunctionCallback>(p->setter), p->data});
+                    reinterpret_cast<xlua::FunctionCallback>(p->setter), p->data0, p->data1});
             }
             else
             {
                 p_properties.push_back({p->name, reinterpret_cast<xlua::FunctionCallback>(p->getter),
-                    reinterpret_cast<xlua::FunctionCallback>(p->setter), p->data});
+                    reinterpret_cast<xlua::FunctionCallback>(p->setter), p->data0, p->data1});
             }
         }
         else if (p->method != nullptr)
         {
-            xlua::LuaFunctionInfo finfo{p->name, reinterpret_cast<xlua::FunctionCallback>(p->method), p->data};
+            xlua::LuaFunctionInfo finfo{p->name, reinterpret_cast<xlua::FunctionCallback>(p->method), p->data0};
             if (p->is_static)
             {
                 p_functions.push_back(finfo);
@@ -734,11 +737,42 @@ MSVC_PRAGMA(warning(pop))
 
 void* pesapi_get_class_data(const void* type_id, bool force_load)
 {
-    auto clsDef = force_load ? xlua::LoadC
+    auto clsDef = force_load ? xlua::LoadClassByID(type_id) : xlua::FindClassByID(type_id);
+    return clsDef ? clsDef->Data : nullptr;
 }
+
+bool pesapi_trace_native_object_lifecycle(
+    const void* type_id, pesapi_on_native_object_enter on_enter, pesapi_on_native_object_exit on_exit)
+{
+    return xlua::TraceObjectLifecycle(type_id, on_enter, on_exit);
+}
+
+void pesapi_on_class_not_found(pesapi_class_not_found_callback callback)
+{
+    xlua::OnClassNotFound(callback);
+}
+
 void pesapi_class_type_info(const char* proto_magic_id, const void* type_id, const void* constructor_info, const void* methods_info,
     const void* functions_info, const void* properties_info, const void* variables_info)
 {
+    if (strcmp(proto_magic_id, XLUA_BINDING_PROTO_ID()) != 0)
+    {
+        return;
+    }
+
+    xlua::SetClassTypeInfo(type_id, static_cast<const xlua::NamedFunctionInfo*>(constructor_info),
+        static_cast<const xlua::NamedFunctionInfo*>(methods_info), static_cast<const xlua::NamedFunctionInfo*>(functions_info),
+        static_cast<const xlua::NamedPropertyInfo*>(properties_info),
+        static_cast<const xlua::NamedPropertyInfo*>(variables_info));
+}
+
+const void* pesapi_find_type_id(const char* module_name, const char* type_name)
+{
+    std::string fullname = module_name;
+    fullname += ".";
+    fullname += type_name;
+    const auto class_def = xlua::FindCppTypeClassByName(fullname);
+    return class_def ? class_def->TypeId : nullptr;
 }
 
 EXTERN_C_END

@@ -8,11 +8,9 @@ cmake_minimum_required(VERSION 2.8)
 
 if ( WIN32 AND NOT CYGWIN AND NOT ( CMAKE_SYSTEM_NAME STREQUAL "WindowsStore" ) AND NOT ANDROID)
 	set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} /MT" CACHE STRING "")
-	set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} /Zi /Od /MTd" CACHE STRING "")
+	set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} /MTd" CACHE STRING "")
 	set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT" CACHE STRING "")
-	set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /Zi /Od /MTd" CACHE STRING "")
-    set(CMAKE_EXE_LINKER_FLAGS_DEBUG "${CMAKE_EXE_LINKER_FLAGS_DEBUG} /DEBUG")
-    set(CMAKE_SHARED_LINKER_FLAGS_DEBUG "${CMAKE_SHARED_LINKER_FLAGS_DEBUG} /DEBUG")
+	set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MTd" CACHE STRING "")
 endif ()
 
 project(XLua)
@@ -40,24 +38,38 @@ if (NOT LUA_VERSION)
 endif()
 
 set(LUA_SRC_PATH ../build/lua-${LUA_VERSION}/src)
-set(LUAJIT_SRC_PATH ../build/LuaJIT/src)
+set(LUAJIT_SRC_PATH luajit-2.1.0b3/src)
 
 if (USING_LUAJIT)
 	
-    include_directories(
-        ${CMAKE_SOURCE_DIR}
-        ${LUAJIT_SRC_PATH}
-        ${CMAKE_CURRENT_BINARY_DIR}
-        ${THIRDPART_INC}
-    )
+    if (APPLE AND NOT IOS AND NOT ANDROID)
+	    include_directories(
+		  ${CMAKE_SOURCE_DIR}
+		  lua-5.1.5/src
+		  lua-5.1.5/etc
+		  ${CMAKE_CURRENT_BINARY_DIR}
+		  ${THIRDPART_INC}
+	    )
+	    set ( LUA_CORE lua-5.1.5/src/lapi.c lua-5.1.5/src/lcode.c lua-5.1.5/src/ldebug.c lua-5.1.5/src/ldo.c lua-5.1.5/src/ldump.c lua-5.1.5/src/lfunc.c 
+          lua-5.1.5/src/lgc.c lua-5.1.5/src/llex.c lua-5.1.5/src/lmem.c lua-5.1.5/src/lobject.c lua-5.1.5/src/lopcodes.c lua-5.1.5/src/lparser.c lua-5.1.5/src/lstate.c 
+          lua-5.1.5/src/lstring.c lua-5.1.5/src/ltable.c lua-5.1.5/src/ltm.c lua-5.1.5/src/lundump.c lua-5.1.5/src/lvm.c lua-5.1.5/src/lzio.c lua-5.1.5/src/lauxlib.c 
+          lua-5.1.5/src/lbaselib.c lua-5.1.5/src/ldblib.c lua-5.1.5/src/liolib.c lua-5.1.5/src/lmathlib.c lua-5.1.5/src/loslib.c lua-5.1.5/src/ltablib.c 
+          lua-5.1.5/src/lstrlib.c lua-5.1.5/src/linit.c lua-5.1.5/src/loadlib.c)
+	else ()
+	    include_directories(
+		  ${CMAKE_SOURCE_DIR}
+		  ${LUAJIT_SRC_PATH}
+		  ${CMAKE_CURRENT_BINARY_DIR}
+		  ${THIRDPART_INC}
+	    )
 
-    set ( LUA_CORE )
-    set_property( SOURCE Src/xlua.c APPEND PROPERTY COMPILE_DEFINITIONS USING_LUAJIT )
+	    set ( LUA_CORE )
+	    set_property( SOURCE xlua.c APPEND PROPERTY COMPILE_DEFINITIONS USING_LUAJIT )
+    endif ()
 	set ( LUA_LIB )
 else ()
-	set ( LUA_IDSIZE 120 CACHE STRING "gives the maximum size for the description of the source." )
-
 	include_directories(
+        ../build
 	    ${CMAKE_SOURCE_DIR}
 		${LUA_SRC_PATH}
 		${CMAKE_CURRENT_BINARY_DIR}
@@ -68,46 +80,21 @@ else ()
     list(REMOVE_ITEM LUA_CORE ${LUA_SRC_PATH}/lua.c ${LUA_SRC_PATH}/luac.c)
 	set ( LUA_LIB )
 
+	# set ( LUA_CORE ${LUA_SRC_PATH}/lapi.c ${LUA_SRC_PATH}/lcode.c ${LUA_SRC_PATH}/lctype.c ${LUA_SRC_PATH}/ldebug.c ${LUA_SRC_PATH}/ldo.c ${LUA_SRC_PATH}/ldump.c
+	#   ${LUA_SRC_PATH}/lfunc.c ${LUA_SRC_PATH}/lgc.c ${LUA_SRC_PATH}/llex.c ${LUA_SRC_PATH}/lmem.c ${LUA_SRC_PATH}/lobject.c ${LUA_SRC_PATH}/lopcodes.c ${LUA_SRC_PATH}/lparser.c
+	#   ${LUA_SRC_PATH}/lstate.c ${LUA_SRC_PATH}/lstring.c ${LUA_SRC_PATH}/ltable.c ${LUA_SRC_PATH}/ltm.c ${LUA_SRC_PATH}/lundump.c ${LUA_SRC_PATH}/lvm.c ${LUA_SRC_PATH}/lzio.c )
+	# set ( LUA_LIB ${LUA_SRC_PATH}/lauxlib.c ${LUA_SRC_PATH}/lbaselib.c ${LUA_SRC_PATH}/lbitlib.c ${LUA_SRC_PATH}/lcorolib.c ${LUA_SRC_PATH}/ldblib.c
+	#   ${LUA_SRC_PATH}/liolib.c ${LUA_SRC_PATH}/lmathlib.c ${LUA_SRC_PATH}/loslib.c ${LUA_SRC_PATH}/lstrlib.c ${LUA_SRC_PATH}/ltablib.c ${LUA_SRC_PATH}/linit.c
+	#   ${LUA_SRC_PATH}/lutf8lib.c ${LUA_SRC_PATH}/loadlib.c )
 endif ()
 
-include_directories(
-    Inc
-    ../com.tencent.xlua/Plugins
-)
 set ( XLUA_CORE
-    Src/i64lib.c
-    Src/xlua.c
+    ../build/i64lib.c
+    xlua.c
 )
-
-set ( XLUA_INC
-)
-
-set ( XLUA_SRC
-    Src/FunctionBridge.Gen.h
-)
-
-macro(source_group_by_dir proj_dir source_files)
-    if(MSVC OR APPLE)
-        get_filename_component(sgbd_cur_dir ${proj_dir} ABSOLUTE)
-        foreach(sgbd_file ${${source_files}})
-			get_filename_component(sgbd_abs_file ${sgbd_file} ABSOLUTE)
-            file(RELATIVE_PATH sgbd_fpath ${sgbd_cur_dir} ${sgbd_abs_file})
-            string(REGEX REPLACE "\(.*\)/.*" \\1 sgbd_group_name ${sgbd_fpath})
-            string(COMPARE EQUAL ${sgbd_fpath} ${sgbd_group_name} sgbd_nogroup)
-            string(REPLACE "/" "\\" sgbd_group_name ${sgbd_group_name})
-            if(sgbd_nogroup)
-                set(sgbd_group_name "\\")
-            endif(sgbd_nogroup)
-            source_group(${sgbd_group_name} FILES ${sgbd_file})
-        endforeach(sgbd_file)
-    endif(MSVC OR APPLE)
-endmacro(source_group_by_dir)
-
-source_group_by_dir(${CMAKE_CURRENT_SOURCE_DIR} XLUA_INC)
-source_group_by_dir(${CMAKE_CURRENT_SOURCE_DIR} XLUA_SRC)
 
 if (NOT USING_LUAJIT)
-    list (APPEND XLUA_CORE Src/memory_leak_checker.c)
+    list (APPEND XLUA_CORE ../build/memory_leak_checker.c)
 endif ( )
 
 macro(source_group_by_dir proj_dir source_files)
@@ -127,6 +114,7 @@ macro(source_group_by_dir proj_dir source_files)
     endif(MSVC OR APPLE)
 endmacro(source_group_by_dir)
 
+source_group_by_dir(${CMAKE_CURRENT_SOURCE_DIR} LUA_SOCKET)
 source_group_by_dir(${CMAKE_CURRENT_SOURCE_DIR} LUA_CORE)
 source_group_by_dir(${CMAKE_CURRENT_SOURCE_DIR} LUA_LIB)
 source_group_by_dir(${CMAKE_CURRENT_SOURCE_DIR} XLUA_CORE)
@@ -138,6 +126,7 @@ if (APPLE)
         add_library(xlua STATIC
            ${LUA_CORE}
            ${LUA_LIB}
+           ${LUA_SOCKET}
            ${XLUA_CORE}
            ${THIRDPART_SRC}
         )
@@ -150,6 +139,7 @@ if (APPLE)
             add_library(xlua SHARED
                 ${LUA_CORE}
                 ${LUA_LIB}
+                ${LUA_SOCKET}
                 ${XLUA_CORE}
                 ${THIRDPART_SRC}
             )
@@ -158,6 +148,7 @@ if (APPLE)
             add_library(xlua MODULE
                 ${LUA_CORE}
                 ${LUA_LIB}
+                ${LUA_SOCKET}
                 ${XLUA_CORE}
                 ${THIRDPART_SRC}
             )
@@ -195,6 +186,13 @@ endif ()
 if (LUAC_COMPATIBLE_FORMAT AND NOT USING_LUAJIT)
     target_compile_definitions (xlua PRIVATE LUAC_COMPATIBLE_FORMAT)
 endif ()
+
+set_property(
+	SOURCE ${LUA_SOCKET}
+	APPEND
+	PROPERTY COMPILE_DEFINITIONS
+	LUA_COMPAT_APIINTCASTS LUA_LIB _CRT_SECURE_NO_WARNINGS _WINSOCK_DEPRECATED_NO_WARNINGS
+)
 
 if(UINT_ESPECIALLY)
     ADD_DEFINITIONS(-DUINT_ESPECIALLY)
