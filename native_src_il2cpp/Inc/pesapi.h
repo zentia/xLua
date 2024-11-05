@@ -216,7 +216,8 @@ PESAPI_EXTERN void pesapi_set_property_uint32(pesapi_env env, pesapi_value objec
 PESAPI_EXTERN pesapi_value pesapi_call_function(
     pesapi_env env, pesapi_value func, pesapi_value this_object, int argc, const pesapi_value argv[]);
 
-PESAPI_EXTERN pesapi_value pesapi_eval(pesapi_env env, const uint8_t* code, size_t code_size, const char* path);
+PESAPI_EXTERN int pesapi_dostring(
+    pesapi_env env, const uint8_t* code, size_t code_size, const char* path, int luaEnvRefernce, int *oldTop, int *ret);
 
 PESAPI_EXTERN pesapi_value pesapi_global(pesapi_env env);
 PESAPI_EXTERN const void* pesapi_get_env_private(pesapi_env env);

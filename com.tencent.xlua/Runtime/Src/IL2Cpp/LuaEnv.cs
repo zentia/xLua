@@ -2,7 +2,7 @@
 using System;
 using System.Reflection;
 using XLua.TypeMapping;
-
+using System.Collections.Generic;
 #if USE_UNI_LUA
 using LuaAPI = UniLua.Lua;
 using RealStatePtr = UniLua.ILuaState;
@@ -16,8 +16,7 @@ using LuaCSFunction = XLua.LuaDLL.lua_CSFunction;
 
 namespace XLua
 {
-    using System.Collections.Generic;
-
+    [UnityEngine.Scripting.Preserve]
     public class LuaEnv : IDisposable
     {
         IntPtr nativeLuaEnv;
@@ -25,8 +24,15 @@ namespace XLua
         IntPtr nativeScriptObjectsRefsMgr;
 
         Type persistentObjectInfoType;
-
+        MethodInfo objectPoolAddMethodInfo;
+        MethodInfo objectPoolRemoveMethodInfo;
         MethodInfo tryLoadTypeMethodInfo;
+
+        [UnityEngine.Scripting.Preserve]
+        private void Preserver()
+        {
+            var p1 = typeof(Type).GetNestedTypes();
+        }
 
         XLuaIl2cpp.ObjectPool objectPool = new XLuaIl2cpp.ObjectPool();
 
@@ -75,6 +81,8 @@ namespace XLua
             XLuaIl2cpp.NativeAPI.SetRegisterNoThrow(tryLoadTypeMethodInfo);
 
             persistentObjectInfoType = typeof(XLua.LuaTable);
+            XLuaIl2cpp.NativeAPI.SetGlobalType_TypedValue(typeof(TypedValue));
+            XLuaIl2cpp.NativeAPI.SetGlobalType_ArrayBuffer(typeof(ArrayBuffer));
             XLuaIl2cpp.NativeAPI.SetGlobalType_LuaObject(typeof(LuaTable));
 
             nativeLuaEnv = XLuaIl2cpp.NativeAPI.CreateNativeLuaEnv();
@@ -144,17 +152,9 @@ namespace XLua
 
                 AddSearcher(StaticLuaCallbacks.LoadBuiltinLib, 2); // just after the preload searcher
                 AddSearcher(StaticLuaCallbacks.LoadFromCustomLoaders, 3);
-#if !XLUA_GENERAL
-                AddSearcher(StaticLuaCallbacks.LoadFromResource, 4);
-                AddSearcher(StaticLuaCallbacks.LoadFromStreamingAssetsPath, -1);
-#endif
+                
                 DoString(init_xlua, "Init");
                 init_xlua = null;
-
-#if (!UNITY_SWITCH && !UNITY_WEBGL) || UNITY_EDITOR
-                AddBuildin("socket.core", StaticLuaCallbacks.LoadSocketCore);
-                AddBuildin("socket", StaticLuaCallbacks.LoadSocketCore);
-#endif
 
                 AddBuildin("CS", StaticLuaCallbacks.LoadCS);
 
@@ -224,6 +224,7 @@ namespace XLua
                 translator.CreateArrayMetatable(rawL);
                 translator.CreateDelegateMetatable(rawL);
                 translator.CreateEnumerablePairs(rawL);
+
             }
         }
 
@@ -279,7 +280,7 @@ namespace XLua
 
         public T LoadString<T>(string chunk, string chunkName = "chunk", LuaTable env = null)
         {
-            byte[] bytes = System.Text.Encoding.UTF8.GetBytes(chunk);
+            byte[] bytes = System.Text.Encoding.UTF8.GetBytes(chunk + '\0');
             return LoadString<T>(bytes, chunkName, env);
         }
 
@@ -290,36 +291,7 @@ namespace XLua
 
         public object[] DoString(byte[] chunk, string chunkName = "chunk", LuaTable env = null)
         {
-#if THREAD_SAFE || HOTFIX_ENABLE
-            lock (luaEnvLock)
-            {
-#endif
-            var _L = L;
-            int oldTop = LuaAPI.lua_gettop(_L);
-            int errFunc = LuaAPI.load_error_func(_L, errorFuncRef);
-            if (LuaAPI.xluaL_loadbuffer(_L, chunk, chunk.Length, chunkName) == 0)
-            {
-                if (env != null)
-                {
-                    env.push(_L);
-                    LuaAPI.lua_setfenv(_L, -2);
-                }
-
-                if (LuaAPI.lua_pcall(_L, 0, -1, errFunc) == 0)
-                {
-                    LuaAPI.lua_remove(_L, errFunc);
-                    return translator.popValues(_L, oldTop);
-                }
-                else
-                    ThrowExceptionFromError(oldTop);
-            }
-            else
-                ThrowExceptionFromError(oldTop);
-
-            return null;
-#if THREAD_SAFE || HOTFIX_ENABLE
-            }
-#endif
+            return XLuaIl2cpp.NativeAPI.DoString(nativePesapiEnv, chunk, chunkName, env == null ? 0 : env.luaReference);
         }
 
         public object[] DoString(string chunk, string chunkName = "chunk", LuaTable env = null)

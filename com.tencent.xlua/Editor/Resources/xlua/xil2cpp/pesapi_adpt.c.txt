@@ -470,10 +470,10 @@ pesapi_value pesapi_call_function (pesapi_env env, pesapi_value func, pesapi_val
     return pesapi_call_function_ptr(env, func, this_object, argc, argv);
 }
 
-typedef pesapi_value (*pesapi_evalType)(pesapi_env env, const uint8_t* code, size_t code_size, const char* path);
-static pesapi_evalType pesapi_eval_ptr;
-pesapi_value pesapi_eval (pesapi_env env, const uint8_t* code, size_t code_size, const char* path) {
-    return pesapi_eval_ptr(env, code, code_size, path);
+typedef int (*pesapi_dostringType)(pesapi_env env, const uint8_t* code, size_t code_size, const char* path, int luaEnvReference, int* oldTop, int *ret);
+static pesapi_dostringType pesapi_dostring_ptr;
+int pesapi_dostring (pesapi_env env, const uint8_t* code, size_t code_size, const char* path, int luaEnvReference, int *oldTop, int *ret) {
+    return pesapi_dostring_ptr(env, code, code_size, path, luaEnvReference, oldTop, ret);
 }
 
 typedef pesapi_value (*pesapi_globalType)(pesapi_env env);
@@ -648,7 +648,7 @@ void pesapi_init(pesapi_func_ptr* func_array){
     pesapi_get_private_ptr                      = (pesapi_get_privateType)                  func_array[74];
     pesapi_set_private_ptr                      = (pesapi_set_privateType)                  func_array[75];
     pesapi_call_function_ptr                    = (pesapi_call_functionType)                func_array[76];
-    pesapi_eval_ptr                             = (pesapi_evalType)                         func_array[77];
+    pesapi_dostring_ptr                         = (pesapi_dostringType)                     func_array[77];
     pesapi_global_ptr                           = (pesapi_globalType)                       func_array[78];
     pesapi_get_env_private_ptr                  = (pesapi_get_env_privateType)              func_array[79];
     pesapi_set_env_private_ptr                  = (pesapi_set_env_privateType)              func_array[80];

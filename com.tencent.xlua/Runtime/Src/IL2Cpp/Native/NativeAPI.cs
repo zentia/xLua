@@ -156,13 +156,18 @@ namespace XLuaIl2cpp
         }
 
         [MethodImpl(MethodImplOptions.InternalCall)]
+        public static void SetGlobalType_ArrayBuffer(Type type)
+        {
+        }
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
         public static void PesapiCallTest(Type type)
         {
             throw new NotImplementedException();
         }
 
         [MethodImpl(MethodImplOptions.InternalCall)]
-        public static object EvalInternal(IntPtr envHolder, byte[] code, string path, Type type)
+        public static object[] DoString(IntPtr envHolder, byte[] code, string path, int luaEnvReference)
         {
             throw new NotImplementedException();
         }

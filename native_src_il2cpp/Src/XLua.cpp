@@ -33,7 +33,7 @@ extern "C"
 #include <thread>
 #include <mutex>
 
-#include "Log.h"
+#include "XLua.h"
 #include "LuaClassRegister.h"
 
 #define GetObjectData(Value, Type) ((Type*) (((uint8_t*) Value) + GUnityExports.SizeOfRuntimeObject))

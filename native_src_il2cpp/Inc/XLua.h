@@ -16,3 +16,11 @@ enum LogLevel
 void PLog(LogLevel Level, const std::string Fmt, ...);
 
 }    // namespace xlua
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+    LUA_API int lua_setfenv(lua_State* L, int idx);
+#ifdef __cplusplus
+}
+#endif

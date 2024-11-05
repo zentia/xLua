@@ -1,12 +1,4 @@
-﻿/*
- * Tencent is pleased to support the open source community by making Puerts available.
- * Copyright (C) 2020 THL A29 Limited, a Tencent company.  All rights reserved.
- * Puerts is licensed under the BSD 3-Clause License, except for the third-party components listed in the file 'LICENSE' which may
- * be subject to their corresponding license terms. This file is subject to the terms and conditions defined in file 'LICENSE',
- * which is part of this source code package.
- */
-
-#include "pesapi.h"
+﻿#include "pesapi.h"
 #include "lua.hpp"
 #include "LuaClassRegister.h"
 #include "CppObjectMapper.h"
@@ -17,6 +9,7 @@
 #include <cstring>
 
 #include "DataTransfer.h"
+#include "XLua.h"
 
 EXTERN_C_START
 // value process
@@ -356,7 +349,8 @@ void pesapi_throw_by_string(pesapi_callback_info pinfo, const char* msg)
 
 struct pesapi_env_ref__
 {
-    explicit pesapi_env_ref__(lua_State* _L) : L(_L), scope_top(0), env_life_cycle_tracker(xlua::DataTransfer::GetLuaEnvLifeCycleTracker(_L))
+    explicit pesapi_env_ref__(lua_State* _L)
+        : L(_L), scope_top(0), env_life_cycle_tracker(xlua::DataTransfer::GetLuaEnvLifeCycleTracker(_L))
     {
     }
     lua_State* L;
@@ -577,21 +571,29 @@ pesapi_value pesapi_call_function(pesapi_env env, pesapi_value pfunc, pesapi_val
     return reinterpret_cast<pesapi_value>(lua_gettop(L) - 1);
 }
 
-pesapi_value pesapi_eval(pesapi_env env, const uint8_t* code, size_t code_size, const char* path)
+int pesapi_dostring(pesapi_env env, const uint8_t* code, size_t code_size, const char* path, int luaEnvReference, int* oldTop, int* ret)
 {
     lua_State* L = reinterpret_cast<lua_State*>(env);
-
-    if (luaL_loadbuffer(L, reinterpret_cast<const char*>(code), code_size, path) || lua_pcall(L, 0, 0, 0))
-    {
-        lua_close(L);
-        return nullptr;
-    }
+    *oldTop = lua_gettop(L);
     lua_pushcclosure(L, debug_traceback, 0);
     int errfunc = lua_gettop(L);
-    int res = lua_pcall(L, 0, 1, errfunc);
 
-    lua_pushinteger(L, res);
-    return reinterpret_cast<pesapi_value>(lua_gettop(L) - 1);
+    *ret = luaL_loadbuffer(L, reinterpret_cast<const char*>(code), code_size, path); 
+    if (*ret == 0)
+    {
+        if (luaEnvReference != 0)
+        {
+            lua_rawgeti(L, LUA_REGISTRYINDEX, luaEnvReference);
+            lua_setfenv(L, -2);
+        }
+        *ret = lua_pcall(L, 0, -1, errfunc);
+        if (*ret == 0)
+        {
+            lua_remove(L, errfunc);
+        }
+    }
+
+    return lua_gettop(L);
 }
 
 pesapi_value pesapi_global(pesapi_env env)
