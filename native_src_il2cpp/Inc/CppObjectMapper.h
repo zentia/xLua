@@ -47,6 +47,8 @@ public:
 
     void SetPrivateData(lua_State* L, int index, void* Ptr);
 
+    int LoadTypeById(lua_State* L, const void* TypeId);
+
     void UnInitialize(lua_State* L);
 
     static CppObjectMapper* Get(lua_State* L);

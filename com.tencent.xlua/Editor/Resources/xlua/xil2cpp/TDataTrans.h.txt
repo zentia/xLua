@@ -12,9 +12,18 @@ typedef bool (*WrapFuncPtr)(MethodInfo* method, Il2CppMethodPointer methodPointe
 
 struct FieldWrapData
 {
+    FieldWrapFuncPtr Getter;
+    FieldWrapFuncPtr Setter;
+    FieldInfo *FieldInfo;
+    size_t Offset;
+    Il2CppClass* TypeInfo;
+};
+
+struct WrapData
+{
     WrapFuncPtr Wrap;
     MethodInfo* Method;
-    Il2CppMethodPointer MethoDPointer;
+    Il2CppMethodPointer MethodPointer;
     bool IsStatic;
     bool IsExtensionMethod;
     bool HasParamArray;
@@ -130,7 +139,7 @@ struct WrapFuncInfo
 
 struct BridgeFuncInfo
 {
-    const char* Sinature;
+    const char* Signature;
     Il2CppMethodPointer Method;
 };
 
@@ -157,7 +166,7 @@ struct Converter<T, typename std::enable_if<std::is_integral<T>::value && sizeof
 
     static T toCpp(pesapi_env env, pesapi_value value)
     {
-        return static_cast<T>(peaspi_get_value_int64(env, value));
+        return static_cast<T>(pesapi_get_value_int64(env, value));
     }
 
     static bool accept(pesapi_env env, pesapi_value value)
@@ -243,7 +252,7 @@ struct Converter<T, typename std::enable_if<std::is_enum<T>::value>::type>
 };
 
 template <typename T>
-struct Converter<T, typename std::enable_if<std::is_pointer<T>::value>::type>
+struct Converter<T, typename std::enable_if<std::is_floating_point<T>::value>::type>
 {
     static pesapi_value toScript(pesapi_env env, T value)
     {
@@ -252,7 +261,7 @@ struct Converter<T, typename std::enable_if<std::is_pointer<T>::value>::type>
 
     static T toCpp(pesapi_env env, pesapi_value value)
     {
-        return pesapi_get_value_double(env, value);
+        return static_cast<T>(pesapi_get_value_double(env, value));
     }
 
     static bool accept(pesapi_env env, pesapi_value value)
@@ -527,51 +536,57 @@ struct MethodInfoHelper
 intptr_t GetMethodPointer(Il2CppReflectionMethod* method);
 intptr_t GetMethodInfoPointer(Il2CppReflectionMethod* method);
 
-template <typename _Ret, typename... _Args>
-struct MethodInfoHelper<_Ret(_Args...)>
+template <class _Ret, class... _Args>
+struct MethodInfoHelper<_Ret (_Args...)>
 {
     intptr_t func;
     intptr_t methodInfo;
     Il2CppObject* instance;
 
-    MethodInfoHelper(Il2CppReflectionMethod* method, Il2CppObject* inst = nullptr) : instance(inst)
+    MethodInfoHelper(Il2CppReflectionMethod* method, Il2CppObject* instance = nullptr)
+        : instance(instance)
     {
         func = GetMethodPointer(method);
         methodInfo = GetMethodInfoPointer(method);
     }
 
-    MethodInfoHelper() : func(0), methodInfo(0), instance(nullptr)
+    MethodInfoHelper()
+        : func(0), methodInfo(0), instance(nullptr)
     {
     }
 
-    typedef _Ret (*FuncType)(_Args..., intptr_t);
-    typedef _Ret (*FuncTypeWithInstance)(Il2CppObject*, _Args..., intptr_t);
+    typedef _Ret(*FuncType)(_Args..., intptr_t);
+    typedef _Ret(*FuncTypeWithInstance)(Il2CppObject*, _Args..., intptr_t);
 
     template <typename T = _Ret>
-    typename std::enable_if<std::is_same<T, void>::value>::type Call(_Args... args)
+    typename std::enable_if<std::is_same<T, void>::value>::type
+        Call(_Args... args)
     {
-        FuncType funcPtr = (FuncType) func;
+        FuncType funcPtr = (FuncType)func;
         funcPtr(args..., methodInfo);
     }
 
     template <typename T = _Ret>
-    typename std::enable_if<!std::is_same<T, void>::value>::type Call(_Args... args)
+    typename std::enable_if<!std::is_same<T, void>::value, T>::type
+        Call(_Args... args)
     {
-        FuncType funcPtr = (FuncType) func;
+        FuncType funcPtr = (FuncType)func;
         return funcPtr(args..., methodInfo);
     }
 
     template <typename T = _Ret>
-    typename std::enable_if<std::is_same<T, void>::value>::type CallWithInstance(_Args... args)
+    typename std::enable_if<std::is_same<T, void>::value>::type
+        CallWithInstance(_Args... args)
     {
-        FuncTypeWithInstance funcPtr = (FuncTypeWithInstance) func;
+        FuncTypeWithInstance funcPtr = (FuncTypeWithInstance)func;
         funcPtr(instance, args..., methodInfo);
     }
 
     template <typename T = _Ret>
-    typename std::enable_if<!std::is_same<T, void>::value>::type CallWithInstance(_Args... args)
+    typename std::enable_if<!std::is_same<T, void>::value, T>::type
+        CallWithInstance(_Args... args)
     {
-        FuncTypeWithInstance funcPtr = (FuncTypeWithInstance) func;
+        FuncTypeWithInstance funcPtr = (FuncTypeWithInstance)func;
         return funcPtr(instance, args..., methodInfo);
     }
 };

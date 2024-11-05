@@ -5,7 +5,7 @@ function genBridgeArgs(parameterSignatures)
     if #parameterSignatures > 0 then
         if parameterSignatures[#parameterSignatures][1] ~= 'V' then
             return string.format([[pesapi_value argv[%d]{
-        %s
+    %s
     };]], #parameterSignatures,
                 table.join(
                     table.map(parameterSignatures,
@@ -67,7 +67,7 @@ static ]], SToCPPType(bridgeInfo.ReturnSignature), ' b_', bridgeInfo.Signature, 
             return TaggedTemplateEngine([[
         ]], IF(not PrimitiveSignatureCppTypeMap[getSignatureWithoutRefAndPrefix(ps)]), [[
 
-    auto Tip]], index, ' = GetParameterType(method, ', index, [[);
+    auto TIp]], index, ' = GetParameterType(method, ', index, [[);
         ]], ENDIF(), [[
     ]])
         end), [[
@@ -75,28 +75,29 @@ static ]], SToCPPType(bridgeInfo.ReturnSignature), ' b_', bridgeInfo.Signature, 
     PObjectRefInfo* delegateInfo = GetPObjectRefInfo(target);
 
     pesapi_env_ref envRef = pesapi_get_ref_associated_env(delegateInfo->ValueRef);
-    AutoVauleScope valueScope(envRef);
+    AutoValueScope valueScope(envRef);
     auto env = pesapi_get_env_from_ref(envRef);
     if (!env)
     {
         il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException("LuaEnv had been destroy"));
-        ]], IF(bridgeInfo.ReturnSignature ~= 'v'), [[
+]], IF(bridgeInfo.ReturnSignature ~= 'v'), [[
         return {};
-        ]], ENDIF(), [[
+]], ENDIF(), [[
     }
     auto func = pesapi_get_value_from_ref(env, delegateInfo->ValueRef);
 
     ]], genBridgeArgs(parameterSignatures), [[
-    auto luaRet = pesapi_call_function(env, func, nullptr, ]], #parameterSignatures, '',
-        hasVarArgs and ' + arrayLength - 1' or '', [[, argv
 
-    if (pesapi_has_caught(valueScope.scope()))
+    auto luaret = pesapi_call_function(env, func, nullptr, ]], #parameterSignatures, '',
+        hasVarArgs and ' + arrayLength - 1' or '', [[, argv);
+
+    if (pesapi_has_caught(valueScope.scope))
     {
-        auto msg = pesapi_get_exception_as_string(valueScope.scope(), true);
+        auto msg = pesapi_get_exception_as_string(valueScope.scope, true);
         il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException(msg));
-    ]], IF(bridgeInfo.ReturnSignature == 'v'), [[
+]], IF(bridgeInfo.ReturnSignature == 'v'), [[
     }
-    ]], ELSE(), [[
+]], ELSE(), [[
         return {};
     }
     ]], returnToCS(bridgeInfo.ReturnSignature), [[
@@ -137,7 +138,7 @@ namespace xlua
 {
 ]], table.join(table.map(bridgeInfos, genBridge), '\n'), [[
 
-static BridgeFuncInfo g_bridgeFunctionInfos[] = {
+static BridgeFuncInfo g_bridgeFuncInfos[] = {
     ]], FOR(bridgeInfos, function(info)
         return TaggedTemplateEngine([[
     {"]], info.Signature, '", (Il2CppMethodPointer)b_', info.Signature, [[},

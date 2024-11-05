@@ -46,6 +46,33 @@ int CppObjectMapper::LoadCppType(lua_State* L)
     }
 }
 
+int CppObjectMapper::LoadTypeById(lua_State* L, const void* TypeId)
+{
+    auto ClassDef = xlua::LoadClassByID(TypeId);
+    if (ClassDef)
+    {
+        lua_createtable(L, 0, 0);
+        int meta_ref = GetMetaRefOfClass(L, ClassDef);
+        lua_rawgeti(L, LUA_REGISTRYINDEX, meta_ref);
+        lua_pushlightuserdata(L, &dummy_idx_tag);
+        lua_rawget(L, -2);
+        lua_remove(L, -2);
+        if (!lua_isnil(L, -1))
+        {
+            lua_setmetatable(L, -2);
+            return 1;
+        }
+        else
+        {
+            return luaL_error(L, "type meta not find");
+        }
+    }
+    else
+    {
+        return luaL_error(L, "no soch type");
+    }
+}
+
 void CppObjectMapper::Initialize(lua_State* L)
 {
     lua_pushlightuserdata(L, &dummy_idx_tag);
