@@ -511,6 +511,30 @@ void pesapi_set_property(pesapi_env env, pesapi_value pobject, const char* key, 
     lua_setfield(L, reinterpret_cast<intptr_t>(pobject), key);
 }
 
+bool pesapi_get_private(pesapi_env env, pesapi_value pobject, void** out_ptr)
+{
+    lua_State* L = reinterpret_cast<lua_State*>(env);
+    int index = reinterpret_cast<intptr_t>(pobject);
+    if (lua_isnil(L, index) || !lua_isuserdata(L, index))
+    {
+        *out_ptr = NULL;
+        return false;
+    }
+    *out_ptr = xlua::DataTransfer::StateData<xlua::CppObjectMapper>(L)->GetPrivateData(L, index);
+    return true;
+}
+
+bool pesapi_set_private(pesapi_env env, pesapi_value pobject, void* ptr)
+{
+    lua_State* L = reinterpret_cast<lua_State*>(env);
+    int index = reinterpret_cast<intptr_t>(pobject);
+    if (lua_isnil(L, index) || !lua_isuserdata(L, index))
+    {
+        return false;
+    }
+    xlua::DataTransfer::StateData<xlua::CppObjectMapper>(L)->SetPrivateData(L, index, ptr);
+}
+
 pesapi_value pesapi_get_property_uint32(pesapi_env env, pesapi_value pobject, uint32_t key)
 {
     lua_State* L = reinterpret_cast<lua_State*>(env);
