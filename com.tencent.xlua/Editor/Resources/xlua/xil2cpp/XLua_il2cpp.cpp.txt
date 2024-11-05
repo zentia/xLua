@@ -1010,7 +1010,7 @@ static bool GetValueTypeFromLua(pesapi_env env, pesapi_value luaValue, Il2CppCla
     uint32_t valueSize = klass->instance_size - sizeof(Il2CppObject);
     if (!luaValue) return false;
     void* ptr;
-    if (pesapi_is_object(env, luaValue) && (ptr == pesapi_get_native_object_ptr(env, luaValue)))
+    if (pesapi_is_object(env, luaValue) && (ptr = pesapi_get_native_object_ptr(env, luaValue)))
     {
         auto objClass = (Il2CppClass*) pesapi_get_native_object_typeid(env, luaValue);
         if (Class::IsAssignableFrom(klass, objClass))
