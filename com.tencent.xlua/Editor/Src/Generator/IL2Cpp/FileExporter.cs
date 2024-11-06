@@ -148,6 +148,33 @@ namespace XLuaIl2cpp.Editor
                 {"UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null", new Dictionary<string, List<string>>(){{typeof(Application).FullName, new List<string>(){"isEditor"}}}},
             };
 
+            private static void IterateAllType(Type type, HashSet<Type> allTypes)
+            {
+                if (!allTypes.Contains(type))
+                {
+                    allTypes.Add(type);
+                    var fields = type.GetFields(BindingFlags.DeclaredOnly | BindingFlags.Instance |
+                                                BindingFlags.Public | BindingFlags.NonPublic);
+                    foreach (var field in fields)
+                    {
+                        IterateAllType(field.FieldType, allTypes);
+                    }
+                    var methods = type.GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+                    foreach (var method in methods)
+                    {
+                        IterateAllType(method.ReturnType, allTypes);
+                    }
+                    var methodBases = methods.Cast<MethodBase>().Concat(type.GetConstructors(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic));
+                    foreach (var methodBase in methodBases)
+                    {
+                        foreach (var parameter in methodBase.GetParameters())
+                        {
+                            IterateAllType(parameter.ParameterType, allTypes);
+                        }
+                    }
+                }
+            }
+
             public static void GenCPPWrap(string saveTo)
             {
                 Utils.SetFilters(XLua.Configure.GetFilters());
@@ -247,10 +274,13 @@ namespace XLuaIl2cpp.Editor
                     });
                 }
 #endif
-
-                var delegateToBridge = wrapperUsedTypes
-                    .Concat(XLuaDelegates)
-                    .Concat(typeInGenericArgument)
+                HashSet<Type> allTypes = new HashSet<Type>();
+                foreach (var type in wrapperUsedTypes.Concat(XLuaDelegates).Concat(typeInGenericArgument))
+                {
+                    IterateAllType(type, allTypes);
+                }
+                var delegateToBridge = allTypes
+                    .Distinct()
                     .Where(t => typeof(MulticastDelegate).IsAssignableFrom(t));
 
                 var delegateInvokes = delegateToBridge
