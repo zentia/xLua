@@ -35,6 +35,7 @@ extern "C"
 
 #include "XLua.h"
 #include "LuaClassRegister.h"
+#include <CppObjectMapper.h>
 
 #define GetObjectData(Value, Type) ((Type*) (((uint8_t*) Value) + GUnityExports.SizeOfRuntimeObject))
 
@@ -77,6 +78,8 @@ struct LuaEnv
     lua_State* L;
 };
 }    // namespace xlua
+
+extern pesapi_func_ptr reg_apis[];
 /*
 ** stdcall C function support
 */
@@ -1519,12 +1522,17 @@ extern "C"
         lua_State* L = luaEnv->L;
 
         auto env = reinterpret_cast<pesapi_env>(L);
-        return xlua::g_pesapi_ffi.pesapi_create_env_ref(env);
+        return g_pesapi_ffi.create_env_ref(env);
     }
 
-    LUA_API pesapi_ffi* GetPesApi()
+    LUA_API pesapi_ffi* GetFFIApi()
     {
-        return &xlua::g_pesapi_ffi;
+        return &g_pesapi_ffi;
+    }
+
+    LUA_API pesapi_func_ptr* GetRegisterApi()
+    {
+        return reg_apis;
     }
 #ifdef __cplusplus
 }

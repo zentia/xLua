@@ -37,7 +37,10 @@ namespace XLuaIl2cpp
         public static extern void DestroyNativeLuaEnv(IntPtr luaEnv);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public static extern IntPtr GetPesApi();
+        public static extern IntPtr GetRegisterApi();
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr GetFFIApi();
         
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr GetPapiEnvRef(IntPtr luaEnv);
