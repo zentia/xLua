@@ -1,4 +1,5 @@
 #include "CppObjectMapper.h"
+#include "DataTransfer.h"
 #include <memory>
 #include "pesapi.h"
 
@@ -189,7 +190,15 @@ void CppObjectMapper::BindCppObject(
     lua_rawgeti(L, LUA_REGISTRYINDEX, CacheRef);
     lua_pushvalue(L, -2);
     CacheNodePtr->Value = luaL_ref(L, -2);
+    if (PassByPointer)
+    {
+        CacheNodePtr->MustCallFinalize = true;
+    }
     lua_pop(L, 1);
+    if (ClassDefinition->OnEnter)
+    {
+        CacheNodePtr->UserData = ClassDefinition->OnEnter(Ptr, ClassDefinition->Data, DataTransfer::GetStatePrivateData(L));
+    }
 }
 
 #define LUA_PRIVATE_KEY_STR "__kp"
@@ -246,11 +255,35 @@ void CppObjectMapper::UnBindCppObject(lua_State* L, LuaClassDefinition* ClassDef
 
 void CppObjectMapper::UnInitialize(lua_State* L)
 {
+    auto PData = DataTransfer::GetStatePrivateData(L);
+    for (auto& KV : CDataCache)
+    {
+        ObjectCacheNode* PNode = &KV.second;
+        while (PNode)
+        {
+            const LuaClassDefinition* ClassDefinition = FindClassByID(PNode->TypeId);
+            if (PNode->MustCallFinalize)
+            {
+                if (ClassDefinition && ClassDefinition->Finalize)
+                {
+                    ClassDefinition->Finalize(&g_pesapi_ffi, KV.first, ClassDefinition->Data, PData);
+                }
+                PNode->MustCallFinalize = false;
+            }
+            if (ClassDefinition->OnExit)
+            {
+                ClassDefinition->OnExit(KV.first, ClassDefinition->Data, DataTransfer::GetStatePrivateData(L), PNode->UserData);
+            }
+            PNode = PNode->Next;
+        }
+    }
     for (int i = 0; i < FunctionDatas.size(); ++i)
     {
         delete FunctionDatas[i];
     }
     FunctionDatas.clear();
+    CDataCache.clear();
+    TypeIdToMetaMap.clear();
 }
 
 // upvalue --- [1]: methods, [2]:getters, [3]:baseindex
@@ -350,7 +383,7 @@ static int object_gc(lua_State* L)
     if (cppObject->NeedDelete)
     {
         // printf("Finalize %p\n", cppObject->Ptr);
-        class_definition->Finalize(&g_pesapi_ffi, cppObject->Ptr);
+        class_definition->Finalize(&g_pesapi_ffi, cppObject->Ptr, class_definition->Data, L);
     }
 
     return 0;

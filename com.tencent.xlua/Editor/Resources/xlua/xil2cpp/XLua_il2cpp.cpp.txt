@@ -1952,6 +1952,10 @@ extern "C"
             (Il2CppMethodPointer) xlua::GetFieldInfoPointer);
         InternalCalls::Add(
             "XLuaIl2cpp.NativeAPI::SetGlobalType_LuaObject(System.Type)", (Il2CppMethodPointer) xlua::SetGlobalType_LuaObject);
+        InternalCalls::Add(
+            "XLuaIl2cpp.NativeAPI::SetGlobalType_TypedValue(System.Type)", (Il2CppMethodPointer) xlua::SetGlobalType_TypedValue);
+        InternalCalls::Add(
+            "XLuaIl2cpp.NativeAPI::SetGlobalType_ArrayBuffer(System.Type)", (Il2CppMethodPointer) xlua::SetGlobalType_ArrayBuffer);
         InternalCalls::Add("XLuaIl2cpp.NativeAPI::DoString(System.IntPtr,System.IntPtr,System.Byte[],System.String,System.Int)",
             (Il2CppMethodPointer) xlua::DoString);
         InternalCalls::Add("XLuaIl2cpp.NativeAPI::SetObjectToGlobal(System.IntPtr,System.IntPtr,System.String,System.Object)",
