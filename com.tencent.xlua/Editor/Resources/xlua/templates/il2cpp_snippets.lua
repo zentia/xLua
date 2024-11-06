@@ -179,7 +179,7 @@ function LuaValToCSVal(signature, LuaName, CSName)
         ]], CSName, LuaName, CSName, CSName)
     elseif signature == 'o' or signature == 'O' or signature == 'a' then -- object
         return string.format([[// LuaValToCSVal o/O
-    Il2CppObject* %s = LuaValueToCSRef(TI%s, env, %s);
+    Il2CppObject* %s = LuaValueToCSRef(apis, TI%s, env, %s);
         ]], CSName, CSName, LuaName)
     elseif signature == 'Po' or signature == 'PO' or signature == 'Pa' then
         return string.format([[     // LuaValToCSVal Po/PO

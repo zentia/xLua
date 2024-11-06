@@ -398,7 +398,7 @@ pesapi_scope pesapi_open_scope(pesapi_env_ref env_ref)
 
 pesapi_scope pesapi_open_scope_placement(pesapi_env_ref env_ref)
 {
-    env_ref->scope_top = lua_gettop(env_ref->);
+    env_ref->scope_top = lua_gettop(env_ref->L);
     return reinterpret_cast<pesapi_scope>(env_ref);
 }
 

@@ -10,13 +10,14 @@ using LuaCSFunction = XLua.LuaDLL.lua_CSFunction;
 #endif
 
 using System;
+using System.Runtime.CompilerServices;
 
 namespace XLua
 {
     public abstract class LuaBase : IDisposable
     {
         IntPtr apis; // PObjectRefInfo first ptr
-        IntPtr valuePtr;
+        IntPtr valueRef;
         IntPtr nativeLuaEnv;
 
         [MethodImpl(MethodImplOptions.InternalCall)]

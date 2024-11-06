@@ -112,7 +112,7 @@ typedef struct pesapi_property_descriptor__* pesapi_property_descriptor;
 
 typedef void (*pesapi_callback)(struct pesapi_ffi* apis, pesapi_callback_info info);
 typedef void* (*pesapi_constructor)(struct pesapi_ffi* apis, pesapi_callback_info info);
-typedef void (*pesapi_finalize)(struct pesapi_ffi* apis, void* Ptr);
+typedef void (*pesapi_finalize)(struct pesapi_ffi* apis, void* Ptr, void* class_data, void* env_private);
 typedef void* (*pesapi_on_native_object_enter)(void* ptr, void* class_data, void* env_private);
 typedef void (*pesapi_on_native_object_exit)(void* ptr, void* class_data, void* env_private, void* userdata);
 typedef bool (*pesapi_class_not_found_callback)(const void* type_id);
@@ -298,7 +298,7 @@ struct pesapi_ffi
     pesapi_set_ref_weak_func set_ref_weak;
     pesapi_set_owner_func set_owner;
     pesapi_get_ref_associated_env_func get_ref_associated_env;
-    pesapi_get_ref_internal_fields_func get_ref_inernal_fields;
+    pesapi_get_ref_internal_fields_func get_ref_internal_fields;
     pesapi_get_property_func get_property;
     pesapi_set_property_func set_property;
     pesapi_get_private_func get_private;

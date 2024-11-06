@@ -4,6 +4,7 @@
 
 #include <map>
 #include <memory>
+#include <vector>
 
 #include "LuaClassRegister.h"
 #include "ObjectCacheNode.h"
