@@ -278,7 +278,6 @@ public static class ExampleConfig
                 new List<string>(){"UnityEngine.MonoBehaviour", "runInEditMode"},
             };
 
-#if UNITY_2018_1_OR_NEWER
     [BlackList]
     public static Func<MemberInfo, bool> MethodFilter = (memberInfo) =>
     {
@@ -307,5 +306,4 @@ public static class ExampleConfig
         }
         return false;
     };
-#endif
 }

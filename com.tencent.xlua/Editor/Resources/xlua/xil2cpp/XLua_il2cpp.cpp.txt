@@ -431,7 +431,7 @@ static void* CtorCallback(pesapi_callback_info info)
 {
     LuaClassInfoHeader* classInfo = reinterpret_cast<LuaClassInfoHeader*>(pesapi_get_userdata(info));
     // or will crash in macos.
-    if (*(classInfo->CtorWrapDatas) == nullptr)
+    if (!classInfo->IsValueType && *(classInfo->CtorWrapDatas) == nullptr)
     {
         pesapi_throw_by_string(info, "no vlaid constructor is found");
         return nullptr;
