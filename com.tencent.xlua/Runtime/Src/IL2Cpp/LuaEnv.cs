@@ -418,6 +418,8 @@ namespace XLua
             if (disposed) return;
             XLuaIl2cpp.NativeAPI.CleanupPapiEnvRef(apis, nativePesapiEnv);
             XLuaIl2cpp.NativeAPI.DestroyNativeLuaEnv(nativeLuaEnv);
+            XLuaIl2cpp.NativeAPI.DestroyLuaEnvPrivate(nativeScriptObjectsRefsMgr);
+            nativeScriptObjectsRefsMgr = IntPtr.Zero;
             Tick();
 
             if (!translator.AllDelegateBridgeReleased())

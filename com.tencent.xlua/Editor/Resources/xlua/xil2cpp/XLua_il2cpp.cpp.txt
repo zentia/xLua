@@ -1892,9 +1892,17 @@ void CleanupPapiEnvRef(struct pesapi_ffi* apis, pesapi_env_ref envRef)
 {
     xlua::AutoValueScope ValueScope(apis, envRef);
     auto env = apis->get_env_from_ref(envRef);
-    auto luaEnvPrivate = (xlua::LuaEnvPrivate*)apis->get_env_private(env);
+    if (env)
+    {
+        auto luaEnvPrivate = (xlua::LuaEnvPrivate*)apis->get_env_private(env);
+        luaEnvPrivate->CleanupPendingKillScriptObjects();
+        apis->release_env_ref(envRef);
+    }
+}
+
+void DestroyLuaEnvPrivate(LuaEnvPrivate* luaEnvPrivate)
+{
     delete luaEnvPrivate;
-    apis->release_env_ref(envRef);
 }
 
 }    // namespace xlua
@@ -1918,6 +1926,7 @@ void InitialXLua(pesapi_func_ptr* func_array)
     InternalCalls::Add("XLuaIl2cpp.NativeAPI::TypeIdToType(system.IntPtr)", (Il2CppMethodPointer)xlua::TypeIdToType);
     InternalCalls::Add("XLuaIl2cpp.NativeAPI::InitialPapiEnvRef(System.IntPtr,System.IntPtr,System.Object,System.Reflection.MethodBase,System.Reflection.MethodBase)", (Il2CppMethodPointer)xlua::InitialPapiEnvRef);
     InternalCalls::Add("XLuaIl2cpp.NativeAPI::CleanupPapiEnvRef(System.IntPtr,System.IntPtr)", (Il2CppMethodPointer)xlua::CleanupPapiEnvRef);
+    InternalCalls::Add("XLuaIl2cpp.NativeAPI::DestroyLuaEnvPrivate(System.IntPtr)", (Il2CppMethodPointer)xlua::DestroyLuaEnvPrivate);
     InternalCalls::Add("XLua.LuaObject::GetLuaObjectValue(System.IntPtr,System.String,System.Type)", (Il2CppMethodPointer)xlua::GetLuaObjectValue);
     InternalCalls::Add("XLuaIl2cpp.NativeAPI::SetRegisterNoThrow(System.Reflection.MethodBase)", (Il2CppMethodPointer)xlua::SetRegisterNoThrow);
     pesapi_init(func_array);
