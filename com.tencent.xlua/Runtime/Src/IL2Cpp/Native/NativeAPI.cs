@@ -37,19 +37,19 @@ namespace XLuaIl2cpp
         public static extern void DestroyNativeLuaEnv(IntPtr luaEnv);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public static extern IntPtr GetPesapiImpl();
-
+        public static extern IntPtr GetPesApi();
+        
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr GetPapiEnvRef(IntPtr luaEnv);
 
         [MethodImpl(MethodImplOptions.InternalCall)]
-        public static IntPtr InitialPapiEnvRef(IntPtr envRef, Object obj, MethodBase addMethodBase, MethodBase removeMethodBase)
+        public static IntPtr InitialPapiEnvRef(IntPtr api, IntPtr envRef, Object obj, MethodBase addMethodBase, MethodBase removeMethodBase)
         {
             throw new NotImplementedException();
         }
 
         [MethodImpl(MethodImplOptions.InternalCall)]
-        public static void CleanupPapiEnvRef(IntPtr envRef)
+        public static void CleanupPapiEnvRef(IntPtr api, IntPtr envRef)
         {
             throw new NotImplementedException();
         }
@@ -87,7 +87,7 @@ namespace XLuaIl2cpp
         }
 
         [MethodImpl(MethodImplOptions.InternalCall)]
-        public static void SetObjectToGlobal(IntPtr luaEnv, string key, Object obj)
+        public static void SetObjectToGlobal(IntPtr apis, IntPtr luaEnv, string key, Object obj)
         {
             throw new NotImplementedException();
         }
@@ -167,7 +167,7 @@ namespace XLuaIl2cpp
         }
 
         [MethodImpl(MethodImplOptions.InternalCall)]
-        public static object[] DoString(IntPtr envHolder, byte[] code, string path, int luaEnvReference)
+        public static object[] DoString(IntPtr, apis, IntPtr envHolder, byte[] code, string path, int luaEnvReference)
         {
             throw new NotImplementedException();
         }

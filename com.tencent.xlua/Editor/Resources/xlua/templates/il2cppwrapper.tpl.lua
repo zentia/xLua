@@ -21,7 +21,7 @@ namespace xlua
             table.map(wrapperInfos,
                 function(wrapperInfo)
                     return string.format(
-                        'bool w_%s(MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);',
+                        'bool w_%s(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);',
                         wrapperInfo)
                 end), '\n'), [[
 

@@ -19,6 +19,7 @@ namespace XLua
     [UnityEngine.Scripting.Preserve]
     public class LuaEnv : IDisposable
     {
+        IntPtr apis;
         IntPtr nativeLuaEnv;
         IntPtr nativePesapiEnv;
         IntPtr nativeScriptObjectsRefsMgr;
@@ -77,6 +78,7 @@ namespace XLua
         {
             XLuaIl2cpp.NativeAPI.SetLogCallback(XLuaIl2cpp.NativeAPI.Log);
             XLuaIl2cpp.NativeAPI.InitialXLua(XLuaIl2cpp.NativeAPI.GetPesapiImpl());
+            apis = XLuaIl2cpp.NativeAPI.GetPesApi();
             tryLoadTypeMethodInfo = typeof(TypeRegister).GetMethod("RegisterNoThrow");
             XLuaIl2cpp.NativeAPI.SetRegisterNoThrow(tryLoadTypeMethodInfo);
 
@@ -88,9 +90,9 @@ namespace XLua
             nativeLuaEnv = XLuaIl2cpp.NativeAPI.CreateNativeLuaEnv();
             nativePesapiEnv = XLuaIl2cpp.NativeAPI.GetPapiEnvRef(nativeLuaEnv);
             var objectPoolType = typeof(XLuaIl2cpp.ObjectPool);
-            nativeScriptObjectsRefsMgr = XLuaIl2cpp.NativeAPI.InitialPapiEnvRef(nativePesapiEnv, objectPool, objectPoolType.GetMethod("Add"), objectPoolType.GetMethod("Remove"));
+            nativeScriptObjectsRefsMgr = XLuaIl2cpp.NativeAPI.InitialPapiEnvRef(apis, nativePesapiEnv, objectPool, objectPoolType.GetMethod("Add"), objectPoolType.GetMethod("Remove"));
 
-            XLuaIl2cpp.NativeAPI.SetObjectToGlobal(nativePesapiEnv, "luaEnv", this);
+            XLuaIl2cpp.NativeAPI.SetObjectToGlobal(apis, nativePesapiEnv, "luaEnv", this);
 
 #if !DISABLE_AUTO_REGISTER
             const string AutoStaticCodeRegisterClassName = "XLuaStaticWrap.XLuaRegisterInfo_Gen";
@@ -291,7 +293,7 @@ namespace XLua
 
         public object[] DoString(byte[] chunk, string chunkName = "chunk", LuaTable env = null)
         {
-            return XLuaIl2cpp.NativeAPI.DoString(nativePesapiEnv, chunk, chunkName, env == null ? 0 : env.luaReference);
+            return XLuaIl2cpp.NativeAPI.DoString(apis, nativePesapiEnv, chunk, chunkName, env == null ? 0 : env.luaReference);
         }
 
         public object[] DoString(string chunk, string chunkName = "chunk", LuaTable env = null)
@@ -409,13 +411,13 @@ namespace XLua
 
         public virtual void Dispose(bool dispose)
         {
-            XLuaIl2cpp.NativeAPI.CleanupPapiEnvRef(nativePesapiEnv);
-            XLuaIl2cpp.NativeAPI.DestroyNativeLuaEnv(nativeLuaEnv);
 #if THREAD_SAFE || HOTFIX_ENABLE
             lock (luaEnvLock)
             {
 #endif
             if (disposed) return;
+            XLuaIl2cpp.NativeAPI.CleanupPapiEnvRef(apis, nativePesapiEnv);
+            XLuaIl2cpp.NativeAPI.DestroyNativeLuaEnv(nativeLuaEnv);
             Tick();
 
             if (!translator.AllDelegateBridgeReleased())

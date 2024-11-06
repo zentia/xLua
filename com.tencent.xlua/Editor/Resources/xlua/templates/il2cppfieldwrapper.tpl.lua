@@ -11,11 +11,11 @@ function genGetField(fieldWrapperInfo)
         if needThis(fieldWrapperInfo) then
             return [[auto ret = (char*)self + offset;
 
-    pesapi_add_return(info, pesapi_native_object_to_vaue(env, TIret, ret, false));]]
+    apis->add_return(info, apis->native_object_to_vaue(env, TIret, ret, false));]]
         else
             return [[auto ret = GetValueTypeFieldPre(nullptr, fieldInfo, offset);
 
-    pesapi_add_return(info, pesapi_native_object_to_value(env, TIret, ret, false));]]
+    apis->add_return(info, apis->native_object_to_value(env, TIret, ret, false));]]
         end
     else
         return string.format([[%s ret;
@@ -29,10 +29,10 @@ end
 function genFieldWrapper(fieldWrapperInfo)
     return TaggedTemplateEngine([[
 static void ifg_]], fieldWrapperInfo.signature,
-        [[(pesapi_callback_info info, FieldInfo* fieldInfo, size_t offset, Il2CppClass* TIret) {
+        [[(struct pesapi_ffi* apis, pesapi_callback_info info, FieldInfo* fieldInfo, size_t offset, Il2CppClass* TIret) {
     // PLog("Running ifg_]], fieldWrapperInfo.Signature, [[");
 
-    pesapi_env env = pesapi_get_env(info);
+    pesapi_env env = apis->get_env(info);
     ]], IF(needThis(fieldWrapperInfo)), [[
 
     ]], getThis(fieldWrapperInfo.ThisSignature), [[
@@ -42,16 +42,16 @@ static void ifg_]], fieldWrapperInfo.signature,
 }
 
 static void ifs_]], fieldWrapperInfo.Signature,
-        [[(pesapi_callback_info info, FieldInfo* fieldInfo, size_t offset, Il2CppClass* Tip) {
+        [[(struct pesapi_ffi* apis, pesapi_callback_info info, FieldInfo* fieldInfo, size_t offset, Il2CppClass* Tip) {
     // PLog("Running ifs_]], fieldWrapperInfo.Signature, [[");
 
-    pesapi_env env = pesapi_get_env(info);
+    pesapi_env env = apis->get_env(info);
     ]], IF(needThis(fieldWrapperInfo)), [[
 
     ]], getThis(fieldWrapperInfo.ThisSignature), [[
 
     ]], ENDIF(), [[
-    ]], LuaValToCSVal(fieldWrapperInfo.ReturnSignature, "pesapi_get_arg(info, 0)", "p"), [[
+    ]], LuaValToCSVal(fieldWrapperInfo.ReturnSignature, "apis->get_arg(info, 0)", "p"), [[
     SetFieldValue(]], needThis(fieldWrapperInfo) and 'self, ' or 'nullptr, ', 'fieldInfo, offset, ',
         table.indexOf({ 'o', 's', 'p', 'a' }, fieldWrapperInfo.Signature) ~= -1 and 'p' or '&p')
 end

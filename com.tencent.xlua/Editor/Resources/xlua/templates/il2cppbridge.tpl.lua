@@ -11,7 +11,7 @@ function genBridgeArgs(parameterSignatures)
                     table.map(parameterSignatures,
                         function(ps, i)
                             return CSValToLuaVal(ps[1] == 'D' and string.sub(ps, 2) or ps, string.format('p%d', i)) or
-                                'pesapi_create_undefined(env)'
+                                'apis->create_undefined(env)'
                         end),
                     [[,
             ]]))
@@ -27,7 +27,7 @@ function genBridgeArgs(parameterSignatures)
         pesapi_value *argv = (pesapi_value *)alloca(sizeof(pesapi_value) * (%d + arrayLength));
         memset(argv, 0, sizeof(pesapi_value) * (%d + arrayLength));
         %s
-        %s(env, p%d, arrayLength, TIp%d, argv + %d);
+        %s(apis, env, p%d, arrayLength, TIp%d, argv + %d);
             ]],
                 #parameterSignatures - 1,
                 #parameterSignatures - 1,
@@ -35,7 +35,7 @@ function genBridgeArgs(parameterSignatures)
                 table.join(table.map(table.slice(parameterSignatures, 1, -1)),
                     function(ps, i)
                         return string.format('argv[%d] = %s;',
-                            CSValToLuaVal(ps, string.format('p%d', i)) or 'pesapi_create_undefined(env)')
+                            CSValToLuaVal(ps, string.format('p%d', i)) or 'apis->create_undefined(env)')
                     end, '\n\t'),
                 unpackMethod,
                 #parameterSignatures - 1,
@@ -73,10 +73,11 @@ static ]], SToCPPType(bridgeInfo.ReturnSignature), ' b_', bridgeInfo.Signature, 
         end), [[
 
     PObjectRefInfo* delegateInfo = GetPObjectRefInfo(target);
+    struct pesapi_ffi* apis = delegateInfo->Apis;
 
-    pesapi_env_ref envRef = pesapi_get_ref_associated_env(delegateInfo->ValueRef);
-    AutoValueScope valueScope(envRef);
-    auto env = pesapi_get_env_from_ref(envRef);
+    pesapi_env_ref envRef = apis->get_ref_associated_env(delegateInfo->ValueRef);
+    AutoValueScope valueScope(apis, envRef);
+    auto env = apis->get_env_from_ref(envRef);
     if (!env)
     {
         il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException("LuaEnv had been destroy"));
@@ -84,16 +85,16 @@ static ]], SToCPPType(bridgeInfo.ReturnSignature), ' b_', bridgeInfo.Signature, 
         return {};
 ]], ENDIF(), [[
     }
-    auto func = pesapi_get_value_from_ref(env, delegateInfo->ValueRef);
+    auto func = apis->get_value_from_ref(env, delegateInfo->ValueRef);
 
     ]], genBridgeArgs(parameterSignatures), [[
 
-    auto luaret = pesapi_call_function(env, func, nullptr, ]], #parameterSignatures, '',
+    auto luaret = apis->call_function(env, func, nullptr, ]], #parameterSignatures, '',
         hasVarArgs and ' + arrayLength - 1' or '', [[, argv);
 
-    if (pesapi_has_caught(valueScope.scope))
+    if (apis->has_caught(valueScope.scope))
     {
-        auto msg = pesapi_get_exception_as_string(valueScope.scope, true);
+        auto msg = apis->get_exception_as_string(valueScope.scope, true);
         il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException(msg));
 ]], IF(bridgeInfo.ReturnSignature == 'v'), [[
     }

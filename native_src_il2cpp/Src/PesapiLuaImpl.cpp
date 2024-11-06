@@ -396,6 +396,12 @@ pesapi_scope pesapi_open_scope(pesapi_env_ref env_ref)
     return reinterpret_cast<pesapi_scope>(env_ref);
 }
 
+pesapi_scope pesapi_open_scope_placement(pesapi_env_ref env_ref)
+{
+    env_ref->scope_top = lua_gettop(env_ref->);
+    return reinterpret_cast<pesapi_scope>(env_ref);
+}
+
 bool pesapi_has_caught(pesapi_scope scope)
 {
     pesapi_env_ref env_ref = reinterpret_cast<pesapi_env_ref>(scope);
@@ -414,6 +420,13 @@ void pesapi_close_scope(pesapi_scope scope)
     lua_settop(env_ref->L, env_ref->scope_top);    // release all value alloc in scope
     env_ref->scope_top = 0;
     // printf("pesapi_close_scope top=%d\n", lua_gettop(env_ref->L));
+}
+
+void pesapi_close_scope_placement(pesapi_scope scope)
+{
+    pesapi_env_ref env_ref = reinterpret_cast<pesapi_env_ref>(scope);
+    lua_settop(env_ref->L, env_ref->scope_top);
+    env_ref->scope_top = 0;
 }
 
 struct pesapi_value_ref__
@@ -571,14 +584,15 @@ pesapi_value pesapi_call_function(pesapi_env env, pesapi_value pfunc, pesapi_val
     return reinterpret_cast<pesapi_value>(lua_gettop(L) - 1);
 }
 
-int pesapi_dostring(pesapi_env env, const uint8_t* code, size_t code_size, const char* path, int luaEnvReference, int* oldTop, int* ret)
+int pesapi_dostring(
+    pesapi_env env, const uint8_t* code, size_t code_size, const char* path, int luaEnvReference, int* oldTop, int* ret)
 {
     lua_State* L = reinterpret_cast<lua_State*>(env);
     *oldTop = lua_gettop(L);
     lua_pushcclosure(L, debug_traceback, 0);
     int errfunc = lua_gettop(L);
 
-    *ret = luaL_loadbuffer(L, reinterpret_cast<const char*>(code), code_size, path); 
+    *ret = luaL_loadbuffer(L, reinterpret_cast<const char*>(code), code_size, path);
     if (*ret == 0)
     {
         if (luaEnvReference != 0)
@@ -851,4 +865,98 @@ const void* pesapi_find_type_id(const char* module_name, const char* type_name)
     return class_def ? class_def->TypeId : nullptr;
 }
 
+pesapi_ffi g_pesapi_ffi{
+    &pesapi_create_null,
+    &pesapi_create_undefined,
+    &pesapi_create_boolean,
+    &pesapi_create_int32,
+    &pesapi_create_uint32,
+    &pesapi_create_int64,
+    &pesapi_create_uint64,
+    &pesapi_create_double,
+    &pesapi_create_string_utf8,
+    &pesapi_create_binary,
+    &pesapi_create_array,
+    &pesapi_create_object,
+    &pesapi_create_function,
+    &pesapi_create_class,
+    &pesapi_get_value_bool,
+    &pesapi_get_value_int32,
+    &pesapi_get_value_uint32,
+    &pesapi_get_value_int64,
+    &pesapi_get_value_uint64,
+    &pesapi_get_value_double,
+    &pesapi_get_value_string_utf8,
+    &pesapi_get_value_binary,
+    &pesapi_get_array_length,
+    &pesapi_is_null,
+    &pesapi_is_undefined,
+    &pesapi_is_boolean,
+    &pesapi_is_int32,
+    &pesapi_is_uint32,
+    &pesapi_is_int64,
+    &pesapi_is_uint64,
+    &pesapi_is_double,
+    &pesapi_is_string,
+    &pesapi_is_object,
+    &pesapi_is_function,
+    &pesapi_is_binary,
+    &pesapi_is_array,
+    &pesapi_native_object_to_value,
+    &pesapi_get_native_object_ptr,
+    &pesapi_get_native_object_typeid,
+    &pesapi_is_instance_of,
+    &pesapi_boxing,
+    &pesapi_unboxing,
+    &pesapi_update_boxed_value,
+    &pesapi_is_boxed_value,
+    &pesapi_get_args_len,
+    &pesapi_get_arg,
+    &pesapi_get_env,
+    &pesapi_get_this,
+    &pesapi_get_holder,
+    &pesapi_get_userdata,
+    &pesapi_add_return,
+    &pesapi_throw_by_string,
+    &pesapi_create_env_ref,
+    &pesapi_env_ref_is_valid,
+    &pesapi_get_env_from_ref,
+    &pesapi_duplicate_env_ref,
+    &pesapi_release_env_ref,
+    &pesapi_open_scope,
+    &pesapi_open_scope_placement,
+    &pesapi_has_caught,
+    &pesapi_get_exception_as_string,
+    &pesapi_close_scope,
+    &pesapi_close_scope_placement,
+    &pesapi_create_value_ref,
+    &pesapi_duplicate_value_ref,
+    &pesapi_release_value_ref,
+    &pesapi_get_value_from_ref,
+    &pesapi_set_ref_weak,
+    &pesapi_set_owner,
+    &pesapi_get_ref_associated_env,
+    &pesapi_get_ref_internal_fields,
+    &pesapi_get_property,
+    &pesapi_set_property,
+    &pesapi_get_private,
+    &pesapi_set_private,
+    &pesapi_get_property_uint32,
+    &pesapi_set_property_uint32,
+    &pesapi_call_function,
+    &pesapi_dostring,
+    &pesapi_global,
+    &pesapi_get_env_private,
+    &pesapi_set_env_private,
+};
 EXTERN_C_END
+
+MSVC_PRAGMA(warning(push))
+MSVC_PRAGMA(warning(disable : 4191))
+pesapi_func_ptr reg_apis[] = {(pesapi_func_ptr) &pesapi_alloc_type_infos, (pesapi_func_ptr) &pesapi_set_type_info,
+    (pesapi_func_ptr) &pesapi_create_signature_info, (pesapi_func_ptr) &pesapi_alloc_property_descriptors,
+    (pesapi_func_ptr) &pesapi_set_method_info, (pesapi_func_ptr) &pesapi_set_property_info, (pesapi_func_ptr) &pesapi_define_class,
+    (pesapi_func_ptr) &pesapi_get_class_data, (pesapi_func_ptr) &pesapi_trace_native_object_lifecycle,
+    (pesapi_func_ptr) &pesapi_on_class_not_found, (pesapi_func_ptr) &pesapi_class_type_info,
+    (pesapi_func_ptr) &pesapi_find_type_id};
+MSVC_PRAGMA(warning(pop))

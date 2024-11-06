@@ -1,5 +1,6 @@
 #include "CppObjectMapper.h"
 #include <memory>
+#include "pesapi.h"
 
 namespace xlua
 {
@@ -7,6 +8,7 @@ template <typename T>
 inline void __USE(T&&)
 {
 }
+#define container_of(ptr, type, member) ((type*) ((char*) (ptr) - offsetof(type, member)))
 
 static int dummy_idx_tag = 0;
 
@@ -132,6 +134,20 @@ int CppObjectMapper::FindOrAddCppObject(lua_State* L, const void* TypeId, void* 
     return lua_gettop(L);
 }
 
+static void PesapiFunctionCallback(PesapiCallbackData* FunctionInfo)
+{
+    FunctionInfo->Callback(&g_pesapi_ffi, (pesapi_callback_info) (FunctionInfo->Data));
+}
+
+int CppObjectMapper::CreateFunction(lua_State* L, pesapi_callback Callback, void* Data)
+{
+    auto CallbackData = new PesapiCallbackData{Callback, Data};
+    FunctionDatas.push_back(CallbackData);
+    lua_pushcfunction(L, (lua_CFunction) PesapiFunctionCallback);
+    lua_pushlightuserdata(L, CallbackData);
+    return lua_gettop(L);
+}
+
 bool CppObjectMapper::IsInstanceOfCppObject(lua_State* L, const void* TypeId, int ObjectIndex)
 {
     CppObject* cppObject = (CppObject*) lua_touserdata(L, ObjectIndex);
@@ -230,6 +246,11 @@ void CppObjectMapper::UnBindCppObject(lua_State* L, LuaClassDefinition* ClassDef
 
 void CppObjectMapper::UnInitialize(lua_State* L)
 {
+    for (int i = 0; i < FunctionDatas.size(); ++i)
+    {
+        delete FunctionDatas[i];
+    }
+    FunctionDatas.clear();
 }
 
 // upvalue --- [1]: methods, [2]:getters, [3]:baseindex
@@ -311,7 +332,7 @@ static int object_new(lua_State* L)
     LuaClassDefinition* class_definition = (LuaClassDefinition*) lua_touserdata(L, lua_upvalueindex(1));
     // printf("object_new %p, narg:%d\n", class_definition, lua_gettop(L));
     pesapi_callback_info__ callback_info{L, 1, 0};
-    void* Ptr = class_definition->Initialize(&callback_info);
+    void* Ptr = class_definition->Initialize(&g_pesapi_ffi, &callback_info);
     // printf("object_new, Ptr= %p, narg:%d\n", Ptr, lua_gettop(L));
 
     xlua::CppObjectMapper* cppObjectMapper = xlua::CppObjectMapper::Get(L);
@@ -329,7 +350,7 @@ static int object_gc(lua_State* L)
     if (cppObject->NeedDelete)
     {
         // printf("Finalize %p\n", cppObject->Ptr);
-        class_definition->Finalize(cppObject->Ptr);
+        class_definition->Finalize(&g_pesapi_ffi, cppObject->Ptr);
     }
 
     return 0;
@@ -412,7 +433,7 @@ static int property_getter_wrap(lua_State* L)
     LuaPropertyInfo* prop_info = (LuaPropertyInfo*) lua_touserdata(L, lua_upvalueindex(1));
     // printf("property_getter_wrap %p\n", prop_info);
     pesapi_callback_info__ callback_info{L, 1, 0};
-    prop_info->Getter(&callback_info);
+    prop_info->Getter(&g_pesapi_ffi, &callback_info);
     return callback_info.RetNum;
 }
 
@@ -421,7 +442,7 @@ static int property_setter_wrap(lua_State* L)
     LuaPropertyInfo* prop_info = (LuaPropertyInfo*) lua_touserdata(L, lua_upvalueindex(1));
     // printf("property_setter_wrap %p\n", prop_info);
     pesapi_callback_info__ callback_info{L, 1, 0};
-    prop_info->Setter(&callback_info);
+    prop_info->Setter(&g_pesapi_ffi, &callback_info);
     return callback_info.RetNum;
 }
 
@@ -430,7 +451,7 @@ static int variable_getter_wrap(lua_State* L)
     LuaPropertyInfo* prop_info = (LuaPropertyInfo*) lua_touserdata(L, lua_upvalueindex(1));
     // printf("variable_getter_wrap %p top=%d\n", prop_info, lua_gettop(L));
     pesapi_callback_info__ callback_info{L, 0, 0};
-    prop_info->Getter(&callback_info);
+    prop_info->Getter(&g_pesapi_ffi, &callback_info);
     return callback_info.RetNum;
 }
 
@@ -439,7 +460,7 @@ static int variable_setter_wrap(lua_State* L)
     LuaPropertyInfo* prop_info = (LuaPropertyInfo*) lua_touserdata(L, lua_upvalueindex(1));
     // printf("variable_setter_wrap %p top=%d\n", prop_info, lua_gettop(L));
     pesapi_callback_info__ callback_info{L, 0, 0};
-    prop_info->Setter(&callback_info);
+    prop_info->Setter(&g_pesapi_ffi, &callback_info);
     return callback_info.RetNum;
 }
 
@@ -448,7 +469,7 @@ static int method_wrap(lua_State* L)
     LuaFunctionInfo* func_info = (LuaFunctionInfo*) lua_touserdata(L, lua_upvalueindex(1));
     // printf("method_wrap %p\n", func_info);
     pesapi_callback_info__ callback_info{L, 1, 0};
-    func_info->Callback(&callback_info);
+    func_info->Callback(&g_pesapi_ffi, &callback_info);
     return callback_info.RetNum;
 }
 
@@ -457,7 +478,7 @@ static int function_wrap(lua_State* L)
     LuaFunctionInfo* func_info = (LuaFunctionInfo*) lua_touserdata(L, lua_upvalueindex(1));
     // printf("function_wrap %p\n", func_info);
     pesapi_callback_info__ callback_info{L, 0, 0};
-    func_info->Callback(&callback_info);
+    func_info->Callback(&g_pesapi_ffi, &callback_info);
     return callback_info.RetNum;
 }
 

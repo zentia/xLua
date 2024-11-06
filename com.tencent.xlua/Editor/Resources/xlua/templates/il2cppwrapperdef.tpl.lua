@@ -3,33 +3,53 @@ require("il2cpp_snippets")
 
 function genFuncWrapper(wrapperInfo)
     local parameterSignatures = listToLuaArray(wrapperInfo.ParameterSignatures)
-    
+
     return TaggedTemplateEngine([[
 // ]], wrapperInfo.CsName, [[
-bool w_]], wrapperInfo.Signature, [[(MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+bool w_]], wrapperInfo.Signature,
+        [[(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
     // PLog("Running w_]], wrapperInfo.Signature, [[");
-    
+
     ]], declareTypeInfo(wrapperInfo), [[
-    
-    int lua_args_len = pesapi_get_args_len(info);
-    
-]], table.join(table.map(parameterSignatures, function(x, i) return string.format('    pesapi_value_sv%d = pesapi_get_arg(info, %d);', i, i) end), '\n'), [[
 
-    if (]], #table.filter(parameterSignatures, function(s) return s[1] == 'D' end) > 0 and 'true' or 'checkLuaArgument', [[) {
+    int lua_args_len = apis->get_args_len(info);
+
+]],
+        table.join(
+            table.map(parameterSignatures,
+                function(x, i) return string.format('    pesapi_value_sv%d = apis->get_arg(info, %d);', i, i) end), '\n'),
+        [[
+
+    if (]], #table.filter(parameterSignatures, function(s) return s[1] == 'D' end) > 0 and 'true' or 'checkLuaArgument',
+        [[) {
         if (]], genArgsLenCheck(parameterSignatures), [[) return false;
-        ]], FOR(parameterSignatures, function(x, i) return TaggedTemplateEngine([[
+        ]], FOR(parameterSignatures, function(x, i)
+            return TaggedTemplateEngine([[
         ]], checkLuaArg(x, i), [[
-        ]]) end), [[
+        ]])
+        end), [[
     }
-]], table.join(table.map(parameterSignatures, function(x, i) return LuaValToCSVal(x, string.format('_sv%d', i), string.format('p%d', i)) end), '\n'), [[
+]],
+        table.join(
+            table.map(parameterSignatures,
+                function(x, i) return LuaValToCSVal(x, string.format('_sv%d', i), string.format('p%d', i)) end), '\n'),
+        [[
 
-    typedef ]], SToCPPType(wrapperInfo.ReturnSignature), ' (*FuncToCall)(', needThis(wrapperInfo) and 'void*,' or '', '', table.join(table.map(table.map(parameterSignatures, function(S, i) return string.format('%s p%d', SToCPPType(S), i)  end), function(s) return string.format('%s, ', s) end), ''), [[const void* method);
-    ]], IF(wrapperInfo.ReturnSignature ~= 'V'), '', SToCPPType(wrapperInfo.ReturnSignature), ' ret = ', ENDIF(), '((FuncToCall)methodPointer)(', needThis(wrapperInfo) and 'self,' or '', ' ', table.join(table.map(parameterSignatures, function(_, i) return string.format('p%d, ',i)  end),''), [[ method);
-    
-    ]], FOR(parameterSignatures, function(x, i) return TaggedTemplateEngine([[
+    typedef ]], SToCPPType(wrapperInfo.ReturnSignature), ' (*FuncToCall)(', needThis(wrapperInfo) and 'void*,' or '', '',
+        table.join(
+            table.map(
+                table.map(parameterSignatures, function(S, i) return string.format('%s p%d', SToCPPType(S), i) end),
+                function(s) return string.format('%s, ', s) end), ''), [[const void* method);
+    ]], IF(wrapperInfo.ReturnSignature ~= 'V'), '', SToCPPType(wrapperInfo.ReturnSignature), ' ret = ', ENDIF(),
+        '((FuncToCall)methodPointer)(', needThis(wrapperInfo) and 'self,' or '', ' ',
+        table.join(table.map(parameterSignatures, function(_, i) return string.format('p%d, ', i) end), ''), [[ method);
+
+    ]], FOR(parameterSignatures, function(x, i)
+            return TaggedTemplateEngine([[
     ]], refSetback(x, i, wrapperInfo), [[
-    ]]) end), [[
-    
+    ]])
+        end), [[
+
     ]], IF(wrapperInfo.ReturnSignature ~= 'v'), [[
     ]], returnToLua(wrapperInfo.ReturnSignature), [[
     ]], ENDIF(), [[
@@ -37,10 +57,10 @@ bool w_]], wrapperInfo.Signature, [[(MethodInfo* method, Il2CppMethodPointer met
 }]])
 end
 
-function Gen(genInfos) 
+function Gen(genInfos)
     local wrapperInfos = listToLuaArray(genInfos.WrapperInfos)
     return TaggedTemplateEngine([[// Auto Gen
-    
+
 #include "il2cpp-api.h"
 #include "il2cpp-class-internals.h"
 #include "il2cpp-object-internals.h"
@@ -65,7 +85,7 @@ function Gen(genInfos)
 namespace xlua
 {
 
-]], table.join(table.map(wrapperInfos,  genFuncWrapper), '\n'), [[
+]], table.join(table.map(wrapperInfos, genFuncWrapper), '\n'), [[
 
 }
 

@@ -1519,9 +1519,13 @@ extern "C"
         lua_State* L = luaEnv->L;
 
         auto env = reinterpret_cast<pesapi_env>(L);
-        return pesapi_create_env_ref(env);
+        return xlua::g_pesapi_ffi.pesapi_create_env_ref(env);
     }
 
+    LUA_API pesapi_ffi* GetPesApi()
+    {
+        return &xlua::g_pesapi_ffi;
+    }
 #ifdef __cplusplus
 }
 #endif

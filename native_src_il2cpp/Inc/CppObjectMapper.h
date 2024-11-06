@@ -8,6 +8,8 @@
 #include "LuaClassRegister.h"
 #include "ObjectCacheNode.h"
 
+extern pesapi_ffi g_pesapi_ffi;
+
 typedef struct
 {
     void* Ptr;
@@ -26,6 +28,12 @@ typedef pesapi_callback_info__ PersistentObjectEnvInfo;
 
 namespace xlua
 {
+struct PesapiCallbackData
+{
+    pesapi_callback Callback;
+    void* Data;
+};
+
 class CppObjectMapper
 {
 public:
@@ -38,6 +46,8 @@ public:
     std::weak_ptr<int> GetLuaEnvLifeCycleTracker();
 
     int FindOrAddCppObject(lua_State* L, const void* TypeId, void* Ptr, bool PassByPointer);
+
+    int CreateFunction(lua_State* L, pesapi_callback Callback, void* Data);
 
     void UnBindCppObject(lua_State* L, LuaClassDefinition* ClassDefinition, void* Ptr);
 
@@ -65,12 +75,13 @@ private:
     std::shared_ptr<int> Ref = std::make_shared<int>(0);
 
     int CacheRef = 0;
-    ;
 
     int GetMetaRefOfClass(lua_State* L, const LuaClassDefinition* ClassDefinition);
 
     void BindCppObject(
         lua_State* L, LuaClassDefinition* ClassDefinition, void* Ptr, bool PassByPointer, ObjectCacheNode* CacheNodePtr);
+
+    std::vector<PesapiCallbackData*> FunctionDatas;
 };
 
 }    // namespace xlua
