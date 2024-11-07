@@ -44,7 +44,7 @@ namespace XLua
         ~LuaBase()
         {
             Dispose(false);
-            XLuaIl2cpp.NativeAPI.AddPendingKillScriptObjects(nativeLuaEnv, valueRef);
+            XLuaIl2cpp.NativeAPI.AddPendingKillScriptObjects(apis, nativeLuaEnv, valueRef);
         }
 
         public void Dispose()

@@ -105,7 +105,7 @@ namespace XLuaIl2cpp
         }
 
         [DllImport("__Internal", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void AddPendingKillScriptObjects(IntPtr luaEnv, IntPtr valueRef);
+        public static extern void AddPendingKillScriptObjects(IntPtr ffiApi, IntPtr luaEnv, IntPtr valueRef);
 
         [DllImport("__Internal", CallingConvention = CallingConvention.Cdecl)]
         public static extern void CleanupPendingKillScriptObjects(IntPtr luaEnv);

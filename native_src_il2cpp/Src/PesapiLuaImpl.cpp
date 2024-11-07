@@ -571,8 +571,7 @@ pesapi_value pesapi_call_function(pesapi_env env, pesapi_value pfunc, pesapi_val
     return reinterpret_cast<pesapi_value>(lua_gettop(L) - 1);
 }
 
-int pesapi_dostring(
-    pesapi_env env, const uint8_t* code, size_t code_size, const char* path, int luaEnvRef, int* ret)
+int pesapi_dostring(pesapi_env env, const uint8_t* code, size_t code_size, const char* path, int luaEnvRef, int* ret)
 {
     lua_State* L = reinterpret_cast<lua_State*>(env);
     lua_pushcclosure(L, debug_traceback, 0);
@@ -596,7 +595,7 @@ int pesapi_dostring(
     return lua_gettop(L);
 }
 
-int pesapi_loadstring(pesapi_env env, const uint32_t* code, size_t code_size, const char* path, int luaEnvRef, int* ret)
+int pesapi_loadstring(pesapi_env env, const uint8_t* code, size_t code_size, const char* path, int luaEnvRef, int* ret)
 {
     lua_State* L = reinterpret_cast<lua_State*>(env);
 
