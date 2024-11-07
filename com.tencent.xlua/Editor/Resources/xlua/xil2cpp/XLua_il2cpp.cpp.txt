@@ -1753,7 +1753,7 @@ Il2CppObject* GetLuaObjectValue(Il2CppObject* luaObject, struct pesapi_ffi* apis
     return LuaValueToCSRef(apis, type, env, val);
 }
 
-Il2CppArray* DoString(struct pesapi_ffi* apis, intptr_t ptr, Il2CppArray* __code, Il2CppString* __path, int luaEnvReference)
+Il2CppObject* DoString(struct pesapi_ffi* apis, intptr_t ptr, Il2CppArray* __code, Il2CppString* __path, int luaEnvReference, Il2CppReflectionType *__type)
 {
     pesapi_env_ref envRef = reinterpret_cast<pesapi_env_ref>(ptr);
 
@@ -1765,24 +1765,23 @@ Il2CppArray* DoString(struct pesapi_ffi* apis, intptr_t ptr, Il2CppArray* __code
 
     auto codeSize = il2cpp_array_length(__code);
     uint8_t* code = (uint8_t*) il2cpp_array_addr_with_size(__code, il2cpp_array_element_size(__code->klass), 0);
-    int oldTop;
     int ret;
-    auto newTop = apis->dostring(env, code, codeSize, path.c_str(), luaEnvReference, &oldTop, &ret);
+    auto newTop = apis->dostring(env, code, codeSize, path.c_str(), luaEnvReference, &ret);
 
-    if (ret != 0 && apis->has_caught(ValueScope.scope))
+    if (ret != 0)
     {
-        Exception::Raise(Exception::GetInvalidOperationException(apis->get_exception_as_string(ValueScope.scope, true)));
+        if (apis->has_caught(envRef))
+        {
+            Exception::Raise(Exception::GetInvalidOperationException(apis->get_exception_as_string(envRef, true)));
+        }
         return nullptr;
     }
-    if (oldTop != newTop)
+    if (ValueScope.scope != newTop)
     {
-        auto array = Array::NewSpecific(il2cpp_defaults.object_class, newTop - oldTop);
-        for (int i = oldTop + 1; i <= newTop; i++)
-        {
-            auto csRet = LuaValueToCSRef(apis, il2cpp_defaults.object_class, env, reinterpret_cast<pesapi_value>(i));
-            il2cpp_array_setref(array, i - oldTop - 1, csRet);
-        }
-        return array;
+        auto csRet = LuaValueToCSRef(
+            apis, il2cpp_codegen_class_from_type(__type->type), env, reinterpret_cast<pesapi_value>(ValueScope.scope + 1));
+        
+        return csRet;
     }
     return nullptr;
 }
@@ -1956,11 +1955,11 @@ extern "C"
             "XLuaIl2cpp.NativeAPI::SetGlobalType_TypedValue(System.Type)", (Il2CppMethodPointer) xlua::SetGlobalType_TypedValue);
         InternalCalls::Add(
             "XLuaIl2cpp.NativeAPI::SetGlobalType_ArrayBuffer(System.Type)", (Il2CppMethodPointer) xlua::SetGlobalType_ArrayBuffer);
-        InternalCalls::Add("XLuaIl2cpp.NativeAPI::DoString(System.IntPtr,System.IntPtr,System.Byte[],System.String,System.Int)",
+        InternalCalls::Add("XLuaIl2cpp.NativeAPI::DoString(System.IntPtr,System.IntPtr,System.Byte[],System.String,System.Int32)",
             (Il2CppMethodPointer) xlua::DoString);
         InternalCalls::Add("XLuaIl2cpp.NativeAPI::SetObjectToGlobal(System.IntPtr,System.IntPtr,System.String,System.Object)",
             (Il2CppMethodPointer) xlua::SetObjectToGlobal);
-        InternalCalls::Add("XLuaIl2cpp.NativeAPI::TypeIdToType(system.IntPtr)", (Il2CppMethodPointer) xlua::TypeIdToType);
+        InternalCalls::Add("XLuaIl2cpp.NativeAPI::TypeIdToType(System.IntPtr)", (Il2CppMethodPointer) xlua::TypeIdToType);
         InternalCalls::Add(
             "XLuaIl2cpp.NativeAPI::InitialPapiEnvRef(System.IntPtr,System.IntPtr,System.Object,System.Reflection.MethodBase,System."
             "Reflection.MethodBase)",

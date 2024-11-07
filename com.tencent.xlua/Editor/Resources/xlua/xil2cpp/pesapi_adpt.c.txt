@@ -85,13 +85,14 @@ const void* pesapi_find_type_id (const char* module_name, const char* type_name)
 
 void pesapi_init(pesapi_func_ptr* func_array){
 #ifdef XLUA_SHARED
-    pesapi_alloc_type_infos_ptr                 = (pesapi_alloc_type_infosType)             func_array[1];
-    pesapi_set_type_info_ptr                    = (pesapi_set_type_infoType)                func_array[2];
-    pesapi_create_signature_info_ptr            = (pesapi_create_signature_infoType)        func_array[3];
-    pesapi_alloc_property_descriptors_ptr       = (pesapi_alloc_property_descriptorsType)   func_array[4];
-    pesapi_set_method_info_ptr                  = (pesapi_set_method_infoType)              func_array[5];
-    pesapi_set_property_info_ptr                = (pesapi_set_property_infoType)            func_array[6];
-    pesapi_define_class_ptr                     = (pesapi_define_classType)                 func_array[7];
+    pesapi_alloc_type_infos_ptr                 = (pesapi_alloc_type_infosType)             func_array[0];
+    pesapi_set_type_info_ptr                    = (pesapi_set_type_infoType)                func_array[1];
+    pesapi_create_signature_info_ptr            = (pesapi_create_signature_infoType)        func_array[2];
+    pesapi_alloc_property_descriptors_ptr       = (pesapi_alloc_property_descriptorsType)   func_array[3];
+    pesapi_set_method_info_ptr                  = (pesapi_set_method_infoType)              func_array[4];
+    pesapi_set_property_info_ptr                = (pesapi_set_property_infoType)            func_array[5];
+    pesapi_define_class_ptr                     = (pesapi_define_classType)                 func_array[6];
+    pesapi_get_class_data_ptr                   = (pesapi_get_class_dataType)               func_array[7];
     pesapi_trace_native_object_lifecycle_ptr    = (pesapi_trace_native_object_lifecycleType)func_array[8];
     pesapi_on_class_not_found_ptr               = (pesapi_on_class_not_foundType)           func_array[9];
     pesapi_class_type_info_ptr                  = (pesapi_class_type_infoType)              func_array[10];

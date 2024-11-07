@@ -76,43 +76,7 @@ namespace XLua
 
         public LuaEnv()
         {
-            XLuaIl2cpp.NativeAPI.SetLogCallback(XLuaIl2cpp.NativeAPI.Log);
-            XLuaIl2cpp.NativeAPI.InitialXLua(XLuaIl2cpp.NativeAPI.GetRegisterApi());
-            apis = XLuaIl2cpp.NativeAPI.GetFFIApi();
-            tryLoadTypeMethodInfo = typeof(TypeRegister).GetMethod("RegisterNoThrow");
-            XLuaIl2cpp.NativeAPI.SetRegisterNoThrow(tryLoadTypeMethodInfo);
-
-            persistentObjectInfoType = typeof(XLua.LuaTable);
-            XLuaIl2cpp.NativeAPI.SetGlobalType_TypedValue(typeof(TypedValue));
-            XLuaIl2cpp.NativeAPI.SetGlobalType_ArrayBuffer(typeof(ArrayBuffer));
-            XLuaIl2cpp.NativeAPI.SetGlobalType_LuaObject(typeof(LuaTable));
-
-            nativeLuaEnv = XLuaIl2cpp.NativeAPI.CreateNativeLuaEnv();
-            nativePesapiEnv = XLuaIl2cpp.NativeAPI.GetPapiEnvRef(nativeLuaEnv);
-            var objectPoolType = typeof(XLuaIl2cpp.ObjectPool);
-            nativeScriptObjectsRefsMgr = XLuaIl2cpp.NativeAPI.InitialPapiEnvRef(apis, nativePesapiEnv, objectPool, objectPoolType.GetMethod("Add"), objectPoolType.GetMethod("Remove"));
-
-            XLuaIl2cpp.NativeAPI.SetObjectToGlobal(apis, nativePesapiEnv, "luaEnv", this);
-
-#if !DISABLE_AUTO_REGISTER
-            const string AutoStaticCodeRegisterClassName = "XLuaStaticWrap.XLuaRegisterInfo_Gen";
-            var autoRegister = Type.GetType(AutoStaticCodeRegisterClassName, false);
-            if (autoRegister == null)
-            {
-                foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
-                {
-                    autoRegister = assembly.GetType(AutoStaticCodeRegisterClassName, false);
-                    if (autoRegister != null) break;
-                }
-            }
-            if (autoRegister != null)
-            {
-                var methodInfoOfRegister = autoRegister.GetMethod("AddRegisterInfoGetterIntoLuaEnv");
-                methodInfoOfRegister.Invoke(null, new object[] { this });
-            }
-#endif
-
-            XLuaIl2cpp.ExtensionMethodInfo.LoadExtensionMethodInfo();
+            
             if (LuaAPI.xlua_get_lib_version() != LIB_VERSION_EXPECT)
             {
                 throw new InvalidProgramException("wrong lib version expect:"
@@ -127,13 +91,44 @@ namespace XLua
 #if GEN_CODE_MINIMIZE
                 LuaAPI.xlua_set_csharp_wrapper_caller(InternalGlobals.CSharpWrapperCallerPtr);
 #endif
-                // Create State
-                rawL = LuaAPI.luaL_newstate();
+                XLuaIl2cpp.NativeAPI.SetLogCallback(XLuaIl2cpp.NativeAPI.Log);
+                XLuaIl2cpp.NativeAPI.InitialXLua(XLuaIl2cpp.NativeAPI.GetRegisterApi());
+                apis = XLuaIl2cpp.NativeAPI.GetFFIApi();
+                tryLoadTypeMethodInfo = typeof(TypeRegister).GetMethod("RegisterNoThrow");
+                XLuaIl2cpp.NativeAPI.SetRegisterNoThrow(tryLoadTypeMethodInfo);
 
-                //Init Base Libs
-                LuaAPI.luaopen_xlua(rawL);
-                LuaAPI.luaopen_i64lib(rawL);
+                persistentObjectInfoType = typeof(XLua.LuaTable);
+                XLuaIl2cpp.NativeAPI.SetGlobalType_TypedValue(typeof(TypedValue));
+                XLuaIl2cpp.NativeAPI.SetGlobalType_ArrayBuffer(typeof(ArrayBuffer));
+                XLuaIl2cpp.NativeAPI.SetGlobalType_LuaObject(typeof(LuaTable));
 
+                nativeLuaEnv = XLuaIl2cpp.NativeAPI.CreateNativeLuaEnv();
+                nativePesapiEnv = XLuaIl2cpp.NativeAPI.GetPapiEnvRef(nativeLuaEnv);
+                var objectPoolType = typeof(XLuaIl2cpp.ObjectPool);
+                nativeScriptObjectsRefsMgr = XLuaIl2cpp.NativeAPI.InitialPapiEnvRef(apis, nativePesapiEnv, objectPool, objectPoolType.GetMethod("Add"), objectPoolType.GetMethod("Remove"));
+
+                XLuaIl2cpp.NativeAPI.SetObjectToGlobal(apis, nativePesapiEnv, "luaEnv", this);
+
+#if !DISABLE_AUTO_REGISTER
+                const string AutoStaticCodeRegisterClassName = "XLuaStaticWrap.XLuaRegisterInfo_Gen";
+                var autoRegister = Type.GetType(AutoStaticCodeRegisterClassName, false);
+                if (autoRegister == null)
+                {
+                    foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+                    {
+                        autoRegister = assembly.GetType(AutoStaticCodeRegisterClassName, false);
+                        if (autoRegister != null) break;
+                    }
+                }
+                if (autoRegister != null)
+                {
+                    var methodInfoOfRegister = autoRegister.GetMethod("AddRegisterInfoGetterIntoLuaEnv");
+                    methodInfoOfRegister.Invoke(null, new object[] { this });
+                }
+#endif
+
+                XLuaIl2cpp.ExtensionMethodInfo.LoadExtensionMethodInfo();
+                rawL = XLuaIl2cpp.NativeAPI.GetLuaState(nativeLuaEnv);
                 translator = new ObjectTranslator(this, rawL);
                 translator.createFunctionMetatable(rawL);
                 translator.OpenLib(rawL);
@@ -429,7 +424,6 @@ namespace XLua
 
             ObjectTranslatorPool.Instance.Remove(L);
 
-            LuaAPI.lua_close(L);
             translator = null;
 
             rawL = IntPtr.Zero;

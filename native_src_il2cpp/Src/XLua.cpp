@@ -69,13 +69,23 @@ struct LuaEnv
 {
     LuaEnv()
     {
+        L = luaL_newstate();
+        luaopen_xlua(L);
+        luaopen_i64lib(L);
+
+        CppObjectMapper.Initialize(L);
     }
 
     ~LuaEnv()
     {
+        CppObjectMapper.UnInitialize(L);
+        lua_close(L);
+        L = nullptr;
     }
 
     lua_State* L;
+
+    xlua::CppObjectMapper CppObjectMapper;
 };
 }    // namespace xlua
 
@@ -1505,6 +1515,11 @@ extern "C"
     LUA_API xlua::LuaEnv* CreateNativeLuaEnv()
     {
         return new xlua::LuaEnv();
+    }
+
+    LUA_API lua_State* GetLuaState(xlua::LuaEnv* luaEnv)
+    {
+        return luaEnv->L;
     }
 
     LUA_API void DestroyNativeLuaEnv(xlua::LuaEnv* luaEnv)

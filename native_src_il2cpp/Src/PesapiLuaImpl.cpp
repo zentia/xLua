@@ -350,11 +350,10 @@ void pesapi_throw_by_string(pesapi_callback_info pinfo, const char* msg)
 struct pesapi_env_ref__
 {
     explicit pesapi_env_ref__(lua_State* _L)
-        : L(_L), scope_top(0), env_life_cycle_tracker(xlua::DataTransfer::GetLuaEnvLifeCycleTracker(_L))
+        : L(_L), env_life_cycle_tracker(xlua::DataTransfer::GetLuaEnvLifeCycleTracker(_L))
     {
     }
     lua_State* L;
-    int scope_top;
     std::weak_ptr<int> env_life_cycle_tracker;
 };
 
@@ -380,7 +379,6 @@ pesapi_env pesapi_get_env_from_ref(pesapi_env_ref env_ref)
 pesapi_env_ref pesapi_duplicate_env_ref(pesapi_env_ref env_ref)
 {
     return new pesapi_env_ref__(env_ref->L);
-    ;
 }
 
 void pesapi_release_env_ref(pesapi_env_ref env_ref)
@@ -388,45 +386,34 @@ void pesapi_release_env_ref(pesapi_env_ref env_ref)
     delete env_ref;
 }
 
-pesapi_scope pesapi_open_scope(pesapi_env_ref env_ref)
+int pesapi_open_scope(pesapi_env_ref env_ref)
 {
-    env_ref->scope_top = lua_gettop(env_ref->L);
-    // printf("pesapi_open_scope top=%d\n", env_ref->scope_top);
-    //  scope data store in env holder
-    return reinterpret_cast<pesapi_scope>(env_ref);
+    return lua_gettop(env_ref->L);
 }
 
-pesapi_scope pesapi_open_scope_placement(pesapi_env_ref env_ref)
+int pesapi_open_scope_placement(pesapi_env_ref env_ref)
 {
-    env_ref->scope_top = lua_gettop(env_ref->L);
-    return reinterpret_cast<pesapi_scope>(env_ref);
+    return lua_gettop(env_ref->L);
 }
 
-bool pesapi_has_caught(pesapi_scope scope)
+bool pesapi_has_caught(pesapi_env_ref env_ref)
 {
-    pesapi_env_ref env_ref = reinterpret_cast<pesapi_env_ref>(scope);
     return lua_tointeger(env_ref->L, -1) != 0;
 }
 
-const char* pesapi_get_exception_as_string(pesapi_scope scope, bool with_stack)
+const char* pesapi_get_exception_as_string(pesapi_env_ref env_ref, bool with_stack)
 {
-    pesapi_env_ref env_ref = reinterpret_cast<pesapi_env_ref>(scope);
     return lua_tostring(env_ref->L, -2);
 }
 
-void pesapi_close_scope(pesapi_scope scope)
+void pesapi_close_scope(pesapi_env_ref env_ref, int scope)
 {
-    pesapi_env_ref env_ref = reinterpret_cast<pesapi_env_ref>(scope);
-    lua_settop(env_ref->L, env_ref->scope_top);    // release all value alloc in scope
-    env_ref->scope_top = 0;
-    // printf("pesapi_close_scope top=%d\n", lua_gettop(env_ref->L));
+    lua_settop(env_ref->L, scope);    // release all value alloc in scope
 }
 
-void pesapi_close_scope_placement(pesapi_scope scope)
+void pesapi_close_scope_placement(pesapi_env_ref env_ref, int scope)
 {
-    pesapi_env_ref env_ref = reinterpret_cast<pesapi_env_ref>(scope);
-    lua_settop(env_ref->L, env_ref->scope_top);
-    env_ref->scope_top = 0;
+    lua_settop(env_ref->L, scope);
 }
 
 struct pesapi_value_ref__
@@ -585,10 +572,9 @@ pesapi_value pesapi_call_function(pesapi_env env, pesapi_value pfunc, pesapi_val
 }
 
 int pesapi_dostring(
-    pesapi_env env, const uint8_t* code, size_t code_size, const char* path, int luaEnvReference, int* oldTop, int* ret)
+    pesapi_env env, const uint8_t* code, size_t code_size, const char* path, int luaEnvReference, int* ret)
 {
     lua_State* L = reinterpret_cast<lua_State*>(env);
-    *oldTop = lua_gettop(L);
     lua_pushcclosure(L, debug_traceback, 0);
     int errfunc = lua_gettop(L);
 

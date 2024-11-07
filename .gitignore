@@ -37,3 +37,5 @@ Assets/Gen
 com.tencent.xlua/Plugins/x86_64/xlua.dll
 com.tencent.xlua/Plugins/x86_64/xlua_il2cpp.dll
 com.tencent.xlua/Plugins/x86_64/xlua_il2cpp.dll.meta
+com.tencent.xlua/Plugins/x86_64/xlua_il2cpp.pdb
+com.tencent.xlua/Plugins/x86_64/xlua_il2cpp.pdb.meta

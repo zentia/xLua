@@ -105,7 +105,6 @@ typedef struct pesapi_env_ref__* pesapi_env_ref;
 typedef struct pesapi_value__* pesapi_value;
 typedef struct pesapi_value_ref__* pesapi_value_ref;
 typedef struct pesapi_callback_info__* pesapi_callback_info;
-typedef struct pesapi_scope__* pesapi_scope;
 typedef struct pesapi_type_info__* pesapi_type_info;
 typedef struct pesapi_signature_info__* pesapi_signature_info;
 typedef struct pesapi_property_descriptor__* pesapi_property_descriptor;
@@ -191,12 +190,12 @@ typedef pesapi_env (*pesapi_get_env_from_ref_func)(pesapi_env_ref env_ref);
 typedef pesapi_env_ref (*pesapi_duplicate_env_ref_func)(pesapi_env_ref env_ref);
 typedef void (*pesapi_release_env_ref_func)(pesapi_env_ref env_ref);
 
-typedef pesapi_scope (*pesapi_open_scope_func)(pesapi_env_ref env_ref);
-typedef pesapi_scope (*pesapi_open_scope_placement_func)(pesapi_env_ref env_ref);
-typedef bool (*pesapi_has_caught_func)(pesapi_scope scope);
-typedef const char* (*pesapi_get_exception_as_string_func)(pesapi_scope scope, bool with_stack);
-typedef void (*pesapi_close_scope_func)(pesapi_scope scope);
-typedef void (*pesapi_close_scope_placement_func)(pesapi_scope scope);
+typedef int (*pesapi_open_scope_func)(pesapi_env_ref env_ref);
+typedef int (*pesapi_open_scope_placement_func)(pesapi_env_ref env_ref);
+typedef bool (*pesapi_has_caught_func)(pesapi_env_ref env_ref);
+typedef const char* (*pesapi_get_exception_as_string_func)(pesapi_env_ref env_ref, bool with_stack);
+typedef void (*pesapi_close_scope_func)(pesapi_env_ref env_ref, int scope);
+typedef void (*pesapi_close_scope_placement_func)(pesapi_env_ref env_ref, int scope);
 
 typedef pesapi_value_ref (*pesapi_create_value_ref_func)(pesapi_env env, pesapi_value value, uint32_t internal_field_count);
 typedef pesapi_value_ref (*pesapi_duplicate_value_ref_func)(pesapi_value_ref value_ref);
@@ -220,7 +219,7 @@ typedef pesapi_value (*pesapi_call_function_func)(
     pesapi_env env, pesapi_value func, pesapi_value this_object, int argc, const pesapi_value argv[]);
 
 typedef int (*pesapi_dostring_func)(
-    pesapi_env env, const uint8_t* code, size_t code_size, const char* path, int luaEnvRefernce, int* oldTop, int* ret);
+    pesapi_env env, const uint8_t* code, size_t code_size, const char* path, int luaEnvRefernce, int* ret);
 
 typedef pesapi_value (*pesapi_global_func)(pesapi_env env);
 typedef const void* (*pesapi_get_env_private_func)(pesapi_env env);

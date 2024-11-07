@@ -92,9 +92,9 @@ static ]], SToCPPType(bridgeInfo.ReturnSignature), ' b_', bridgeInfo.Signature, 
     auto luaret = apis->call_function(env, func, nullptr, ]], #parameterSignatures, '',
         hasVarArgs and ' + arrayLength - 1' or '', [[, argv);
 
-    if (apis->has_caught(valueScope.scope))
+    if (apis->has_caught(envRef))
     {
-        auto msg = apis->get_exception_as_string(valueScope.scope, true);
+        auto msg = apis->get_exception_as_string(envRef, true);
         il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException(msg));
 ]], IF(bridgeInfo.ReturnSignature == 'v'), [[
     }

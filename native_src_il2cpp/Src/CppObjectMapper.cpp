@@ -120,7 +120,7 @@ int CppObjectMapper::FindOrAddCppObject(lua_State* L, const void* TypeId, void* 
         }
     }
 
-    auto ClassDefinition = FindClassByID(TypeId);
+    auto ClassDefinition = LoadClassByID(TypeId);
     if (ClassDefinition)
     {
         BindCppObject(L, const_cast<LuaClassDefinition*>(ClassDefinition), Ptr, PassByPointer);
@@ -129,7 +129,7 @@ int CppObjectMapper::FindOrAddCppObject(lua_State* L, const void* TypeId, void* 
     {
         CppObject* obj = (CppObject*) lua_newuserdata(L, sizeof(CppObject));
         obj->Ptr = Ptr;
-        obj->TypeId = ClassDefinition->TypeId;
+        obj->TypeId = TypeId;
         obj->NeedDelete = false;
     }
     return lua_gettop(L);

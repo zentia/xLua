@@ -6,7 +6,7 @@ function TypingTemplate(rawInfo)
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-namespace XLua2Il2cpp
+namespace XLuaIl2cpp
 {
 public static class ExtensionMethodInfos_Gen
 {

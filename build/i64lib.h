@@ -28,6 +28,7 @@ LUALIB_API int lua_isuint64(lua_State* L, int pos);
 
 LUALIB_API int64_t lua_toint64(lua_State* L, int pos);
 LUALIB_API uint64_t lua_touint64(lua_State* L, int pos);
+LUALIB_API int luaopen_i64lib(lua_State* L);
 
 #ifdef __cplusplus
 #if __cplusplus

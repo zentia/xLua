@@ -52,20 +52,21 @@ namespace XLuaIl2cpp
         }
 
         public static Func<Type, IEnumerable<MethodInfo>> LoadExtensionMethod;
-
+#if ENABLE_IL2CPP
         public static bool LoadExtensionMethodInfo()
         {
             var ExtensionMethodInfos_Gen = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
-                                            select assembly.GetType("PuertsIl2cpp.ExtensionMethodInfos_Gen")).FirstOrDefault(x => x != null);
+                                            select assembly.GetType("XLuaIl2cpp.ExtensionMethodInfos_Gen")).FirstOrDefault(x => x != null);
             if (ExtensionMethodInfos_Gen == null)
                 ExtensionMethodInfos_Gen = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
-                                            select assembly.GetType("PuertsIl2cpp.ExtensionMethodInfos_Gen_Internal")).FirstOrDefault(x => x != null);
+                                            select assembly.GetType("XLuaIl2cpp.ExtensionMethodInfos_Gen_Internal")).FirstOrDefault(x => x != null);
             var TryLoadExtensionMethod = ExtensionMethodInfos_Gen.GetMethod("TryLoadExtensionMethod");
             if (TryLoadExtensionMethod == null) return false;
             LoadExtensionMethod = (Func<Type, IEnumerable<MethodInfo>>)Delegate.CreateDelegate(
                 typeof(Func<Type, IEnumerable<MethodInfo>>), null, TryLoadExtensionMethod);
             return true;
         }
+#endif
     }
 
     public static class TypeUtils

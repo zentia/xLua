@@ -1,8 +1,8 @@
 require('tte')
 
-function RegisterInfoTemplate(TypeRegisterInfo) 
+function RegisterInfoTemplate(TypeRegisterInfo)
     local typeRegisterInfos = listToLuaArray(TypeRegisterInfo)
-    local arg1 = FOR(typeRegisterInfos, function(item) 
+    local arg1 = FOR(typeRegisterInfos, function(item)
         local a1 = item.BlittableCopy
         local a2 = FOR(listToLuaArray(item.Members), function(member)
             local aa1 = ''
@@ -11,14 +11,15 @@ function RegisterInfoTemplate(TypeRegisterInfo)
             end
             local aa2 = ''
             if member.UseBindingMode == 'FastBinding' then
-                aa2 = referWrapperMember(item.WrapperName, member.Constructor, member.Method, member.PropertyGetter, member.PropertySetter)
+                aa2 = referWrapperMember(item.WrapperName, member.Constructor, member.Method, member.PropertyGetter,
+                    member.PropertySetter)
             end
             return string.format([[
             {"%s%s, new MemberRegisterInfo { Name = "%s", IsStatic = %s, MemberType= MemberType.%s, UseBindingMode = BindingMode.%s
-#if !EXPERMENTAL_IL2CPP_XLUA 
+#if !EXPERMENTAL_IL2CPP_XLUA
             %s
 #endif
-            }},            
+            }},
             ]], aa1, member.name, tostring(member.IsStatic), member.MemberType, member.UseBindingMode, aa2)
         end)
         return string.format([[
@@ -35,12 +36,13 @@ function RegisterInfoTemplate(TypeRegisterInfo)
                     %s
                 }
             };
-         }        
+         }
             ]], a1, a2)
     end)
-    local arg2 = FOR(typeRegisterInfos, function(item) 
+    local arg2 = FOR(typeRegisterInfos, function(item)
         local ret = string.format([[
-                luaEnv.AddRegisterInfoGetter(typeof(%s), GetRegisterInfo_%s);]], CS.XLua.TypeExtensions.GetFriendlyName(), item.WrapperName)
+                luaEnv.AddRegisterInfoGetter(typeof(%s), GetRegisterInfo_%s);]], CS.XLua.TypeExtensions.GetFriendlyName(),
+            item.WrapperName)
         if item.BlittableCopy then
             local a1 = ''
             if item.BlittableCopy then
@@ -65,8 +67,8 @@ namespace XLuaStaticWrap
     public static class XLuaRegisterInfo_Gen
     {
         %s
-        
-        public static void AddRegisterInfoGetterInfoLuaEnv(LuaEnv luaEnv)
+
+        public static void AddRegisterInfoGetterIntoLuaEnv(LuaEnv luaEnv)
         {
             %s
         }
@@ -80,13 +82,16 @@ function referWrapperMember(wrapperName, constructorName, methodName, propertyGe
         ret = ', ' .. string.format('Constructor = %s.%s', wrapperName, constructorName)
     end
     if methodName then
-        ret = ret .. ', ' string.format('Method = %s.%s', wrapperName, methodName)
+        ret = ret .. ', '
+        string.format('Method = %s.%s', wrapperName, methodName)
     end
     if propertyGetterName then
-        ret = ret .. ', ' string.format('PropertyGetter = %s.%s', wrapperName, propertyGetterName)
+        ret = ret .. ', '
+        string.format('PropertyGetter = %s.%s', wrapperName, propertyGetterName)
     end
     if propertySetterName then
-        ret = ret .. ', ' string.format('PropertySetter = %s.%s', wrapperName, propertySetterName)
+        ret = ret .. ', '
+        string.format('PropertySetter = %s.%s', wrapperName, propertySetterName)
     end
     return ret
 end

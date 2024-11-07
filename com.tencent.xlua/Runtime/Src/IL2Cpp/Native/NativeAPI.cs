@@ -34,6 +34,9 @@ namespace XLuaIl2cpp
         public static extern IntPtr CreateNativeLuaEnv();
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr GetLuaState(IntPtr luaEnv);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DestroyNativeLuaEnv(IntPtr luaEnv);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
