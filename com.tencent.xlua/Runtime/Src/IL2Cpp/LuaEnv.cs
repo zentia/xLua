@@ -246,33 +246,7 @@ namespace XLua
 
         public T LoadString<T>(byte[] chunk, string chunkName = "chunk", LuaTable env = null)
         {
-#if THREAD_SAFE || HOTFIX_ENABLE
-            lock (luaEnvLock)
-            {
-#endif
-            if (typeof(T) != typeof(LuaFunction) && !typeof(T).IsSubclassOf(typeof(Delegate)))
-            {
-                throw new InvalidOperationException(typeof(T).Name + " is not a delegate type nor LuaFunction");
-            }
-            var _L = L;
-            int oldTop = LuaAPI.lua_gettop(_L);
-
-            if (LuaAPI.xluaL_loadbuffer(_L, chunk, chunk.Length, chunkName) != 0)
-                ThrowExceptionFromError(oldTop);
-
-            if (env != null)
-            {
-                env.push(_L);
-                LuaAPI.lua_setfenv(_L, -2);
-            }
-
-            T result = (T)translator.GetObject(_L, -1, typeof(T));
-            LuaAPI.lua_settop(_L, oldTop);
-
-            return result;
-#if THREAD_SAFE || HOTFIX_ENABLE
-            }
-#endif
+            return (T)XLuaIl2cpp.NativeAPI.LoadString(apis, nativePesapiEnv, chunk, chunkName, env == null ? 0 : env.luaReference, typeof(T));
         }
 
         public T LoadString<T>(string chunk, string chunkName = "chunk", LuaTable env = null)
@@ -286,15 +260,20 @@ namespace XLua
             return LoadString<LuaFunction>(chunk, chunkName, env);
         }
 
-        public object[] DoString(byte[] chunk, string chunkName = "chunk", LuaTable env = null)
+        public T DoString<T>(byte[] chunk, string chunkName = "chunk", LuaTable env = null)
         {
-            return XLuaIl2cpp.NativeAPI.DoString(apis, nativePesapiEnv, chunk, chunkName, env == null ? 0 : env.luaReference);
+            return (T)XLuaIl2cpp.NativeAPI.DoString(apis, nativePesapiEnv, chunk, chunkName, env == null ? 0 : env.luaReference, typeof(T));
         }
 
-        public object[] DoString(string chunk, string chunkName = "chunk", LuaTable env = null)
+        public LuaFunction DoString(string chunk, string chunkName = "chunk", LuaTable env = null)
+        {
+            return DoString<LuaFunction>(chunk, chunkName, env);
+        }
+
+        public T DoString<T>(string chunk, string chunkName = "chunk", LuaTable env = null)
         {
             byte[] bytes = System.Text.Encoding.UTF8.GetBytes(chunk);
-            return DoString(bytes, chunkName, env);
+            return DoString<T>(bytes, chunkName, env);
         }
 
         private void AddSearcher(LuaCSFunction searcher, int index)

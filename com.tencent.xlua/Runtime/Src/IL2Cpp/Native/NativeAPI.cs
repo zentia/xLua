@@ -179,7 +179,13 @@ namespace XLuaIl2cpp
         }
 
         [MethodImpl(MethodImplOptions.InternalCall)]
-        public static object[] DoString(IntPtr apis, IntPtr envHolder, byte[] code, string path, int luaEnvReference)
+        public static object DoString(IntPtr apis, IntPtr envHolder, byte[] code, string path, int luaEnvRef, Type type)
+        {
+            throw new NotImplementedException();
+        }
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static object LoadString(IntPtr apis, IntPtr envHolder, byte[] code, string path, int luaEnvRef, Type type)
         {
             throw new NotImplementedException();
         }

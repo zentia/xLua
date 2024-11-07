@@ -1753,6 +1753,32 @@ Il2CppObject* GetLuaObjectValue(Il2CppObject* luaObject, struct pesapi_ffi* apis
     return LuaValueToCSRef(apis, type, env, val);
 }
 
+Il2CppObject* LoadString(struct pesapi_ffi* apis, intptr_t ptr, Il2CppArray* __code, Il2CppString* __path, int lueEnvReference, Il2CppReflectionType* __type)
+{
+    pesapi_env_ref envRef = reinterpret_cast<pesapi_env_ref>(ptr);
+
+    AutoValueScope ValueScope(apis, envRef);
+    auto env = apis->get_env_from_ref(envRef);
+
+    const Il2CppChar* utf16 = il2cpp::utils::StringUtils::GetChars(__path);
+    std::string path = il2cpp::utils::StringUtils::Utf16ToUtf8(utf16);
+
+    auto codeSize = il2cpp_array_length(__code);
+    uint8_t* code = (uint8_t*) il2cpp_array_addr_with_size(__code, il2cpp_array_element_size(__code->klass), 0);
+    int ret;
+    auto newTop = apis->loadstring(env, code, codeSize, path.c_str(), lueEnvReference, &ret);
+
+    if (ret != 0)
+    {
+        if (apis->has_caught(envRef))
+        {
+            Exception::Raise(Exception::GetInvalidOperationException(apis->get_exception_as_string(envRef, true)));
+        }
+        return nullptr;
+    }
+    return LuaValueToCSRef(apis, il2cpp_codegen_class_from_type(__type->type), env, reinterpret_cast<pesapi_value>(-1));
+}
+
 Il2CppObject* DoString(struct pesapi_ffi* apis, intptr_t ptr, Il2CppArray* __code, Il2CppString* __path, int luaEnvReference, Il2CppReflectionType *__type)
 {
     pesapi_env_ref envRef = reinterpret_cast<pesapi_env_ref>(ptr);
@@ -1778,10 +1804,8 @@ Il2CppObject* DoString(struct pesapi_ffi* apis, intptr_t ptr, Il2CppArray* __cod
     }
     if (ValueScope.scope != newTop)
     {
-        auto csRet = LuaValueToCSRef(
+        return LuaValueToCSRef(
             apis, il2cpp_codegen_class_from_type(__type->type), env, reinterpret_cast<pesapi_value>(ValueScope.scope + 1));
-        
-        return csRet;
     }
     return nullptr;
 }
@@ -1955,8 +1979,11 @@ extern "C"
             "XLuaIl2cpp.NativeAPI::SetGlobalType_TypedValue(System.Type)", (Il2CppMethodPointer) xlua::SetGlobalType_TypedValue);
         InternalCalls::Add(
             "XLuaIl2cpp.NativeAPI::SetGlobalType_ArrayBuffer(System.Type)", (Il2CppMethodPointer) xlua::SetGlobalType_ArrayBuffer);
-        InternalCalls::Add("XLuaIl2cpp.NativeAPI::DoString(System.IntPtr,System.IntPtr,System.Byte[],System.String,System.Int32)",
+        InternalCalls::Add("XLuaIl2cpp.NativeAPI::DoString(System.IntPtr,System.IntPtr,System.Byte[],System.String,System.Int32,System.Type)",
             (Il2CppMethodPointer) xlua::DoString);
+        InternalCalls::Add(
+            "XLuaIl2cpp.NativeAPI::LoadString(System.IntPtr,System.IntPtr,System.Byte[],System.String,System.Int32,System.Type",
+            (Il2CppMethodPointer) xlua::LoadString);
         InternalCalls::Add("XLuaIl2cpp.NativeAPI::SetObjectToGlobal(System.IntPtr,System.IntPtr,System.String,System.Object)",
             (Il2CppMethodPointer) xlua::SetObjectToGlobal);
         InternalCalls::Add("XLuaIl2cpp.NativeAPI::TypeIdToType(System.IntPtr)", (Il2CppMethodPointer) xlua::TypeIdToType);

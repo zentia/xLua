@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using UnityEngine;
 
 namespace XLua.Editor
 {
@@ -45,7 +44,7 @@ namespace XLua.Editor
                     luaEnv.DoString($"package.path = package.path..';{assetPath + "Editor/Resources/xlua/templates"}/?.lua'");
                     var path = Path.Combine(assetPath, "Editor/Resources/xlua/templates/registerinfo.tpl.lua");
                     var bytes = File.ReadAllBytes(path);
-                    luaEnv.DoString(bytes, path);
+                    luaEnv.DoString<LuaFunction>(bytes, path);
                     var func = luaEnv.Global.Get<LuaFunction>("RegisterInfoTemplate");
                     var registerInfoContent = func.Func<List<RegisterInfoForGenerate>, string>(RegisterInfos);
                     var registerInfoPath = outDir + "RegisterInfo_Gen.cs";

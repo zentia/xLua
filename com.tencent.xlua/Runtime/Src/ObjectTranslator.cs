@@ -665,7 +665,7 @@ namespace XLua
                     end
                     return lua_iter, obj:GetEnumerator(), -1
                 end
-            ")[0] as LuaFunction;
+            ");
             func.push(L);
             enumerable_pairs_func = LuaAPI.luaL_ref(L, LuaIndexes.LUA_REGISTRYINDEX);
             func.Dispose();
@@ -828,6 +828,11 @@ namespace XLua
 		internal object GetObject(RealStatePtr L,int index)
 		{
             return (objectCasters.GetCaster(typeof(object))(L, index, null));
+        }
+
+        internal T GetObject<T>(RealStatePtr L, int index)
+        {
+            return (T)objectCasters.GetCaster(typeof(T))(L, index, null);
         }
 
         public Type GetTypeOf(RealStatePtr L, int idx)
@@ -1476,6 +1481,19 @@ namespace XLua
 				return returnValues.ToArray();
 			}
 		}
+
+        internal T popValue<T>(RealStatePtr L, int oldTop)
+        {
+            int newTop = LuaAPI.lua_gettop(L);
+            if (oldTop == newTop)
+            {
+                return default;
+            }
+
+            var ret = GetObject<T>(L, oldTop + 1);
+            LuaAPI.lua_settop(L, oldTop);
+            return ret;
+        }
 
 		internal object[] popValues(RealStatePtr L,int oldTop,Type[] popTypes)
 		{

@@ -219,7 +219,9 @@ typedef pesapi_value (*pesapi_call_function_func)(
     pesapi_env env, pesapi_value func, pesapi_value this_object, int argc, const pesapi_value argv[]);
 
 typedef int (*pesapi_dostring_func)(
-    pesapi_env env, const uint8_t* code, size_t code_size, const char* path, int luaEnvRefernce, int* ret);
+    pesapi_env env, const uint8_t* code, size_t code_size, const char* path, int luaEnvRef, int* ret);
+typedef int (*pesapi_loadstring_func)(
+    pesapi_env env, const uint8_t* code, size_t code_size, const char* path, int luaEnvRef, int* ret);
 
 typedef pesapi_value (*pesapi_global_func)(pesapi_env env);
 typedef const void* (*pesapi_get_env_private_func)(pesapi_env env);
@@ -306,6 +308,7 @@ struct pesapi_ffi
     pesapi_set_property_uint32_func set_property_uint32;
     pesapi_call_function_func call_function;
     pesapi_dostring_func dostring;
+    pesapi_loadstring_func loadstring;
     pesapi_global_func global;
     pesapi_get_env_private_func get_env_private;
     pesapi_set_env_private_func set_env_private;

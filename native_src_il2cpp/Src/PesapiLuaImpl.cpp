@@ -572,7 +572,7 @@ pesapi_value pesapi_call_function(pesapi_env env, pesapi_value pfunc, pesapi_val
 }
 
 int pesapi_dostring(
-    pesapi_env env, const uint8_t* code, size_t code_size, const char* path, int luaEnvReference, int* ret)
+    pesapi_env env, const uint8_t* code, size_t code_size, const char* path, int luaEnvRef, int* ret)
 {
     lua_State* L = reinterpret_cast<lua_State*>(env);
     lua_pushcclosure(L, debug_traceback, 0);
@@ -581,15 +581,32 @@ int pesapi_dostring(
     *ret = luaL_loadbuffer(L, reinterpret_cast<const char*>(code), code_size, path);
     if (*ret == 0)
     {
-        if (luaEnvReference != 0)
+        if (luaEnvRef != 0)
         {
-            lua_rawgeti(L, LUA_REGISTRYINDEX, luaEnvReference);
+            lua_rawgeti(L, LUA_REGISTRYINDEX, luaEnvRef);
             lua_setfenv(L, -2);
         }
         *ret = lua_pcall(L, 0, -1, errfunc);
         if (*ret == 0)
         {
             lua_remove(L, errfunc);
+        }
+    }
+
+    return lua_gettop(L);
+}
+
+int pesapi_loadstring(pesapi_env env, const uint32_t* code, size_t code_size, const char* path, int luaEnvRef, int* ret)
+{
+    lua_State* L = reinterpret_cast<lua_State*>(env);
+
+    *ret = luaL_loadbuffer(L, reinterpret_cast<const char*>(code), code_size, path);
+    if (*ret == 0)
+    {
+        if (luaEnvRef != 0)
+        {
+            lua_rawgeti(L, LUA_REGISTRYINDEX, luaEnvRef);
+            lua_setfenv(L, -2);
         }
     }
 
@@ -931,6 +948,7 @@ pesapi_ffi g_pesapi_ffi{
     &pesapi_set_property_uint32,
     &pesapi_call_function,
     &pesapi_dostring,
+    &pesapi_loadstring,
     &pesapi_global,
     &pesapi_get_env_private,
     &pesapi_set_env_private,

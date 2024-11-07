@@ -241,7 +241,7 @@ namespace XLua
             return LoadString<LuaFunction>(chunk, chunkName, env);
         }
 
-        public object[] DoString(byte[] chunk, string chunkName = "chunk", LuaTable env = null)
+        public T DoString<T>(byte[] chunk, string chunkName = "chunk", LuaTable env = null)
         {
 #if THREAD_SAFE || HOTFIX_ENABLE
             lock (luaEnvLock)
@@ -261,7 +261,7 @@ namespace XLua
                 if (LuaAPI.lua_pcall(_L, 0, -1, errFunc) == 0)
                 {
                     LuaAPI.lua_remove(_L, errFunc);
-                    return translator.popValues(_L, oldTop);
+                    return translator.popValue<T>(_L, oldTop);
                 }
                 else
                     ThrowExceptionFromError(oldTop);
@@ -269,16 +269,21 @@ namespace XLua
             else
                 ThrowExceptionFromError(oldTop);
 
-            return null;
+            return default;
 #if THREAD_SAFE || HOTFIX_ENABLE
             }
 #endif
         }
 
-        public object[] DoString(string chunk, string chunkName = "chunk", LuaTable env = null)
+        public T DoString<T>(string chunk, string chunkName = "chunk", LuaTable env = null)
         {
             byte[] bytes = System.Text.Encoding.UTF8.GetBytes(chunk);
-            return DoString(bytes, chunkName, env);
+            return DoString<T>(bytes, chunkName, env);
+        }
+
+        public LuaFunction DoString(string chunk, string chunkName = "chunk", LuaTable env = null)
+        {
+            return DoString<LuaFunction>(chunk, chunkName, env);
         }
 
         private void AddSearcher(LuaCSFunction searcher, int index)

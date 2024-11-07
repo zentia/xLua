@@ -395,7 +395,7 @@ namespace XLuaIl2cpp.Editor
                     {
                         var path = Path.Combine(assetPath, "Editor/Resources/xlua/templates/il2cppwrapper.tpl.lua");
                         var bytes = File.ReadAllBytes(path);
-                        luaEnv.DoString(bytes, path);
+                        luaEnv.DoString<LuaFunction>(bytes, path);
                         var gen = luaEnv.Global.Get<LuaFunction>("Gen");
                         var fileContext = gen.Func<CppWrappersInfo, string>(cppWrapInfo);
                         textWriter.Write(fileContext);
@@ -406,7 +406,7 @@ namespace XLuaIl2cpp.Editor
                     {
                         var path = Path.Combine(assetPath, "Editor/Resources/xlua/templates/il2cppvaluetype.tpl.lua");
                         var bytes = File.ReadAllBytes(path);
-                        luaEnv.DoString(bytes, path);
+                        luaEnv.DoString<LuaFunction>(bytes, path);
                         var gen = luaEnv.Global.Get<LuaFunction>("Gen");
                         var fileContext = gen.Func<CppWrappersInfo, string>(cppWrapInfo);
                         textWriter.Write(fileContext);
@@ -417,7 +417,7 @@ namespace XLuaIl2cpp.Editor
                     {
                         var path = Path.Combine(assetPath, "Editor/Resources/xlua/templates/il2cppfieldwrapper.tpl.lua");
                         var bytes = File.ReadAllBytes(path);
-                        luaEnv.DoString(bytes, path);
+                        luaEnv.DoString<LuaFunction>(bytes, path);
                         var gen = luaEnv.Global.Get<LuaFunction>("Gen");
                         var fileContext = gen.Func<CppWrappersInfo, string>(cppWrapInfo);
                         textWriter.Write(fileContext);
@@ -428,7 +428,7 @@ namespace XLuaIl2cpp.Editor
                     {
                         var path = Path.Combine(assetPath, "Editor/Resources/xlua/templates/il2cppbridge.tpl.lua");
                         var bytes = File.ReadAllBytes(path);
-                        luaEnv.DoString(bytes, path);
+                        luaEnv.DoString<LuaFunction>(bytes, path);
                         var gen = luaEnv.Global.Get<LuaFunction>("Gen");
                         var fileContext = gen.Func<CppWrappersInfo, string>(cppWrapInfo);
                         textWriter.Write(fileContext);
@@ -469,7 +469,7 @@ namespace XLuaIl2cpp.Editor
                             Debug.Log("XLuaIl2cppWrapperDef" + saveFileName + " with " + cppWrapInfo.WrapperInfos.Count + " wrappers!");
                             var path = Path.Combine(assetPath, "Editor/Resources/xlua/templates/il2cppwrapperdef.tpl.lua");
                             var bytes = File.ReadAllBytes(path);
-                            luaEnv.DoString(bytes, path);
+                            luaEnv.DoString<LuaFunction>(bytes, path);
                             var gen = luaEnv.Global.Get<LuaFunction>("Gen");
                             var fileContext = gen.Func<CppWrappersInfo, string>(cppWrapInfo);
                             textWriter.Write(fileContext);
@@ -509,7 +509,7 @@ namespace XLuaIl2cpp.Editor
                     luaEnv.DoString($"package.path = package.path..';{assetPath + "Editor/Resources/xlua/templates"}/?.lua'");
                     var path = Path.Combine(assetPath, "Editor/Resources/xlua/templates/extension_methods_gen.tpl.lua");
                     var bytes = File.ReadAllBytes(path);
-                    luaEnv.DoString(bytes, path);
+                    luaEnv.DoString<LuaFunction>(bytes, path);
                     var func = luaEnv.Global.Get<LuaFunction>("TypingTemplate");
                     var fileContent = func.Func<List<KeyValuePair<Type, List<Type>>>, string>(extendedType2extensionType);
                     var filePath = outDir + "ExtensionMethodInfos_Gen.cs";
@@ -539,7 +539,7 @@ namespace XLuaIl2cpp.Editor
                     luaEnv.DoString($"package.path = package.path..';{assetPath + "Editor/Resources/xlua/templates"}/?.lua'");
                     var path = Path.Combine(assetPath, "Editor/Resources/xlua/templates/linkxmlgen.tpl.lua");
                     var bytes = File.ReadAllBytes(path);
-                    luaEnv.DoString(bytes, path);
+                    luaEnv.DoString<LuaFunction>(bytes, path);
                     var func = luaEnv.Global.Get<LuaFunction>("LinkXMLTemplate");
                     var linkXMLContent = func.Func<List<Type>, string>(genTypes);
                     var linkXMLPath = outDir + "link.xml";
@@ -583,7 +583,7 @@ namespace XLuaIl2cpp.Editor
                     luaEnv.DoString($"package.path = package.path..';{assetPath + "Editor/Resources/xlua/templates"}/?.lua'");
                     var path = Path.Combine(assetPath, "Editor/Resources/xlua/xil2cpp/unityenv_for_xlua.h.tpl.lua");
                     var bytes = File.ReadAllBytes(path);
-                    luaEnv.DoString(bytes, path);
+                    luaEnv.DoString<LuaFunction>(bytes, path);
                     var func = luaEnv.Global.Get<LuaFunction>("unityenv_for_xlua");
                     string macroHeaderContent = func.Func<bool, bool, string>(true,
 #if UNITY_ANDROID || UNITY_IPHONE
