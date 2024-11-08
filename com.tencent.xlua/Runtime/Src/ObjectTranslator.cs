@@ -6,6 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 */
 
+#if !ENABLE_IL2CPP || !XLUA_IL2CPP
 #if USE_UNI_LUA
 using LuaAPI = UniLua.Lua;
 using RealStatePtr = UniLua.ILuaState;
@@ -15,6 +16,7 @@ using LuaAPI = XLua.LuaDLL.Lua;
 using RealStatePtr = System.IntPtr;
 using LuaCSFunction = XLua.LuaDLL.lua_CSFunction;
 #endif
+using XLua.LuaDLL;
 
 
 namespace XLua
@@ -46,32 +48,7 @@ namespace XLua
     }
 #pragma warning restore 414
 
-    public enum LuaTypes
-    {
-        LUA_TNONE = -1,
-        LUA_TNIL = 0,
-        LUA_TNUMBER = 3,
-        LUA_TSTRING = 4,
-        LUA_TBOOLEAN = 1,
-        LUA_TTABLE = 5,
-        LUA_TFUNCTION = 6,
-        LUA_TUSERDATA = 7,
-        LUA_TTHREAD = 8,
-        LUA_TLIGHTUSERDATA = 2
-    }
-
-    public enum LuaGCOptions
-    {
-        LUA_GCSTOP = 0,
-        LUA_GCRESTART = 1,
-        LUA_GCCOLLECT = 2,
-        LUA_GCCOUNT = 3,
-        LUA_GCCOUNTB = 4,
-        LUA_GCSTEP = 5,
-        LUA_GCSETPAUSE = 6,
-        LUA_GCSETSTEPMUL = 7,
-    }
-
+    
     public enum LuaThreadStatus
     {
         LUA_RESUME_ERROR = -1,
@@ -1741,3 +1718,4 @@ namespace XLua
         }
     }
 }
+#endif

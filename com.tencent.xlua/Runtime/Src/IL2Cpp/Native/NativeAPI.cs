@@ -156,7 +156,7 @@ namespace XLuaIl2cpp
         }
 
         [MethodImpl(MethodImplOptions.InternalCall)]
-        public static void SetGlobalType_LuaObject(Type type)
+        public static void SetGlobalType_LuaTable(Type type)
         {
             throw new NotImplementedException();
         }
@@ -179,13 +179,19 @@ namespace XLuaIl2cpp
         }
 
         [MethodImpl(MethodImplOptions.InternalCall)]
-        public static object DoString(IntPtr apis, IntPtr envHolder, byte[] code, string path, int luaEnvRef, Type type)
+        public static object DoString(IntPtr apis, IntPtr envHolder, byte[] code, string path, LuaTable env, Type type)
         {
             throw new NotImplementedException();
         }
 
         [MethodImpl(MethodImplOptions.InternalCall)]
-        public static object LoadString(IntPtr apis, IntPtr envHolder, byte[] code, string path, int luaEnvRef, Type type)
+        public static object LoadString(IntPtr apis, IntPtr envHolder, byte[] code, string path, LuaTable env, Type type)
+        {
+            throw new NotImplementedException();
+        }
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static object NewTable(IntPtr apis, IntPtr envHolder)
         {
             throw new NotImplementedException();
         }

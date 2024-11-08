@@ -212,8 +212,8 @@ typedef void (*pesapi_set_property_func)(pesapi_env env, pesapi_value object, co
 typedef bool (*pesapi_get_private_func)(pesapi_env env, pesapi_value object, void** out_ptr);
 typedef bool (*pesapi_set_private_func)(pesapi_env env, pesapi_value object, void* ptr);
 
-typedef pesapi_value (*pesapi_get_property_uint32_func)(pesapi_env env, pesapi_value object, uint32_t key);
-typedef void (*pesapi_set_property_uint32_func)(pesapi_env env, pesapi_value object, uint32_t key, pesapi_value value);
+typedef pesapi_value (*pesapi_get_property_uint64_func)(pesapi_env env, pesapi_value object, uint64_t key);
+typedef void (*pesapi_set_property_uint64_func)(pesapi_env env, pesapi_value object, uint64_t key, pesapi_value value);
 
 typedef pesapi_value (*pesapi_call_function_func)(
     pesapi_env env, pesapi_value func, pesapi_value this_object, int argc, const pesapi_value argv[]);
@@ -304,8 +304,8 @@ struct pesapi_ffi
     pesapi_set_property_func set_property;
     pesapi_get_private_func get_private;
     pesapi_set_private_func set_private;
-    pesapi_get_property_uint32_func get_property_uint32;
-    pesapi_set_property_uint32_func set_property_uint32;
+    pesapi_get_property_uint64_func get_property_uint64;
+    pesapi_set_property_uint64_func set_property_uint64;
     pesapi_call_function_func call_function;
     pesapi_dostring_func dostring;
     pesapi_loadstring_func loadstring;

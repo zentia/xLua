@@ -1,4 +1,4 @@
-﻿#if ENABLE_IL2CPP
+﻿#if ENABLE_IL2CPP && XLUA_IL2CPP
 using System;
 using System.Reflection;
 using XLua.TypeMapping;
@@ -56,8 +56,6 @@ namespace XLua
 
         private LuaTable _G;
 
-        public ObjectTranslator translator;
-
         public int errorFuncRef = -1;
 
 #if THREAD_SAFE || HOTFIX_ENABLE
@@ -87,7 +85,6 @@ namespace XLua
             lock(luaEnvLock)
 #endif
             {
-                LuaIndexes.LUA_REGISTRYINDEX = LuaAPI.xlua_get_registry_index();
 #if GEN_CODE_MINIMIZE
                 LuaAPI.xlua_set_csharp_wrapper_caller(InternalGlobals.CSharpWrapperCallerPtr);
 #endif
@@ -100,7 +97,7 @@ namespace XLua
                 persistentObjectInfoType = typeof(XLua.LuaTable);
                 XLuaIl2cpp.NativeAPI.SetGlobalType_TypedValue(typeof(TypedValue));
                 XLuaIl2cpp.NativeAPI.SetGlobalType_ArrayBuffer(typeof(ArrayBuffer));
-                XLuaIl2cpp.NativeAPI.SetGlobalType_LuaObject(typeof(LuaTable));
+                XLuaIl2cpp.NativeAPI.SetGlobalType_LuaTable(typeof(LuaTable));
 
                 nativeLuaEnv = XLuaIl2cpp.NativeAPI.CreateNativeLuaEnv();
                 nativePesapiEnv = XLuaIl2cpp.NativeAPI.GetPapiEnvRef(nativeLuaEnv);
@@ -129,111 +126,8 @@ namespace XLua
 
                 XLuaIl2cpp.ExtensionMethodInfo.LoadExtensionMethodInfo();
                 rawL = XLuaIl2cpp.NativeAPI.GetLuaState(nativeLuaEnv);
-                translator = new ObjectTranslator(this, rawL);
-                translator.createFunctionMetatable(rawL);
-                translator.OpenLib(rawL);
-                ObjectTranslatorPool.Instance.Add(rawL, translator);
-
-                LuaAPI.lua_atpanic(rawL, StaticLuaCallbacks.Panic);
-
-#if !XLUA_GENERAL
-                LuaAPI.lua_pushstdcallcfunction(rawL, StaticLuaCallbacks.Print);
-                if (0 != LuaAPI.xlua_setglobal(rawL, "print"))
-                {
-                    throw new Exception("call xlua_setglobal fail!");
-                }
-#endif
-
-                //template engine lib register
-                TemplateEngine.LuaTemplate.OpenLib(rawL);
-
-                AddSearcher(StaticLuaCallbacks.LoadBuiltinLib, 2); // just after the preload searcher
-                AddSearcher(StaticLuaCallbacks.LoadFromCustomLoaders, 3);
                 
-                DoString(init_xlua, "Init");
-                init_xlua = null;
-
-                AddBuildin("CS", StaticLuaCallbacks.LoadCS);
-
-                LuaAPI.lua_newtable(rawL); //metatable of indexs and newindexs functions
-                LuaAPI.xlua_pushasciistring(rawL, "__index");
-                LuaAPI.lua_pushstdcallcfunction(rawL, StaticLuaCallbacks.MetaFuncIndex);
-                LuaAPI.lua_rawset(rawL, -3);
-
-                LuaAPI.xlua_pushasciistring(rawL, Utils.LuaIndexsFieldName);
-                LuaAPI.lua_newtable(rawL);
-                LuaAPI.lua_pushvalue(rawL, -3);
-                LuaAPI.lua_setmetatable(rawL, -2);
-                LuaAPI.lua_rawset(rawL, LuaIndexes.LUA_REGISTRYINDEX);
-
-                LuaAPI.xlua_pushasciistring(rawL, Utils.LuaNewIndexsFieldName);
-                LuaAPI.lua_newtable(rawL);
-                LuaAPI.lua_pushvalue(rawL, -3);
-                LuaAPI.lua_setmetatable(rawL, -2);
-                LuaAPI.lua_rawset(rawL, LuaIndexes.LUA_REGISTRYINDEX);
-
-                LuaAPI.xlua_pushasciistring(rawL, Utils.LuaClassIndexsFieldName);
-                LuaAPI.lua_newtable(rawL);
-                LuaAPI.lua_pushvalue(rawL, -3);
-                LuaAPI.lua_setmetatable(rawL, -2);
-                LuaAPI.lua_rawset(rawL, LuaIndexes.LUA_REGISTRYINDEX);
-
-                LuaAPI.xlua_pushasciistring(rawL, Utils.LuaClassNewIndexsFieldName);
-                LuaAPI.lua_newtable(rawL);
-                LuaAPI.lua_pushvalue(rawL, -3);
-                LuaAPI.lua_setmetatable(rawL, -2);
-                LuaAPI.lua_rawset(rawL, LuaIndexes.LUA_REGISTRYINDEX);
-
-                LuaAPI.lua_pop(rawL, 1); // pop metatable of indexs and newindexs functions
-
-                LuaAPI.xlua_pushasciistring(rawL, MAIN_SHREAD);
-                LuaAPI.lua_pushthread(rawL);
-                LuaAPI.lua_rawset(rawL, LuaIndexes.LUA_REGISTRYINDEX);
-
-                LuaAPI.xlua_pushasciistring(rawL, CSHARP_NAMESPACE);
-                if (0 != LuaAPI.xlua_getglobal(rawL, "CS"))
-                {
-                    throw new Exception("get CS fail!");
-                }
-                LuaAPI.lua_rawset(rawL, LuaIndexes.LUA_REGISTRYINDEX);
-
-#if !XLUA_GENERAL && (!UNITY_WSA || UNITY_EDITOR)
-                translator.Alias(typeof(Type), "System.MonoType");
-#endif
-
-                if (0 != LuaAPI.xlua_getglobal(rawL, "_G"))
-                {
-                    throw new Exception("get _G fail!");
-                }
-                translator.Get(rawL, -1, out _G);
-                LuaAPI.lua_pop(rawL, 1);
-
-                errorFuncRef = LuaAPI.get_error_func_ref(rawL);
-
-                if (initers != null)
-                {
-                    for (int i = 0; i < initers.Count; i++)
-                    {
-                        initers[i](this, translator);
-                    }
-                }
-
-                translator.CreateArrayMetatable(rawL);
-                translator.CreateDelegateMetatable(rawL);
-                translator.CreateEnumerablePairs(rawL);
-
             }
-        }
-
-        private static List<Action<LuaEnv, ObjectTranslator>> initers = null;
-
-        public static void AddIniter(Action<LuaEnv, ObjectTranslator> initer)
-        {
-            if (initers == null)
-            {
-                initers = new List<Action<LuaEnv, ObjectTranslator>>();
-            }
-            initers.Add(initer);
         }
 
         public LuaTable Global
@@ -246,7 +140,7 @@ namespace XLua
 
         public T LoadString<T>(byte[] chunk, string chunkName = "chunk", LuaTable env = null)
         {
-            return (T)XLuaIl2cpp.NativeAPI.LoadString(apis, nativePesapiEnv, chunk, chunkName, env == null ? 0 : env.luaReference, typeof(T));
+            return (T)XLuaIl2cpp.NativeAPI.LoadString(apis, nativePesapiEnv, chunk, chunkName, env, typeof(T));
         }
 
         public T LoadString<T>(string chunk, string chunkName = "chunk", LuaTable env = null)
@@ -255,19 +149,9 @@ namespace XLua
             return LoadString<T>(bytes, chunkName, env);
         }
 
-        public LuaFunction LoadString(string chunk, string chunkName = "chunk", LuaTable env = null)
-        {
-            return LoadString<LuaFunction>(chunk, chunkName, env);
-        }
-
         public T DoString<T>(byte[] chunk, string chunkName = "chunk", LuaTable env = null)
         {
-            return (T)XLuaIl2cpp.NativeAPI.DoString(apis, nativePesapiEnv, chunk, chunkName, env == null ? 0 : env.luaReference, typeof(T));
-        }
-
-        public LuaFunction DoString(string chunk, string chunkName = "chunk", LuaTable env = null)
-        {
-            return DoString<LuaFunction>(chunk, chunkName, env);
+            return (T)XLuaIl2cpp.NativeAPI.DoString(apis, nativePesapiEnv, chunk, chunkName, env, typeof(T));
         }
 
         public T DoString<T>(string chunk, string chunkName = "chunk", LuaTable env = null)
@@ -304,11 +188,6 @@ namespace XLua
 #endif
         }
 
-        public void Alias(Type type, string alias)
-        {
-            translator.Alias(type, alias);
-        }
-
 #if !XLUA_GENERAL
         int last_check_point = 0;
 
@@ -328,18 +207,7 @@ namespace XLua
             lock (luaEnvLock)
             {
 #endif
-            var _L = L;
-            lock (refQueue)
-            {
-                while (refQueue.Count > 0)
-                {
-                    GCAction gca = refQueue.Dequeue();
-                    translator.ReleaseLuaBase(_L, gca.Reference, gca.IsDelegate);
-                }
-            }
-#if !XLUA_GENERAL
-            last_check_point = translator.objects.Check(last_check_point, max_check_per_tick, object_valid_checker, translator.reverseMap);
-#endif
+
 #if THREAD_SAFE || HOTFIX_ENABLE
             }
 #endif
@@ -352,21 +220,7 @@ namespace XLua
 
         public LuaTable NewTable()
         {
-#if THREAD_SAFE || HOTFIX_ENABLE
-            lock (luaEnvLock)
-            {
-#endif
-            var _L = L;
-            int oldTop = LuaAPI.lua_gettop(_L);
-
-            LuaAPI.lua_newtable(_L);
-            LuaTable returnVal = (LuaTable)translator.GetObject(_L, -1, typeof(LuaTable));
-
-            LuaAPI.lua_settop(_L, oldTop);
-            return returnVal;
-#if THREAD_SAFE || HOTFIX_ENABLE
-            }
-#endif
+            return (LuaTable)XLuaIl2cpp.NativeAPI.NewTable(apis);
         }
 
         private bool disposed = false;
@@ -396,39 +250,9 @@ namespace XLua
             nativeScriptObjectsRefsMgr = IntPtr.Zero;
             Tick();
 
-            if (!translator.AllDelegateBridgeReleased())
-            {
-                throw new InvalidOperationException("try to dispose a LuaEnv with C# callback!");
-            }
-
-            ObjectTranslatorPool.Instance.Remove(L);
-
-            translator = null;
-
             rawL = IntPtr.Zero;
 
             disposed = true;
-#if THREAD_SAFE || HOTFIX_ENABLE
-            }
-#endif
-        }
-
-        public void ThrowExceptionFromError(int oldTop)
-        {
-#if THREAD_SAFE || HOTFIX_ENABLE
-            lock (luaEnvLock)
-            {
-#endif
-            object err = translator.GetObject(L, -1);
-            LuaAPI.lua_settop(L, oldTop);
-
-            // A pre-wrapped exception - just rethrow it (stack trace of InnerException will be preserved)
-            Exception ex = err as Exception;
-            if (ex != null) throw ex;
-
-            // A non-wrapped Lua error (best interpreted as a string) - wrap it and throw it
-            if (err == null) err = "Unknown Lua Error";
-            throw new LuaException(err.ToString());
 #if THREAD_SAFE || HOTFIX_ENABLE
             }
 #endif
@@ -588,8 +412,6 @@ namespace XLua
 
         internal List<CustomLoader> customLoaders = new List<CustomLoader>();
 
-        //loader : CustomLoader?? filepath????????ref???????????require??????????????????????????????????
-        //                        ??????????????null?????????????????????????????UTF8?????byte[]
         public void AddLoader(CustomLoader loader)
         {
             customLoaders.Add(loader);

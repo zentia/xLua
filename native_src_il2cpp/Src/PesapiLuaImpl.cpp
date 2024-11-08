@@ -529,18 +529,18 @@ bool pesapi_set_private(pesapi_env env, pesapi_value pobject, void* ptr)
     xlua::DataTransfer::StateData<xlua::CppObjectMapper>(L)->SetPrivateData(L, index, ptr);
 }
 
-pesapi_value pesapi_get_property_uint32(pesapi_env env, pesapi_value pobject, uint32_t key)
+pesapi_value pesapi_get_property_uint64(pesapi_env env, pesapi_value pobject, uint64_t key)
 {
     lua_State* L = reinterpret_cast<lua_State*>(env);
-    lua_rawgeti(L, reinterpret_cast<intptr_t>(pobject), key + 1);
+    lua_rawgeti(L, reinterpret_cast<intptr_t>(pobject), key);
     return reinterpret_cast<pesapi_value>(lua_gettop(L));
 }
 
-void pesapi_set_property_uint32(pesapi_env env, pesapi_value pobject, uint32_t key, pesapi_value pvalue)
+void pesapi_set_property_uint64(pesapi_env env, pesapi_value pobject, uint64_t key, pesapi_value pvalue)
 {
     lua_State* L = reinterpret_cast<lua_State*>(env);
     lua_pushvalue(L, reinterpret_cast<intptr_t>(pvalue));
-    lua_rawseti(L, reinterpret_cast<intptr_t>(pobject), key + 1);
+    lua_rawseti(L, reinterpret_cast<intptr_t>(pobject), key);
 }
 
 static int debug_traceback(lua_State* L)
@@ -943,8 +943,8 @@ pesapi_ffi g_pesapi_ffi{
     &pesapi_set_property,
     &pesapi_get_private,
     &pesapi_set_private,
-    &pesapi_get_property_uint32,
-    &pesapi_set_property_uint32,
+    &pesapi_get_property_uint64,
+    &pesapi_set_property_uint64,
     &pesapi_call_function,
     &pesapi_dostring,
     &pesapi_loadstring,
