@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if !ENABLE_IL2CPP || !XLUA_IL2CPP
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -1842,3 +1843,5 @@ namespace XLua
 		}
 	}
 }
+
+#endif

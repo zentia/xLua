@@ -31,6 +31,31 @@ namespace XLua.LuaDLL
 #endif
 
 
+	public enum LuaGCOptions
+	{
+		LUA_GCSTOP = 0,
+		LUA_GCRESTART = 1,
+		LUA_GCCOLLECT = 2,
+		LUA_GCCOUNT = 3,
+		LUA_GCCOUNTB = 4,
+		LUA_GCSTEP = 5,
+		LUA_GCSETPAUSE = 6,
+		LUA_GCSETSTEPMUL = 7,
+	}
+	public enum LuaTypes
+	{
+		LUA_TNONE = -1,
+		LUA_TNIL = 0,
+		LUA_TNUMBER = 3,
+		LUA_TSTRING = 4,
+		LUA_TBOOLEAN = 1,
+		LUA_TTABLE = 5,
+		LUA_TFUNCTION = 6,
+		LUA_TUSERDATA = 7,
+		LUA_TTHREAD = 8,
+		LUA_TLIGHTUSERDATA = 2
+	}
+
     public partial class Lua
 	{
 #if (UNITY_IPHONE || UNITY_TVOS || UNITY_WEBGL || UNITY_SWITCH) && !UNITY_EDITOR
@@ -173,12 +198,12 @@ namespace XLua.LuaDLL
 
 		[DllImport(LUADLL,CallingConvention=CallingConvention.Cdecl)]
 		public static extern int luaL_ref(IntPtr L, int registryIndex);
-
-        public static int luaL_ref(IntPtr L)//[-1, +0, m]
-        {
+#if !ENABLE_IL2CPP || !XLUA_IL2CPP
+		public static int luaL_ref(IntPtr L)//[-1, +0, m]
+		{
 			return luaL_ref(L,LuaIndexes.LUA_REGISTRYINDEX);
 		}
-
+		
 		[DllImport(LUADLL,CallingConvention=CallingConvention.Cdecl)]
 		public static extern void xlua_rawgeti(IntPtr L, int tableIndex, long index);
 
@@ -200,7 +225,7 @@ namespace XLua.LuaDLL
 		{
 			luaL_unref(L,LuaIndexes.LUA_REGISTRYINDEX,reference);
 		}
-
+#endif
 		[DllImport(LUADLL,CallingConvention=CallingConvention.Cdecl)]
 		public static extern bool lua_isstring(IntPtr L, int index);
 
