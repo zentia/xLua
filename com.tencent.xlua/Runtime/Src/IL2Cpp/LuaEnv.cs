@@ -3,16 +3,10 @@ using System;
 using System.Reflection;
 using XLua.TypeMapping;
 using System.Collections.Generic;
-#if USE_UNI_LUA
-using LuaAPI = UniLua.Lua;
-using RealStatePtr = UniLua.ILuaState;
-using LuaCSFunction = UniLua.CSharpFunctionDelegate;
-#else
 using LuaAPI = XLua.LuaDLL.Lua;
 using RealStatePtr = System.IntPtr;
 using LuaCSFunction = XLua.LuaDLL.lua_CSFunction;
-#endif
-
+using System.Runtime.InteropServices;
 
 namespace XLua
 {
@@ -74,60 +68,86 @@ namespace XLua
 
         public LuaEnv()
         {
-            
-            if (LuaAPI.xlua_get_lib_version() != LIB_VERSION_EXPECT)
-            {
-                throw new InvalidProgramException("wrong lib version expect:"
-                    + LIB_VERSION_EXPECT + " but got:" + LuaAPI.xlua_get_lib_version());
-            }
+            XLuaIl2cpp.NativeAPI.SetLogCallback(XLuaIl2cpp.NativeAPI.Log);
+            XLuaIl2cpp.NativeAPI.InitialXLua(XLuaIl2cpp.NativeAPI.GetRegisterApi());
+            apis = XLuaIl2cpp.NativeAPI.GetFFIApi();
+            tryLoadTypeMethodInfo = typeof(TypeRegister).GetMethod("RegisterNoThrow");
+            XLuaIl2cpp.NativeAPI.SetRegisterNoThrow(tryLoadTypeMethodInfo);
 
-#if THREAD_SAFE || HOTFIX_ENABLE
-            lock(luaEnvLock)
-#endif
-            {
-#if GEN_CODE_MINIMIZE
-                LuaAPI.xlua_set_csharp_wrapper_caller(InternalGlobals.CSharpWrapperCallerPtr);
-#endif
-                XLuaIl2cpp.NativeAPI.SetLogCallback(XLuaIl2cpp.NativeAPI.Log);
-                XLuaIl2cpp.NativeAPI.InitialXLua(XLuaIl2cpp.NativeAPI.GetRegisterApi());
-                apis = XLuaIl2cpp.NativeAPI.GetFFIApi();
-                tryLoadTypeMethodInfo = typeof(TypeRegister).GetMethod("RegisterNoThrow");
-                XLuaIl2cpp.NativeAPI.SetRegisterNoThrow(tryLoadTypeMethodInfo);
+            persistentObjectInfoType = typeof(XLua.LuaTable);
+            XLuaIl2cpp.NativeAPI.SetGlobalType_TypedValue(typeof(TypedValue));
+            XLuaIl2cpp.NativeAPI.SetGlobalType_ArrayBuffer(typeof(ArrayBuffer));
+            XLuaIl2cpp.NativeAPI.SetGlobalType_LuaTable(typeof(LuaTable));
 
-                persistentObjectInfoType = typeof(XLua.LuaTable);
-                XLuaIl2cpp.NativeAPI.SetGlobalType_TypedValue(typeof(TypedValue));
-                XLuaIl2cpp.NativeAPI.SetGlobalType_ArrayBuffer(typeof(ArrayBuffer));
-                XLuaIl2cpp.NativeAPI.SetGlobalType_LuaTable(typeof(LuaTable));
+            nativeLuaEnv = XLuaIl2cpp.NativeAPI.CreateNativeLuaEnv();
+            nativePesapiEnv = XLuaIl2cpp.NativeAPI.GetPapiEnvRef(nativeLuaEnv);
+            var objectPoolType = typeof(XLuaIl2cpp.ObjectPool);
+            nativeScriptObjectsRefsMgr = XLuaIl2cpp.NativeAPI.InitialPapiEnvRef(apis, nativePesapiEnv, objectPool, objectPoolType.GetMethod("Add"), objectPoolType.GetMethod("Remove"));
 
-                nativeLuaEnv = XLuaIl2cpp.NativeAPI.CreateNativeLuaEnv();
-                nativePesapiEnv = XLuaIl2cpp.NativeAPI.GetPapiEnvRef(nativeLuaEnv);
-                var objectPoolType = typeof(XLuaIl2cpp.ObjectPool);
-                nativeScriptObjectsRefsMgr = XLuaIl2cpp.NativeAPI.InitialPapiEnvRef(apis, nativePesapiEnv, objectPool, objectPoolType.GetMethod("Add"), objectPoolType.GetMethod("Remove"));
-
-                XLuaIl2cpp.NativeAPI.SetObjectToGlobal(apis, nativePesapiEnv, "luaEnv", this);
+            XLuaIl2cpp.NativeAPI.SetObjectToGlobal(apis, nativePesapiEnv, "luaEnv", this);
 
 #if !DISABLE_AUTO_REGISTER
-                const string AutoStaticCodeRegisterClassName = "XLuaStaticWrap.XLuaRegisterInfo_Gen";
-                var autoRegister = Type.GetType(AutoStaticCodeRegisterClassName, false);
-                if (autoRegister == null)
+            const string AutoStaticCodeRegisterClassName = "XLuaStaticWrap.XLuaRegisterInfo_Gen";
+            var autoRegister = Type.GetType(AutoStaticCodeRegisterClassName, false);
+            if (autoRegister == null)
+            {
+                foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
                 {
-                    foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
-                    {
-                        autoRegister = assembly.GetType(AutoStaticCodeRegisterClassName, false);
-                        if (autoRegister != null) break;
-                    }
+                    autoRegister = assembly.GetType(AutoStaticCodeRegisterClassName, false);
+                    if (autoRegister != null) break;
                 }
-                if (autoRegister != null)
-                {
-                    var methodInfoOfRegister = autoRegister.GetMethod("AddRegisterInfoGetterIntoLuaEnv");
-                    methodInfoOfRegister.Invoke(null, new object[] { this });
-                }
+            }
+            if (autoRegister != null)
+            {
+                var methodInfoOfRegister = autoRegister.GetMethod("AddRegisterInfoGetterIntoLuaEnv");
+                methodInfoOfRegister.Invoke(null, new object[] { this });
+            }
 #endif
 
-                XLuaIl2cpp.ExtensionMethodInfo.LoadExtensionMethodInfo();
-                rawL = XLuaIl2cpp.NativeAPI.GetLuaState(nativeLuaEnv);
-                
+            XLuaIl2cpp.ExtensionMethodInfo.LoadExtensionMethodInfo();
+            rawL = XLuaIl2cpp.NativeAPI.GetLuaState(nativeLuaEnv);
+
+            XLuaIl2cpp.pesapi_ffi ffi = Marshal.PtrToStructure<XLuaIl2cpp.pesapi_ffi>(apis);
+            var scope = ffi.open_scope(nativePesapiEnv);
+            var env = ffi.get_env_from_ref(nativePesapiEnv);
+            var func = ffi.create_function(env, FoolImpl, IntPtr.Zero);
+            var global = ffi.global(env);
+            ffi.set_property(env, global, "CSharpFoo", func);
+            ffi.close_scope(scope);
+        }
+
+        static IntPtr storeCallback = IntPtr.Zero;
+
+        [XLuaIl2cpp.MonoPInvokeCallback(typeof(XLuaIl2cpp.pesapi_callback))]
+        static void FooImpl(IntPtr apis, IntPtr info)
+        {
+            XLuaIl2cpp.pesapi_ffi ffi = Marshal.PtrToStructure<XLuaIl2cpp.pesapi_ffi>(apis);
+            var env = ffi.get_env(info);
+
+            IntPtr p0 = ffi.get_arg(info, 0);
+            if (ffi.is_function(env, p0))
+            {
+                if (storeCallback == IntPtr.Zero)
+                {
+                    storeCallback = ffi.create_value_ref(env, p0, 0);
+                }
+                return;
             }
+
+            if (storeCallback != IntPtr.Zero)
+            {
+                IntPtr func = ffi.get_value_from_ref(env, storeCallback);
+                IntPtr[] argv = new IntPtr[2] {p0, ffi.get_arg(info, 1)};
+                IntPtr res = ffi.call_function(env, func, IntPtr.Zero, 2, argv);
+                int sum = ffi.get_value_int32(env, res);
+                UnityEngine.Debug.Log(string.format("callback result = {0}", sum));
+                return;
+            }
+
+            int x = ffi.get_value_int32(env, p0);
+            int y = ffi.get_value_int32(env, ffi.get_arg(info, 1));
+            UnityEngine.Debug.Log(string.format("CSharpFoo called, x = {0}, y = {1}", x, y));
+            ffi.add_return(info, ffi.create_int32(env, x + y));
         }
 
         public LuaTable Global
