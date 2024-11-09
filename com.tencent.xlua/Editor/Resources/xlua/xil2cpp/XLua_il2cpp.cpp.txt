@@ -42,6 +42,7 @@ struct CSharpMethodInfo
     bool IsStatic;
     bool IsGetter;
     bool IsSetter;
+    bool NeedBoxing;
     std::vector<WrapData*> OverloadDatas;
 };
 
@@ -280,16 +281,16 @@ void SetGlobalType_TypedValue(Il2CppReflectionType* type)
 
 static void MethodCallback(struct pesapi_ffi* apis, pesapi_callback_info info)
 {
+    CSharpMethodInfo* csharpMethodInfo = (CSharpMethodInfo*)apis->get_userdata(info);
     try
     {
-        WrapData** wrapDatas = (WrapData**) apis->get_userdata(info);
         void* self = nullptr;
         pesapi_env env = apis->get_env(info);
-        if (!((*wrapDatas)->IsStatic))
+        if (!(csharpMethodInfo->IsStatic))
         {
             pesapi_value luaThis = apis->get_holder(info);
             self = apis->get_native_object_ptr(env, luaThis);
-            if ((*wrapDatas)->NeedBoxing)
+            if (csharpMethodInfo->NeedBoxing)
             {
                 auto ptrType = (Il2CppClass*) apis->get_native_object_typeid(env, luaThis);
                 if (Class::IsValuetype(ptrType))
@@ -298,6 +299,7 @@ static void MethodCallback(struct pesapi_ffi* apis, pesapi_callback_info info)
                 }
             }
         }
+        WrapData** wrapData = csharpMethodInfo->OverloadDatas.data();
         bool checkArgument = *wrapDatas && *(wrapDatas + 1);
         while (*wrapDatas)
         {
@@ -308,7 +310,8 @@ static void MethodCallback(struct pesapi_ffi* apis, pesapi_callback_info info)
             }
             ++wrapDatas;
         }
-        apis->throw_by_string(info, "invalid arguments");
+        std::string err_info = "invalid arguments for " + csharpMetthodInfo->Name;
+        apis->throw_by_string(info, err_info.c_str());
     }
     catch (Il2CppExceptionWrapper& exception)
     {
@@ -319,7 +322,8 @@ static void MethodCallback(struct pesapi_ffi* apis, pesapi_callback_info info)
         Il2CppString* result = (Il2CppString*) il2cpp::vm::Runtime::Invoke(toStringMethod, exception.ex, nullptr, &outException);
         if (outException != nullptr)
         {
-            apis->throw_by_string(info, "unknown c# exception!");
+            std::string err_info = "unknonw c# exception for " + csharpMethodInfo->Name;
+            apis->throw_by_string(info, err_info.c_str());
         }
         else
         {
@@ -430,7 +434,7 @@ void PLog(const char* Fmt, ...)
 
 static void* CtorCallback(struct pesapi_ffi* apis, pesapi_callback_info info)
 {
-    LuaClassInfoHeader* classInfo = reinterpret_cast<LuaClassInfoHeader*>(apis->get_userdata(info));
+    LuaClassInfo* classInfo = reinterpret_cast<LuaClassInfo*>(apis->get_userdata(info));
     // or will crash in macos.
     if (!classInfo->IsValueType && *(classInfo->CtorWrapDatas) == nullptr)
     {
@@ -460,7 +464,10 @@ static void* CtorCallback(struct pesapi_ffi* apis, pesapi_callback_info info)
         if (isValueType && apis->get_args_len(info) == 0)
             return self;
         else
-            apis->throw_by_string(info, "invalid arguments");
+        {
+            std::string err_info = "invalid arguments for constructor of " + classInfo->Name;
+            apis->throw_by_string(info, err_info.c_str());
+        }
     }
     catch (Il2CppExceptionWrapper& exception)
     {
@@ -471,7 +478,8 @@ static void* CtorCallback(struct pesapi_ffi* apis, pesapi_callback_info info)
         Il2CppString* result = (Il2CppString*) il2cpp::vm::Runtime::Invoke(toStringMethod, exception.ex, nullptr, &outException);
         if (outException != nullptr)
         {
-            apis->throw_by_string(info, "unknonw c# exception!");
+            std::string err_info = "unknonw c# exception for constructor of " + classInfo->Name;
+            apis->throw_by_string(info, err_info.c_str());
         }
         else
         {
@@ -2172,7 +2180,7 @@ extern "C"
     {
         data->HasParamArray = false;
         data->OptionalNum = 0;
-        data->NeedBoxing = false;
+        bool NeedBoxing = false;
 
         const char* p = signature;
         while (*p)
@@ -2183,7 +2191,7 @@ extern "C"
             }
             else if (*p == 'T')
             {
-                data->NeedBoxing = true;
+                NeedBoxing = true;
             }
             else if (*p == 'D')
             {
@@ -2191,6 +2199,7 @@ extern "C"
             }
             ++p;
         }
+        return NeedBoxing;
     }
 
     xlua::WrapData* AddConstructor(xlua::LuaClassInfo* classInfo, const char* signature, xlua::WrapFuncPtr WrapFunc,
@@ -2226,7 +2235,7 @@ extern "C"
         data->Wrap = WrapFunc;
         data->IsStatic = isStatic;
         data->IsExtensionMethod = isExtensionMethod;
-        SetParamArrayFlagAndOptionalNum(data, signature);
+        bool NeedBoxing = SetParamArrayFlagAndOptionalNum(data, signature);
 
         for (int i = 0; i < classInfo->Methods.size(); ++i)
         {
@@ -2245,7 +2254,7 @@ extern "C"
 
         std::vector<xlua::WrapData*> OverloadDatas;
         OverloadDatas.push_back(data);
-        classInfo->Methods.push_back({std::string(name), isStatic, isGetter, isSetter, std::move(OverloadDatas)});
+        classInfo->Methods.push_back({std::string(name), isStatic, isGetter, isSetter, NeedBoxing, std::move(OverloadDatas)});
         return data;
     }
 
@@ -2323,7 +2332,7 @@ extern "C"
         for (auto const& method : methods)
         {
             pesapi_set_method_info(properties, pos++, method->Name.c_str(), method->IsStatic, &xlua::MethodCallback,
-                method->OverloadDatas.data(), nullptr);
+                method, nullptr);
         }
 
         for (auto const& kv : gseters)
@@ -2331,8 +2340,8 @@ extern "C"
             auto geter_or_setter = kv.second.first ? kv.second.first : kv.second.second;
             pesapi_set_property_info(properties, pos++, geter_or_setter->Name.c_str(), geter_or_setter->IsStatic,
                 kv.second.first ? &xlua::MethodCallback : nullptr, kv.second.second ? &xlua::MethodCallback : nullptr,
-                kv.second.first ? kv.second.first->OverloadDatas.data() : nullptr,
-                kv.second.second ? kv.second.second->OverloadDatas.data() : nullptr, nullptr);
+                kv.second.first,
+                kv.second.second, nullptr);
         }
 
         for (auto& field : classInfo->Fields)
