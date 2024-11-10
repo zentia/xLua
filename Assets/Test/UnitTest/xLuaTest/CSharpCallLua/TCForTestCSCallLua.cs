@@ -1,3 +1,4 @@
+#if !ENABLE_IL2CPP || !XLUA_IL2CPP
 #if !XLUA_GENERAL
 using UnityEngine;
 #endif
@@ -3075,3 +3076,5 @@ public class TCForTestCSCallLua{
     }
 
 }
+
+#endif

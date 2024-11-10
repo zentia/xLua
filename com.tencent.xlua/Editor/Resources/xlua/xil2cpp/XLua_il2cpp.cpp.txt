@@ -299,7 +299,7 @@ static void MethodCallback(struct pesapi_ffi* apis, pesapi_callback_info info)
                 }
             }
         }
-        WrapData** wrapData = csharpMethodInfo->OverloadDatas.data();
+        WrapData** wrapDatas = csharpMethodInfo->OverloadDatas.data();
         bool checkArgument = *wrapDatas && *(wrapDatas + 1);
         while (*wrapDatas)
         {
@@ -310,7 +310,7 @@ static void MethodCallback(struct pesapi_ffi* apis, pesapi_callback_info info)
             }
             ++wrapDatas;
         }
-        std::string err_info = "invalid arguments for " + csharpMetthodInfo->Name;
+        std::string err_info = "invalid arguments for " + csharpMethodInfo->Name;
         apis->throw_by_string(info, err_info.c_str());
     }
     catch (Il2CppExceptionWrapper& exception)
@@ -478,7 +478,7 @@ static void* CtorCallback(struct pesapi_ffi* apis, pesapi_callback_info info)
         Il2CppString* result = (Il2CppString*) il2cpp::vm::Runtime::Invoke(toStringMethod, exception.ex, nullptr, &outException);
         if (outException != nullptr)
         {
-            std::string err_info = "unknonw c# exception for constructor of " + classInfo->Name;
+            std::string err_info = "unknown c# exception for constructor of " + classInfo->Name;
             apis->throw_by_string(info, err_info.c_str());
         }
         else
@@ -1825,6 +1825,7 @@ Il2CppObject* NewTable(struct pesapi_ffi* apis, intptr_t ptr)
 
     pesapi_value_ref value_ref;
     Il2CppObject* ret;
+    apis->create_object(env);
     int32_t* handle_store = FindOrCreateHandleStoreOfValue(apis, env, reinterpret_cast<pesapi_value>(-1), &value_ref, &ret);
 
     if (ret == nullptr)
@@ -1844,7 +1845,7 @@ Il2CppObject* NewTable(struct pesapi_ffi* apis, intptr_t ptr)
     return ret;
 }
 
-Il2CppObject* LoadString(struct pesapi_ffi* apis, intptr_t ptr, Il2CppArray* __code, Il2CppString* __path, int lueEnvReference, Il2CppReflectionType* __type)
+Il2CppObject* LoadString(struct pesapi_ffi* apis, intptr_t ptr, Il2CppArray* __code, Il2CppString* __path, Il2CppObject* luaEnvRef, Il2CppReflectionType* __type)
 {
     pesapi_env_ref envRef = reinterpret_cast<pesapi_env_ref>(ptr);
 
@@ -1857,7 +1858,8 @@ Il2CppObject* LoadString(struct pesapi_ffi* apis, intptr_t ptr, Il2CppArray* __c
     auto codeSize = il2cpp_array_length(__code);
     uint8_t* code = (uint8_t*) il2cpp_array_addr_with_size(__code, il2cpp_array_element_size(__code->klass), 0);
     int ret;
-    auto newTop = apis->loadstring(env, code, codeSize, path.c_str(), lueEnvReference, &ret);
+    pesapi_value_ref value_ref = luaEnvRef == nullptr ? nullptr : GetPObjectRefInfo(luaEnvRef)->ValueRef;
+    auto newTop = apis->loadstring(env, code, codeSize, path.c_str(), value_ref, &ret);
 
     if (ret != 0)
     {
@@ -1870,7 +1872,7 @@ Il2CppObject* LoadString(struct pesapi_ffi* apis, intptr_t ptr, Il2CppArray* __c
     return LuaValueToCSRef(apis, il2cpp_codegen_class_from_type(__type->type), env, reinterpret_cast<pesapi_value>(-1));
 }
 
-Il2CppObject* DoString(struct pesapi_ffi* apis, intptr_t ptr, Il2CppArray* __code, Il2CppString* __path, int luaEnvReference, Il2CppReflectionType *__type)
+Il2CppObject* DoString(struct pesapi_ffi* apis, intptr_t ptr, Il2CppArray* __code, Il2CppString* __path, Il2CppObject* luaEnvRef, Il2CppReflectionType *__type)
 {
     pesapi_env_ref envRef = reinterpret_cast<pesapi_env_ref>(ptr);
 
@@ -1883,7 +1885,8 @@ Il2CppObject* DoString(struct pesapi_ffi* apis, intptr_t ptr, Il2CppArray* __cod
     auto codeSize = il2cpp_array_length(__code);
     uint8_t* code = (uint8_t*) il2cpp_array_addr_with_size(__code, il2cpp_array_element_size(__code->klass), 0);
     int ret;
-    auto newTop = apis->dostring(env, code, codeSize, path.c_str(), luaEnvReference, &ret);
+    pesapi_value_ref value_ref = luaEnvRef == nullptr ? nullptr : GetPObjectRefInfo(luaEnvRef)->ValueRef;
+    auto newTop = apis->dostring(env, code, codeSize, path.c_str(), value_ref, &ret);
 
     if (ret != 0)
     {
@@ -2070,11 +2073,8 @@ extern "C"
             "XLuaIl2cpp.NativeAPI::SetGlobalType_TypedValue(System.Type)", (Il2CppMethodPointer) xlua::SetGlobalType_TypedValue);
         InternalCalls::Add(
             "XLuaIl2cpp.NativeAPI::SetGlobalType_ArrayBuffer(System.Type)", (Il2CppMethodPointer) xlua::SetGlobalType_ArrayBuffer);
-        InternalCalls::Add("XLuaIl2cpp.NativeAPI::DoString(System.IntPtr,System.IntPtr,System.Byte[],System.String,System.Int32,System.Type)",
-            (Il2CppMethodPointer) xlua::DoString);
-        InternalCalls::Add(
-            "XLuaIl2cpp.NativeAPI::LoadString(System.IntPtr,System.IntPtr,System.Byte[],System.String,System.Int32,System.Type",
-            (Il2CppMethodPointer) xlua::LoadString);
+        InternalCalls::Add("XLuaIl2cpp.NativeAPI::DoString(System.IntPtr,System.IntPtr,System.Byte[],System.String,XLua.LuaTable,System.Type)", (Il2CppMethodPointer) xlua::DoString);
+        InternalCalls::Add("XXLuaIl2cpp.NativeAPI::LoadString(System.IntPtr,System.IntPtr,System.Byte[],System.String,XLua.LuaTable,System.Type)", (Il2CppMethodPointer) xlua::LoadString);
         InternalCalls::Add("XLuaIl2cpp.NativeAPI::SetObjectToGlobal(System.IntPtr,System.IntPtr,System.String,System.Object)",
             (Il2CppMethodPointer) xlua::SetObjectToGlobal);
         InternalCalls::Add("XLuaIl2cpp.NativeAPI::TypeIdToType(System.IntPtr)", (Il2CppMethodPointer) xlua::TypeIdToType);
@@ -2176,7 +2176,7 @@ extern "C"
         delete classInfo;
     }
 
-    static void SetParamArrayFlagAndOptionalNum(xlua::WrapData* data, const char* signature)
+    static bool SetParamArrayFlagAndOptionalNum(xlua::WrapData* data, const char* signature)
     {
         data->HasParamArray = false;
         data->OptionalNum = 0;

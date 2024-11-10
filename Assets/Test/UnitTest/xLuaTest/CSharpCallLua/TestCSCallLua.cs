@@ -1,4 +1,5 @@
-﻿#if !XLUA_GENERAL
+﻿#if !ENABLE_IL2CPP || !XLUA_IL2CPP
+#if !XLUA_GENERAL
 using UnityEngine;
 #endif
 using System.Collections;
@@ -92,3 +93,5 @@ public class TestCSCallLua
         }
     }
 }
+
+#endif

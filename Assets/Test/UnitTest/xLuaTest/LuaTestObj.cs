@@ -1,3 +1,4 @@
+#if !ENABLE_IL2CPP || !XLUA_IL2CPP
 using XLua;
 using System;
 #if !XLUA_GENERAL
@@ -1988,3 +1989,4 @@ public class ReferTestClass
     private int var_y;
     private string var_z;
 }
+#endif

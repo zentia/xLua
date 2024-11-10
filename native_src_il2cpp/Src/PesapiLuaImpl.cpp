@@ -509,7 +509,7 @@ bool pesapi_get_private(pesapi_env env, pesapi_value pobject, void** out_ptr)
 {
     lua_State* L = reinterpret_cast<lua_State*>(env);
     int index = reinterpret_cast<intptr_t>(pobject);
-    if (lua_isnil(L, index) || !lua_isuserdata(L, index))
+    if (lua_isnil(L, index) || lua_isuserdata(L, index))
     {
         *out_ptr = NULL;
         return false;
@@ -522,7 +522,7 @@ bool pesapi_set_private(pesapi_env env, pesapi_value pobject, void* ptr)
 {
     lua_State* L = reinterpret_cast<lua_State*>(env);
     int index = reinterpret_cast<intptr_t>(pobject);
-    if (lua_isnil(L, index) || !lua_isuserdata(L, index))
+    if (lua_isnil(L, index) || lua_isuserdata(L, index))
     {
         return false;
     }
@@ -571,7 +571,7 @@ pesapi_value pesapi_call_function(pesapi_env env, pesapi_value pfunc, pesapi_val
     return reinterpret_cast<pesapi_value>(lua_gettop(L) - 1);
 }
 
-int pesapi_dostring(pesapi_env env, const uint8_t* code, size_t code_size, const char* path, int luaEnvRef, int* ret)
+int pesapi_dostring(pesapi_env env, const uint8_t* code, size_t code_size, const char* path, pesapi_value_ref value_ref, int* ret)
 {
     lua_State* L = reinterpret_cast<lua_State*>(env);
     lua_pushcclosure(L, debug_traceback, 0);
@@ -580,9 +580,9 @@ int pesapi_dostring(pesapi_env env, const uint8_t* code, size_t code_size, const
     *ret = luaL_loadbuffer(L, reinterpret_cast<const char*>(code), code_size, path);
     if (*ret == 0)
     {
-        if (luaEnvRef != 0)
+        if (value_ref != nullptr)
         {
-            lua_rawgeti(L, LUA_REGISTRYINDEX, luaEnvRef);
+            lua_rawgeti(L, LUA_REGISTRYINDEX, value_ref->value_ref);
             lua_setfenv(L, -2);
         }
         *ret = lua_pcall(L, 0, -1, errfunc);
@@ -595,16 +595,16 @@ int pesapi_dostring(pesapi_env env, const uint8_t* code, size_t code_size, const
     return lua_gettop(L);
 }
 
-int pesapi_loadstring(pesapi_env env, const uint8_t* code, size_t code_size, const char* path, int luaEnvRef, int* ret)
+int pesapi_loadstring(pesapi_env env, const uint8_t* code, size_t code_size, const char* path, pesapi_value_ref value_ref, int* ret)
 {
     lua_State* L = reinterpret_cast<lua_State*>(env);
 
     *ret = luaL_loadbuffer(L, reinterpret_cast<const char*>(code), code_size, path);
     if (*ret == 0)
     {
-        if (luaEnvRef != 0)
+        if (value_ref != nullptr)
         {
-            lua_rawgeti(L, LUA_REGISTRYINDEX, luaEnvRef);
+            lua_rawgeti(L, LUA_REGISTRYINDEX, value_ref->value_ref);
             lua_setfenv(L, -2);
         }
     }

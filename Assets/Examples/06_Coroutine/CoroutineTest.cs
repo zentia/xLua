@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿#if !ENABLE_IL2CPP || !XLUA_IL2CPP
+using UnityEngine;
 using XLua;
 
 namespace XLuaTest
@@ -28,3 +29,5 @@ namespace XLuaTest
         }
     }
 }
+
+#endif

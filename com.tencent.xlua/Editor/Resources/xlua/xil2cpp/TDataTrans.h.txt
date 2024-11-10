@@ -70,16 +70,18 @@ public:
     AutoValueScope(struct pesapi_ffi* apis, pesapi_env_ref envRef)
     {
         _apis = apis;
+        _envRef = envRef;
         scope = apis->open_scope(envRef);
     }
 
     ~AutoValueScope()
     {
-        _apis->close_scope(scope);
+        _apis->close_scope(_envRef, scope);
     }
 
     struct pesapi_ffi* _apis;
-    pesapi_scope scope;
+    pesapi_env_ref _envRef;
+    intptr_t scope;
 };
 
 struct DataTransfer

@@ -1,10 +1,10 @@
-﻿#if ENABLE_IL2CPP
-
+﻿#if ENABLE_IL2CPP && XLUA_IL2CPP
 using System;
 using System.Runtime.InteropServices;
 using System.Runtime.CompilerServices;
 using System.Reflection;
 using System.Collections.Generic;
+using XLua;
 
 namespace XLuaIl2cpp
 {
@@ -268,7 +268,6 @@ namespace XLuaIl2cpp
     public delegate bool pesapi_is_uint64_func(IntPtr env, IntPtr value);
     public delegate bool pesapi_is_double_func(IntPtr env, IntPtr value);
     public delegate bool pesapi_is_string_func(IntPtr env, IntPtr value);
-    public delegate bool pesapi_is_string_func(IntPtr env, IntPtr value);
     public delegate bool pesapi_is_object_func(IntPtr env, IntPtr value);
     public delegate bool pesapi_is_function_func(IntPtr env, IntPtr value);
     public delegate bool pesapi_is_binary_func(IntPtr env, IntPtr value);
@@ -298,12 +297,12 @@ namespace XLuaIl2cpp
     public delegate IntPtr pesapi_get_env_from_ref_func(IntPtr env_ref);
     public delegate IntPtr pesapi_duplicate_env_ref_func(IntPtr env_ref);
     public delegate void pesapi_release_env_ref_func(IntPtr env_ref);
-    public delegate IntPtr pesapi_open_scope_func(IntPtr scope);
-    public delegate IntPtr pesapi_open_scope_placement_func(IntPtr scope);
+    public delegate int pesapi_open_scope_func(IntPtr env_ref);
+    public delegate IntPtr pesapi_open_scope_placement_func(IntPtr env_ref);
     public delegate bool pesapi_has_caught_func(IntPtr scope);
     public delegate IntPtr pesapi_get_exception_as_string_func(IntPtr scope, bool with_stack);
-    public delegate void pesapi_close_scope_func(IntPtr scope);
-    public delegate void pesapi_close_scope_placement_func(IntPtr scope);
+    public delegate void pesapi_close_scope_func(IntPtr env_ref, int scope);
+    public delegate void pesapi_close_scope_placement_func(IntPtr env_ref, int scope);
 
     public delegate IntPtr pesapi_create_value_ref_func(IntPtr env, IntPtr value, uint internal_field_count);
     public delegate IntPtr pesapi_duplicate_value_ref_func(IntPtr value_ref);
@@ -408,6 +407,7 @@ namespace XLuaIl2cpp
         public pesapi_set_private_func set_private;
         public pesapi_get_property_uint64_func get_property_uint64;
         public pesapi_set_property_uint64_func set_property_uint64;
+        public pesapi_call_function_func call_function;
         public pesapi_dostring_func dostring;
         public pesapi_loadstring_func loadstring;
         public pesapi_global_func global;

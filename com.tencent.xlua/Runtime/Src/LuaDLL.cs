@@ -1,11 +1,4 @@
-/*
- * Tencent is pleased to support the open source community by making xLua available.
- * Copyright (C) 2016 THL A29 Limited, a Tencent company. All rights reserved.
- * Licensed under the MIT License (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
- * http://opensource.org/licenses/MIT
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
-*/
-
+#if !ENABLE_IL2CPP || !XLUA_IL2CPP
 namespace XLua.LuaDLL
 {
 
@@ -61,7 +54,7 @@ namespace XLua.LuaDLL
 #if (UNITY_IPHONE || UNITY_TVOS || UNITY_WEBGL || UNITY_SWITCH) && !UNITY_EDITOR
         const string LUADLL = "__Internal";
 #else
-        const string LUADLL = "xlua";
+        const string LUADLL = "xlua_il2cpp";
 #endif
 
         [DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
@@ -198,7 +191,7 @@ namespace XLua.LuaDLL
 
 		[DllImport(LUADLL,CallingConvention=CallingConvention.Cdecl)]
 		public static extern int luaL_ref(IntPtr L, int registryIndex);
-#if !ENABLE_IL2CPP || !XLUA_IL2CPP
+
 		public static int luaL_ref(IntPtr L)//[-1, +0, m]
 		{
 			return luaL_ref(L,LuaIndexes.LUA_REGISTRYINDEX);
@@ -225,7 +218,7 @@ namespace XLua.LuaDLL
 		{
 			luaL_unref(L,LuaIndexes.LUA_REGISTRYINDEX,reference);
 		}
-#endif
+
 		[DllImport(LUADLL,CallingConvention=CallingConvention.Cdecl)]
 		public static extern bool lua_isstring(IntPtr L, int index);
 
@@ -605,20 +598,6 @@ namespace XLua.LuaDLL
         [DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr xlua_gl(IntPtr L);
 
-#if GEN_CODE_MINIMIZE
-        [DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
-        public static extern void xlua_set_csharp_wrapper_caller(IntPtr wrapper);
-
-        [DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
-        public static extern void xlua_push_csharp_wrapper(IntPtr L, int wrapperID);
-
-        public static void xlua_set_csharp_wrapper_caller(CSharpWrapperCaller wrapper_caller)
-        {
-#if XLUA_GENERAL || (UNITY_WSA && !UNITY_EDITOR)
-            GCHandle.Alloc(wrapper);
-#endif
-            xlua_set_csharp_wrapper_caller(Marshal.GetFunctionPointerForDelegate(wrapper_caller));
-        }
-#endif
     }
 }
+#endif
