@@ -1,6 +1,6 @@
--- package.cpath = package.cpath .. ';C:/Users/Administrator/AppData/Roaming/JetBrains/Rider2024.2/plugins/EmmyLua/debugger/emmy/windows/x64/?.dll'
--- local dbg = require('emmy_core')
--- dbg.tcpConnect('localhost', 9966)
+ --package.cpath = package.cpath .. ';C:/Users/Administrator/AppData/Roaming/JetBrains/Rider2024.2/plugins/EmmyLua/debugger/emmy/windows/x64/?.dll'
+ --local dbg = require('emmy_core')
+ --dbg.tcpConnect('localhost', 9966)
 
 require("tte")
 require("il2cpp_snippets")
@@ -18,8 +18,10 @@ function genGetField(fieldWrapperInfo)
     apis->add_return(info, apis->native_object_to_value(env, TIret, ret, false));]]
         end
     else
-        return string.format([[%s ret;
-    GetFieldValue(%sfieldInfo, offset, &ret);
+        return string.format([[
+    
+    %s ret;
+    GetFieldValue(%s, fieldInfo, offset, &ret);
 
     %s]], SToCPPType(fieldWrapperInfo.ReturnSignature), needThis(fieldWrapperInfo) and 'self' or 'nullptr',
             returnToLua(fieldWrapperInfo.ReturnSignature))
@@ -27,33 +29,34 @@ function genGetField(fieldWrapperInfo)
 end
 
 function genFieldWrapper(fieldWrapperInfo)
-    return TaggedTemplateEngine([[
-static void ifg_]], fieldWrapperInfo.signature,
-        [[(struct pesapi_ffi* apis, pesapi_callback_info info, FieldInfo* fieldInfo, size_t offset, Il2CppClass* TIret) {
+    return TaggedTemplateEngine(
+            [[
+static void ifg_]], fieldWrapperInfo.Signature, [[(struct pesapi_ffi* apis, pesapi_callback_info info, FieldInfo* fieldInfo, size_t offset, Il2CppClass* TIret) {
     // PLog("Running ifg_]], fieldWrapperInfo.Signature, [[");
-
-    pesapi_env env = apis->get_env(info);
-    ]], IF(needThis(fieldWrapperInfo)), [[
+    pesapi_env env = apis->get_env(info);]], 
+            IF(needThis(fieldWrapperInfo)), [[
 
     ]], getThis(fieldWrapperInfo.ThisSignature), [[
 
     ]], ENDIF(), [[
-    ]], genGetField(fieldWrapperInfo), [[
+]], genGetField(fieldWrapperInfo), [[
+    
 }
 
-static void ifs_]], fieldWrapperInfo.Signature,
-        [[(struct pesapi_ffi* apis, pesapi_callback_info info, FieldInfo* fieldInfo, size_t offset, Il2CppClass* Tip) {
+static void ifs_]], fieldWrapperInfo.Signature, [[(struct pesapi_ffi* apis, pesapi_callback_info info, FieldInfo* fieldInfo, size_t offset, Il2CppClass* TIp) {
     // PLog("Running ifs_]], fieldWrapperInfo.Signature, [[");
-
-    pesapi_env env = apis->get_env(info);
-    ]], IF(needThis(fieldWrapperInfo)), [[
+    pesapi_env env = apis->get_env(info);]], 
+            IF(needThis(fieldWrapperInfo)), [[
 
     ]], getThis(fieldWrapperInfo.ThisSignature), [[
 
-    ]], ENDIF(), [[
-    ]], LuaValToCSVal(fieldWrapperInfo.ReturnSignature, "apis->get_arg(info, 0)", "p"), [[
+    ]], ENDIF(), '', 
+            LuaValToCSVal(fieldWrapperInfo.ReturnSignature, "apis->get_arg(info, 0)", "p"), [[
+            
     SetFieldValue(]], needThis(fieldWrapperInfo) and 'self, ' or 'nullptr, ', 'fieldInfo, offset, ',
-        table.indexOf({ 'o', 's', 'p', 'a' }, fieldWrapperInfo.Signature) ~= -1 and 'p' or '&p')
+        table.indexOf({ 'o', 's', 'p', 'a' }, fieldWrapperInfo.Signature) ~= -1 and 'p' or '&p',[[);
+}
+]])
 end
 
 function Gen(genInfos)
@@ -87,7 +90,7 @@ namespace xlua
 ]], table.join(table.map(fieldWrapperInfos, genFieldWrapper), '\n'), [[
 
 static FieldWrapFuncInfo g_fieldWrapFuncInfos[] = {
-    ]], FOR(fieldWrapperInfos, function(info)
+]], FOR(fieldWrapperInfos, function(info)
         return TaggedTemplateEngine([[
     {"]], info.Signature, '", ifg_', info.Signature, ', ifs_', info.Signature, [[},
     ]])

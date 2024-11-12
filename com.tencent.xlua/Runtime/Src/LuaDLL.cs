@@ -1,4 +1,3 @@
-#if !ENABLE_IL2CPP || !XLUA_IL2CPP
 namespace XLua.LuaDLL
 {
 
@@ -191,34 +190,38 @@ namespace XLua.LuaDLL
 
 		[DllImport(LUADLL,CallingConvention=CallingConvention.Cdecl)]
 		public static extern int luaL_ref(IntPtr L, int registryIndex);
-
+#if !ENABLE_IL2CPP || !XLUA_IL2CPP
 		public static int luaL_ref(IntPtr L)//[-1, +0, m]
 		{
 			return luaL_ref(L,LuaIndexes.LUA_REGISTRYINDEX);
 		}
+#endif
+		
 		
 		[DllImport(LUADLL,CallingConvention=CallingConvention.Cdecl)]
 		public static extern void xlua_rawgeti(IntPtr L, int tableIndex, long index);
 
 		[DllImport(LUADLL,CallingConvention=CallingConvention.Cdecl)]
 		public static extern void xlua_rawseti(IntPtr L, int tableIndex, long index);//[-1, +0, m]
-
-        public static void lua_getref(IntPtr L, int reference)
+#if !ENABLE_IL2CPP || !XLUA_IL2CPP
+		public static void lua_getref(IntPtr L, int reference)
 		{
 			xlua_rawgeti(L,LuaIndexes.LUA_REGISTRYINDEX,reference);
 		}
+#endif
+        
 
         [DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
         public static extern int pcall_prepare(IntPtr L, int error_func_ref, int func_ref);
 
         [DllImport(LUADLL,CallingConvention=CallingConvention.Cdecl)]
 		public static extern void luaL_unref(IntPtr L, int registryIndex, int reference);
-
+#if !ENABLE_IL2CPP || !XLUA_IL2CPP
 		public static void lua_unref(IntPtr L, int reference)
 		{
 			luaL_unref(L,LuaIndexes.LUA_REGISTRYINDEX,reference);
 		}
-
+#endif
 		[DllImport(LUADLL,CallingConvention=CallingConvention.Cdecl)]
 		public static extern bool lua_isstring(IntPtr L, int index);
 
@@ -310,36 +313,37 @@ namespace XLua.LuaDLL
         [DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void lua_pushstring(IntPtr L, string str);
 #else
-        public static void lua_pushstring(IntPtr L, string str) //业务使用
-        {
-            if (str == null)
-            {
-                lua_pushnil(L);
-            }
-            else
-            {
+
+		public static void lua_pushstring(IntPtr L, string str) //业务使用
+		{
+			if (str == null)
+			{
+				lua_pushnil(L);
+			}
+			else
+			{
 #if !THREAD_SAFE && !HOTFIX_ENABLE
-                if (Encoding.UTF8.GetByteCount(str) > InternalGlobals.strBuff.Length)
-                {
-                    byte[] bytes = Encoding.UTF8.GetBytes(str);
-                    xlua_pushlstring(L, bytes, bytes.Length);
-                }
-                else
-                {
-                    int bytes_len = Encoding.UTF8.GetBytes(str, 0, str.Length, InternalGlobals.strBuff, 0);
-                    xlua_pushlstring(L, InternalGlobals.strBuff, bytes_len);
-                }
+				if (Encoding.UTF8.GetByteCount(str) > InternalGlobals.strBuff.Length)
+				{
+					byte[] bytes = Encoding.UTF8.GetBytes(str);
+					xlua_pushlstring(L, bytes, bytes.Length);
+				}
+				else
+				{
+					int bytes_len = Encoding.UTF8.GetBytes(str, 0, str.Length, InternalGlobals.strBuff, 0);
+					xlua_pushlstring(L, InternalGlobals.strBuff, bytes_len);
+				}
 #else
                 var bytes = Encoding.UTF8.GetBytes(str);
                 xlua_pushlstring(L, bytes, bytes.Length);
 #endif
-            }
-        }
+			}
+		}
 #endif
 
         [DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void xlua_pushlstring(IntPtr L, byte[] str, int size);
-
+#if !ENABLE_IL2CPP || !XLUA_IL2CPP
         public static void xlua_pushasciistring(IntPtr L, string str) // for inner use only
         {
             if (str == null)
@@ -367,7 +371,7 @@ namespace XLua.LuaDLL
 #endif
             }
         }
-
+#endif
         public static void lua_pushstring(IntPtr L, byte[] str)
         {
             if (str == null)
@@ -405,13 +409,13 @@ namespace XLua.LuaDLL
 
         [DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
         public static extern int xlua_psettable(IntPtr L, int idx);
-
+#if !ENABLE_IL2CPP || !XLUA_IL2CPP
         public static void luaL_getmetatable(IntPtr L, string meta)
 		{
             xlua_pushasciistring(L, meta);
 			lua_rawget(L, LuaIndexes.LUA_REGISTRYINDEX);
 		}
-
+#endif
         [DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
         public static extern int xluaL_loadbuffer(IntPtr L, byte[] buff, int size, string name);
 
@@ -600,4 +604,3 @@ namespace XLua.LuaDLL
 
     }
 }
-#endif

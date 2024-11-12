@@ -1,21 +1,6 @@
-﻿/*
- * Tencent is pleased to support the open source community by making xLua available.
- * Copyright (C) 2016 THL A29 Limited, a Tencent company. All rights reserved.
- * Licensed under the MIT License (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
- * http://opensource.org/licenses/MIT
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
-*/
-
-#if !ENABLE_IL2CPP || !XLUA_IL2CPP
-#if USE_UNI_LUA
-using LuaAPI = UniLua.Lua;
-using RealStatePtr = UniLua.ILuaState;
-using LuaCSFunction = UniLua.CSharpFunctionDelegate;
-#else
-using LuaAPI = XLua.LuaDLL.Lua;
+﻿using LuaAPI = XLua.LuaDLL.Lua;
 using RealStatePtr = System.IntPtr;
 using LuaCSFunction = XLua.LuaDLL.lua_CSFunction;
-#endif
 
 using System;
 using System.Collections.Generic;
@@ -28,7 +13,7 @@ namespace XLua
 #if !THREAD_SAFE && !HOTFIX_ENABLE
         internal static byte[] strBuff = new byte[256];
 #endif
-
+#if !ENABLE_IL2CPP || !XLUA_IL2CPP
         public delegate bool TryArrayGet(Type type, RealStatePtr L, ObjectTranslator translator, object obj, int index);
         public delegate bool TryArraySet(Type type, RealStatePtr L, ObjectTranslator translator, object obj, int array_idx, int obj_idx);
         public static volatile TryArrayGet genTryArrayGetPtr = null;
@@ -64,7 +49,8 @@ namespace XLua
 #endif
 
         internal static volatile LuaCSFunction LazyReflectionWrap = new LuaCSFunction(Utils.LazyReflectionCall);
+#endif
     }
 
 }
-#endif
+

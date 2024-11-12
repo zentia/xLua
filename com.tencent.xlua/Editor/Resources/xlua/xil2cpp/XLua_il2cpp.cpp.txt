@@ -884,19 +884,6 @@ handle_underlying:
             auto ptr = apis->get_native_object_ptr(env, luaval);
             if (!ptr)
             {
-                if ((klass == g_typeofArrayBuffer || klass == il2cpp_defaults.object_class) && apis->is_binary(env, luaval))
-                {
-                    Il2CppObject* ret = il2cpp::vm::Object::New(g_typeofArrayBuffer);
-
-                    const MethodInfo* ctor = il2cpp_class_get_method_from_name(g_typeofArrayBuffer, ".ctor", 3);
-                    typedef void (*NativeCtorPtr)(Il2CppObject* ___this, void*, int, int, const MethodInfo* method);
-
-                    void* data;
-                    size_t length;
-                    data = apis->get_value_binary(env, luaval, &length);
-                    ((NativeCtorPtr) ctor->methodPointer)(ret, data, (int) length, 0, ctor);
-                    return ret;
-                }
                 if ((klass == g_typeofPersistentObjectInfo || klass == il2cpp_defaults.object_class) &&
                     apis->is_object(env, luaval))
                 {
@@ -1857,19 +1844,15 @@ Il2CppObject* LoadString(struct pesapi_ffi* apis, intptr_t ptr, Il2CppArray* __c
 
     auto codeSize = il2cpp_array_length(__code);
     uint8_t* code = (uint8_t*) il2cpp_array_addr_with_size(__code, il2cpp_array_element_size(__code->klass), 0);
-    int ret;
     pesapi_value_ref value_ref = luaEnvRef == nullptr ? nullptr : GetPObjectRefInfo(luaEnvRef)->ValueRef;
-    auto newTop = apis->loadstring(env, code, codeSize, path.c_str(), value_ref, &ret);
+    auto ret = apis->loadstring(env, code, codeSize, path.c_str(), value_ref);
 
-    if (ret != 0)
+    if (apis->has_caught(envRef))
     {
-        if (apis->has_caught(envRef))
-        {
-            Exception::Raise(Exception::GetInvalidOperationException(apis->get_exception_as_string(envRef, true)));
-        }
+        Exception::Raise(Exception::GetInvalidOperationException(apis->get_exception_as_string(envRef, true)));
         return nullptr;
     }
-    return LuaValueToCSRef(apis, il2cpp_codegen_class_from_type(__type->type), env, reinterpret_cast<pesapi_value>(-1));
+    return LuaValueToCSRef(apis, il2cpp_codegen_class_from_type(__type->type), env, ret);
 }
 
 Il2CppObject* DoString(struct pesapi_ffi* apis, intptr_t ptr, Il2CppArray* __code, Il2CppString* __path, Il2CppObject* luaEnvRef, Il2CppReflectionType *__type)
@@ -1884,22 +1867,17 @@ Il2CppObject* DoString(struct pesapi_ffi* apis, intptr_t ptr, Il2CppArray* __cod
 
     auto codeSize = il2cpp_array_length(__code);
     uint8_t* code = (uint8_t*) il2cpp_array_addr_with_size(__code, il2cpp_array_element_size(__code->klass), 0);
-    int ret;
     pesapi_value_ref value_ref = luaEnvRef == nullptr ? nullptr : GetPObjectRefInfo(luaEnvRef)->ValueRef;
-    auto newTop = apis->dostring(env, code, codeSize, path.c_str(), value_ref, &ret);
+    auto ret = apis->dostring(env, code, codeSize, path.c_str(), value_ref);
 
-    if (ret != 0)
+    if (apis->has_caught(envRef))
     {
-        if (apis->has_caught(envRef))
-        {
-            Exception::Raise(Exception::GetInvalidOperationException(apis->get_exception_as_string(envRef, true)));
-        }
+        Exception::Raise(Exception::GetInvalidOperationException(apis->get_exception_as_string(envRef, true)));
         return nullptr;
     }
-    if (ValueScope.scope != newTop)
+    if (ValueScope.scope != ret)
     {
-        return LuaValueToCSRef(
-            apis, il2cpp_codegen_class_from_type(__type->type), env, reinterpret_cast<pesapi_value>(ValueScope.scope + 1));
+        return LuaValueToCSRef(apis, il2cpp_codegen_class_from_type(__type->type), env, ret);
     }
     return nullptr;
 }
@@ -2026,13 +2004,12 @@ xlua::LuaEnvPrivate* InitialPapiEnvRef(struct pesapi_ffi* apis, pesapi_env_ref e
             return luaEnvPrivate;
         }
     }
-    Exception::Raise(Exception::GetInvalidOperationException("can not init global.loadTYpe"));
+    Exception::Raise(Exception::GetInvalidOperationException("can not init global.loadType"));
     return nullptr;
 }
 
 void CleanupPapiEnvRef(struct pesapi_ffi* apis, pesapi_env_ref envRef)
 {
-    xlua::AutoValueScope ValueScope(apis, envRef);
     auto env = apis->get_env_from_ref(envRef);
     if (env)
     {

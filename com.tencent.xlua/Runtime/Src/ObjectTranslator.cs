@@ -6,16 +6,10 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 */
 
-#if !ENABLE_IL2CPP || !XLUA_IL2CPP
-#if USE_UNI_LUA
-using LuaAPI = UniLua.Lua;
-using RealStatePtr = UniLua.ILuaState;
-using LuaCSFunction = UniLua.CSharpFunctionDelegate;
-#else
+
 using LuaAPI = XLua.LuaDLL.Lua;
 using RealStatePtr = System.IntPtr;
 using LuaCSFunction = XLua.LuaDLL.lua_CSFunction;
-#endif
 using XLua.LuaDLL;
 
 
@@ -59,7 +53,7 @@ namespace XLua
         LUA_ERRMEM = 4,
         LUA_ERRERR = 5,
     }
-
+#if !ENABLE_IL2CPP || !XLUA_IL2CPP
     public class LuaIndexes
     {
         public static int LUA_REGISTRYINDEX
@@ -1717,5 +1711,6 @@ namespace XLua
             }
         }
     }
-}
 #endif
+}
+

@@ -13,14 +13,11 @@
 
 #include "lua.hpp"
 
-#if !defined(MAPPER_ISOLATE_DATA_POS)
-#define MAPPER_STATE_DATA_POS "mapper_state_data_pos"
-#endif
 #if !defined(BACKENDENV_DATA_POS)
 #define BACKENDENV_DATA_POS 1
 #endif
 #if !defined(PESAPI_PRIVATE_DATA_POS_IN_STATE)
-#define PESAPI_PRIVATE_DATA_POS_IN_STATE "pesapi_private_data_pos_in_state"
+#define PESAPI_PRIVATE_DATA_POS_IN_STATE "PESAPI_PRIVATE_DATA_POS_IN_STATE"
 #endif
 #define RELEASED_UOBJECT ((UObject*) 12)
 #define RELEASED_UOBJECT_MEMBER ((void*) 12)
@@ -71,20 +68,10 @@ public:
     {
     }
 
-    template <typename T>
-    FORCEINLINE static T* StateData(lua_State* L)
-    {
-        lua_pushlightuserdata(L, (void*) MAPPER_STATE_DATA_POS);
-        lua_gettable(L, LUA_REGISTRYINDEX);
-        T* data = (T*) lua_touserdata(L, -1);
-        lua_pop(L, 1);
-        return data;
-    }
-
     FORCEINLINE static void* GetStatePrivateData(lua_State* L)
     {
-        lua_pushlightuserdata(L, (void*) PESAPI_PRIVATE_DATA_POS_IN_STATE);
-        lua_gettable(L, LUA_REGISTRYINDEX);
+        lua_pushlightuserdata(L, (void*)PESAPI_PRIVATE_DATA_POS_IN_STATE);
+        lua_rawget(L, LUA_REGISTRYINDEX);
         void* data = lua_touserdata(L, -1);
         lua_pop(L, 1);
         return data;
@@ -92,9 +79,9 @@ public:
 
     FORCEINLINE static void SetStatePrivateData(lua_State* L, void* PrivateData)
     {
-        lua_pushlightuserdata(L, (void*) PESAPI_PRIVATE_DATA_POS_IN_STATE);
+        lua_pushlightuserdata(L, (void*)PESAPI_PRIVATE_DATA_POS_IN_STATE);
         lua_pushlightuserdata(L, (void*) PrivateData);
-        lua_settable(L, LUA_REGISTRYINDEX);
+        lua_rawset(L, LUA_REGISTRYINDEX);
     }
 
     static int FindOrAddCData(lua_State* L, const void* TypeId, const void* Ptr, bool PassByPointer);

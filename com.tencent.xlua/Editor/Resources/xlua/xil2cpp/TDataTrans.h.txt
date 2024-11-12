@@ -81,7 +81,7 @@ public:
 
     struct pesapi_ffi* _apis;
     pesapi_env_ref _envRef;
-    intptr_t scope;
+    pesapi_value scope;
 };
 
 struct DataTransfer
@@ -366,7 +366,7 @@ struct Converter<std::reference_wrapper<T>>
 
     static T toCpp(struct pesapi_ffi* apis, pesapi_env env, pesapi_value value)
     {
-        return Converter<T>::toCpp(apis, env, pesapi_unboxing(apis, env, value));
+        return Converter<T>::toCpp(apis, env, apis->unboxing(env, value));
     }
 
     static bool accept(struct pesapi_ffi* apis, pesapi_env env, pesapi_value value)
@@ -442,7 +442,7 @@ struct OptionalParameter
     {
         if (index < length)
         {
-            return LuaValueToCSRef(apis, typeid, env, apis->get_arg(info, index));
+            return LuaValueToCSRef(apis, typeId, env, apis->get_arg(info, index));
         }
         else
         {
@@ -462,7 +462,7 @@ struct Params
         T* arr = reinterpret_cast<T*>(il2cpp::vm::Array::GetFirstElementAddress(ret));
         for (int i = start; i < length; i++)
         {
-            arr[i - start] = converter::Converter<T>::toCpp(apis, env, pesapi_get_arg(info, i));
+            arr[i - start] = converter::Converter<T>::toCpp(apis, env, apis->get_arg(info, i));
         }
         return ret;
     }
@@ -472,7 +472,7 @@ struct Params
         Il2CppArray* ret = il2cpp::vm::Array::NewSpecific(typeId, length - start > 0 ? length - start : 0);
         for (int i = start; i < length; i++)
         {
-            il2cpp_array_setref(ret, i - start, converter::Converter<Il2CppString*>::toCpp(apis, env, pesapi_get_arg(info, i)));
+            il2cpp_array_setref(ret, i - start, converter::Converter<Il2CppString*>::toCpp(apis, env, apis->get_arg(info, i)));
         }
         return ret;
     }
@@ -483,7 +483,7 @@ struct Params
         auto elemTypeId = il2cpp::vm::Class::GetElementClass(typeId);
         for (int i = start; i < length; i++)
         {
-            il2cpp_array_setref(ret, i - start, LuaValueToCSRef(apis, elemTypeId, env, pesapi_get_arg(info, i)));
+            il2cpp_array_setref(ret, i - start, LuaValueToCSRef(apis, elemTypeId, env, apis->get_arg(info, i)));
         }
         return ret;
     }
@@ -494,7 +494,7 @@ struct Params
         T* arr = reinterpret_cast<T*>(il2cpp::vm::Array::GetFirstElementAddress(ret));
         for (int i = start; i < length; i++)
         {
-            T* e = DataTransfer::GetPointer<T>(apis, env, pesapi_get_arg(info, i));
+            T* e = DataTransfer::GetPointer<T>(apis, env, apis->get_arg(info, i));
             if (!e)
                 continue;
             arr[i - start] = *e;

@@ -22,11 +22,12 @@ namespace xlua
                 function(wrapperInfo)
                     return string.format(
                         'bool w_%s(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);',
-                        wrapperInfo)
+                        wrapperInfo.Signature)
                 end), '\n'), [[
 
+
 static WrapFuncInfo g_wrapFuncInfos[] = {
-    ]], FOR(wrapperInfos, function(info)
+]], FOR(wrapperInfos, function(info)
             return TaggedTemplateEngine([[
     {"]], info.Signature, '", w_', info.Signature, [[},
     ]])

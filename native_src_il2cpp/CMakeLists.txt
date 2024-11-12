@@ -96,6 +96,7 @@ set ( XLUA_CORE
     ../build/i64lib.c
     Inc/XLua.h
     Inc/pesapi.h
+    Inc/LuaClassRegister.h
     Src/CppObjectMapper.cpp
     Src/DataTransfer.cpp
     Src/LuaClassRegister.cpp

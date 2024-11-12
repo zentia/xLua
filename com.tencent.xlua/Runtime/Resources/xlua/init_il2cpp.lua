@@ -1,6 +1,9 @@
 local xlua = nil
 if _G.xlua then
     xlua = _G.xlua
+else
+    _G.xlua = {}
+    xlua = _G.xlua
 end
 
 local function map(tbl, func)
@@ -15,7 +18,7 @@ function xlua.loadType(nameOrCSType, ...)
     local genericArgs = { ... }
     local csType = nameOrCSType
     if type(csType) == 'string' then
-        csType = luaEnv.GetTypeByString(nameOrCSType)
+        csType = luaEnv:GetTypeByString(nameOrCSType)
     end
     if csType then
         if #genericArgs > 0 and csType.IsGenericTypeDefinition then
@@ -26,17 +29,16 @@ function xlua.loadType(nameOrCSType, ...)
         if not cls then
             error(string.format('load %s fail!', csType.Name or csType))
         end
-        cls.__p_innerType = csType
-        cls.__xluaMetadata = cls.__xluaMetadata or {}
+        return cls
     end
 end
 
 local BindingFlags = xlua.loadType('System.Reflection.BindingFlags')
-local GEN_MEMBER_FLAGS = BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public
-function xlua.getNestedType(nameOrCSType)
+local GET_MEMBER_FLAGS = BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public
+function xlua.getNestedTypes(nameOrCSType)
     local csType = nameOrCSType
     if type(nameOrCSType) == 'string' then
-        csType = luaEnv.GetTypeByString(nameOrCSType)
+        csType = luaEnv:GetTypeByString(nameOrCSType)
     end
     if csType then
         return csType:GetNestedType(GET_MEMBER_FLAGS)

@@ -90,7 +90,6 @@ struct LUAENV_API LuaClassDefinition
     const void* TypeId;
     const void* SuperTypeId;
     const char* ScriptName;
-    const char* UETypeName;
     InitializeFunc Initialize;
     LuaFunctionInfo* Methods;       // 成员方法
     LuaFunctionInfo* Functions;     // 静态方法

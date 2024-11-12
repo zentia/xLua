@@ -3,14 +3,14 @@ require("il2cpp_snippets")
 
 function genBridgeArgs(parameterSignatures)
     if #parameterSignatures > 0 then
-        if parameterSignatures[#parameterSignatures][1] ~= 'V' then
+        if parameterSignatures[#parameterSignatures]:sub(1,1) ~= 'V' then
             return string.format([[pesapi_value argv[%d]{
     %s
     };]], #parameterSignatures,
                 table.join(
                     table.map(parameterSignatures,
                         function(ps, i)
-                            return CSValToLuaVal(ps[1] == 'D' and string.sub(ps, 2) or ps, string.format('p%d', i)) or
+                            return CSValToLuaVal(ps:sub(1,1) == 'D' and string.sub(ps, 2) or ps, string.format('p%d', i)) or
                                 'apis->create_undefined(env)'
                         end),
                     [[,
@@ -49,7 +49,7 @@ end
 
 function genBridge(bridgeInfo)
     local parameterSignatures = listToLuaArray(bridgeInfo.ParameterSignatures)
-    local hasVarArgs = #parameterSignatures > 0 and parameterSignatures[#parameterSignatures][1] == 'V'
+    local hasVarArgs = #parameterSignatures > 0 and parameterSignatures[#parameterSignatures]:sub(1,1) == 'V'
     return TaggedTemplateEngine([[
 static ]], SToCPPType(bridgeInfo.ReturnSignature), ' b_', bridgeInfo.Signature, '(void* target, ',
         table.join(

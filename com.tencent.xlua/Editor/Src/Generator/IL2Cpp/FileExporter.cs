@@ -143,9 +143,11 @@ namespace XLuaIl2cpp.Editor
                 return true;
             }
 
-            private static readonly Dictionary<string, Dictionary<string, List<string>>> AssemblyFullName = new Dictionary<string, Dictionary<string, List<string>>>()
+            private static readonly Type[] Types =
             {
-                {"UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null", new Dictionary<string, List<string>>(){{typeof(Application).FullName, new List<string>(){"isEditor"}}}},
+                typeof(LuaEnv), 
+                typeof(BindingFlags),
+                typeof(Debug)
             };
 
             private static void IterateAllType(Type type, HashSet<Type> allTypes)
@@ -192,58 +194,29 @@ namespace XLuaIl2cpp.Editor
             public static void GenCPPWrap(string saveTo)
             {
                 Utils.SetFilters(XLua.Configure.GetFilters());
-                var assemblies = AppDomain.CurrentDomain.GetAssemblies();
                 var ctorToWrapper = new List<ConstructorInfo>();
                 var methodToWrap = new List<MethodInfo>();
                 var fieldToWrapper = new List<FieldInfo>();
                 const BindingFlags flag = BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public;
-                foreach (var assembly in assemblies)
+                foreach (var type in Types)
                 {
-                    if (!AssemblyFullName.TryGetValue(assembly.FullName, out var typeFullName))
+                    foreach (var constructorInfo in type.GetConstructors(flag))
                     {
-                        continue;
+                        ctorToWrapper.Add(constructorInfo);
                     }
 
-                    foreach (var type in assembly.GetTypes())
+                    foreach (var methodInfo in type.GetMethods(flag))
                     {
-                        if (!typeFullName.TryGetValue(type.FullName, out var typeInfo))
-                        {
-                            continue;
-                        }
+                        methodToWrap.Add(methodInfo);
+                    }
 
-                        foreach (var constructorInfo in type.GetConstructors(flag))
-                        {
-                            if (!typeInfo.Contains(constructorInfo.Name))
-                            {
-                                continue;
-                            }
-                            ctorToWrapper.Add(constructorInfo);
-                        }
-
-                        foreach (var methodInfo in type.GetMethods(flag))
-                        {
-                            if (!typeInfo.Contains(methodInfo.Name))
-                            {
-                                continue;
-                            }
-                            methodToWrap.Add(methodInfo);
-                        }
-
-                        foreach (var fieldInfo in type.GetFields(flag))
-                        {
-                            if (!typeInfo.Contains(fieldInfo.Name))
-                            {
-                                continue;
-                            }
-                            fieldToWrapper.Add(fieldInfo);
-                        }
+                    foreach (var fieldInfo in type.GetFields(flag))
+                    {
+                        fieldToWrapper.Add(fieldInfo);
                     }
                 }
-                var targetAssemblies = assemblies.Where(a => AssemblyFullName.ContainsKey(a.FullName));
-                var types = from assembly in targetAssemblies from type in assembly.GetTypes() select type;
-                var targetTypes = types.Where(t => AssemblyFullName[t.Assembly.FullName].ContainsKey(t.FullName));
-
-                var wrapperUsedTypes = targetTypes
+                
+                var wrapperUsedTypes = Types
                     .Concat(ctorToWrapper.SelectMany(c => c.GetParameters()).Select(pi => GetUnrefParameterType(pi)))
                     .Concat(methodToWrap.SelectMany(m => m.GetParameters()).Select(pi => GetUnrefParameterType(pi)))
                     .Concat(methodToWrap.Select(m => m.ReturnType))

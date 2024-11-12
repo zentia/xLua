@@ -8,10 +8,11 @@ function defineValueType(valueTypeInfo)
     return TaggedTemplateEngine('// ', valueTypeInfo.CsName, [[
 
 struct ]], valueTypeInfo.Signature, [[
+
 {
-    ]], FOR(listToLuaArray(valueTypeInfo.FieldSignatures), function(s, i)
+]], FOR(listToLuaArray(valueTypeInfo.FieldSignatures), function(s, i)
         return TaggedTemplateEngine([[
-    ]], IF(isNullableStruct(valueTypeInfo.Signature) and i == valueTypeInfo.NullableHasValuePosition), [[
+]], IF(isNullableStruct(valueTypeInfo.Signature) and i == valueTypeInfo.NullableHasValuePosition), [[
     ]], SToCPPType(s), [[ hasValue;
     ]], ELSE(), [[
     ]], SToCPPType(s), ' p', i, [[;

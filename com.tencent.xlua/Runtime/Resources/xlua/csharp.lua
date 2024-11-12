@@ -2,11 +2,6 @@ function csTypeToClass(csType)
     local cls = xlua.loadType(csType)
 
     if cls then
-        local readonlyStaticMembers = cls.__xluaMetadata:get('readonlyStaticMembers')
-        if readonlyStaticMembers then
-
-        end
-
         local nestedTypes = xlua.getNestedTypes(csType)
         if nestedTypes then
             for i = 1, nestedTypes.Length do
@@ -18,6 +13,7 @@ function csTypeToClass(csType)
             end
         end
     end
+    return cls
 end
 
 function xlua.ref(x)
@@ -31,6 +27,9 @@ end
 function createTypeProxy(namespace)
     local metatable = {
         __index = function(tbl, name)
+            if name == '__p_innerType' then
+                return
+            end
             local fullName = namespace and (namespace .. '.' .. name) or name
             local cls = csTypeToClass(fullName)
             if cls then
@@ -38,7 +37,7 @@ function createTypeProxy(namespace)
             else
                 tbl[name] = createTypeProxy(fullName)
             end
-            return cache[name]
+            return tbl[name]
         end
     }
     local ret = {}

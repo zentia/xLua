@@ -5,6 +5,9 @@ using XLua.TypeMapping;
 using System.Collections.Generic;
 using RealStatePtr = System.IntPtr;
 using System.Runtime.InteropServices;
+using LuaAPI = XLua.LuaDLL.Lua;
+using LuaCSFunction = XLua.LuaDLL.lua_CSFunction;
+using UnityEngine;
 
 namespace XLua
 {
@@ -102,12 +105,14 @@ namespace XLua
             }
 #endif
 
-            DoString("xlua/init_il2cpp.lua");
-            DoString("xlua/log.lua");
-            DoString("xlua/csharp.lua");
-
             XLuaIl2cpp.ExtensionMethodInfo.LoadExtensionMethodInfo();
             rawL = XLuaIl2cpp.NativeAPI.GetLuaState(nativeLuaEnv);
+
+            AddSearcher(LoadFromResource, 4);
+
+            DoResourcesString("xlua/init_il2cpp.lua");
+            DoResourcesString("xlua/log.lua");
+            DoResourcesString("xlua/csharp.lua");
 
             XLuaIl2cpp.pesapi_ffi ffi = Marshal.PtrToStructure<XLuaIl2cpp.pesapi_ffi>(apis);
             var scope = ffi.open_scope(nativePesapiEnv);
@@ -117,7 +122,7 @@ namespace XLua
             ffi.set_property(env, global, "CSharpFoo", func);
             ffi.close_scope(nativePesapiEnv, scope);
         }
-
+        
         static IntPtr storeCallback = IntPtr.Zero;
 
         [XLuaIl2cpp.MonoPInvokeCallback(typeof(XLuaIl2cpp.pesapi_callback))]
@@ -150,6 +155,65 @@ namespace XLua
             int y = ffi.get_value_int32(env, ffi.get_arg(info, 1));
             UnityEngine.Debug.Log(string.Format("CSharpFoo called, x = {0}, y = {1}", x, y));
             ffi.add_return(info, ffi.create_int32(env, x + y));
+        }
+
+        [MonoPInvokeCallback(typeof(LuaCSFunction))]
+        internal static int LoadFromResource(RealStatePtr L)
+        {
+            try
+            {
+                string filename = LuaAPI.lua_tostring(L, 1).Replace('.', '/') + ".lua";
+
+                // Load with Unity3D resources
+                UnityEngine.TextAsset file = (UnityEngine.TextAsset)UnityEngine.Resources.Load(filename);
+                if (file == null)
+                {
+                    LuaAPI.lua_pushstring(L, string.Format(
+                        "\n\tno such resource '{0}'", filename));
+                }
+                else
+                {
+                    if (LuaAPI.xluaL_loadbuffer(L, file.bytes, file.bytes.Length, "@" + filename) != 0)
+                    {
+                        return LuaAPI.luaL_error(L, String.Format("error loading module {0} from resource, {1}",
+                            LuaAPI.lua_tostring(L, 1), LuaAPI.lua_tostring(L, -1)));
+                    }
+                }
+
+                return 1;
+            }
+            catch (System.Exception e)
+            {
+                return LuaAPI.luaL_error(L, "c# exception in LoadFromResource:" + e);
+            }
+        }
+
+        private void AddSearcher(LuaCSFunction searcher, int index)
+        {
+#if THREAD_SAFE || HOTFIX_ENABLE
+            lock (luaEnvLock)
+            {
+#endif
+            var _L = L;
+            //insert the loader
+            LuaAPI.xlua_getloaders(_L);
+            if (!LuaAPI.lua_istable(_L, -1))
+            {
+                throw new Exception("Can not set searcher!");
+            }
+            uint len = LuaAPI.xlua_objlen(_L, -1);
+            index = index < 0 ? (int)(len + index + 2) : index;
+            for (int e = (int)len + 1; e > index; e--)
+            {
+                LuaAPI.xlua_rawgeti(_L, -1, e - 1);
+                LuaAPI.xlua_rawseti(_L, -2, e);
+            }
+            LuaAPI.lua_pushstdcallcfunction(_L, searcher);
+            LuaAPI.xlua_rawseti(_L, -2, index);
+            LuaAPI.lua_pop(_L, 1);
+#if THREAD_SAFE || HOTFIX_ENABLE
+            }
+#endif
         }
 
         public LuaTable Global
@@ -186,6 +250,12 @@ namespace XLua
         {
             byte[] bytes = System.Text.Encoding.UTF8.GetBytes(chunk);
             XLuaIl2cpp.NativeAPI.DoString(apis, nativePesapiEnv, bytes, chunkName, env, null);
+        }
+
+        private void DoResourcesString(string filename)
+        {
+            var bytes = System.IO.File.ReadAllBytes(System.IO.Path.Combine(Application.streamingAssetsPath, filename));
+            XLuaIl2cpp.NativeAPI.DoString(apis, nativePesapiEnv, bytes, "@" + filename, null, null);
         }
 
 #if !XLUA_GENERAL

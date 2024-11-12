@@ -190,12 +190,12 @@ typedef pesapi_env (*pesapi_get_env_from_ref_func)(pesapi_env_ref env_ref);
 typedef pesapi_env_ref (*pesapi_duplicate_env_ref_func)(pesapi_env_ref env_ref);
 typedef void (*pesapi_release_env_ref_func)(pesapi_env_ref env_ref);
 
-typedef int (*pesapi_open_scope_func)(pesapi_env_ref env_ref);
-typedef int (*pesapi_open_scope_placement_func)(pesapi_env_ref env_ref);
+typedef pesapi_value (*pesapi_open_scope_func)(pesapi_env_ref env_ref);
+typedef pesapi_value (*pesapi_open_scope_placement_func)(pesapi_env_ref env_ref);
 typedef bool (*pesapi_has_caught_func)(pesapi_env_ref env_ref);
 typedef const char* (*pesapi_get_exception_as_string_func)(pesapi_env_ref env_ref, bool with_stack);
-typedef void (*pesapi_close_scope_func)(pesapi_env_ref env_ref, int scope);
-typedef void (*pesapi_close_scope_placement_func)(pesapi_env_ref env_ref, int scope);
+typedef void (*pesapi_close_scope_func)(pesapi_env_ref env_ref, pesapi_value scope);
+typedef void (*pesapi_close_scope_placement_func)(pesapi_env_ref env_ref, pesapi_value scope);
 
 typedef pesapi_value_ref (*pesapi_create_value_ref_func)(pesapi_env env, pesapi_value value, uint32_t internal_field_count);
 typedef pesapi_value_ref (*pesapi_duplicate_value_ref_func)(pesapi_value_ref value_ref);
@@ -218,10 +218,10 @@ typedef void (*pesapi_set_property_uint64_func)(pesapi_env env, pesapi_value obj
 typedef pesapi_value (*pesapi_call_function_func)(
     pesapi_env env, pesapi_value func, pesapi_value this_object, int argc, const pesapi_value argv[]);
 
-typedef int (*pesapi_dostring_func)(
-    pesapi_env env, const uint8_t* code, size_t code_size, const char* path, int luaEnvRef, int* ret);
-typedef int (*pesapi_loadstring_func)(
-    pesapi_env env, const uint8_t* code, size_t code_size, const char* path, int luaEnvRef, int* ret);
+typedef pesapi_value (*pesapi_dostring_func)(
+    pesapi_env env, const uint8_t* code, size_t code_size, const char* path, pesapi_value_ref value_ref);
+typedef pesapi_value (*pesapi_loadstring_func)(
+    pesapi_env env, const uint8_t* code, size_t code_size, const char* path, pesapi_value_ref value_ref);
 
 typedef pesapi_value (*pesapi_global_func)(pesapi_env env);
 typedef const void* (*pesapi_get_env_private_func)(pesapi_env env);

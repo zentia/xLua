@@ -1,21 +1,5 @@
 sigs = CS.XLuaIl2cpp.TypeUtils.TypeSignatures
 
-PrimitiveSignatureCppTypeMap = {
-    v = 'void',
-    b = 'bool',
-    u1 = 'uint8_t',
-    i1 = 'int8_t',
-    i2 = 'int16_t',
-    u2 = 'uint16_t',
-    i4 = 'int32_t',
-    u4 = 'uint32_t',
-    i8 = 'int64_t',
-    u8 = 'uint64_t',
-    c = 'Il2CppChar',
-    r8 = 'double',
-    r4 = 'float'
-}
-
 local TTFor = {}
 TTFor.__index = TTFor
 function TTFor:new(str)
@@ -421,7 +405,7 @@ function needThis(wrapperInfo)
 end
 
 function getSignatureWithoutRefAndPrefix(signature)
-    if signature[1] == 'P' or signature[1] == 'D' then
+    if signature:sub(1,1) == 'P' or signature:sub(1,1) == 'D' then
         return string.sub(signature, 1)
     else
         return signature
