@@ -147,7 +147,6 @@ static void PApiFree(struct pesapi_ffi* api, void* ptr, void* class_data, void* 
 }
 
 static Il2CppClass* g_typeofPersistentObjectInfo;
-static Il2CppClass* g_typeofArrayBuffer;
 static Il2CppClass* g_typeofTypedValue;
 
 static MethodInfoHelper<void(const void* typeId, bool includeNonPublic)> g_RegisterNoThrowHelper;
@@ -250,15 +249,6 @@ static void* DelegateAllocate(Il2CppClass* klass, Il2CppMethodPointer functionPt
     delegate->method_ptr = functionPtr;
 
     return delegate;
-}
-
-void SetGlobalType_ArrayBuffer(Il2CppReflectionType* type)
-{
-    if (!type)
-    {
-        Exception::Raise(Exception::GetInvalidOperationException("type of ArrayBuffer is null"));
-    }
-    g_typeofArrayBuffer = il2cpp_codegen_class_from_type(type->type);
 }
 
 void SetGlobalType_LuaTable(Il2CppReflectionType* type)
@@ -592,8 +582,6 @@ bool IsDelegate(Il2CppClass* klass)
            klass != il2cpp_defaults.multicastdelegate_class;
 }
 
-static FieldInfo* ArrayBufferCountField = nullptr;
-static FieldInfo* ArrayBufferBytesField = nullptr;
 pesapi_value TryTranslateBuiltin(struct pesapi_ffi* apis, pesapi_env env, Il2CppObject* obj)
 {
     if (obj)
@@ -602,22 +590,6 @@ pesapi_value TryTranslateBuiltin(struct pesapi_ffi* apis, pesapi_env env, Il2Cpp
         {
             PObjectRefInfo* objectInfo = GetPObjectRefInfo(obj);
             return GetPObjectRefInfoValue(apis, env, objectInfo);
-        }
-        if (obj->klass == g_typeofArrayBuffer)
-        {
-            if (ArrayBufferBytesField == nullptr || ArrayBufferCountField == nullptr)
-            {
-                ArrayBufferBytesField = il2cpp_class_get_field_from_name(g_typeofArrayBuffer, "Count");
-                ArrayBufferBytesField = il2cpp_class_get_field_from_name(g_typeofArrayBuffer, "Bytes");
-            }
-
-            int32_t length = 0;
-            il2cpp_field_get_value(obj, ArrayBufferCountField, &length);
-
-            Il2CppArray* buffer;
-            il2cpp_field_get_value(obj, ArrayBufferBytesField, &buffer);
-
-            return apis->create_binary(env, Array::GetFirstElementAddress(buffer), (size_t) length);
         }
     }
     return nullptr;
@@ -2048,8 +2020,6 @@ extern "C"
             "XLuaIl2cpp.NativeAPI::SetGlobalType_LuaTable(System.Type)", (Il2CppMethodPointer) xlua::SetGlobalType_LuaTable);
         InternalCalls::Add(
             "XLuaIl2cpp.NativeAPI::SetGlobalType_TypedValue(System.Type)", (Il2CppMethodPointer) xlua::SetGlobalType_TypedValue);
-        InternalCalls::Add(
-            "XLuaIl2cpp.NativeAPI::SetGlobalType_ArrayBuffer(System.Type)", (Il2CppMethodPointer) xlua::SetGlobalType_ArrayBuffer);
         InternalCalls::Add("XLuaIl2cpp.NativeAPI::DoString(System.IntPtr,System.IntPtr,System.Byte[],System.String,XLua.LuaTable,System.Type)", (Il2CppMethodPointer) xlua::DoString);
         InternalCalls::Add("XXLuaIl2cpp.NativeAPI::LoadString(System.IntPtr,System.IntPtr,System.Byte[],System.String,XLua.LuaTable,System.Type)", (Il2CppMethodPointer) xlua::LoadString);
         InternalCalls::Add("XLuaIl2cpp.NativeAPI::SetObjectToGlobal(System.IntPtr,System.IntPtr,System.String,System.Object)",

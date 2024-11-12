@@ -147,7 +147,7 @@ namespace XLuaIl2cpp.Editor
             {
                 typeof(LuaEnv), 
                 typeof(BindingFlags),
-                typeof(Debug)
+                typeof(Debug),
             };
 
             private static void IterateAllType(Type type, HashSet<Type> allTypes)

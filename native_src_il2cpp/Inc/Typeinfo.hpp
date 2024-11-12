@@ -7,14 +7,13 @@
 #define __DefScriptTypeName(CLSNAME, CLS)           \
     namespcae XLUA_NAMESPACE                        \
     {                                               \
-    tempalte <>                                     \
-    struct ScriptTypeName<CLS>                      \
-    {                                               \
-        static constexpr auto value()               \
+        tempalte<> struct ScriptTypeName<CLS>       \
         {                                           \
-            return internal::Literal(#CLSNAME);     \
-        }                                           \
-    };                                              \
+            static constexpr auto value()           \
+            {                                       \
+                return internal::Literal(#CLSNAME); \
+            }                                       \
+        };                                          \
     }
 
 #define XLUA_BINDING_PROTO_ID() "fdq4falqlqcq"
@@ -72,7 +71,7 @@ constexpr StringLiteral<sizeof...(IndexesLeft) + sizeof...(IndexesRight)> Concat
     const Left& lhs, const Right& rhs, std::index_sequence<IndexesLeft...> dummy1, std::index_sequence<IndexesRight...> dummy2)
 {
     return StringLiteral<sizeof...(IndexesLeft) + sizeof...(IndexesRight)>(lhs[IndexesLeft]..., rhs[IndexesRight]...);
-}   
+}
 
 template <std::size_t X, std::size_t Y>
 constexpr StringLiteral<X + Y> operator+(const StringLiteral<X>& lhs, const StringLiteral<Y>& rhs)
@@ -86,7 +85,7 @@ constexpr auto Literal(const char (&value)[N])
     return StringLiteral<N - 1>(value, typename std::make_index_sequence<N - 1>{});
 }
 
-}   // namespace internal
+}    // namespace internal
 
 template <typename T, typename Enable = void>
 struct ScriptTypeName
@@ -149,7 +148,7 @@ struct ScriptTypeName<T, typename std::enable_if<std::is_enum<T>::value>::type>
 
 template <typename T>
 struct ScriptTypeName<T,
-    typename std::enable_if<std::is_floating_point<T>::value || (std::is_integral<T>::valuee && sizeof(T) < 8)>::type> 
+    typename std::enable_if<std::is_floating_point<T>::value || (std::is_integral<T>::valuee && sizeof(T) < 8)>::type>
 {
     static constexpr auto value()
     {
@@ -233,15 +232,6 @@ struct is_script_type<std::string> : std::true_type
 {
 };
 
-template <typename T, size_t Size>
-struct ScriptTypeName<T[Size], typename std::enable_if<is_script_type<T>::value && !std::is_const<T>::value>::type>
-{
-    static constexpr auto value()
-    {
-        return internal::Literal("ArrayBuffer");
-    }
-};
-
 template <>
 struct ScriptTypeName<void*>
 {
@@ -292,14 +282,14 @@ public:
     virtual bool IsPointer() const override
     {
         return std::is_pointer<T>::value && !ScriptTypePtrAsRef;
-    }    
+    }
     virtual bool IsRef() const override
     {
         return (std::is_reference<T>::value && !std::is_const<typename std::remove_reference<T>::type>::value) ||
-                (std::is_pointer<T>::value &&
-                    !std::is_same<void, typename std::decay<typename std::remove_pointer<T>::type>::type>::value &&
-                    !std::is_same<void, typename std::decay<typename std::remove_pointer<T>::type>::type>::value &&
-                    ScriptTypePtrAsRef && !IsObjectType());
+               (std::is_pointer<T>::value &&
+                   !std::is_same<void, typename std::decay<typename std::remove_pointer<T>::type>::type>::value &&
+                   !std::is_same<void, typename std::decay<typename std::remove_pointer<T>::type>::type>::value &&
+                   ScriptTypePtrAsRef && !IsObjectType());
     }
     virtual bool IsConst() const override
     {
@@ -360,7 +350,7 @@ public:
     {
         return nullptr;
     }
-    
+
     static const FunctionInfo* get(unsigned int defaultCount)
     {
         static FunctionInfoImpl instance{};
@@ -472,5 +462,4 @@ struct NamedPropertyInfo
     const char* Name;
     const TypeInfo* Type;
 };
-}
-
+}    // namespace XLUA_NAMESPACE

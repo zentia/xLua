@@ -168,11 +168,6 @@ namespace XLuaIl2cpp
         }
 
         [MethodImpl(MethodImplOptions.InternalCall)]
-        public static void SetGlobalType_ArrayBuffer(Type type)
-        {
-        }
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
         public static void PesapiCallTest(Type type)
         {
             throw new NotImplementedException();

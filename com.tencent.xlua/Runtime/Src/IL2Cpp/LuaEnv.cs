@@ -77,7 +77,6 @@ namespace XLua
 
             persistentObjectInfoType = typeof(XLua.LuaTable);
             XLuaIl2cpp.NativeAPI.SetGlobalType_TypedValue(typeof(TypedValue));
-            XLuaIl2cpp.NativeAPI.SetGlobalType_ArrayBuffer(typeof(ArrayBuffer));
             XLuaIl2cpp.NativeAPI.SetGlobalType_LuaTable(typeof(LuaTable));
 
             nativeLuaEnv = XLuaIl2cpp.NativeAPI.CreateNativeLuaEnv();
