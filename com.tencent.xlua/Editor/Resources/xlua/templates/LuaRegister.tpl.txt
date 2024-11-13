@@ -96,7 +96,7 @@ namespace XLua
 		static XLua.CSObjectWrap.XLua_Gen_Initer_Register__ s_gen_reg_dumb_obj = new XLua.CSObjectWrap.XLua_Gen_Initer_Register__();
 		static XLua.CSObjectWrap.XLua_Gen_Initer_Register__ gen_reg_dumb_obj {get{return s_gen_reg_dumb_obj;}}
         
-        public ObjectTranslatorWrap(LuaEnv luaenv, RealStatePtr L):base(luaenv, L)
+        public ObjectTranslatorWrap(LuaEnv luaenv, RealStatePtr L, Type bridgeType):base(luaenv, L, bridgeType)
 		{
 			
 		}

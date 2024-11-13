@@ -1,13 +1,7 @@
-#if !ENABLE_IL2CPP
-#if USE_UNI_LUA
-using LuaAPI = UniLua.Lua;
-using RealStatePtr = UniLua.ILuaState;
-using LuaCSFunction = UniLua.CSharpFunctionDelegate;
-#else
+#if !ENABLE_IL2CPP || !XLUA_IL2CPP
 using LuaAPI = XLua.LuaDLL.Lua;
 using RealStatePtr = System.IntPtr;
 using LuaCSFunction = XLua.LuaDLL.lua_CSFunction;
-#endif
 using XLua.LuaDLL;
 
 
@@ -55,7 +49,7 @@ namespace XLua
 
         const int LIB_VERSION_EXPECT = 105;
 
-        public LuaEnv()
+        public LuaEnv(Type bridgeType = null, Type translatorType = null)
         {
             if (LuaAPI.xlua_get_lib_version() != LIB_VERSION_EXPECT)
             {
@@ -78,7 +72,15 @@ namespace XLua
                 LuaAPI.luaopen_xlua(rawL);
                 LuaAPI.luaopen_i64lib(rawL);
 
-                translator = new ObjectTranslator(this, rawL);
+                if (translatorType != null)
+                {
+                    translator = Activator.CreateInstance(translatorType, this, rawL, bridgeType) as ObjectTranslator;
+                }
+                else
+                {
+                    translator = new ObjectTranslator(this, rawL, bridgeType);    
+                }
+                
                 translator.createFunctionMetatable(rawL);
                 translator.OpenLib(rawL);
                 ObjectTranslatorPool.Instance.Add(rawL, translator);

@@ -1,4 +1,4 @@
-#if ENABLE_IL2CPP
+#if ENABLE_IL2CPP && XLUA_IL2CPP
 
 using System;
 using System.Collections.Generic;

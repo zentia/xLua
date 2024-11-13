@@ -38,15 +38,11 @@ public class LuaTestCommon
 	public static string xxxtdrfilepath = Application.streamingAssetsPath + "/testxxx.tdr";
 	public static string xxxtdr2filepath = Application.streamingAssetsPath + "/testxxx2.tdr";
 	public static bool android_platform = true;
-#elif   UNITY_EDITOR || UNITY_WSA
+#else
     public static string resultPath = Application.dataPath + "/xLuaTest/";
 	public static string xxxtdrfilepath = Application.dataPath + "/StreamingAssets" + "/testxxx.tdr";
 	public static string xxxtdr2filepath = Application.dataPath + "/StreamingAssets" + "/testxxx2.tdr";
 	public static bool android_platform = false;
-#elif XLUA_GENERAL
-    public static string resultPath = ".";
-    public static bool android_platform = false;
-    public static string xxxtdrfilepath = "../Test/UnitTest/StreamingAssets" + "/testxxx.tdr";
 #endif
 
     public static bool IsXLuaGeneral()

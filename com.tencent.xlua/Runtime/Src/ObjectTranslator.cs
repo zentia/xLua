@@ -42,6 +42,19 @@ namespace XLua
     }
 #pragma warning restore 414
 
+    public enum LuaTypes
+    {
+        LUA_TNONE = -1,
+        LUA_TNIL = 0,
+        LUA_TNUMBER = 3,
+        LUA_TSTRING = 4,
+        LUA_TBOOLEAN = 1,
+        LUA_TTABLE = 5,
+        LUA_TFUNCTION = 6,
+        LUA_TUSERDATA = 7,
+        LUA_TTHREAD = 8,
+        LUA_TLIGHTUSERDATA = 2
+    }
     
     public enum LuaThreadStatus
     {
@@ -187,8 +200,9 @@ namespace XLua
             }
         }
 
-        public ObjectTranslator(LuaEnv luaenv,RealStatePtr L)
-		{
+        public ObjectTranslator(LuaEnv luaenv,RealStatePtr L, Type bridgeType = null)
+        {
+            delegate_birdge_type = bridgeType;
 #if XLUA_GENERAL  || (UNITY_WSA && !UNITY_EDITOR)
             var dumb_field = typeof(ObjectTranslator).GetField("s_gen_reg_dumb_obj", BindingFlags.Static| BindingFlags.DeclaredOnly | BindingFlags.NonPublic);
             if (dumb_field != null)
@@ -242,9 +256,9 @@ namespace XLua
             WARN,
             ERROR
         }
-
-#if (UNITY_EDITOR || XLUA_GENERAL) && !NET_STANDARD_2_0
         Type delegate_birdge_type;
+#if UNITY_EDITOR && !NET_STANDARD_2_0
+        
 
         class CompareByArgRet : IEqualityComparer<MethodInfo>
         {
@@ -267,7 +281,7 @@ namespace XLua
 
         void initCSharpCallLua()
         {
-#if (UNITY_EDITOR || XLUA_GENERAL) && !NET_STANDARD_2_0
+#if UNITY_EDITOR && !NET_STANDARD_2_0
             delegate_birdge_type = typeof(DelegateBridge);
             if (!DelegateBridge.Gen_Flag)
             {
@@ -414,12 +428,7 @@ namespace XLua
                     if (!methods[i].IsConstructor && Utils.IsParamsMatch(delegateMethod, methods[i]))
                     {
                         var foundMethod = methods[i];
-                        delegateCreator = (o) =>
-#if !UNITY_WSA || UNITY_EDITOR
-                            Delegate.CreateDelegate(delegateType, o, foundMethod);
-#else
-                            foundMethod.CreateDelegate(delegateType, o); 
-#endif
+                        delegateCreator = (o) => Delegate.CreateDelegate(delegateType, o, foundMethod);
                         break;
                     }
                 }
@@ -482,15 +491,13 @@ namespace XLua
             DelegateBridgeBase bridge;
             try
             {
-#if (UNITY_EDITOR || XLUA_GENERAL) && !NET_STANDARD_2_0
-                if (!DelegateBridge.Gen_Flag)
+                if (delegate_birdge_type != null)
                 {
-                    bridge = Activator.CreateInstance(delegate_birdge_type, new object[] { reference, luaEnv }) as DelegateBridgeBase;
+                    bridge = Activator.CreateInstance(delegate_birdge_type, reference, luaEnv) as DelegateBridgeBase;
                 }
                 else
-#endif
                 {
-                    bridge = new DelegateBridge(reference, luaEnv);
+                    bridge = new DelegateBridge(reference, luaEnv);  
                 }
             }
             catch(Exception e)
@@ -573,7 +580,7 @@ namespace XLua
 
             if (!interfaceBridgeCreators.TryGetValue(interfaceType, out creator))
             {
-#if (UNITY_EDITOR || XLUA_GENERAL) && !NET_STANDARD_2_0
+#if UNITY_EDITOR && !NET_STANDARD_2_0
                 var bridgeType = ce.EmitInterfaceImpl(interfaceType);
                 creator = (int reference, LuaEnv luaenv) =>
                 {

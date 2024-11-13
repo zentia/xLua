@@ -42,7 +42,12 @@ public class PerfMain : MonoBehaviour {
 #endif
         var start = Time.realtimeSinceStartup;
         var startMem = System.GC.GetTotalMemory(true);
-        luaenv = new LuaEnv();
+#if UNITY_EDITOR
+		luaenv = new LuaEnv();
+#else
+		luaenv = new LuaEnv(typeof(DelegateBridgeWrap), typeof(ObjectTranslatorWrap));
+#endif
+        
         Debug.Log("start cost: " + (Time.realtimeSinceStartup - start));
         var endMem = System.GC.GetTotalMemory(true);
         Debug.Log("startMem: " + startMem + ", endMem: " + endMem + ", " + "cost mem: " + (endMem - startMem));
