@@ -120,7 +120,7 @@ struct DataTransfer
     static pesapi_value CopyValueType(struct pesapi_ffi* apis, pesapi_env env, const T& v, const void* type_id)
     {
         T* ret = new T;
-        memccpy(ret, &v, sizeof(T));
+        memcpy(ret, &v, sizeof(T));
         return apis->native_object_to_value(env, type_id, ret, true);
     }
 
@@ -389,7 +389,7 @@ struct OptionalParameter
         }
         else
         {
-            if (wrapDaat->IsExtensionMethod)
+            if (wrapData->IsExtensionMethod)
                 ++index;
             auto pret = (T*) GetDefaultValuePtr(methodInfo, index);
             if (pret)

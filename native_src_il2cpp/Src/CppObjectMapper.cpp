@@ -208,8 +208,6 @@ void CppObjectMapper::BindCppObject(
     }
 }
 
-#define LUA_PRIVATE_KEY_STR "__kp"
-
 void* CppObjectMapper::GetPrivateData(lua_State* L, int index)
 {
     if (index < 0)
@@ -221,8 +219,7 @@ void* CppObjectMapper::GetPrivateData(lua_State* L, int index)
     {
         return nullptr;
     }
-
-    lua_pushstring(L, LUA_PRIVATE_KEY_STR);
+    lua_pushvalue(L, index);
     lua_gettable(L, -2);
     void* data = lua_touserdata(L, -1);
     lua_pop(L, 2);
@@ -236,14 +233,22 @@ void CppObjectMapper::SetPrivateData(lua_State* L, int index, void* Ptr)
     {
         index = lua_gettop(L) + index + 1;
     }
+    if (lua_getmetatable(L, index))
+    {
+        lua_pushvalue(L, index);
+        lua_pushlightuserdata(L, Ptr);
+        lua_settable(L, -3);
+    }
+    else
+    {
+        lua_newtable(L);
 
-    lua_newtable(L);
+        lua_pushvalue(L, index);
+        lua_pushlightuserdata(L, Ptr);
+        lua_settable(L, -3);
 
-    lua_pushstring(L, LUA_PRIVATE_KEY_STR);
-    lua_pushlightuserdata(L, Ptr);
-    lua_settable(L, -3);
-
-    lua_setmetatable(L, index);
+        lua_setmetatable(L, index);
+    }
 }
 
 void CppObjectMapper::UnBindCppObject(lua_State* L, LuaClassDefinition* ClassDefinition, void* Ptr)
@@ -414,7 +419,8 @@ static int object_gc(lua_State* L)
     if (cppObject->NeedDelete)
     {
         // printf("Finalize %p\n", cppObject->Ptr);
-        class_definition->Finalize(&g_pesapi_ffi, cppObject->Ptr, class_definition->Data, L);
+        if (class_definition->Finalize)
+            class_definition->Finalize(&g_pesapi_ffi, cppObject->Ptr, class_definition->Data, L);
     }
 
     return 0;
@@ -557,7 +563,7 @@ int CppObjectMapper::GetMetaRefOfClass(lua_State* L, const LuaClassDefinition* C
         bool has_super = false;
         if (ClassDefinition->SuperTypeId)
         {
-            if (auto SuperDefinition = FindClassByID(ClassDefinition->SuperTypeId))
+            if (auto SuperDefinition = LoadClassByID(ClassDefinition->SuperTypeId))
             {
                 super_meta_ref = GetMetaRefOfClass(L, SuperDefinition);
                 has_super = true;

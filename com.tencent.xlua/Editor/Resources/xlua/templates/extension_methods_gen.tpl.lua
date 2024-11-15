@@ -2,7 +2,7 @@ require('tte')
 
 function TypingTemplate(rawInfo)
     return TaggedTemplateEngine([[
-#if ENABLE_IL2CPP
+#if XLUA_IL2CPP && ENABLE_IL2CPP
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -15,6 +15,7 @@ public static class ExtensionMethodInfos_Gen
     {
         if (false) {}]], FOR(getExtendedTypeToExtensionTypeInfo(rawInfo), function(e)
             return TaggedTemplateEngine([[
+            
         else if (type == typeof(]], e.extendedType, [[))
         {
             return ExtensionMethodInfo.GetExtensionMethods(typeof(]], e.extendedType, ')',
@@ -45,7 +46,8 @@ function getExtendedTypeToExtensionTypeInfo(rawInfo)
         for _, v in ipairs(t) do
             table.insert(t1, CS.XLua.TypeExtensions.GetFriendlyName(v))
         end
-        table.insert(info, { extendedType, t1 })
+        
+        table.insert(info, { extendedType = extendedType, extendedTypes = t1 })
     end
     return info
 end

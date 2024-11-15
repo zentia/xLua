@@ -41,7 +41,7 @@ function xlua.getNestedTypes(nameOrCSType)
         csType = luaEnv:GetTypeByString(nameOrCSType)
     end
     if csType then
-        return csType:GetNestedType(GET_MEMBER_FLAGS)
+        return csType:GetNestedTypes(GET_MEMBER_FLAGS)
     end
 end
 

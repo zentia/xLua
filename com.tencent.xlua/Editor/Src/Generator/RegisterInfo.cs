@@ -67,7 +67,7 @@ namespace XLua.Editor
                 }
             }
 
-            public static List<RegisterInfoForGenerate> GetRegisterInfos(List<Type> genTypes, HashSet<Type> blittableCopyTypes)
+            public static List<RegisterInfoForGenerate> GetRegisterInfos(List<Type> genTypes)
             {
                 BindingFlags flag = BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public;
 
@@ -269,8 +269,6 @@ namespace XLua.Editor
                         return new RegisterInfoForGenerate
                         {
                             WrapperName = Utils.GetWrapTypeName(type),
-
-                            BlittableCopy = blittableCopyTypes.Contains(type),
 
                             Type = type,
 

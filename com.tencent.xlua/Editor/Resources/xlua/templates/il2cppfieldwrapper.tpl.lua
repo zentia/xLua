@@ -9,12 +9,14 @@ function genGetField(fieldWrapperInfo)
     local signature = fieldWrapperInfo.ReturnSignature
     if isStructOrNullableStruct(signature) then
         if needThis(fieldWrapperInfo) then
-            return [[auto ret = (char*)self + offset;
-
-    apis->add_return(info, apis->native_object_to_vaue(env, TIret, ret, false));]]
+            return [[
+            
+    auto ret = (char*)self + offset;
+    apis->add_return(info, apis->native_object_to_value(env, TIret, ret, false));]]
         else
-            return [[auto ret = GetValueTypeFieldPre(nullptr, fieldInfo, offset);
-
+            return [[
+    
+    auto ret = GetValueTypeFieldPtr(nullptr, fieldInfo, offset);
     apis->add_return(info, apis->native_object_to_value(env, TIret, ret, false));]]
         end
     else

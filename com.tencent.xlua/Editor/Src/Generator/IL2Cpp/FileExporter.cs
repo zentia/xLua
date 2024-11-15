@@ -143,13 +143,6 @@ namespace XLuaIl2cpp.Editor
                 return true;
             }
 
-            private static readonly Type[] Types =
-            {
-                typeof(LuaEnv), 
-                typeof(BindingFlags),
-                typeof(Debug),
-            };
-
             private static void IterateAllType(Type type, HashSet<Type> allTypes)
             {
                 if (!allTypes.Contains(type))
@@ -193,12 +186,15 @@ namespace XLuaIl2cpp.Editor
 
             public static void GenCPPWrap(string saveTo)
             {
-                Utils.SetFilters(XLua.Configure.GetFilters());
+                var types = XLua.Utils.GetAllTypes().Where(t=>(t.IsDefined(typeof(LuaCallCSharpAttribute)) || t.IsDefined(typeof(CSharpCallLuaAttribute))));
+                types = types.Append(typeof(Type));
+                var typeExcludeDelegate = types.Where(t => !typeof(MulticastDelegate).IsAssignableFrom(t));
+                Utils.SetFilters(Configure.GetFilters());
                 var ctorToWrapper = new List<ConstructorInfo>();
                 var methodToWrap = new List<MethodInfo>();
                 var fieldToWrapper = new List<FieldInfo>();
                 const BindingFlags flag = BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public;
-                foreach (var type in Types)
+                foreach (var type in typeExcludeDelegate)
                 {
                     foreach (var constructorInfo in type.GetConstructors(flag))
                     {
@@ -216,7 +212,7 @@ namespace XLuaIl2cpp.Editor
                     }
                 }
                 
-                var wrapperUsedTypes = Types
+                var wrapperUsedTypes = types
                     .Concat(ctorToWrapper.SelectMany(c => c.GetParameters()).Select(pi => GetUnrefParameterType(pi)))
                     .Concat(methodToWrap.SelectMany(m => m.GetParameters()).Select(pi => GetUnrefParameterType(pi)))
                     .Concat(methodToWrap.Select(m => m.ReturnType))
@@ -455,18 +451,17 @@ namespace XLuaIl2cpp.Editor
             public static void GenExtensionMethodInfos(string outDir)
             {
                 var configure = XLua.Configure.GetConfigureByTags(new List<string>() {
-                    "XLua.BindingAttribute",
+                    "XLua.LuaCallCSharpAttribute"
                 });
 
-                var genTypes = new HashSet<Type>(configure["XLua.BindingAttribute"].Select(kv => kv.Key)
+                var genTypes = new HashSet<Type>(configure["XLua.LuaCallCSharpAttribute"].Select(kv => kv.Key)
                     .Where(o => o is Type)
                     .Cast<Type>()
                     .Where(t => !t.IsGenericTypeDefinition && !t.Name.StartsWith("<"))
                     .Distinct()
                     .ToList());
 
-                genTypes.Add(typeof(XLuaIl2cpp.ArrayExtension));
-                // genTypes.Add(typeof(PuertsIl2cpp.ArrayExtension2));
+                genTypes.Add(typeof(ArrayExtension));
                 var extendedType2extensionType = (from type in genTypes
 #if UNITY_EDITOR
                     where !System.IO.Path.GetFileName(type.Assembly.Location).Contains("Editor")
@@ -497,7 +492,8 @@ namespace XLuaIl2cpp.Editor
             public static void GenLinkXml(string outDir)
             {
                 var configure = XLua.Configure.GetConfigureByTags(new List<string>() {
-                        "XLua.BindingAttribute",
+                    "XLua.BindingAttribute",
+                    "XLua.LuaCallCSharpAttribute"
                     });
                 var genTypes = configure["XLua.BindingAttribute"].Select(kv => kv.Key)
                     .Where(o => o is Type)

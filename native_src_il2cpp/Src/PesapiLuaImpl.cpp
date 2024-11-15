@@ -259,7 +259,7 @@ const void* pesapi_get_native_object_typeid(pesapi_env env, pesapi_value pvalue)
 {
     lua_State* L = reinterpret_cast<lua_State*>(env);
     CppObject* cppObject = (CppObject*) lua_touserdata(L, reinterpret_cast<intptr_t>(pvalue));
-    return cppObject->TypeId;
+    return cppObject ? cppObject->TypeId : nullptr;
 }
 
 bool pesapi_is_instance_of(pesapi_env env, const void* class_id, pesapi_value pvalue)
@@ -281,15 +281,25 @@ pesapi_value pesapi_boxing(pesapi_env env, pesapi_value pvalue)
 pesapi_value pesapi_unboxing(pesapi_env env, pesapi_value pvalue)
 {
     lua_State* L = reinterpret_cast<lua_State*>(env);
-    lua_rawgeti(L, reinterpret_cast<intptr_t>(pvalue), 1);
+    intptr_t index = reinterpret_cast<intptr_t>(pvalue);
+    int t = lua_type(L, index);
+    if (t == LUA_TTABLE)
+    {
+        lua_rawgeti(L, index, 1);
+    }
     return reinterpret_cast<pesapi_value>(lua_gettop(L));
 }
 
 void pesapi_update_boxed_value(pesapi_env env, pesapi_value ref, pesapi_value pvalue)
 {
     lua_State* L = reinterpret_cast<lua_State*>(env);
-    lua_pushvalue(L, reinterpret_cast<intptr_t>(pvalue));
-    lua_rawseti(L, reinterpret_cast<intptr_t>(ref), 1);
+    intptr_t index = reinterpret_cast<intptr_t>(ref);
+    int t = lua_type(L, index);
+    if (t == LUA_TTABLE)
+    {
+        lua_pushvalue(L, reinterpret_cast<intptr_t>(pvalue));
+        lua_rawseti(L, index, 1);
+    }
 }
 
 bool pesapi_is_boxed_value(pesapi_env env, pesapi_value value)
@@ -383,35 +393,40 @@ void pesapi_release_env_ref(pesapi_env_ref env_ref)
     delete env_ref;
 }
 
-pesapi_value pesapi_open_scope(pesapi_env_ref env_ref)
+pesapi_value pesapi_open_scope(pesapi_env env)
 {
-    return reinterpret_cast<pesapi_value>(lua_gettop(env_ref->L));
+    lua_State* L = reinterpret_cast<lua_State*>(env);
+    return reinterpret_cast<pesapi_value>(lua_gettop(L));
 }
 
-pesapi_value pesapi_open_scope_placement(pesapi_env_ref env_ref)
+pesapi_value pesapi_open_scope_placement(pesapi_env env)
 {
-    return reinterpret_cast<pesapi_value>(lua_gettop(env_ref->L));
+    lua_State* L = reinterpret_cast<lua_State*>(env);
+    return reinterpret_cast<pesapi_value>(lua_gettop(L));
 }
 
-bool pesapi_has_caught(pesapi_env_ref env_ref)
+bool pesapi_has_caught(pesapi_env env)
 {
-    return lua_tointeger(env_ref->L, -1) != 0;
+    lua_State* L = reinterpret_cast<lua_State*>(env);
+    return lua_tointeger(L, -1) != 0;
 }
 
-const char* pesapi_get_exception_as_string(pesapi_env_ref env_ref, bool with_stack)
+const char* pesapi_get_exception_as_string(pesapi_env env, bool with_stack)
 {
-    return lua_tostring(env_ref->L, -2);
+    lua_State* L = reinterpret_cast<lua_State*>(env);
+    return lua_tostring(L, -2);
 }
 
-void pesapi_close_scope(pesapi_env_ref env_ref, pesapi_value scope)
+void pesapi_close_scope(pesapi_env env, pesapi_value scope)
 {
-    if (scope != 0)
-        lua_settop(env_ref->L, reinterpret_cast<int>(scope));    // release all value alloc in scope
+    lua_State* L = reinterpret_cast<lua_State*>(env);
+    lua_settop(L, reinterpret_cast<int>(scope));    // release all value alloc in scope
 }
 
-void pesapi_close_scope_placement(pesapi_env_ref env_ref, pesapi_value scope)
+void pesapi_close_scope_placement(pesapi_env env, pesapi_value scope)
 {
-    lua_settop(env_ref->L, reinterpret_cast<int>(scope));
+    lua_State* L = reinterpret_cast<lua_State*>(env);
+    lua_settop(L, reinterpret_cast<int>(scope));
 }
 
 struct pesapi_value_ref__
@@ -478,9 +493,9 @@ bool pesapi_set_owner(pesapi_env env, pesapi_value pvalue, pesapi_value powner)
     return false;
 }
 
-pesapi_env_ref pesapi_get_ref_associated_env(pesapi_value_ref value_ref)
+pesapi_env pesapi_get_ref_associated_env(pesapi_value_ref value_ref)
 {
-    return pesapi_env_ref(value_ref->L);
+    return reinterpret_cast<pesapi_env>(value_ref->L);
 }
 
 void** pesapi_get_ref_internal_fields(pesapi_value_ref value_ref, uint32_t* pinternal_field_count)
@@ -507,12 +522,14 @@ bool pesapi_get_private(pesapi_env env, pesapi_value pobject, void** out_ptr)
 {
     lua_State* L = reinterpret_cast<lua_State*>(env);
     int index = reinterpret_cast<intptr_t>(pobject);
-    if (lua_isnil(L, index) || lua_isuserdata(L, index))
+    int tp = lua_type(L, index);
+    if (tp == LUA_TNIL || tp == LUA_TNONE)
     {
         *out_ptr = NULL;
         return false;
     }
-    *out_ptr = xlua::CppObjectMapper::Get(L)->GetPrivateData(L, index);
+    xlua::CppObjectMapper* mapper = xlua::CppObjectMapper::Get(L);
+    *out_ptr = mapper->GetPrivateData(L, index);
     return true;
 }
 
@@ -520,11 +537,13 @@ bool pesapi_set_private(pesapi_env env, pesapi_value pobject, void* ptr)
 {
     lua_State* L = reinterpret_cast<lua_State*>(env);
     int index = reinterpret_cast<intptr_t>(pobject);
-    if (lua_isnil(L, index) || lua_isuserdata(L, index))
+    int tp = lua_type(L, index);
+    if (tp == LUA_TNIL || tp == LUA_TNONE)
     {
         return false;
     }
-    xlua::CppObjectMapper::Get(L)->SetPrivateData(L, index, ptr);
+    xlua::CppObjectMapper* mapper = xlua::CppObjectMapper::Get(L);
+    mapper->SetPrivateData(L, index, ptr);
 }
 
 pesapi_value pesapi_get_property_uint64(pesapi_env env, pesapi_value pobject, uint64_t key)

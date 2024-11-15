@@ -23,11 +23,7 @@ namespace CSObjectWrapEditor
 {
     public static class GeneratorConfig
     {
-#if XLUA_GENERAL
-        public static string common_path = "./Gen/";
-#else
         public static string common_path = Application.dataPath + "/XLua/Gen/";
-#endif
 
         static GeneratorConfig()
         {
@@ -1602,39 +1598,6 @@ namespace CSObjectWrapEditor
 
             Gen(warp_types, GCOptimizeList, itf_bridges_types, GeneratorConfig.common_path);
         }
-
-#if XLUA_GENERAL
-        static bool IsExtensionMethod(MethodInfo method)
-        {
-            return isDefined(method, typeof(ExtensionAttribute));
-        }
-
-        static bool IsDelegate(Type type)
-        {
-            return type.BaseType != null && type.BaseType.ToString() == "System.MulticastDelegate";
-        }
-
-        public static void GenAll(XLuaTemplates templates, IEnumerable<Type> all_types)
-        {
-            var start = DateTime.Now;
-            Directory.CreateDirectory(GeneratorConfig.common_path);
-            templateRef = templates;
-            GetGenConfig(all_types.Where(type => !type.IsGenericTypeDefinition));
-            luaenv.DoString("require 'TemplateCommon'");
-            luaenv.Global.Set("IsExtensionMethod", new Func<MethodInfo, bool>(IsExtensionMethod));
-            luaenv.Global.Set("IsDelegate", new Func<Type, bool>(IsDelegate));
-            var gen_push_types_setter = luaenv.Global.Get<LuaFunction>("SetGenPushAndUpdateTypes");
-            gen_push_types_setter.Call(GCOptimizeList.Where(t => !t.IsPrimitive && SizeOf(t) != -1).Concat(LuaCallCSharp.Where(t => t.IsEnum)).Distinct().ToList());
-            var xlua_classes_setter = luaenv.Global.Get<LuaFunction>("SetXLuaClasses");
-            xlua_classes_setter.Call(XLua.Utils.GetAllTypes().Where(t => t.Namespace == "XLua").ToList());
-            GenDelegateBridges(all_types);
-            GenEnumWraps();
-            GenCodeForClass();
-            GenLuaRegister();
-            Console.WriteLine("finished! use " + (DateTime.Now - start).TotalMilliseconds + " ms");
-            luaenv.Dispose();
-        }
-#endif
 
 #if !XLUA_GENERAL
         static void callCustomGen()

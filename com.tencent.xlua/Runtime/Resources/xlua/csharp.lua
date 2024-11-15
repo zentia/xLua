@@ -24,6 +24,10 @@ function xlua.unref(r)
     return r[1]
 end
 
+function makeGeneric(genericTypeInfo, ...)
+
+end
+
 function createTypeProxy(namespace)
     local metatable = {
         __index = function(tbl, name)
@@ -33,17 +37,40 @@ function createTypeProxy(namespace)
             local fullName = namespace and (namespace .. '.' .. name) or name
             local cls = csTypeToClass(fullName)
             if cls then
+                rawset(cls, '.fqn', fullName)
                 tbl[name] = cls
             else
                 tbl[name] = createTypeProxy(fullName)
             end
             return tbl[name]
+        end,
+        __call = function(tbl, ...)
+            local n = select('#', ...)
+            local fqn = rawget(tbl, '.fqn')
+            if n > 0 then
+                local name = string.format('%s`%d[', fqn, n)
+                local args = {...}
+                for i = 1, n - 1 do
+                    local f = rawget(args[i], '.fqn')
+                    name = name .. f .. ','
+                end
+                local f = rawget(args[n], '.fqn')
+                name = name .. f .. ']'
+                local ret = rawget(tbl, name)
+                if not ret then
+                    ret = csTypeToClass(name)
+                    rawset(tbl, name, ret)
+                end
+                return ret
+            end
         end
     }
-    local ret = {}
+    local ret = {['.fqn'] = namespace}
     setmetatable(ret, metatable)
     return ret
 end
 
 local csharpModule = createTypeProxy()
 _G.CS = csharpModule
+
+CS.UnityEngine.Debug.Log('hello')

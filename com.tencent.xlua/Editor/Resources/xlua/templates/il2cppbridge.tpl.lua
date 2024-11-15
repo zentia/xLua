@@ -7,10 +7,8 @@ function genBridgeArgs(parameterSignatures)
             return string.format([[pesapi_value argv[%d]{
     %s
     };]], #parameterSignatures,
-                table.join(
-                    table.map(parameterSignatures,
-                        function(ps, i)
-                            return CSValToLuaVal(ps:sub(1,1) == 'D' and string.sub(ps, 2) or ps, string.format('p%d', i)) or
+                table.join(table.map(parameterSignatures,                        function(ps, i)
+                            return CSValToLuaVal(ps:sub(1,1) == 'D' and string.sub(ps, 2) or ps, string.format('p%d', i-1)) or
                                 'apis->create_undefined(env)'
                         end),
                     [[,
@@ -24,19 +22,17 @@ function genBridgeArgs(parameterSignatures)
                 unpackMethod = string.format('Params<%s>::UnPackValueType', si)
             end
             return string.format([[auto arrayLength = il2cpp::vm::Array::GetLength(p%d);
-        pesapi_value *argv = (pesapi_value *)alloca(sizeof(pesapi_value) * (%d + arrayLength));
-        memset(argv, 0, sizeof(pesapi_value) * (%d + arrayLength));
-        %s
-        %s(apis, env, p%d, arrayLength, TIp%d, argv + %d);
+    pesapi_value *argv = (pesapi_value *)alloca(sizeof(pesapi_value) * (%d + arrayLength));
+    memset(argv, 0, sizeof(pesapi_value) * (%d + arrayLength));
+    %s
+    %s(apis, env, p%d, arrayLength, TIp%d, argv + %d);
             ]],
                 #parameterSignatures - 1,
                 #parameterSignatures - 1,
                 #parameterSignatures - 1,
-                table.join(table.map(table.slice(parameterSignatures, 1, -1)),
-                    function(ps, i)
-                        return string.format('argv[%d] = %s;',
-                            CSValToLuaVal(ps, string.format('p%d', i)) or 'apis->create_undefined(env)')
-                    end, '\n\t'),
+                table.join(table.map(table.slice(parameterSignatures, 1, -1), function(ps, i)
+                        return string.format('argv[%d] = %s;',  i-1,CSValToLuaVal(ps, string.format('p%d', i-1)) or 'apis->create_undefined(env)')
+                    end), '\n\t'),
                 unpackMethod,
                 #parameterSignatures - 1,
                 #parameterSignatures - 1,
@@ -52,9 +48,7 @@ function genBridge(bridgeInfo)
     local hasVarArgs = #parameterSignatures > 0 and parameterSignatures[#parameterSignatures]:sub(1,1) == 'V'
     return TaggedTemplateEngine([[
 static ]], SToCPPType(bridgeInfo.ReturnSignature), ' b_', bridgeInfo.Signature, '(void* target, ',
-        table.join(
-            table.map(
-                table.map(parameterSignatures, function(S, i) return string.format('%s p%d', SToCPPType(S), i) end),
+        table.join(table.map(table.map(parameterSignatures, function(S, i) return string.format('%s p%d', SToCPPType(S), i-1) end),
                 function(s) return string.format('%s, ', s) end), ''), [[MethodInfo* method) {
     // PLog("Running b_]], bridgeInfo.Signature, [[");
     ]],
@@ -67,7 +61,7 @@ static ]], SToCPPType(bridgeInfo.ReturnSignature), ' b_', bridgeInfo.Signature, 
             return TaggedTemplateEngine([[
         ]], IF(not PrimitiveSignatureCppTypeMap[getSignatureWithoutRefAndPrefix(ps)]), [[
 
-    auto TIp]], index, ' = GetParameterType(method, ', index, [[);
+    auto TIp]], index - 1, ' = GetParameterType(method, ', index - 1, [[);
         ]], ENDIF(), [[
     ]])
         end), [[
@@ -75,9 +69,8 @@ static ]], SToCPPType(bridgeInfo.ReturnSignature), ' b_', bridgeInfo.Signature, 
     PObjectRefInfo* delegateInfo = GetPObjectRefInfo(target);
     struct pesapi_ffi* apis = delegateInfo->Apis;
 
-    pesapi_env_ref envRef = apis->get_ref_associated_env(delegateInfo->ValueRef);
-    AutoValueScope valueScope(apis, envRef);
-    auto env = apis->get_env_from_ref(envRef);
+    pesapi_env env = apis->get_ref_associated_env(delegateInfo->ValueRef);
+    AutoValueScope valueScope(apis, env);
     if (!env)
     {
         il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException("LuaEnv had been destroy"));
@@ -92,9 +85,9 @@ static ]], SToCPPType(bridgeInfo.ReturnSignature), ' b_', bridgeInfo.Signature, 
     auto luaret = apis->call_function(env, func, nullptr, ]], #parameterSignatures, '',
         hasVarArgs and ' + arrayLength - 1' or '', [[, argv);
 
-    if (apis->has_caught(envRef))
+    if (apis->has_caught(env))
     {
-        auto msg = apis->get_exception_as_string(envRef, true);
+        auto msg = apis->get_exception_as_string(env, true);
         il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException(msg));
 ]], IF(bridgeInfo.ReturnSignature == 'v'), [[
     }

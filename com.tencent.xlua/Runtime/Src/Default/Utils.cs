@@ -366,13 +366,13 @@ namespace XLua
             {
                 try
                 {
-#if (UNITY_EDITOR || PUERTS_GENERAL) && !NET_STANDARD_2_0
+#if UNITY_EDITOR && !NET_STANDARD_2_0
                     if (!(assemblies[i].ManifestModule is System.Reflection.Emit.ModuleBuilder))
                     {
 #endif
                         allTypes.AddRange(assemblies[i].GetTypes()
                             .Where(type => exclude_generic_definition ? !type.IsGenericTypeDefinition : true));
-#if (UNITY_EDITOR || PUERTS_GENERAL) && !NET_STANDARD_2_0
+#if UNITY_EDITOR && !NET_STANDARD_2_0
                     }
 #endif
                 }

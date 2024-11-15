@@ -190,12 +190,12 @@ typedef pesapi_env (*pesapi_get_env_from_ref_func)(pesapi_env_ref env_ref);
 typedef pesapi_env_ref (*pesapi_duplicate_env_ref_func)(pesapi_env_ref env_ref);
 typedef void (*pesapi_release_env_ref_func)(pesapi_env_ref env_ref);
 
-typedef pesapi_value (*pesapi_open_scope_func)(pesapi_env_ref env_ref);
-typedef pesapi_value (*pesapi_open_scope_placement_func)(pesapi_env_ref env_ref);
-typedef bool (*pesapi_has_caught_func)(pesapi_env_ref env_ref);
-typedef const char* (*pesapi_get_exception_as_string_func)(pesapi_env_ref env_ref, bool with_stack);
-typedef void (*pesapi_close_scope_func)(pesapi_env_ref env_ref, pesapi_value scope);
-typedef void (*pesapi_close_scope_placement_func)(pesapi_env_ref env_ref, pesapi_value scope);
+typedef pesapi_value (*pesapi_open_scope_func)(pesapi_env env);
+typedef pesapi_value (*pesapi_open_scope_placement_func)(pesapi_env env);
+typedef bool (*pesapi_has_caught_func)(pesapi_env env);
+typedef const char* (*pesapi_get_exception_as_string_func)(pesapi_env env, bool with_stack);
+typedef void (*pesapi_close_scope_func)(pesapi_env env, pesapi_value scope);
+typedef void (*pesapi_close_scope_placement_func)(pesapi_env env, pesapi_value scope);
 
 typedef pesapi_value_ref (*pesapi_create_value_ref_func)(pesapi_env env, pesapi_value value, uint32_t internal_field_count);
 typedef pesapi_value_ref (*pesapi_duplicate_value_ref_func)(pesapi_value_ref value_ref);
@@ -204,7 +204,7 @@ typedef pesapi_value (*pesapi_get_value_from_ref_func)(pesapi_env env, pesapi_va
 typedef void (*pesapi_set_ref_weak_func)(pesapi_env env, pesapi_value_ref value_ref);
 // Optional api: return false if can not fulfill
 typedef bool (*pesapi_set_owner_func)(pesapi_env env, pesapi_value value, pesapi_value owner);
-typedef pesapi_env_ref (*pesapi_get_ref_associated_env_func)(pesapi_value_ref value_ref);
+typedef pesapi_env (*pesapi_get_ref_associated_env_func)(pesapi_value_ref value_ref);
 typedef void** (*pesapi_get_ref_internal_fields_func)(pesapi_value_ref value_ref, uint32_t* pinternal_field_count);
 
 typedef pesapi_value (*pesapi_get_property_func)(pesapi_env env, pesapi_value object, const char* key);

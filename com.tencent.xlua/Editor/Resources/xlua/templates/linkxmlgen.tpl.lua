@@ -7,7 +7,7 @@ function getAssemblyInfo(genTypes)
     local assemblyInfo = {}
     for i = 1, genTypes.Count do
         local type = genTypes[i - 1]
-        local assemblyName = type.Assembly.GetName(false).Name
+        local assemblyName = type.Assembly:GetName(false).Name
         if not assemblyInfo[assemblyName] then
             assemblyInfo[assemblyName] = {}
         end

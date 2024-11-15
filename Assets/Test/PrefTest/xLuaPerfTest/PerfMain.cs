@@ -3,6 +3,9 @@ using System.Collections;
 using XLua;
 using System.IO;
 using System;
+using System.Collections.Generic;
+using System.Reflection;
+using XLuaIl2cpp;
 
 [LuaCallCSharp]
 public static class TestUtils
@@ -30,7 +33,9 @@ public class PerfMain : MonoBehaviour {
     System.Diagnostics.Stopwatch stopWatch = new System.Diagnostics.Stopwatch();
 
 	// Use this for initialization
-	void Start () {
+	void Start ()
+	{
+		var arr = typeof(ClassLuaCallCS).GetEvents(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public);
 #if UNITY_ANDROID && !UNITY_EDITOR
 	    resultPath = "/sdcard/testResult_android.log";
 #elif UNITY_IPHONE || UNITY_IOS
@@ -42,7 +47,7 @@ public class PerfMain : MonoBehaviour {
 #endif
         var start = Time.realtimeSinceStartup;
         var startMem = System.GC.GetTotalMemory(true);
-#if UNITY_EDITOR
+#if UNITY_EDITOR || XLUA_IL2CPP
 		luaenv = new LuaEnv();
 #else
 		luaenv = new LuaEnv(typeof(DelegateBridgeWrap), typeof(ObjectTranslatorWrap));
@@ -51,13 +56,12 @@ public class PerfMain : MonoBehaviour {
         Debug.Log("start cost: " + (Time.realtimeSinceStartup - start));
         var endMem = System.GC.GetTotalMemory(true);
         Debug.Log("startMem: " + startMem + ", endMem: " + endMem + ", " + "cost mem: " + (endMem - startMem));
+#if UNITY_EDITOR || !XLUA_IL2CPP        
         luaenv.DoString("require 'luaTest'");
+#else
+        luaenv.DoResourcesString("luaTest.lua");
+#endif
     }
-
-    // Update is called once per frame
-    void Update () {
-	
-	}
 
 	void OnGUI()
 	{
@@ -86,23 +90,6 @@ public class PerfMain : MonoBehaviour {
         stopWatch.Start();
         execute(load);
         stopWatch.Stop();
-
-        /*int load_added = 0;
-
-        if (stopWatch.ElapsedMilliseconds < (TEST_MIN_DURATION))
-        {
-            double dur_added = TEST_DURATION - stopWatch.ElapsedMilliseconds;
-            load_added = (int)(load * (dur_added / stopWatch.ElapsedMilliseconds));
-        }
-
-        if (load_added > 0)
-        {
-            stopWatch.Start();
-            execute(load_added);
-            stopWatch.Stop();
-        }
-
-        int cps = CPS(load + load_added, stopWatch.ElapsedMilliseconds);*/
 
         int cps = CPS(load, stopWatch.ElapsedMilliseconds);
 
@@ -162,28 +149,12 @@ public class PerfMain : MonoBehaviour {
 
         sw.WriteLine ("C# access lua table : ");
 
-		ITableAccess iTAccess = luaenv.Global.Get<ITableAccess> ("luaTable");
+		var iTAccess = luaenv.Global.Get<List<int>> ("luaTable");
         PerformentTest("C# access lua table : access member, get : ", LOOP_TIMES, loop_times =>
         {
             for (int i = 0; i < loop_times; i++)
             {
-                int x = iTAccess.id;
-            }
-        });
-
-        PerformentTest("C# access lua table : access member, set : ", LOOP_TIMES, loop_times =>
-        {
-            for (int i = 0; i < loop_times; i++)
-            {
-                iTAccess.id = 0;
-            }
-        });
-
-        PerformentTest("C# access lua table : access member function : ", LOOP_TIMES, loop_times =>
-        {
-            for (int i = 0; i < loop_times; i++)
-            {
-                iTAccess.func();
+                int x = iTAccess[0];
             }
         });
 

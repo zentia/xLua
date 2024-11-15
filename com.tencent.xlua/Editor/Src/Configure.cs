@@ -25,20 +25,7 @@ namespace XLua
     public class CodeOutputDirectoryAttribute : Attribute
     {
     }
-
-    //要在lua里头调用，必须放在标记了Configure的类里
-    [AttributeUsage(AttributeTargets.Property)]
-    public class BindingAttribute : Attribute
-    {
-    }
-
-    //对blittable值类型通过内存拷贝传递，需要开启unsafe编译选项
-    [AttributeUsage(AttributeTargets.Property)]
-    public class BlittableCopyAttribute : Attribute
-    {
-
-    }
-
+  
     [AttributeUsage(AttributeTargets.Method)]
     public class FilterAttribute : Attribute
     {
@@ -114,7 +101,7 @@ namespace XLua
             }
             return filters;
         }
-#if !PUERTS_GENERAL
+
         public static string GetCodeOutputDirectory()
         {
             var types = from assembly in AppDomain.CurrentDomain.GetAssemblies()
@@ -141,6 +128,5 @@ namespace XLua
             }
             return UnityEngine.Application.dataPath + "/Gen/";
         }
-#endif
     }
 }

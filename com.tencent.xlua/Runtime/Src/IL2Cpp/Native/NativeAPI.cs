@@ -168,6 +168,12 @@ namespace XLuaIl2cpp
         }
 
         [MethodImpl(MethodImplOptions.InternalCall)]
+        public static void SetGlobalType_IList(Type type)
+        {
+            throw new NotImplementedException();
+        }
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
         public static void PesapiCallTest(Type type)
         {
             throw new NotImplementedException();
@@ -187,6 +193,12 @@ namespace XLuaIl2cpp
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static object NewTable(IntPtr apis, IntPtr envHolder)
+        {
+            throw new NotImplementedException();
+        }
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static object GetGlobalTable(IntPtr apis, IntPtr envHolder)
         {
             throw new NotImplementedException();
         }

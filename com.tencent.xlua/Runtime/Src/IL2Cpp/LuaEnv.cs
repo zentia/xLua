@@ -2,6 +2,7 @@
 using System;
 using System.Reflection;
 using XLua.TypeMapping;
+using System.Collections;
 using System.Collections.Generic;
 using RealStatePtr = System.IntPtr;
 using System.Runtime.InteropServices;
@@ -77,6 +78,7 @@ namespace XLua
 
             persistentObjectInfoType = typeof(XLua.LuaTable);
             XLuaIl2cpp.NativeAPI.SetGlobalType_TypedValue(typeof(TypedValue));
+            XLuaIl2cpp.NativeAPI.SetGlobalType_IList(typeof(IList));
             XLuaIl2cpp.NativeAPI.SetGlobalType_LuaTable(typeof(LuaTable));
 
             nativeLuaEnv = XLuaIl2cpp.NativeAPI.CreateNativeLuaEnv();
@@ -114,12 +116,13 @@ namespace XLua
             DoResourcesString("xlua/csharp.lua");
 
             XLuaIl2cpp.pesapi_ffi ffi = Marshal.PtrToStructure<XLuaIl2cpp.pesapi_ffi>(apis);
-            var scope = ffi.open_scope(nativePesapiEnv);
+            var scope = ffi.open_scope(rawL);
             var env = ffi.get_env_from_ref(nativePesapiEnv);
             var func = ffi.create_function(env, FooImpl, IntPtr.Zero);
             var global = ffi.global(env);
             ffi.set_property(env, global, "CSharpFoo", func);
-            ffi.close_scope(nativePesapiEnv, scope);
+            ffi.close_scope(rawL, scope);
+            _G = (LuaTable)XLuaIl2cpp.NativeAPI.GetGlobalTable(apis, nativePesapiEnv);
         }
         
         static IntPtr storeCallback = IntPtr.Zero;
@@ -161,7 +164,7 @@ namespace XLua
         {
             try
             {
-                string filename = LuaAPI.lua_tostring(L, 1).Replace('.', '/') + ".lua";
+                string filename = LuaAPI.lua_tostring(L, 1).Replace('.', '/');
 
                 // Load with Unity3D resources
                 UnityEngine.TextAsset file = (UnityEngine.TextAsset)UnityEngine.Resources.Load(filename);
@@ -251,7 +254,7 @@ namespace XLua
             XLuaIl2cpp.NativeAPI.DoString(apis, nativePesapiEnv, bytes, chunkName, env, null);
         }
 
-        private void DoResourcesString(string filename)
+        public void DoResourcesString(string filename)
         {
             var bytes = System.IO.File.ReadAllBytes(System.IO.Path.Combine(Application.streamingAssetsPath, filename));
             XLuaIl2cpp.NativeAPI.DoString(apis, nativePesapiEnv, bytes, "@" + filename, null, null);
@@ -342,6 +345,18 @@ namespace XLua
         public Type GetTypeByString(string className)
         {
             return XLuaIl2cpp.TypeUtils.GetType(className);
+        }
+
+        public void AddRegisterInfoGetter(Type type, Func<RegisterInfo> getter)
+        {
+#if THREAD_SAFE
+            lock (this)
+            {
+#endif
+            TypeRegister.AddRegisterInfoGetter(type, getter);
+#if THREAD_SAFE
+            }
+#endif
         }
     }
 }

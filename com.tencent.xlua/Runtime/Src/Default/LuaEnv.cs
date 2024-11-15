@@ -100,10 +100,8 @@ namespace XLua
 
                 AddSearcher(StaticLuaCallbacks.LoadBuiltinLib, 2); // just after the preload searcher
                 AddSearcher(StaticLuaCallbacks.LoadFromCustomLoaders, 3);
-#if !XLUA_GENERAL
                 AddSearcher(StaticLuaCallbacks.LoadFromResource, 4);
                 AddSearcher(StaticLuaCallbacks.LoadFromStreamingAssetsPath, -1);
-#endif
                 DoString(init_xlua, "Init");
                 init_xlua = null;
 
@@ -291,7 +289,7 @@ namespace XLua
 
         private void AddSearcher(LuaCSFunction searcher, int index)
         {
-#if THREAD_SAFE || HOTFIX_ENABLE
+#if THREAD_SAFE
             lock (luaEnvLock)
             {
 #endif
@@ -312,7 +310,7 @@ namespace XLua
             LuaAPI.lua_pushstdcallcfunction(_L, searcher);
             LuaAPI.xlua_rawseti(_L, -2, index);
             LuaAPI.lua_pop(_L, 1);
-#if THREAD_SAFE || HOTFIX_ENABLE
+#if THREAD_SAFE
             }
 #endif
         }

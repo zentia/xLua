@@ -12,30 +12,23 @@ namespace XLua.Editor
         {
             public static void GenRegisterInfo(string outDir)
             {
-                var configure = XLua.Configure.GetConfigureByTags(new List<string>()
+                var configure = Configure.GetConfigureByTags(new List<string>()
                 {
-                    "XLua.BindingAttribute",
-                    "XLua.BlittableCopyAttribute"
+                    "XLua.LuaCallCSharpAttribute"
                 });
-                var genTypes = configure["XLua.BindingAttribute"].Select(kv => kv.Key)
+                var genTypes = configure["XLua.LuaCallCSharpAttribute"].Select(kv => kv.Key)
                     .Where(o => o is Type)
                     .Cast<Type>()
                     .Where(t => !t.IsGenericTypeDefinition && !t.Name.StartsWith("<"))
                     .Distinct()
                     .ToList();
-
-                var blittableCopyTypes = new HashSet<Type>(configure["XLua.BlittableCopyAttribute"].Select(kv => kv.Key)
-                    .Where(o => o is Type)
-                    .Cast<Type>()
-                    .Where(t => !t.IsPrimitive && Utils.isBlittableType(t))
-                    .Distinct());
-
+                
                 if (!Utils.HasFilter)
                 {
                     Utils.SetFilters(Configure.GetFilters());
                 }
                 
-                var RegisterInfos = RegisterInfoGenerator.GetRegisterInfos(genTypes, blittableCopyTypes);
+                var RegisterInfos = RegisterInfoGenerator.GetRegisterInfos(genTypes);
 
                 using (var luaEnv = new LuaEnv())
                 {

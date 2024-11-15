@@ -674,7 +674,7 @@ namespace XLua
         {
             try
             {
-                string filename = LuaAPI.lua_tostring(L, 1).Replace('.', '/') + ".lua";
+                string filename = LuaAPI.lua_tostring(L, 1).Replace('.', '/');
 
                 // Load with Unity3D resources
                 UnityEngine.TextAsset file = (UnityEngine.TextAsset)UnityEngine.Resources.Load(filename);

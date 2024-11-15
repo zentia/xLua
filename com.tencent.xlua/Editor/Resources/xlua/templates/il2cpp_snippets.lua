@@ -114,6 +114,8 @@ function checkLuaArg(signature, index)
         if elmSignature == 'o' or elmSignature == 'O' or ((string.startsWith(elmSignature, sigs.StructPrefix) or string.startsWith(elmSignature, sigs.NullableStructPrefix)) and string.endsWith(elmSignature, '_')) then
             elmClassDecl = string.format('auto %s_V = il2cpp::vm::Class::GetElementClass(%s);', typeInfoVar, typeInfoVar)
         end
+        ret = string.format([[
+        %sif(lua_args_len > %d && ]], elmClassDecl, index)
         signature = elmSignature
         typeInfoVar = typeInfoVar .. '_V'
     else
@@ -208,6 +210,7 @@ function LuaValToCSVal(signature, LuaName, CSName)
         ]], CSName, LuaName, CSName, CSName)
     elseif signature == 'o' or signature == 'O' then -- object
         return string.format([[
+    
     // LuaValToCSVal o/O
     Il2CppObject* %s = LuaValueToCSRef(apis, TI%s, env, %s);
         ]], CSName, CSName, LuaName)
@@ -337,8 +340,8 @@ function CSValToLuaVal(signature, CSName)
 end
 
 function genArgsLenCheck(parameterSignatures)
-    local requireNum = 1
-    while requireNum < #parameterSignatures and parameterSignatures[requireNum]:sub(1, 1) ~= 'V' and parameterSignatures[requireNum]:sub(1, 1) ~= 'D' do
+    local requireNum = 0
+    while requireNum < #parameterSignatures and parameterSignatures[requireNum + 1]:sub(1, 1) ~= 'V' and parameterSignatures[requireNum + 1]:sub(1, 1) ~= 'D' do
         requireNum = requireNum + 1
     end
     return requireNum ~= #parameterSignatures and string.format('lua_args_len < %d', requireNum) or
