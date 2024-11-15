@@ -297,30 +297,7 @@ void CppObjectMapper::UnInitialize(lua_State* L)
     CDataCache.clear();
     TypeIdToMetaMap.clear();
 }
-int get_table_key_count(lua_State* L, int index)
-{
-    int count = 0;
 
-    // 确保索引是绝对索引
-    if (index < 0)
-    {
-        index = lua_gettop(L) + index + 1;
-    }
-
-    // 将表的第一个键压入栈顶
-    lua_pushnil(L);
-
-    // 遍历表
-    while (lua_next(L, index) != 0)
-    {
-        // 弹出值，保留键以便下一次调用 lua_next
-        const char* value = lua_tostring(L, -2);
-        lua_pop(L, 1);
-        count++;
-    }
-
-    return count;
-}
 // upvalue --- [1]: methods, [2]:getters, [3]:baseindex
 // param   --- [1]: obj, [2]: key
 static int obj_indexer(lua_State* L)
@@ -572,23 +549,17 @@ int CppObjectMapper::GetMetaRefOfClass(lua_State* L, const LuaClassDefinition* C
 
         lua_createtable(L, 0, 0);
         int obj_methods = lua_gettop(L);
-        const void* obj_methods_address = lua_topointer(L, obj_methods);
         lua_createtable(L, 0, 0);
         int obj_getters = lua_gettop(L);
-        const void* obj_getters_address = lua_topointer(L, obj_getters);
         lua_createtable(L, 0, 0);
         int obj_setters = lua_gettop(L);
-        const void* obj_setters_address = lua_topointer(L, obj_setters);
 
         lua_createtable(L, 0, 0);
         int static_functions = lua_gettop(L);
-        const void* static_functions_address = lua_topointer(L, static_functions);
         lua_createtable(L, 0, 0);
         int static_getters = lua_gettop(L);
-        const void* static_getters_address = lua_topointer(L, static_getters);
         lua_createtable(L, 0, 0);
         int static_setters = lua_gettop(L);
-        const void* static_setters_address = lua_topointer(L, static_setters);
 
         LuaPropertyInfo* PropertyInfo = ClassDefinition->Properties;
         while (PropertyInfo && PropertyInfo->Name && PropertyInfo->Getter)
@@ -768,7 +739,7 @@ int CppObjectMapper::GetMetaRefOfClass(lua_State* L, const LuaClassDefinition* C
         {
             luaL_error(L, "stack top changed ? %d, %d\n", org_top, lua_gettop(L));
         }
-
+        TypeIdToMetaMap[ClassDefinition->TypeId] = meta_ref;
         return meta_ref;
     }
     else

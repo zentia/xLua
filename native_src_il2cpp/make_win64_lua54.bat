@@ -22,4 +22,4 @@ cmake -G "%__VS%" -A x64 ..
 popd
 cmake --build build64 --config Debug
 copy /Y build64\Debug\xlua_il2cpp.dll ..\com.tencent.xlua\Plugins\x86_64\xlua_il2cpp.dll
-copy /Y build64\Debug\xlua_il2cpp.dll ..\win\build\bin\xLua_Data\Plugins\x86_64\xlua_il2cpp.dll
+copy /Y build64\Debug\xlua_il2cpp.dll ..\winb\build\bin\xLua_Data\Plugins\x86_64\xlua_il2cpp.dll

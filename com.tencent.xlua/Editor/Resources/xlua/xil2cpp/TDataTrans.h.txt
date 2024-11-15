@@ -67,7 +67,7 @@ void PLog(const char* Fmt, ...);
 class AutoValueScope
 {
 public:
-    AutoValueScope(struct pesapi_ffi* apis, pesapi_env_ref envRef)
+    AutoValueScope(struct pesapi_ffi* apis, pesapi_env envRef)
     {
         _apis = apis;
         _envRef = envRef;
@@ -80,7 +80,7 @@ public:
     }
 
     struct pesapi_ffi* _apis;
-    pesapi_env_ref _envRef;
+    pesapi_env _envRef;
     pesapi_value scope;
 };
 

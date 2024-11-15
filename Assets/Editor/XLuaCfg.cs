@@ -12,6 +12,7 @@ public class XLuaCfg {
                 typeof(Dictionary<int, int>),
                 typeof(Dictionary<int, int>.Enumerator),
                 typeof(List<int>.Enumerator),
+                typeof(ParaStruct),
             };
         }
     }

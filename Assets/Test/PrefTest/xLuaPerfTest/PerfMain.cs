@@ -40,8 +40,12 @@ public class PerfMain : MonoBehaviour {
 	    resultPath = "/sdcard/testResult_android.log";
 #elif UNITY_IPHONE || UNITY_IOS
 	    resultPath = Application.persistentDataPath + "/testResult_iOS.log";
-#elif UNITY_STANDALONE_WIN || UNITY_EDITOR
-        resultPath = Application.dataPath + "/../testResult_windows.log";
+#elif UNITY_STANDALONE_WIN
+#if XLUA_IL2CPP
+		resultPath = Application.dataPath + "/../../../../testBResult_windows.log";
+#else
+		resultPath = Application.dataPath + "/../../../../testAResult_windows.log";
+#endif
 #else
         resultPath = "";
 #endif
@@ -78,11 +82,6 @@ public class PerfMain : MonoBehaviour {
 			sw.Close ();
 		}
 	}
-
-    //------------------------------------------------------------------------------------------------------
-
-    const double TEST_MIN_DURATION = 800;
-    const double TEST_DURATION = 1000;
 
     private int PerformentTest(string title, int load, PerfTest execute)
     {
