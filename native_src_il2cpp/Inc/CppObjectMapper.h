@@ -62,8 +62,7 @@ public:
 
     void UnInitialize(lua_State* L);
 
-    static CppObjectMapper* Get(lua_State* L);
-
+    static CppObjectMapper* Get();
 private:
     std::map<void*, ObjectCacheNode> CDataCache;
 
@@ -83,6 +82,7 @@ private:
         lua_State* L, LuaClassDefinition* ClassDefinition, void* Ptr, bool PassByPointer, ObjectCacheNode* CacheNodePtr);
 
     std::vector<PesapiCallbackData*> FunctionDatas;
+    static CppObjectMapper* ms_Instance;
 };
 
 }    // namespace xlua

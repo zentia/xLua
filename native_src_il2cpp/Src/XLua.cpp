@@ -72,9 +72,7 @@ struct LuaEnv
         L = luaL_newstate();
         luaopen_xlua(L);
         luaopen_i64lib(L);
-
         CppObjectMapper.Initialize(L);
-        
     }
 
     ~LuaEnv()

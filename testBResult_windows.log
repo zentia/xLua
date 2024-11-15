@@ -1,58 +1,58 @@
 C# call lua :
-C# call lua : base parameter function :8474576, elapsed :118
-C# call lua : class parameter function :2288329, elapsed :437
-C# call lua : struct parameter function :327011, elapsed :3058
-C# call lua : two base parameter function :8130081, elapsed :123
+C# call lua : base parameter function :8547008, elapsed :117
+C# call lua : class parameter function :2375296, elapsed :421
+C# call lua : struct parameter function :328623, elapsed :3043
+C# call lua : two base parameter function :7874015, elapsed :127
 C# access lua table : 
 C# access lua table : access member, get : 125000000, elapsed :8
 lua call C# member : 
-lua call C# member : base member, get : 6289308, elapsed :159
-lua call C# member : base member, set : 7936507, elapsed :126
-lua call C# member : class member, get : 1610305, elapsed :621
-lua call C# member : class member, set : 5208333, elapsed :192
-lua call C# member : struct member, get : 1748251, elapsed :572
-lua call C# member : struct member, set : 3875968, elapsed :258
-lua call C# member : vector3 member, get : 1721170, elapsed :581
-lua call C# member : vector3 member, set : 1742160, elapsed :574
+lua call C# member : base member, get : 6024096, elapsed :166
+lua call C# member : base member, set : 7518796, elapsed :133
+lua call C# member : class member, get : 1531393, elapsed :653
+lua call C# member : class member, set : 5102040, elapsed :196
+lua call C# member : struct member, get : 1745200, elapsed :573
+lua call C# member : struct member, set : 4081632, elapsed :245
+lua call C# member : vector3 member, get : 1706484, elapsed :586
+lua call C# member : vector3 member, set : 1715265, elapsed :583
 lua call C# member funtion : 
-lua call C# member funtion : base parameter member function : 5649717, elapsed :177
-lua call C# member funtion : class parameter member function : 4608294, elapsed :217
-lua call C# member funtion : struct parameter member function : 5050505, elapsed :198
-lua call C# member funtion : vector3 parameter member function : 4566210, elapsed :219
-lua call C# member funtion : input parameter member function : 4807692, elapsed :208
-lua call C# member funtion : output parameter member function : 4830917, elapsed :207
-lua call C# member funtion : in & output parameter member function : 3921568, elapsed :255
-lua call C# member funtion : two parameter member function : 5291005, elapsed :189
+lua call C# member funtion : base parameter member function : 6097560, elapsed :164
+lua call C# member funtion : class parameter member function : 4672897, elapsed :214
+lua call C# member funtion : struct parameter member function : 5235602, elapsed :191
+lua call C# member funtion : vector3 parameter member function : 4672897, elapsed :214
+lua call C# member funtion : input parameter member function : 5102040, elapsed :196
+lua call C# member funtion : output parameter member function : 4975124, elapsed :201
+lua call C# member funtion : in & output parameter member function : 4032258, elapsed :248
+lua call C# member funtion : two parameter member function : 5347593, elapsed :187
 lua call static memeber :
-lua call C# static member : base member, get : 6622516, elapsed :151
-lua call C# static member : base member, set : 6622516, elapsed :151
-lua call C# static member : class member, get : 1579778, elapsed :633
-lua call C# static member : class member, set : 4950495, elapsed :202
-lua call C# static member : struct member, get : 1908396, elapsed :524
-lua call C# static member : struct member, set : 3773584, elapsed :265
-lua call C# static member : vector3 member, get : 1841620, elapsed :543
-lua call C# static member : vector3 member, set : 3472222, elapsed :288
+lua call C# static member : base member, get : 6535947, elapsed :153
+lua call C# static member : base member, set : 6666666, elapsed :150
+lua call C# static member : class member, get : 1512859, elapsed :661
+lua call C# static member : class member, set : 5000000, elapsed :200
+lua call C# static member : struct member, get : 1923076, elapsed :520
+lua call C# static member : struct member, set : 3610108, elapsed :277
+lua call C# static member : vector3 member, get : 1831501, elapsed :546
+lua call C# static member : vector3 member, set : 3367003, elapsed :297
 lua call C# member funtion : 
-lua call C# static member funtion : base parameter member function : 5076142, elapsed :197
-lua call C# static member funtion : class parameter member function : 4132231, elapsed :242
-lua call C# static member funtion : struct parameter member function : 4545454, elapsed :220
-lua call C# static member funtion : vector3 parameter member function : 4166666, elapsed :240
-lua call C# static member funtion : input parameter member function : 4385964, elapsed :228
-lua call C# static member funtion : output parameter member function : 4366812, elapsed :229
-lua call C# static member funtion : in & output parameter member function : 3787878, elapsed :264
-lua call C# static member funtion : two parameter member function : 4484304, elapsed :223
+lua call C# static member funtion : base parameter member function : 5494505, elapsed :182
+lua call C# static member funtion : class parameter member function : 4273504, elapsed :234
+lua call C# static member funtion : struct parameter member function : 4739336, elapsed :211
+lua call C# static member funtion : vector3 parameter member function : 4201680, elapsed :238
+lua call C# static member funtion : input parameter member function : 4504504, elapsed :222
+lua call C# static member funtion : output parameter member function : 4347826, elapsed :230
+lua call C# static member funtion : in & output parameter member function : 3937007, elapsed :254
+lua call C# static member funtion : two parameter member function : 4651162, elapsed :215
 lua call C# array & enum : 
-lua call C# member : enum member, get : 4347826, elapsed :230
-lua call C# member : enum member, set : 5128205, elapsed :195
-lua call C# member : array member, get : 5128205, elapsed :195
-lua call C# member : array member, set : 5208333, elapsed :192
+lua call C# member : enum member, get : 4484304, elapsed :223
+lua call C# member : enum member, set : 5235602, elapsed :191
+lua call C# member : array member, get : 5649717, elapsed :177
+lua call C# member : array member, set : 5586592, elapsed :179
 lua add & remove call back : 
-lua add & remove callback : 1058201, elapsed :189
+lua add & remove callback : 1041666, elapsed :192
 C# call lua callbak :
-invoke base param callback : 8620689, elapsed :116
-invoke class param callback : 1779359, elapsed :562
-invoke struct param callback : 251952, elapsed :3969
-invoke vector3 param callback : 286779, elapsed :3487
+invoke base param callback : 7812500, elapsed :128
+invoke class param callback : 1718213, elapsed :582
+invoke struct param callback : 242541, elapsed :4123
+invoke vector3 param callback : 279720, elapsed :3575
 lua call construct :
-lua construct class : 314663, elapsed :3178
-lua construct struct : 372162, elapsed :2687
+lua construct class : 301568, elapsed :3316
+lua construct struct : 353232, elapsed :2831

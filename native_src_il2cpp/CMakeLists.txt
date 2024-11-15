@@ -95,14 +95,15 @@ set ( XLUA_CORE
     ../build/i64lib.h
     ../build/i64lib.c
     Inc/XLua.h
+    Src/XLua.cpp
     Inc/pesapi.h
     Inc/LuaClassRegister.h
+    Src/LuaClassRegister.cpp
+    Inc/CppObjectMapper.h
     Src/CppObjectMapper.cpp
     Src/DataTransfer.cpp
-    Src/LuaClassRegister.cpp
     Src/PesapiAddonLoad.cpp
     Src/PesapiLuaImpl.cpp
-    Src/XLua.cpp
 )
 
 if (NOT USING_LUAJIT)

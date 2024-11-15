@@ -5,15 +5,12 @@ namespace xlua
 {
     int DataTransfer::FindOrAddCData(lua_State *L, const void* TypeId, const void* Ptr, bool PassByPointer)
     {
-        xlua::CppObjectMapper *cppObjectMapper = xlua::CppObjectMapper::Get(L);
-        cppObjectMapper->FindOrAddCppObject(L, TypeId, const_cast<void*>(Ptr), PassByPointer);
-        return lua_gettop(L);
+        return xlua::CppObjectMapper::Get()->FindOrAddCppObject(L, TypeId, const_cast<void*>(Ptr), PassByPointer);
     }
 
     bool DataTransfer::IsInstanceOf(lua_State *L, const void* TypeId, int ObjectIndex)
     {
-        xlua::CppObjectMapper *cppObjectMapper = xlua::CppObjectMapper::Get(L);
-        return cppObjectMapper->IsInstanceOfCppObject(L, TypeId, ObjectIndex);
+        return xlua::CppObjectMapper::Get()->IsInstanceOfCppObject(L, TypeId, ObjectIndex);
     }
 
     void DataTransfer::UnRef(lua_State *L, int Ref)
@@ -29,7 +26,6 @@ namespace xlua
 
     std::weak_ptr<int> DataTransfer::GetLuaEnvLifeCycleTracker(lua_State *L)
     {
-        xlua::CppObjectMapper *cppObjectMapper = xlua::CppObjectMapper::Get(L);
-        return cppObjectMapper->GetLuaEnvLifeCycleTracker();
+        return xlua::CppObjectMapper::Get()->GetLuaEnvLifeCycleTracker();
     }
 }    // namespace XLUA_NAMESPACE

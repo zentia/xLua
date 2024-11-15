@@ -100,13 +100,13 @@ pesapi_value pesapi_create_object(pesapi_env env)
 pesapi_value pesapi_create_function(pesapi_env env, pesapi_callback native_impl, void* data)
 {
     lua_State* L = reinterpret_cast<lua_State*>(env);
-    return reinterpret_cast<pesapi_value>(xlua::CppObjectMapper::Get(L)->CreateFunction(L, native_impl, data));
+    return reinterpret_cast<pesapi_value>(xlua::CppObjectMapper::Get()->CreateFunction(L, native_impl, data));
 }
 
 pesapi_value pesapi_create_class(pesapi_env env, const void* type_id)
 {
     lua_State* L = reinterpret_cast<lua_State*>(env);
-    return reinterpret_cast<pesapi_value>(xlua::CppObjectMapper::Get(L)->LoadTypeById(L, type_id));
+    return reinterpret_cast<pesapi_value>(xlua::CppObjectMapper::Get()->LoadTypeById(L, type_id));
 }
 
 bool pesapi_get_value_bool(pesapi_env env, pesapi_value pvalue)
@@ -243,9 +243,7 @@ bool pesapi_is_array(pesapi_env env, pesapi_value pvalue)
 pesapi_value pesapi_native_object_to_value(pesapi_env env, const void* class_id, void* object_ptr, bool copy)
 {
     lua_State* L = reinterpret_cast<lua_State*>(env);
-    xlua::CppObjectMapper* cppObjectMapper = xlua::CppObjectMapper::Get(L);
-    cppObjectMapper->FindOrAddCppObject(L, class_id, object_ptr, !copy);
-    return reinterpret_cast<pesapi_value>(lua_gettop(L));
+    return reinterpret_cast<pesapi_value>(xlua::DataTransfer::FindOrAddCData(L, class_id, object_ptr, !copy));
 }
 
 void* pesapi_get_native_object_ptr(pesapi_env env, pesapi_value pvalue)
@@ -528,7 +526,7 @@ bool pesapi_get_private(pesapi_env env, pesapi_value pobject, void** out_ptr)
         *out_ptr = NULL;
         return false;
     }
-    xlua::CppObjectMapper* mapper = xlua::CppObjectMapper::Get(L);
+    xlua::CppObjectMapper* mapper = xlua::CppObjectMapper::Get();
     *out_ptr = mapper->GetPrivateData(L, index);
     return true;
 }
@@ -542,7 +540,7 @@ bool pesapi_set_private(pesapi_env env, pesapi_value pobject, void* ptr)
     {
         return false;
     }
-    xlua::CppObjectMapper* mapper = xlua::CppObjectMapper::Get(L);
+    xlua::CppObjectMapper* mapper = xlua::CppObjectMapper::Get();
     mapper->SetPrivateData(L, index, ptr);
 }
 

@@ -13,13 +13,11 @@ inline void __USE(T&&)
 
 static int dummy_idx_tag = 0;
 
-CppObjectMapper* CppObjectMapper::Get(lua_State* L)
+CppObjectMapper* CppObjectMapper::ms_Instance = nullptr;
+
+CppObjectMapper* CppObjectMapper::Get()
 {
-    lua_pushlightuserdata(L, &dummy_idx_tag);
-    lua_rawget(L, LUA_REGISTRYINDEX);
-    CppObjectMapper* ret = (CppObjectMapper*) lua_touserdata(L, -1);
-    lua_pop(L, 1);
-    return ret;
+    return ms_Instance;
 }
 
 int CppObjectMapper::LoadCppType(lua_State* L)
@@ -93,6 +91,7 @@ void CppObjectMapper::Initialize(lua_State* L)
     lua_rawset(L, -3);
     lua_setmetatable(L, -2);
     CacheRef = luaL_ref(L, LUA_REGISTRYINDEX);
+    ms_Instance = this;
 }
 
 int CppObjectMapper::FindOrAddCppObject(lua_State* L, const void* TypeId, void* Ptr, bool PassByPointer)
@@ -183,8 +182,7 @@ void CppObjectMapper::BindCppObject(lua_State* L, LuaClassDefinition* ClassDefin
     BindCppObject(L, ClassDefinition, Ptr, PassByPointer, CacheNodePtr);
 }
 
-void CppObjectMapper::BindCppObject(
-    lua_State* L, LuaClassDefinition* ClassDefinition, void* Ptr, bool PassByPointer, ObjectCacheNode* CacheNodePtr)
+void CppObjectMapper::BindCppObject(lua_State* L, LuaClassDefinition* ClassDefinition, void* Ptr, bool PassByPointer, ObjectCacheNode* CacheNodePtr)
 {
     CppObject* obj = (CppObject*) lua_newuserdata(L, sizeof(CppObject));
     obj->Ptr = Ptr;
@@ -296,9 +294,9 @@ void CppObjectMapper::UnInitialize(lua_State* L)
     FunctionDatas.clear();
     CDataCache.clear();
     TypeIdToMetaMap.clear();
+    ms_Instance = nullptr;
 }
 
-// upvalue --- [1]: methods, [2]:getters, [3]:baseindex
 // param   --- [1]: obj, [2]: key
 static int obj_indexer(lua_State* L)
 {
@@ -376,13 +374,9 @@ int obj_newindexer(lua_State* L)
 static int object_new(lua_State* L)
 {
     LuaClassDefinition* class_definition = (LuaClassDefinition*) lua_touserdata(L, lua_upvalueindex(1));
-    // printf("object_new %p, narg:%d\n", class_definition, lua_gettop(L));
     pesapi_callback_info__ callback_info{L, 1, 0};
     void* Ptr = class_definition->Initialize(&g_pesapi_ffi, &callback_info);
-    // printf("object_new, Ptr= %p, narg:%d\n", Ptr, lua_gettop(L));
-
-    xlua::CppObjectMapper* cppObjectMapper = xlua::CppObjectMapper::Get(L);
-    cppObjectMapper->BindCppObject(L, class_definition, Ptr, false);
+    xlua::CppObjectMapper::Get()->BindCppObject(L, class_definition, Ptr, false);
     return 1;
 }
 
@@ -390,9 +384,7 @@ static int object_gc(lua_State* L)
 {
     LuaClassDefinition* class_definition = (LuaClassDefinition*) lua_touserdata(L, lua_upvalueindex(1));
     CppObject* cppObject = (CppObject*) lua_touserdata(L, -1);
-    // printf("object_gc %p, narg:%d, ptr:%p\n", class_definition, lua_gettop(L), cppObject->Ptr);
-    xlua::CppObjectMapper* cppObjectMapper = xlua::CppObjectMapper::Get(L);
-    cppObjectMapper->UnBindCppObject(L, class_definition, cppObject->Ptr);
+    xlua::CppObjectMapper::Get()->UnBindCppObject(L, class_definition, cppObject->Ptr);
     if (cppObject->NeedDelete)
     {
         // printf("Finalize %p\n", cppObject->Ptr);
@@ -403,7 +395,7 @@ static int object_gc(lua_State* L)
     return 0;
 }
 
-// upvalue --- [1]:getters, [2]:feilds, [3]:base_index
+// upvalue --- [1]:getters, [2]:fields, [3]:base_index
 // param   --- [1]: obj, [2]: key
 static int static_indexer(lua_State* L)
 {
@@ -424,7 +416,7 @@ static int static_indexer(lua_State* L)
         lua_pushvalue(L, 2);
         lua_rawget(L, lua_upvalueindex(2));
         if (!lua_isnil(L, -1))
-        {    // has feild
+        {    // has field
             return 1;
         }
         lua_pop(L, 1);
