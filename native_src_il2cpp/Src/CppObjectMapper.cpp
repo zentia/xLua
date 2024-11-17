@@ -80,17 +80,6 @@ int CppObjectMapper::LoadTypeById(lua_State* L, const void* TypeId)
 
 void CppObjectMapper::Initialize(lua_State* L)
 {
-    lua_pushlightuserdata(L, &dummy_idx_tag);
-    lua_pushlightuserdata(L, this);
-    lua_rawset(L, LUA_REGISTRYINDEX);
-
-    lua_newtable(L);
-    lua_newtable(L);
-    lua_pushstring(L, "__mode");
-    lua_pushstring(L, "v");
-    lua_rawset(L, -3);
-    lua_setmetatable(L, -2);
-    CacheRef = luaL_ref(L, LUA_REGISTRYINDEX);
     ms_Instance = this;
 }
 
