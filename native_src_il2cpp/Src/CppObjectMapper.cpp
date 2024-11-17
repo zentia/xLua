@@ -120,11 +120,12 @@ int CppObjectMapper::FindOrAddCppObject(lua_State* L, const void* TypeId, void* 
     return lua_gettop(L);
 }
 
-static void PesapiFunctionCallback(lua_State* L)
+static int PesapiFunctionCallback(lua_State* L)
 {
     PesapiCallbackData* FunctionInfo = reinterpret_cast<PesapiCallbackData*>(lua_touserdata(L, lua_upvalueindex(1)));
     pesapi_callback_info__ info{L, 0, 0};
     FunctionInfo->Callback(&g_pesapi_ffi, &info);
+    return 1;
 }
 
 int CppObjectMapper::CreateFunction(lua_State* L, pesapi_callback Callback, void* Data)
