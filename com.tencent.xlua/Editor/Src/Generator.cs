@@ -1,15 +1,5 @@
-﻿/*
- * Tencent is pleased to support the open source community by making xLua available.
- * Copyright (C) 2016 THL A29 Limited, a Tencent company. All rights reserved.
- * Licensed under the MIT License (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
- * http://opensource.org/licenses/MIT
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
-*/
-
-#if !XLUA_GENERAL
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEditor;
-#endif
 using System.Collections.Generic;
 using System.IO;
 using XLua;
@@ -23,39 +13,7 @@ namespace CSObjectWrapEditor
 {
     public static class GeneratorConfig
     {
-        public static string common_path = Application.dataPath + "/XLua/Gen/";
-
-        static GeneratorConfig()
-        {
-            foreach(var type in (from type in XLua.Utils.GetAllTypes()
-            where type.IsAbstract && type.IsSealed
-            select type))
-            {
-                foreach (var field in type.GetFields(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.DeclaredOnly))
-                {
-                    if (field.FieldType == typeof(string) && field.IsDefined(typeof(GenPathAttribute), false))
-                    {
-                        common_path = field.GetValue(null) as string;
-                        if (!common_path.EndsWith("/"))
-                        {
-                            common_path = common_path + "/";
-                        }
-                    }
-                }
-
-                foreach (var prop in type.GetProperties(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.DeclaredOnly))
-                {
-                    if (prop.PropertyType == typeof(string) && prop.IsDefined(typeof(GenPathAttribute), false))
-                    {
-                        common_path = prop.GetValue(null, null) as string;
-                        if (!common_path.EndsWith("/"))
-                        {
-                            common_path = common_path + "/";
-                        }
-                    }
-                }
-            }
-        }
+        public static string common_path = Application.dataPath + "/Gen/";
     }
 
     public struct CustomGenTask
@@ -72,11 +30,6 @@ namespace CSObjectWrapEditor
     }
 
     public class GenCodeMenuAttribute : Attribute
-    {
-
-    }
-
-    public class GenPathAttribute : Attribute
     {
 
     }
@@ -1035,18 +988,15 @@ namespace CSObjectWrapEditor
             }
         }
 
-#if !XLUA_GENERAL
-        static void clear(string path)
+        public static void Clear(string path)
         {
             if (Directory.Exists(path))
             {
                 Directory.Delete(path, true);
                 AssetDatabase.DeleteAsset(path.Substring(path.IndexOf("Assets") + "Assets".Length));
-
                 AssetDatabase.Refresh();
             }
         }
-#endif
 
         class DelegateByMethodDecComparer : IEqualityComparer<Type>
         {
@@ -1613,14 +1563,8 @@ namespace CSObjectWrapEditor
         [MenuItem("XLua/Generate Code", false, 1)]
         public static void GenAll()
         {
-#if UNITY_2018 && (UNITY_EDITOR_WIN || UNITY_EDITOR_OSX)
-            if (File.Exists("./Tools/MonoBleedingEdge/bin/mono.exe"))
-            {
-                GenUsingCLI();
-                return;
-            }
-#endif
             var start = DateTime.Now;
+            Clear(GeneratorConfig.common_path);
             Directory.CreateDirectory(GeneratorConfig.common_path);
             GetGenConfig(XLua.Utils.GetAllTypes());
             luaenv.DoString("require 'TemplateCommon'");
@@ -1697,7 +1641,7 @@ namespace CSObjectWrapEditor
         [MenuItem("XLua/Clear Generated Code", false, 2)]
         public static void ClearAll()
         {
-            clear(GeneratorConfig.common_path);
+            Clear(GeneratorConfig.common_path);
         }
 
         public delegate IEnumerable<CustomGenTask> GetTasks(LuaEnv lua_env, UserConfig user_cfg);

@@ -2,6 +2,10 @@
 #include "DataTransfer.h"
 #include <memory>
 #include "pesapi.h"
+#include "XLua.h"
+
+#include <chrono>
+using namespace std::chrono;
 
 namespace xlua
 {
@@ -26,8 +30,14 @@ int CppObjectMapper::LoadCppType(lua_State* L)
     if (ClassDef)
     {
         lua_createtable(L, 0, 0);
+        lua_pushlightuserdata(L, const_cast<void*>(ClassDef->TypeId));
+        lua_setfield(L, -2, "__p_innerType");
+
         int meta_ref = GetMetaRefOfClass(L, ClassDef);
         lua_rawgeti(L, LUA_REGISTRYINDEX, meta_ref);
+        lua_pushlightuserdata(L, &dummy_idx_tag);
+        lua_rawget(L, -2);
+        lua_remove(L, -2);
         if (!lua_isnil(L, -1))
         {
             lua_setmetatable(L, -2);
@@ -55,6 +65,9 @@ int CppObjectMapper::LoadTypeById(lua_State* L, const void* TypeId)
         
         int meta_ref = GetMetaRefOfClass(L, ClassDef);
         lua_rawgeti(L, LUA_REGISTRYINDEX, meta_ref);
+        lua_pushlightuserdata(L, &dummy_idx_tag);
+        lua_rawget(L, -2);
+        lua_remove(L, -2);
         if (!lua_isnil(L, -1))
         {
             lua_setmetatable(L, -2);
@@ -108,7 +121,7 @@ int CppObjectMapper::FindOrAddCppObject(lua_State* L, const void* TypeId, void* 
     auto ClassDefinition = LoadClassByID(TypeId);
     if (ClassDefinition)
     {
-        BindCppObject(L, const_cast<LuaClassDefinition*>(ClassDefinition), Ptr, PassByPointer);
+        BindCppObject(L, const_cast<LuaClassDefinition*>(ClassDefinition), Ptr, PassByPointer, false);
     }
     else
     {
@@ -149,18 +162,27 @@ std::weak_ptr<int> CppObjectMapper::GetLuaEnvLifeCycleTracker()
     return std::weak_ptr<int>(Ref);
 }
 
-void CppObjectMapper::BindCppObject(lua_State* L, LuaClassDefinition* ClassDefinition, void* Ptr, bool PassByPointer)
+void CppObjectMapper::BindCppObject(lua_State* L, LuaClassDefinition* ClassDefinition, void* Ptr, bool PassByPointer, bool create)
 {
-    auto Iter = CDataCache.find(Ptr);
     ObjectCacheNode* CacheNodePtr;
-    if (Iter != CDataCache.end())
+    if (create)
     {
-        CacheNodePtr = Iter->second.Add(ClassDefinition->TypeId);
+        CacheNodePtr = &ObjectCacheNode(ClassDefinition->TypeId);
+        CDataCache.emplace(Ptr, CacheNodePtr);
     }
     else
     {
-        auto Ret = CDataCache.insert({Ptr, ObjectCacheNode(ClassDefinition->TypeId)});
-        CacheNodePtr = &Ret.first->second;
+        auto Iter = CDataCache.find(Ptr);
+
+        if (Iter != CDataCache.end())
+        {
+            CacheNodePtr = Iter->second.Add(ClassDefinition->TypeId);
+        }
+        else
+        {
+            CacheNodePtr = &ObjectCacheNode(ClassDefinition->TypeId);
+            CDataCache.emplace(Ptr, CacheNodePtr);
+        }
     }
     BindCppObject(L, ClassDefinition, Ptr, PassByPointer, CacheNodePtr);
 }
@@ -263,7 +285,7 @@ void CppObjectMapper::UnInitialize(lua_State* L)
                 }
                 PNode->MustCallFinalize = false;
             }
-            if (ClassDefinition->OnExit)
+            if (ClassDefinition && ClassDefinition->OnExit)
             {
                 ClassDefinition->OnExit(KV.first, ClassDefinition->Data, DataTransfer::GetStatePrivateData(L), PNode->UserData);
             }
@@ -356,10 +378,13 @@ int obj_newindexer(lua_State* L)
 
 static int object_new(lua_State* L)
 {
+    auto starttime = system_clock::now();
     LuaClassDefinition* class_definition = (LuaClassDefinition*) lua_touserdata(L, lua_upvalueindex(1));
     pesapi_callback_info__ callback_info{L, 1, 0};
-    void* Ptr = class_definition->Initialize(&g_pesapi_ffi, &callback_info);
-    xlua::CppObjectMapper::Get()->BindCppObject(L, class_definition, Ptr, false);
+    xlua::CppObjectMapper::Get()->BindCppObject(
+        L, class_definition, class_definition->Initialize(&g_pesapi_ffi, &callback_info), false, true);
+    auto diff = std::chrono::duration_cast<std::chrono::microseconds>(system_clock::now() - starttime).count();
+    xlua::Log("%I64d", diff);
     return 1;
 }
 
@@ -714,7 +739,7 @@ int CppObjectMapper::GetMetaRefOfClass(lua_State* L, const LuaClassDefinition* C
         {
             luaL_error(L, "stack top changed ? %d, %d\n", org_top, lua_gettop(L));
         }
-        TypeIdToMetaMap[ClassDefinition->TypeId] = meta_ref;
+        TypeIdToMetaMap.emplace(ClassDefinition->TypeId, meta_ref);
         return meta_ref;
     }
     else

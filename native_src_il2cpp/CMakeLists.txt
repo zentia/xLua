@@ -101,6 +101,7 @@ set ( XLUA_CORE
     Src/LuaClassRegister.cpp
     Inc/CppObjectMapper.h
     Src/CppObjectMapper.cpp
+    Inc/DataTransfer.h
     Src/DataTransfer.cpp
     Src/PesapiAddonLoad.cpp
     Src/PesapiLuaImpl.cpp

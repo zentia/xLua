@@ -37,14 +37,14 @@ public class PerfMain : MonoBehaviour {
 	{
 		var arr = typeof(ClassLuaCallCS).GetEvents(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public);
 #if UNITY_ANDROID && !UNITY_EDITOR
-	    resultPath = "/sdcard/testResult_android.log";
+	    resultPath = "/sdcard/testResult_android";
 #elif UNITY_IPHONE || UNITY_IOS
-	    resultPath = Application.persistentDataPath + "/testResult_iOS.log";
+	    resultPath = Application.persistentDataPath + "/testResult_iOS";
 #elif UNITY_STANDALONE_WIN
 #if XLUA_IL2CPP
-		resultPath = Application.dataPath + "/../../../../testBResult_windows.log";
+		resultPath = Application.dataPath + "/../../../../il2cpp";
 #else
-		resultPath = Application.dataPath + "/../../../../testAResult_windows.log";
+		resultPath = Application.dataPath + "/../../../../noil2cpp";
 #endif
 #else
         resultPath = "";
@@ -67,49 +67,63 @@ public class PerfMain : MonoBehaviour {
 #endif
     }
 
-	void OnGUI()
-	{
-		if (GUI.Button (new Rect (10, 100, 300, 150), "Start")) {
-            FileStream fs = new FileStream(resultPath, FileMode.Create);
-            sw = new StreamWriter(fs);
+	private void OnGUI()
+    {
+        const float height = 50;
+        const float width = 200;
+        for (var i = 0; i < 7; i++)
+        {
+            var loopTimes = (int)Math.Pow(10, i);
+            if (GUI.Button(new Rect(0, i * height, width, height), $"All Test {loopTimes}"))
+            {
+                Process(loopTimes);
+            }
+            if (GUI.Button(new Rect(width, i * height, width, height), $"Construct Struct {loopTimes}"))
+            {
+                ProcessConstructStruct(loopTimes);
+            }
+        }
+    }
 
-            StartCSCallLua();
-			StartLuaCallCS ();
-			StartAddRemoveCB ();
-			StartCSCallLuaCB ();
-			StartConstruct ();
+    private void Process(int loopTimes)
+    {
+        var fs = new FileStream($"{resultPath}AllTest{loopTimes}.log", FileMode.Create);
+        sw = new StreamWriter(fs);
+        StartCSCallLua(loopTimes);
+        StartLuaCallCS(loopTimes);
+        StartAddRemoveCB(loopTimes);
+        StartCSCallLuaCB(loopTimes);
+        StartConstruct(loopTimes);
+        sw.Close();
+    }
 
-			sw.Close ();
-		}
-	}
+    private void ProcessConstructStruct(int loopTimes)
+    {
+        var fs = new FileStream($"{resultPath}ConstructStruct{loopTimes}.log", FileMode.Create);
+        sw = new StreamWriter(fs);
+        var func = luaenv.Global.Get<PerfTest>("LuaConstructStruct");
+        PerformanceTest("lua construct struct : ", loopTimes, func);
+        sw.Close();
+    }
 
-    private int PerformentTest(string title, int load, PerfTest execute)
+    private void PerformanceTest(string title, int loopTimes, PerfTest execute)
     {
         stopWatch.Reset();
         stopWatch.Start();
-        execute(load);
+        execute(loopTimes);
         stopWatch.Stop();
-
-        int cps = CPS(load, stopWatch.ElapsedMilliseconds);
-
-        if (title != null)
-        {
-            string log = title + cps + ", elapsed :" + stopWatch.ElapsedMilliseconds;
-            Debug.Log(log);
-            sw.WriteLine(log);
-        }
-
-        return cps;
+        var log = $"{loopTimes} {title}{stopWatch.ElapsedMilliseconds}ms";
+        Debug.Log(log);
+        sw.WriteLine(log);
     }
 
-	private void StartCSCallLua()
+	private void StartCSCallLua(int LOOP_TIMES)
 	{
-        int LOOP_TIMES = 1000000;
         Debug.Log ("C# call lua :");
 		sw.WriteLine ("C# call lua :");
 
 		FuncBasePara funcBaseParm = luaenv.Global.Get<FuncBasePara>("FuncBasePara");
-        PerformentTest("C# call lua : base parameter function :", LOOP_TIMES, loop_times =>
+        PerformanceTest("C# call lua : base parameter function :", LOOP_TIMES, loop_times =>
         {
             for (int i = 0; i < loop_times; i++)
             {
@@ -119,7 +133,7 @@ public class PerfMain : MonoBehaviour {
 
         FuncClassPara funcClassPara = luaenv.Global.Get<FuncClassPara> ("FuncClassPara");
 		ParaClass paraClass = new ParaClass ();
-        PerformentTest("C# call lua : class parameter function :", LOOP_TIMES, loop_times =>
+        PerformanceTest("C# call lua : class parameter function :", LOOP_TIMES, loop_times =>
         {
             for (int i = 0; i < loop_times; i++)
             {
@@ -129,7 +143,7 @@ public class PerfMain : MonoBehaviour {
 
         FuncStructPara funcStructPara = luaenv.Global.Get<FuncStructPara> ("FuncStructPara");
 		ParaStruct paraStruct = new ParaStruct ();
-        PerformentTest("C# call lua : struct parameter function :", LOOP_TIMES, loop_times =>
+        PerformanceTest("C# call lua : struct parameter function :", LOOP_TIMES, loop_times =>
         {
             for (int i = 0; i < loop_times; i++)
             {
@@ -138,7 +152,7 @@ public class PerfMain : MonoBehaviour {
         });
 
         FuncTwoBasePara funcTwoBasePara = luaenv.Global.Get<FuncTwoBasePara> ("FuncTwoBasePara");
-        PerformentTest("C# call lua : two base parameter function :", LOOP_TIMES, loop_times =>
+        PerformanceTest("C# call lua : two base parameter function :", LOOP_TIMES, loop_times =>
         {
             for (int i = 0; i < loop_times; i++)
             {
@@ -149,192 +163,179 @@ public class PerfMain : MonoBehaviour {
         sw.WriteLine ("C# access lua table : ");
 
 		var iTAccess = luaenv.Global.Get<List<int>> ("luaTable");
-        PerformentTest("C# access lua table : access member, get : ", LOOP_TIMES, loop_times =>
+        PerformanceTest("C# access lua table : access member, get : ", LOOP_TIMES, loop_times =>
         {
             for (int i = 0; i < loop_times; i++)
             {
                 int x = iTAccess[0];
             }
         });
-
     }
 
-	private void StartLuaCallCS()
+	private void StartLuaCallCS(int LOOP_TIMES)
 	{
-        int LOOP_TIMES = 1000000;
-
         Debug.Log ("lua call C# member : ");
 		sw.WriteLine ("lua call C# member : ");
 
 		PerfTest func = luaenv.Global.Get<PerfTest> ("LuaAccessCSBaseMember_get");
-        PerformentTest("lua call C# member : base member, get : ", LOOP_TIMES, func);
+        PerformanceTest("lua call C# member : base member, get : ", LOOP_TIMES, func);
 
         func = luaenv.Global.Get<PerfTest>("LuaAccessCSBaseMember_set");
-        PerformentTest("lua call C# member : base member, set : ", LOOP_TIMES, func);
+        PerformanceTest("lua call C# member : base member, set : ", LOOP_TIMES, func);
 
         func = luaenv.Global.Get<PerfTest> ("LuaAccessCSClassMember_get");
-        PerformentTest("lua call C# member : class member, get : ", LOOP_TIMES, func);
+        PerformanceTest("lua call C# member : class member, get : ", LOOP_TIMES, func);
 
         func = luaenv.Global.Get<PerfTest>("LuaAccessCSClassMember_set");
-        PerformentTest("lua call C# member : class member, set : ", LOOP_TIMES, func);
+        PerformanceTest("lua call C# member : class member, set : ", LOOP_TIMES, func);
 
 		func = luaenv.Global.Get<PerfTest> ("LuaAccessStructMember_get");
-        PerformentTest("lua call C# member : struct member, get : ", LOOP_TIMES, func);
+        PerformanceTest("lua call C# member : struct member, get : ", LOOP_TIMES, func);
 
         func = luaenv.Global.Get<PerfTest>("LuaAccessStructMember_set");
-        PerformentTest("lua call C# member : struct member, set : ", LOOP_TIMES, func);
+        PerformanceTest("lua call C# member : struct member, set : ", LOOP_TIMES, func);
 
 		func = luaenv.Global.Get<PerfTest> ("LuaAccessVec3Member_get");
-        PerformentTest("lua call C# member : vector3 member, get : ", LOOP_TIMES, func);
+        PerformanceTest("lua call C# member : vector3 member, get : ", LOOP_TIMES, func);
 
         func = luaenv.Global.Get<PerfTest>("LuaAccessVec3Member_set");
-        PerformentTest("lua call C# member : vector3 member, set : ", LOOP_TIMES, func);
+        PerformanceTest("lua call C# member : vector3 member, set : ", LOOP_TIMES, func);
 
 		Debug.Log ("lua call C# member funtion : ");
 		sw.WriteLine ("lua call C# member funtion : ");
 
 		func = luaenv.Global.Get<PerfTest> ("LuaAccessCSBaseMemberFunc");
-        PerformentTest("lua call C# member funtion : base parameter member function : ", LOOP_TIMES, func);
+        PerformanceTest("lua call C# member funtion : base parameter member function : ", LOOP_TIMES, func);
 
 		func = luaenv.Global.Get<PerfTest> ("LuaAccessCSClassMemberFunc");
-        PerformentTest("lua call C# member funtion : class parameter member function : ", LOOP_TIMES, func);
+        PerformanceTest("lua call C# member funtion : class parameter member function : ", LOOP_TIMES, func);
 
 		func = luaenv.Global.Get<PerfTest> ("LuaAccessCSStructMemberFunc");
-        PerformentTest("lua call C# member funtion : struct parameter member function : ", LOOP_TIMES, func);
+        PerformanceTest("lua call C# member funtion : struct parameter member function : ", LOOP_TIMES, func);
 
 		func = luaenv.Global.Get<PerfTest> ("LuaAccessCSVec3MemberFunc");
-        PerformentTest("lua call C# member funtion : vector3 parameter member function : ", LOOP_TIMES, func);
+        PerformanceTest("lua call C# member funtion : vector3 parameter member function : ", LOOP_TIMES, func);
 
 		func = luaenv.Global.Get<PerfTest> ("LuaAccessCSInMemberFunc");
-        PerformentTest("lua call C# member funtion : input parameter member function : ", LOOP_TIMES, func);
+        PerformanceTest("lua call C# member funtion : input parameter member function : ", LOOP_TIMES, func);
 
 		func = luaenv.Global.Get<PerfTest> ("LuaAccessCSOutMemberFunc");
-        PerformentTest("lua call C# member funtion : output parameter member function : ", LOOP_TIMES, func);
+        PerformanceTest("lua call C# member funtion : output parameter member function : ", LOOP_TIMES, func);
 
 		func = luaenv.Global.Get<PerfTest> ("LuaAccessCSInOutMemberFunc");
-        PerformentTest("lua call C# member funtion : in & output parameter member function : ", LOOP_TIMES, func);
+        PerformanceTest("lua call C# member funtion : in & output parameter member function : ", LOOP_TIMES, func);
 
 		func = luaenv.Global.Get<PerfTest> ("LuaAccessCSTwoMemberFunc");
-        PerformentTest("lua call C# member funtion : two parameter member function : ", LOOP_TIMES, func);
+        PerformanceTest("lua call C# member funtion : two parameter member function : ", LOOP_TIMES, func);
 
 		Debug.Log ("lua call static memeber : ");
 		sw.WriteLine ("lua call static memeber :");
 
 		func = luaenv.Global.Get<PerfTest> ("LuaAccessCSStaticBaseMember_get");
-        PerformentTest("lua call C# static member : base member, get : ", LOOP_TIMES, func);
+        PerformanceTest("lua call C# static member : base member, get : ", LOOP_TIMES, func);
 
         func = luaenv.Global.Get<PerfTest>("LuaAccessCSStaticBaseMember_set");
-        PerformentTest("lua call C# static member : base member, set : ", LOOP_TIMES, func);
+        PerformanceTest("lua call C# static member : base member, set : ", LOOP_TIMES, func);
 		
 		func = luaenv.Global.Get<PerfTest> ("LuaAccessCSStaticClassMember_get");
-        PerformentTest("lua call C# static member : class member, get : ", LOOP_TIMES, func);
+        PerformanceTest("lua call C# static member : class member, get : ", LOOP_TIMES, func);
 
         func = luaenv.Global.Get<PerfTest>("LuaAccessCSStaticClassMember_set");
-        PerformentTest("lua call C# static member : class member, set : ", LOOP_TIMES, func);
+        PerformanceTest("lua call C# static member : class member, set : ", LOOP_TIMES, func);
 		
 		func = luaenv.Global.Get<PerfTest> ("LuaAccessCSStaticStructMember_get");
-        PerformentTest("lua call C# static member : struct member, get : ", LOOP_TIMES, func);
+        PerformanceTest("lua call C# static member : struct member, get : ", LOOP_TIMES, func);
 
         func = luaenv.Global.Get<PerfTest>("LuaAccessCSStaticStructMember_set");
-        PerformentTest("lua call C# static member : struct member, set : ", LOOP_TIMES, func);
+        PerformanceTest("lua call C# static member : struct member, set : ", LOOP_TIMES, func);
 		
 		func = luaenv.Global.Get<PerfTest> ("LuaAccessCSStaticVec3Member_get");
-        PerformentTest("lua call C# static member : vector3 member, get : ", LOOP_TIMES, func);
+        PerformanceTest("lua call C# static member : vector3 member, get : ", LOOP_TIMES, func);
 
         func = luaenv.Global.Get<PerfTest>("LuaAccessCSStaticVec3Member_set");
-        PerformentTest("lua call C# static member : vector3 member, set : ", LOOP_TIMES, func);
+        PerformanceTest("lua call C# static member : vector3 member, set : ", LOOP_TIMES, func);
 
 		Debug.Log ("lua call C# static member funtion : ");
 		sw.WriteLine ("lua call C# member funtion : ");
 		
 		func = luaenv.Global.Get<PerfTest> ("LuaAccessCSStaticBaseMemberFunc");
-        PerformentTest("lua call C# static member funtion : base parameter member function : ", LOOP_TIMES, func);
+        PerformanceTest("lua call C# static member funtion : base parameter member function : ", LOOP_TIMES, func);
 		
 		func = luaenv.Global.Get<PerfTest> ("LuaAccessCSStaticClassMemberFunc");
-        PerformentTest("lua call C# static member funtion : class parameter member function : ", LOOP_TIMES, func);
+        PerformanceTest("lua call C# static member funtion : class parameter member function : ", LOOP_TIMES, func);
 		
 		func = luaenv.Global.Get<PerfTest> ("LuaAccessCSStaticStructMemberFunc");
-        PerformentTest("lua call C# static member funtion : struct parameter member function : ", LOOP_TIMES, func);
+        PerformanceTest("lua call C# static member funtion : struct parameter member function : ", LOOP_TIMES, func);
 		
 		func = luaenv.Global.Get<PerfTest> ("LuaAccessCSStaticVec3MemberFunc");
-        PerformentTest("lua call C# static member funtion : vector3 parameter member function : ", LOOP_TIMES, func);
+        PerformanceTest("lua call C# static member funtion : vector3 parameter member function : ", LOOP_TIMES, func);
 		
 		func = luaenv.Global.Get<PerfTest> ("LuaAccessCSStaticInMemberFunc");
-        PerformentTest("lua call C# static member funtion : input parameter member function : ", LOOP_TIMES, func);
+        PerformanceTest("lua call C# static member funtion : input parameter member function : ", LOOP_TIMES, func);
 		
 		func = luaenv.Global.Get<PerfTest> ("LuaAccessCSStaticOutMemberFunc");
-        PerformentTest("lua call C# static member funtion : output parameter member function : ", LOOP_TIMES, func);
+        PerformanceTest("lua call C# static member funtion : output parameter member function : ", LOOP_TIMES, func);
 		
 		func = luaenv.Global.Get<PerfTest> ("LuaAccessCSStaticInOutMemberFunc");
-        PerformentTest("lua call C# static member funtion : in & output parameter member function : ", LOOP_TIMES, func);
+        PerformanceTest("lua call C# static member funtion : in & output parameter member function : ", LOOP_TIMES, func);
 
 		func = luaenv.Global.Get<PerfTest> ("LuaAccessCSStaticTwoMemberFunc");
-        PerformentTest("lua call C# static member funtion : two parameter member function : ", LOOP_TIMES, func);
+        PerformanceTest("lua call C# static member funtion : two parameter member function : ", LOOP_TIMES, func);
 
         Debug.Log("lua call C# array & num : ");
         sw.WriteLine("lua call C# array & enum : ");
 
         func = luaenv.Global.Get<PerfTest>("LuaAccessCSEnumFunc_get");
-        PerformentTest("lua call C# member : enum member, get : ", LOOP_TIMES, func);
+        PerformanceTest("lua call C# member : enum member, get : ", LOOP_TIMES, func);
 
         func = luaenv.Global.Get<PerfTest>("LuaAccessCSEnumFunc_set");
-        PerformentTest("lua call C# member : enum member, set : ", LOOP_TIMES, func);
+        PerformanceTest("lua call C# member : enum member, set : ", LOOP_TIMES, func);
 
         func = luaenv.Global.Get<PerfTest>("LuaAccessCSArrayFunc_get");
-        PerformentTest("lua call C# member : array member, get : ", LOOP_TIMES, func);
+        PerformanceTest("lua call C# member : array member, get : ", LOOP_TIMES, func);
 
         func = luaenv.Global.Get<PerfTest>("LuaAccessCSArrayFunc_set");
-        PerformentTest("lua call C# member : array member, set : ", LOOP_TIMES, func);
+        PerformanceTest("lua call C# member : array member, set : ", LOOP_TIMES, func);
 	}
 
-	private void StartConstruct()
+	private void StartConstruct(int LOOP_TIMES)
 	{
-        int LOOP_TIMES = 1000000;
         Debug.Log ("lua call construct :");
         sw.WriteLine("lua call construct :");
         PerfTest func = luaenv.Global.Get<PerfTest> ("LuaConstructClass");
-        PerformentTest("lua construct class : ", LOOP_TIMES, func);
+        PerformanceTest("lua construct class : ", LOOP_TIMES, func);
 		
 		func = luaenv.Global.Get<PerfTest> ("LuaConstructStruct");
-        PerformentTest("lua construct struct : ", LOOP_TIMES, func);
+        PerformanceTest("lua construct struct : ", LOOP_TIMES, func);
 	}
 
-	private void StartAddRemoveCB()
+	private void StartAddRemoveCB(int LOOP_TIMES)
 	{
-        int LOOP_TIMES = 200000;
         Debug.Log ("lua add & remove callback : ");
 		sw.WriteLine ("lua add & remove call back : ");
 
 		PerfTest func = luaenv.Global.Get<PerfTest> ("LuaAddRemoveCB");
-        PerformentTest("lua add & remove callback : ", LOOP_TIMES, func);
+        PerformanceTest("lua add & remove callback : ", LOOP_TIMES, func);
 	}
 
-	private void StartCSCallLuaCB()
+	private void StartCSCallLuaCB(int LOOP_TIMES)
 	{
-        int LOOP_TIMES = 1000000;
         Debug.Log ("C# call lua callbak :");
 		sw.WriteLine ("C# call lua callbak :");
 
 		PerfTest func = luaenv.Global.Get<PerfTest> ("LuaBaseParaCB");
-        PerformentTest("invoke base param callback : ", LOOP_TIMES, func);
+        PerformanceTest("invoke base param callback : ", LOOP_TIMES, func);
 
 		func = luaenv.Global.Get<PerfTest> ("LuaClassParaCB");
-        PerformentTest("invoke class param callback : ", LOOP_TIMES, func);
+        PerformanceTest("invoke class param callback : ", LOOP_TIMES, func);
 
 		func = luaenv.Global.Get<PerfTest> ("LuaStructParaCB");
-        PerformentTest("invoke struct param callback : ", LOOP_TIMES, func);
+        PerformanceTest("invoke struct param callback : ", LOOP_TIMES, func);
 
 		func = luaenv.Global.Get<PerfTest> ("LuaVec3ParaCB");
-        PerformentTest("invoke vector3 param callback : ", LOOP_TIMES, func);
-	}
-//------------------------------------------------------------------------------------------------------
-
-	private int CPS(int loop_times, double ms)
-	{
-		return (int)(((double)loop_times) * 1000.0 / ms);
+        PerformanceTest("invoke vector3 param callback : ", LOOP_TIMES, func);
 	}
 
-//------------------------------------------------------------------------------------------------------
     [CSharpCallLua]
 	public delegate void FuncBasePara(int x);
     [CSharpCallLua]

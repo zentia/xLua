@@ -20,12 +20,6 @@ namespace XLua
 
     }
 
-    //代码生成目录
-    [AttributeUsage(AttributeTargets.Property)]
-    public class CodeOutputDirectoryAttribute : Attribute
-    {
-    }
-  
     [AttributeUsage(AttributeTargets.Method)]
     public class FilterAttribute : Attribute
     {
@@ -104,28 +98,6 @@ namespace XLua
 
         public static string GetCodeOutputDirectory()
         {
-            var types = from assembly in AppDomain.CurrentDomain.GetAssemblies()
-                        where !(assembly.ManifestModule is System.Reflection.Emit.ModuleBuilder)
-                        from type in assembly.GetTypes()
-                        where type.IsDefined(typeof(ConfigureAttribute), false)
-                        select type;
-            foreach(var type in types)
-            {
-
-                PropertyInfo[] props = type.GetProperties(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.DeclaredOnly);
-                foreach (PropertyInfo prop in props)
-                {
-                    object[] attrs = prop.GetCustomAttributes(true);
-                    foreach (object attr in attrs)
-                    {
-                        CodeOutputDirectoryAttribute outAttr = attr as CodeOutputDirectoryAttribute;
-                        if (outAttr != null)
-                        {
-                            return prop.GetValue(null, null) as string;
-                        }
-                    }
-                }
-            }
             return UnityEngine.Application.dataPath + "/Gen/";
         }
     }

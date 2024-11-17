@@ -1,3 +1,8 @@
+--package.cpath = package.cpath ..
+--';C:/Users/36347/AppData/Roaming/JetBrains/Rider2024.2/plugins/EmmyLua/debugger/emmy/windows/x64/?.dll'
+--local dbg = require('emmy_core')
+--dbg.tcpConnect('localhost', 9966)
+
 local xlua = nil
 if _G.xlua then
     xlua = _G.xlua
@@ -29,7 +34,7 @@ function xlua.loadType(nameOrCSType, ...)
         if not cls then
             error(string.format('load %s fail!', csType.Name or csType))
         end
-        return cls
+        return cls, csType
     end
 end
 

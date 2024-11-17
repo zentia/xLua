@@ -1,13 +1,4 @@
-﻿/*
- *Tencent is pleased to support the open source community by making xLua available.
- *Copyright (C) 2016 THL A29 Limited, a Tencent company. All rights reserved.
- *Licensed under the MIT License (the "License"); you may not use this file except in compliance with the License. You may obtain a
- *copy of the License at http://opensource.org/licenses/MIT Unless required by applicable law or agreed to in writing, software
- *distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
- *implied. See the License for the specific language governing permissions and limitations under the License.
- */
-
-#define LUA_LIB
+﻿#define LUA_LIB
 #ifdef __cplusplus
 extern "C"
 {
@@ -37,6 +28,9 @@ extern "C"
 #include "LuaClassRegister.h"
 #include <CppObjectMapper.h>
 
+#include <chrono>
+using namespace std::chrono;
+
 #define GetObjectData(Value, Type) ((Type*) (((uint8_t*) Value) + GUnityExports.SizeOfRuntimeObject))
 
 struct PersistentObjectInfo
@@ -51,7 +45,7 @@ typedef void (*LogCallback)(const char* value);
 
 static LogCallback GLogCallback = nullptr;
 
-void PLog(LogLevel level, const std::string Fmt, ...)
+void Log(const std::string Fmt, ...)
 {
     static char SLogBuffer[1024];
     va_list list;
@@ -924,6 +918,7 @@ extern "C"
 
     static int csharp_function_wrap(lua_State* L)
     {
+        auto starttime = system_clock::now();
         lua_CFunction fn = (lua_CFunction) lua_tocfunction(L, lua_upvalueindex(1));
         int ret = fn(L);
 
@@ -938,7 +933,8 @@ extern "C"
         {
             call_ret_hook(L);
         }
-
+        auto diff = std::chrono::duration_cast<std::chrono::microseconds>(system_clock::now() - starttime).count();
+        xlua::Log("%I64d", diff);
         return ret;
     }
 

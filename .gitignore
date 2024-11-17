@@ -22,8 +22,8 @@ Logs
 obj
 Packages/packages-lock.json
 UserSettings
-winb
-wina
+noil2cppwin
+il2cppwin
 .vscode
 com.tencent.xlua/Plugins/xlua_il2cpp/
 Packages/ProjectCache

@@ -13,6 +13,7 @@ namespace XLuaIl2cpp.Editor
         public static class UnityMenu {
             [MenuItem("XLua/Generate For xIl2cpp mode (all in one)", false, 2)]
             public static void GenV2() {
+                CSObjectWrapEditor.Generator.Clear(XLua.Configure.GetCodeOutputDirectory());
                 GenerateCppWrappers();
                 GenerateExtensionMethodInfos();
                 GenerateLinkXML();

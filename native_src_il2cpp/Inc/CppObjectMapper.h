@@ -52,7 +52,7 @@ public:
 
     void UnBindCppObject(lua_State* L, LuaClassDefinition* ClassDefinition, void* Ptr);
 
-    void BindCppObject(lua_State* L, LuaClassDefinition* ClassDefinition, void* Ptr, bool PassByPointer);
+    void BindCppObject(lua_State* L, LuaClassDefinition* ClassDefinition, void* Ptr, bool PassByPointer, bool create);
 
     void* GetPrivateData(lua_State* L, int index);
 

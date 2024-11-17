@@ -51,20 +51,18 @@ namespace XLua
 
         public LuaEnv(Type bridgeType = null, Type translatorType = null)
         {
+            LuaDLL.Lua.SetLogCallback(LuaDLL.Lua.Log);
             if (LuaAPI.xlua_get_lib_version() != LIB_VERSION_EXPECT)
             {
                 throw new InvalidProgramException("wrong lib version expect:"
                     + LIB_VERSION_EXPECT + " but got:" + LuaAPI.xlua_get_lib_version());
             }
 
-#if THREAD_SAFE || HOTFIX_ENABLE
+#if THREAD_SAFE
             lock(luaEnvLock)
 #endif
             {
                 LuaIndexes.LUA_REGISTRYINDEX = LuaAPI.xlua_get_registry_index();
-#if GEN_CODE_MINIMIZE
-                LuaAPI.xlua_set_csharp_wrapper_caller(InternalGlobals.CSharpWrapperCallerPtr);
-#endif
                 // Create State
                 rawL = LuaAPI.luaL_newstate();
 
@@ -87,13 +85,12 @@ namespace XLua
 
                 LuaAPI.lua_atpanic(rawL, StaticLuaCallbacks.Panic);
 
-#if !XLUA_GENERAL
+
                 LuaAPI.lua_pushstdcallcfunction(rawL, StaticLuaCallbacks.Print);
                 if (0 != LuaAPI.xlua_setglobal(rawL, "print"))
                 {
                     throw new Exception("call xlua_setglobal fail!");
                 }
-#endif
 
                 //template engine lib register
                 TemplateEngine.LuaTemplate.OpenLib(rawL);

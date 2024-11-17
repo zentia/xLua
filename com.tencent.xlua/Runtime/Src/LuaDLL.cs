@@ -42,6 +42,40 @@ namespace XLua.LuaDLL
 #else
         const string LUADLL = "xlua_il2cpp";
 #endif
+        [DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
+        public static extern void SetLogCallback(IntPtr log);
+
+#if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN || PUERTS_GENERAL || (UNITY_WSA && !UNITY_EDITOR)
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+#endif
+        public delegate void LogCallback(string content);
+
+        [MonoPInvokeCallback(typeof(LogCallback))]
+        public static void LogImpl(string msg)
+        {
+            UnityEngine.Debug.Log(msg);
+        }
+
+        public static LogCallback Log = LogImpl;
+
+        //[UnityEngine.Scripting.RequiredByNativeCodeAttribute()]
+        public static void SetLogCallback(LogCallback log)
+        {
+#if (UNITY_WSA && !UNITY_EDITOR) || UNITY_STANDALONE_WIN
+            GCHandle.Alloc(log);
+#endif
+            IntPtr fn1 = log == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(log);
+
+            try
+            {
+                SetLogCallback(fn1);
+            }
+            catch (DllNotFoundException)
+            {
+                UnityEngine.Debug.LogError("[XLua] XLua's Native Plugin(s) is missing. You can solve this problem following the FAQ.");
+                throw;
+            }
+        }
 
         [DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr lua_tothread(IntPtr L, int index);

@@ -1,8 +1,8 @@
 function csTypeToClass(csType)
-    local cls = xlua.loadType(csType)
+    local cls, csTp = xlua.loadType(csType)
 
     if cls then
-        local nestedTypes = xlua.getNestedTypes(csType)
+        local nestedTypes = xlua.getNestedTypes(csTp)
         if nestedTypes then
             for i = 1, nestedTypes.Length do
                 local ntype = nestedTypes:get_Item(i - 1)

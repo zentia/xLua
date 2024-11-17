@@ -202,41 +202,6 @@ namespace XLuaIl2cpp
         {
             throw new NotImplementedException();
         }
-
-#if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN || PUERTS_GENERAL || (UNITY_WSA && !UNITY_EDITOR)
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-#endif
-        public delegate void LogCallback(string content);
-
-        [MonoPInvokeCallback(typeof(LogCallback))]
-        public static void LogImpl(string msg)
-        {
-            UnityEngine.Debug.Log("debug msg: " + msg);
-        }
-
-        public static LogCallback Log = LogImpl;
-
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public static extern void SetLogCallback(IntPtr log);
-
-        //[UnityEngine.Scripting.RequiredByNativeCodeAttribute()]
-        public static void SetLogCallback(LogCallback log)
-        {
-#if XLUA_GENERAL || (UNITY_WSA && !UNITY_EDITOR) || UNITY_STANDALONE_WIN
-            GCHandle.Alloc(log);
-#endif
-            IntPtr fn1 = log == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(log);
-
-            try 
-            {
-                SetLogCallback(fn1);                
-            }
-            catch(DllNotFoundException)
-            {
-                UnityEngine.Debug.LogError("[XLua] XLua's Native Plugin(s) is missing. You can solve this problem following the FAQ.");
-                throw;
-            }
-        }
     }
 
     public delegate void pesapi_callback(IntPtr apis, IntPtr info);

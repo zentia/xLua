@@ -243,7 +243,7 @@ bool pesapi_is_array(pesapi_env env, pesapi_value pvalue)
 pesapi_value pesapi_native_object_to_value(pesapi_env env, const void* class_id, void* object_ptr, bool copy)
 {
     lua_State* L = reinterpret_cast<lua_State*>(env);
-    return reinterpret_cast<pesapi_value>(xlua::DataTransfer::FindOrAddCData(L, class_id, object_ptr, !copy));
+    return reinterpret_cast<pesapi_value>(xlua::CppObjectMapper::Get()->FindOrAddCppObject(L, class_id, object_ptr, !copy));
 }
 
 void* pesapi_get_native_object_ptr(pesapi_env env, pesapi_value pvalue)

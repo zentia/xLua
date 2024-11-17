@@ -84,8 +84,6 @@ public:
         lua_rawset(L, LUA_REGISTRYINDEX);
     }
 
-    static int FindOrAddCData(lua_State* L, const void* TypeId, const void* Ptr, bool PassByPointer);
-
     static bool IsInstanceOf(lua_State* L, const void* TypeId, int ObjectIndex);
 
     static void UnRef(lua_State* L, int Ref);
