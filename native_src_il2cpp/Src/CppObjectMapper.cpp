@@ -28,9 +28,6 @@ int CppObjectMapper::LoadCppType(lua_State* L)
         lua_createtable(L, 0, 0);
         int meta_ref = GetMetaRefOfClass(L, ClassDef);
         lua_rawgeti(L, LUA_REGISTRYINDEX, meta_ref);
-        lua_pushlightuserdata(L, &dummy_idx_tag);
-        lua_rawget(L, -2);
-        lua_remove(L, -2);
         if (!lua_isnil(L, -1))
         {
             lua_setmetatable(L, -2);
@@ -53,15 +50,11 @@ int CppObjectMapper::LoadTypeById(lua_State* L, const void* TypeId)
     if (ClassDef)
     {
         lua_createtable(L, 0, 0);
-        const void* address = lua_topointer(L, lua_gettop(L));
         lua_pushlightuserdata(L, const_cast<void*>(TypeId));
         lua_setfield(L, -2, "__p_innerType");
         
         int meta_ref = GetMetaRefOfClass(L, ClassDef);
         lua_rawgeti(L, LUA_REGISTRYINDEX, meta_ref);
-        lua_pushlightuserdata(L, &dummy_idx_tag);
-        lua_rawget(L, -2);
-        lua_remove(L, -2);
         if (!lua_isnil(L, -1))
         {
             lua_setmetatable(L, -2);
