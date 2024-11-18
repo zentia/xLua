@@ -1,0 +1,58 @@
+C# call lua :
+1000000 C# call lua : base parameter function :97ms
+1000000 C# call lua : class parameter function :1434ms
+1000000 C# call lua : struct parameter function :341ms
+1000000 C# call lua : two base parameter function :102ms
+C# access lua table : 
+1000000 C# access lua table : access member, get : 8ms
+lua call C# member : 
+1000000 lua call C# member : base member, get : 338ms
+1000000 lua call C# member : base member, set : 312ms
+1000000 lua call C# member : class member, get : 1818ms
+1000000 lua call C# member : class member, set : 777ms
+1000000 lua call C# member : struct member, get : 669ms
+1000000 lua call C# member : struct member, set : 397ms
+1000000 lua call C# member : vector3 member, get : 760ms
+1000000 lua call C# member : vector3 member, set : 734ms
+lua call C# member funtion : 
+1000000 lua call C# member funtion : base parameter member function : 294ms
+1000000 lua call C# member funtion : class parameter member function : 695ms
+1000000 lua call C# member funtion : struct parameter member function : 398ms
+1000000 lua call C# member funtion : vector3 parameter member function : 430ms
+1000000 lua call C# member funtion : input parameter member function : 308ms
+1000000 lua call C# member funtion : output parameter member function : 302ms
+1000000 lua call C# member funtion : in & output parameter member function : 311ms
+1000000 lua call C# member funtion : two parameter member function : 348ms
+lua call static memeber :
+1000000 lua call C# static member : base member, get : 182ms
+1000000 lua call C# static member : base member, set : 176ms
+1000000 lua call C# static member : class member, get : 1680ms
+1000000 lua call C# static member : class member, set : 703ms
+1000000 lua call C# static member : struct member, get : 528ms
+1000000 lua call C# static member : struct member, set : 323ms
+1000000 lua call C# static member : vector3 member, get : 600ms
+1000000 lua call C# static member : vector3 member, set : 371ms
+lua call C# member funtion : 
+1000000 lua call C# static member funtion : base parameter member function : 115ms
+1000000 lua call C# static member funtion : class parameter member function : 523ms
+1000000 lua call C# static member funtion : struct parameter member function : 250ms
+1000000 lua call C# static member funtion : vector3 parameter member function : 295ms
+1000000 lua call C# static member funtion : input parameter member function : 123ms
+1000000 lua call C# static member funtion : output parameter member function : 117ms
+1000000 lua call C# static member funtion : in & output parameter member function : 139ms
+1000000 lua call C# static member funtion : two parameter member function : 141ms
+lua call C# array & enum : 
+1000000 lua call C# member : enum member, get : 410ms
+1000000 lua call C# member : enum member, set : 421ms
+1000000 lua call C# member : array member, get : 5ms
+1000000 lua call C# member : array member, set : 5ms
+lua add & remove call back : 
+1000000 lua add & remove callback : 0ms
+C# call lua callbak :
+1000000 invoke base param callback : 0ms
+1000000 invoke class param callback : 0ms
+1000000 invoke struct param callback : 0ms
+1000000 invoke vector3 param callback : 0ms
+lua call construct :
+1000000 lua construct class : 3337ms
+1000000 lua construct struct : 1288ms

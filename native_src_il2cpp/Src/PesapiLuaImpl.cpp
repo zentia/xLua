@@ -636,14 +636,12 @@ pesapi_value pesapi_global(pesapi_env env)
 
 const void* pesapi_get_env_private(pesapi_env env)
 {
-    lua_State* L = reinterpret_cast<lua_State*>(env);
-    return xlua::DataTransfer::GetStatePrivateData(L);
+    return xlua::DataTransfer::GetLuaEnvPrivate();
 }
 
 void pesapi_set_env_private(pesapi_env env, const void* ptr)
 {
-    lua_State* L = reinterpret_cast<lua_State*>(env);
-    xlua::DataTransfer::SetStatePrivateData(L, const_cast<void*>(ptr));
+    xlua::DataTransfer::SetLuaEnvPrivate(const_cast<void*>(ptr));
 }
 
 struct pesapi_type_info__

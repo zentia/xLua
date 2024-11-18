@@ -6,6 +6,8 @@
 #include <memory>
 #include <vector>
 
+#include "sparsehash/dense_hash_map.h"
+
 #include "LuaClassRegister.h"
 #include "ObjectCacheNode.h"
 
@@ -16,6 +18,7 @@ typedef struct
     void* Ptr;
     const void* TypeId;
     bool NeedDelete;
+    void* UserData;
 } CppObject;
 
 struct pesapi_callback_info__
@@ -35,6 +38,13 @@ struct PesapiCallbackData
     void* Data;
 };
 
+struct TypeIdHashFunctor
+{
+    inline size_t operator()(const void* x) const
+    {
+        return (size_t) x;
+    }
+};
 class CppObjectMapper
 {
 public:
@@ -50,7 +60,7 @@ public:
 
     int CreateFunction(lua_State* L, pesapi_callback Callback, void* Data);
 
-    void UnBindCppObject(lua_State* L, LuaClassDefinition* ClassDefinition, void* Ptr);
+    void UnBindCppObject(lua_State* L, LuaClassDefinition* ClassDefinition, void* Ptr, void* UserData);
 
     void BindCppObject(lua_State* L, LuaClassDefinition* ClassDefinition, void* Ptr, bool PassByPointer, bool create);
 
@@ -66,7 +76,7 @@ public:
 private:
     std::map<void*, ObjectCacheNode> CDataCache;
 
-    std::map<const void*, int> TypeIdToMetaMap;
+    dense_hash_map<const void*, int, TypeIdHashFunctor, std::equal_to<const void*>> TypeIdToMetaMap;
 
     int PointerConstructor;
 

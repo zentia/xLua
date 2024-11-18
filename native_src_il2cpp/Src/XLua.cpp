@@ -918,7 +918,7 @@ extern "C"
 
     static int csharp_function_wrap(lua_State* L)
     {
-        auto starttime = system_clock::now();
+        //auto starttime = system_clock::now();
         lua_CFunction fn = (lua_CFunction) lua_tocfunction(L, lua_upvalueindex(1));
         int ret = fn(L);
 
@@ -933,8 +933,8 @@ extern "C"
         {
             call_ret_hook(L);
         }
-        auto diff = std::chrono::duration_cast<std::chrono::microseconds>(system_clock::now() - starttime).count();
-        xlua::Log("%I64d", diff);
+        /*auto diff = std::chrono::duration_cast<std::chrono::microseconds>(system_clock::now() - starttime).count();
+        xlua::Log("%I64d", diff);*/
         return ret;
     }
 

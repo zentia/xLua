@@ -7,11 +7,11 @@ namespace xlua
 class ObjectCacheNode
 {
 public:
-    XLUA_INLINE ObjectCacheNode(const void* TypeId_) : TypeId(TypeId_), Next(nullptr)
+    XLUA_INLINE ObjectCacheNode(const void* TypeId_) : TypeId(TypeId_), Next(nullptr), UserData(nullptr)
     {
     }
 
-    XLUA_INLINE ObjectCacheNode(const void* TypeId_, ObjectCacheNode* Next_) : TypeId(TypeId_), Next(Next_)
+    XLUA_INLINE ObjectCacheNode(const void* TypeId_, ObjectCacheNode* Next_) : TypeId(TypeId_), Next(Next_), UserData(nullptr)
     {
     }
 
@@ -20,15 +20,18 @@ public:
     {
         other.TypeId = nullptr;
         other.Next = nullptr;
+        other.UserData = nullptr;
     }
 
     XLUA_INLINE ObjectCacheNode& operator=(ObjectCacheNode&& rhs) noexcept
     {
         TypeId = rhs.TypeId;
         Next = rhs.Next;
+        UserData = rhs.UserData;
         Value = std::move(rhs.Value);
         rhs.TypeId = nullptr;
         rhs.Next = nullptr;
+        rhs.UserData = nullptr;
         return *this;
     }
 

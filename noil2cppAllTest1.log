@@ -12,8 +12,8 @@ lua call C# member :
 1 lua call C# member : class member, set : 0ms
 1 lua call C# member : struct member, get : 0ms
 1 lua call C# member : struct member, set : 0ms
-1 lua call C# member : vector3 member, get : 2ms
-1 lua call C# member : vector3 member, set : 1ms
+1 lua call C# member : vector3 member, get : 0ms
+1 lua call C# member : vector3 member, set : 0ms
 lua call C# member funtion : 
 1 lua call C# member funtion : base parameter member function : 0ms
 1 lua call C# member funtion : class parameter member function : 0ms
@@ -55,4 +55,4 @@ C# call lua callbak :
 1 invoke vector3 param callback : 0ms
 lua call construct :
 1 lua construct class : 0ms
-1 lua construct struct : 2ms
+1 lua construct struct : 0ms

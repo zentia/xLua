@@ -105,6 +105,12 @@ set ( XLUA_CORE
     Src/DataTransfer.cpp
     Src/PesapiAddonLoad.cpp
     Src/PesapiLuaImpl.cpp
+    sparsehash/dense_hash_map.h
+    sparsehash/densehashtable.h
+    sparsehash/sparse_hash_map.h
+    sparsehash/sparsehashtable.h
+    sparsehash/sparsetable.h
+    sparsehash/type_traits.h
 )
 
 if (NOT USING_LUAJIT)

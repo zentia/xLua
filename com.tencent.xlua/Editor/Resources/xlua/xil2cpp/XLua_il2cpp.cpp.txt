@@ -863,7 +863,7 @@ handle_underlying:
                 }
                 return nullptr;
             }
-            auto ptr = apis->get_native_object_ptr(env, luaval);
+            auto ptr = (Il2CppObject*) apis->get_native_object_ptr(env, luaval);
             if (!ptr)
             {
                 if ((klass == g_typeofPersistentObjectInfo || klass == il2cpp_defaults.object_class) && apis->is_object(env, luaval))
@@ -891,10 +891,6 @@ handle_underlying:
                         SetPObjectRefInfoValue(apis, env, objectInfo, value_ref);
                     }
                     return ret;
-                }
-                if ( klass->is_generic && apis->is_object(env, luaval))
-                {
-
                 }
                 if (klass == il2cpp_defaults.object_class)
                 {

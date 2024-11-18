@@ -3,6 +3,7 @@
 
 namespace xlua
 {
+    void* DataTransfer::ms_LuaEnvPrivate = nullptr;
     bool DataTransfer::IsInstanceOf(lua_State *L, const void* TypeId, int ObjectIndex)
     {
         return xlua::CppObjectMapper::Get()->IsInstanceOfCppObject(L, TypeId, ObjectIndex);

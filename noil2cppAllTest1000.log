@@ -1,0 +1,58 @@
+C# call lua :
+1000 C# call lua : base parameter function :0ms
+1000 C# call lua : class parameter function :1ms
+1000 C# call lua : struct parameter function :0ms
+1000 C# call lua : two base parameter function :0ms
+C# access lua table : 
+1000 C# access lua table : access member, get : 0ms
+lua call C# member : 
+1000 lua call C# member : base member, get : 0ms
+1000 lua call C# member : base member, set : 0ms
+1000 lua call C# member : class member, get : 1ms
+1000 lua call C# member : class member, set : 0ms
+1000 lua call C# member : struct member, get : 0ms
+1000 lua call C# member : struct member, set : 0ms
+1000 lua call C# member : vector3 member, get : 1ms
+1000 lua call C# member : vector3 member, set : 0ms
+lua call C# member funtion : 
+1000 lua call C# member funtion : base parameter member function : 0ms
+1000 lua call C# member funtion : class parameter member function : 0ms
+1000 lua call C# member funtion : struct parameter member function : 0ms
+1000 lua call C# member funtion : vector3 parameter member function : 0ms
+1000 lua call C# member funtion : input parameter member function : 0ms
+1000 lua call C# member funtion : output parameter member function : 0ms
+1000 lua call C# member funtion : in & output parameter member function : 0ms
+1000 lua call C# member funtion : two parameter member function : 0ms
+lua call static memeber :
+1000 lua call C# static member : base member, get : 0ms
+1000 lua call C# static member : base member, set : 0ms
+1000 lua call C# static member : class member, get : 1ms
+1000 lua call C# static member : class member, set : 0ms
+1000 lua call C# static member : struct member, get : 0ms
+1000 lua call C# static member : struct member, set : 0ms
+1000 lua call C# static member : vector3 member, get : 0ms
+1000 lua call C# static member : vector3 member, set : 0ms
+lua call C# member funtion : 
+1000 lua call C# static member funtion : base parameter member function : 0ms
+1000 lua call C# static member funtion : class parameter member function : 0ms
+1000 lua call C# static member funtion : struct parameter member function : 0ms
+1000 lua call C# static member funtion : vector3 parameter member function : 0ms
+1000 lua call C# static member funtion : input parameter member function : 0ms
+1000 lua call C# static member funtion : output parameter member function : 0ms
+1000 lua call C# static member funtion : in & output parameter member function : 0ms
+1000 lua call C# static member funtion : two parameter member function : 0ms
+lua call C# array & enum : 
+1000 lua call C# member : enum member, get : 0ms
+1000 lua call C# member : enum member, set : 0ms
+1000 lua call C# member : array member, get : 0ms
+1000 lua call C# member : array member, set : 0ms
+lua add & remove call back : 
+1000 lua add & remove callback : 0ms
+C# call lua callbak :
+1000 invoke base param callback : 0ms
+1000 invoke class param callback : 0ms
+1000 invoke struct param callback : 0ms
+1000 invoke vector3 param callback : 0ms
+lua call construct :
+1000 lua construct class : 3ms
+1000 lua construct struct : 1ms

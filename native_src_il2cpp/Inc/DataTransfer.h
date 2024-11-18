@@ -68,20 +68,14 @@ public:
     {
     }
 
-    FORCEINLINE static void* GetStatePrivateData(lua_State* L)
+    FORCEINLINE static void* GetLuaEnvPrivate()
     {
-        lua_pushlightuserdata(L, (void*)PESAPI_PRIVATE_DATA_POS_IN_STATE);
-        lua_rawget(L, LUA_REGISTRYINDEX);
-        void* data = lua_touserdata(L, -1);
-        lua_pop(L, 1);
-        return data;
+        return ms_LuaEnvPrivate;
     }
 
-    FORCEINLINE static void SetStatePrivateData(lua_State* L, void* PrivateData)
+    FORCEINLINE static void SetLuaEnvPrivate(void* PrivateData)
     {
-        lua_pushlightuserdata(L, (void*)PESAPI_PRIVATE_DATA_POS_IN_STATE);
-        lua_pushlightuserdata(L, (void*) PrivateData);
-        lua_rawset(L, LUA_REGISTRYINDEX);
+        ms_LuaEnvPrivate = PrivateData;
     }
 
     static bool IsInstanceOf(lua_State* L, const void* TypeId, int ObjectIndex);
@@ -112,5 +106,7 @@ public:
     FORCEINLINE void PushByType(lua_State* L, T v)
     {
     }
+
+    static void* ms_LuaEnvPrivate;
 };
 }    // namespace xlua

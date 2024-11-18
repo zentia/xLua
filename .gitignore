@@ -1,8 +1,6 @@
 .vs
 /Library
 /Temp
-/Assets/XLua/Gen
-/Assets/XLua/Gen.meta
 /*.csproj
 /*.sln
 /build/build*
@@ -32,5 +30,4 @@ Packages/ProjectCache.md5
 Assets/Gen
 com.tencent.xlua/Plugins/x86_64/xlua_il2cpp.dll
 com.tencent.xlua/Plugins/x86_64/xlua_il2cpp.dll.meta
-Assets/XLua.meta
 .vsconfig
