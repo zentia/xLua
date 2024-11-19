@@ -54,6 +54,18 @@ namespace XLua
 
         public int errorFuncRef = -1;
 
+#if THREAD_SAFE || HOTFIX_ENABLE
+        internal /*static*/ object luaLock = new object();
+
+        internal object luaEnvLock
+        {
+            get
+            {
+                return luaLock;
+            }
+        }
+#endif
+
         const int LIB_VERSION_EXPECT = 105;
 
         public LuaEnv()
@@ -180,6 +192,10 @@ namespace XLua
 
         private void AddSearcher(LuaCSFunction searcher, int index)
         {
+#if THREAD_SAFE || HOTFIX_ENABLE
+            lock (luaEnvLock)
+            {
+#endif
             var _L = L;
             //insert the loader
             LuaAPI.xlua_getloaders(_L);
@@ -197,6 +213,9 @@ namespace XLua
             LuaAPI.lua_pushstdcallcfunction(_L, searcher);
             LuaAPI.xlua_rawseti(_L, -2, index);
             LuaAPI.lua_pop(_L, 1);
+#if THREAD_SAFE || HOTFIX_ENABLE
+            }
+#endif
         }
 
         public LuaTable Global
@@ -241,6 +260,7 @@ namespace XLua
             XLuaIl2cpp.NativeAPI.DoString(apis, nativePesapiEnv, bytes, "@" + filename, null, null);
         }
 
+#if !XLUA_GENERAL
         int last_check_point = 0;
 
         int max_check_per_tick = 20;
@@ -251,21 +271,23 @@ namespace XLua
         }
 
         Func<object, bool> object_valid_checker = new Func<object, bool>(ObjectValidCheck);
-
+#endif
 
         public void Tick()
         {
-            XLuaIl2cpp.NativeAPI.CleanupPendingKillScriptObjects(nativeScriptObjectsRefsMgr);
+#if THREAD_SAFE || HOTFIX_ENABLE
+            lock (luaEnvLock)
+            {
+#endif
+
+#if THREAD_SAFE || HOTFIX_ENABLE
+            }
+#endif
         }
 
         public void GC()
         {
             Tick();
-        }
-        
-        public void FullGc()
-        {
-            LuaAPI.lua_gc(L, XLua.LuaDLL.LuaGCOptions.LUA_GCCOLLECT, 0);
         }
 
         public LuaTable NewTable()

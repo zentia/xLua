@@ -110,6 +110,9 @@ namespace XLuaIl2cpp
         [DllImport("__Internal", CallingConvention = CallingConvention.Cdecl)]
         public static extern void CleanupPendingKillScriptObjects(IntPtr luaEnv);
 
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public static extern bool LogicTick(IntPtr luaEnv);
+
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static object GetModuleExecutor(IntPtr NativeLuaEnvPtr, Type type)
         {

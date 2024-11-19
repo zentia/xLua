@@ -10,7 +10,7 @@ namespace XLua
     {
         IntPtr apis; // PObjectRefInfo first ptr
         IntPtr valueRef;
-        IntPtr nativeLuaEnv;
+        IntPtr nativeJsEnv;
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         object GetLuaTableValueByString(IntPtr apis, string key, Type resultType)
@@ -92,7 +92,7 @@ namespace XLua
 
         ~LuaTable()
         {
-            XLuaIl2cpp.NativeAPI.AddPendingKillScriptObjects(apis, nativeLuaEnv, valueRef);
+            XLuaIl2cpp.NativeAPI.AddPendingKillScriptObjects(apis, nativeJsEnv, valueRef);
         }
     }
 }
