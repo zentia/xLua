@@ -9,7 +9,6 @@
 #include "sparsehash/dense_hash_map.h"
 
 #include "LuaClassRegister.h"
-#include "ObjectCacheNode.h"
 
 extern pesapi_ffi g_pesapi_ffi;
 
@@ -38,13 +37,6 @@ struct PesapiCallbackData
     void* Data;
 };
 
-struct TypeIdHashFunctor
-{
-    inline size_t operator()(const void* x) const
-    {
-        return (size_t) x;
-    }
-};
 class CppObjectMapper
 {
 public:
@@ -73,10 +65,11 @@ public:
     void UnInitialize(lua_State* L);
 
     static CppObjectMapper* Get();
-private:
-    std::map<void*, ObjectCacheNode> CDataCache;
 
-    dense_hash_map<const void*, int, TypeIdHashFunctor, std::equal_to<const void*>> TypeIdToMetaMap;
+private:
+    dense_hash_map<void*, int, PointerHashFunctor, std::equal_to<void*>> CDataCache;
+
+    dense_hash_map<const void*, int, ConstPointerHashFunctor, std::equal_to<const void*>> TypeIdToMetaMap;
 
     int PointerConstructor;
 
@@ -85,11 +78,9 @@ private:
     std::shared_ptr<int> Ref = std::make_shared<int>(0);
 
     int CacheRef = 0;
+    int CachePrivateDataRef = 0;
 
     int GetMetaRefOfClass(lua_State* L, const LuaClassDefinition* ClassDefinition);
-
-    void BindCppObject(
-        lua_State* L, LuaClassDefinition* ClassDefinition, void* Ptr, bool PassByPointer, ObjectCacheNode* CacheNodePtr);
 
     std::vector<PesapiCallbackData*> FunctionDatas;
     static CppObjectMapper* ms_Instance;

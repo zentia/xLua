@@ -429,27 +429,23 @@ void pesapi_close_scope_placement(pesapi_env env, pesapi_value scope)
 
 struct pesapi_value_ref__
 {
-    explicit pesapi_value_ref__(lua_State* _L, int _value_ref, uint32_t field_count)
-        : L(_L), value_ref(_value_ref), internal_field_count(field_count), ref_count(1)
+    pesapi_value_ref__(lua_State* _L, int _value_ref) : L(_L), value_ref(_value_ref), ref_count(1), userdata(nullptr)
     {
     }
     lua_State* L;
     int value_ref;
     int ref_count;
-    uint32_t internal_field_count;
-    void* internal_fields[0];
+    void* userdata;
 };
 
 pesapi_value_ref pesapi_create_value_ref(pesapi_env env, pesapi_value pvalue, uint32_t internal_field_count)
 {
     lua_State* L = reinterpret_cast<lua_State*>(env);
-    lua_rawgeti(L, LUA_REGISTRYINDEX, LUA_RIDX_MAINTHREAD);
-    lua_State* mL = lua_tothread(L, -1);
-    lua_pop(L, 1);
     lua_pushvalue(L, reinterpret_cast<intptr_t>(pvalue));
-    size_t totalSize = sizeof(pesapi_value_ref__) + sizeof(void*) * internal_field_count;
-    void* buffer = ::operator new(totalSize);
-    return new (buffer) pesapi_value_ref__(mL, luaL_ref(L, LUA_REGISTRYINDEX), internal_field_count);
+    int ref = luaL_ref(L, LUA_REGISTRYINDEX);
+    pesapi_value_ref value_ref = new pesapi_value_ref__(L, ref);
+    xlua::CppObjectMapper::Get()->SetPrivateData(L, ref, value_ref);
+    return value_ref;
 }
 
 pesapi_value_ref pesapi_duplicate_value_ref(pesapi_value_ref value_ref)
@@ -462,6 +458,7 @@ void pesapi_release_value_ref(pesapi_value_ref value_ref)
 {
     if (--value_ref->ref_count == 0)
     {
+        xlua::CppObjectMapper::Get()->SetPrivateData(value_ref->L, value_ref->value_ref, nullptr);
         luaL_unref(value_ref->L, LUA_REGISTRYINDEX, value_ref->value_ref);
         delete value_ref;
     }
@@ -498,14 +495,18 @@ pesapi_env pesapi_get_ref_associated_env(pesapi_value_ref value_ref)
 
 void** pesapi_get_ref_internal_fields(pesapi_value_ref value_ref, uint32_t* pinternal_field_count)
 {
-    *pinternal_field_count = value_ref->internal_field_count;
-    return &value_ref->internal_fields[0];
+    return &value_ref->userdata;
 }
 
 pesapi_value pesapi_get_property(pesapi_env env, pesapi_value pobject, const char* key)
 {
     lua_State* L = reinterpret_cast<lua_State*>(env);
     lua_getfield(L, reinterpret_cast<intptr_t>(pobject), key);
+    if (lua_isnil(L, -1))
+    {
+        xlua::Log("no such field %s", key);
+        return 0;
+    }
     return reinterpret_cast<pesapi_value>(lua_gettop(L));
 }
 

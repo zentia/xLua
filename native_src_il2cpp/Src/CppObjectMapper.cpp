@@ -13,7 +13,7 @@ template <typename T>
 inline void __USE(T&&)
 {
 }
-#define container_of(ptr, type, member) ((type*) ((char*) (ptr) - offsetof(type, member)))
+#define container_of(ptr, type, member) ((type*) ((char*) (ptr) -offsetof(type, member)))
 
 static int dummy_idx_tag = 0;
 
@@ -62,7 +62,7 @@ int CppObjectMapper::LoadTypeById(lua_State* L, const void* TypeId)
         lua_createtable(L, 0, 0);
         lua_pushlightuserdata(L, const_cast<void*>(TypeId));
         lua_setfield(L, -2, "__p_innerType");
-        
+
         int meta_ref = GetMetaRefOfClass(L, ClassDef);
         lua_rawgeti(L, LUA_REGISTRYINDEX, meta_ref);
         lua_pushlightuserdata(L, &dummy_idx_tag);
@@ -86,18 +86,12 @@ int CppObjectMapper::LoadTypeById(lua_State* L, const void* TypeId)
 
 void CppObjectMapper::Initialize(lua_State* L)
 {
-    lua_pushlightuserdata(L, &dummy_idx_tag);
-    lua_pushlightuserdata(L, this);
-    lua_rawset(L, LUA_REGISTRYINDEX);
-
     lua_newtable(L);
-    lua_newtable(L);
-    lua_pushstring(L, "__mode");
-    lua_pushstring(L, "v");
-    lua_rawset(L, -3);
-    lua_setmetatable(L, -2);
     CacheRef = luaL_ref(L, LUA_REGISTRYINDEX);
-    TypeIdToMetaMap.set_empty_key((const void*)0);
+    lua_newtable(L);
+    CachePrivateDataRef = luaL_ref(L, LUA_REGISTRYINDEX);
+    TypeIdToMetaMap.set_empty_key((const void*) 0);
+    CDataCache.set_empty_key((void*) 0);
     ms_Instance = this;
 }
 
@@ -114,34 +108,18 @@ int CppObjectMapper::FindOrAddCppObject(lua_State* L, const void* TypeId, void* 
         auto Iter = CDataCache.find(Ptr);
         if (Iter != CDataCache.end())
         {
-            auto CacheNodePtr = Iter->second.Find(TypeId);
-            if (CacheNodePtr)
-            {
-                // printf("find in cache:%p\n", Ptr);
-                lua_rawgeti(L, LUA_REGISTRYINDEX, CacheRef);
-                lua_rawgeti(L, -1, CacheNodePtr->Value);
-                lua_remove(L, -2);
-                if (!lua_isuserdata(L, -1))
-                {
-                    BindCppObject(L, const_cast<LuaClassDefinition*>(FindClassByID(TypeId)), Ptr, PassByPointer, CacheNodePtr);
-                }
-                return lua_gettop(L);
-            }
+            // printf("find in cache:%p\n", Ptr);
+            lua_rawgeti(L, LUA_REGISTRYINDEX, CacheRef);
+            lua_rawgeti(L, -1, Iter->second);
+            lua_remove(L, -2);
+            lua_assert(lua_isuserdata(L, -1));
+            return lua_gettop(L);
         }
     }
 
     auto ClassDefinition = LoadClassByID(TypeId);
-    if (ClassDefinition)
-    {
-        BindCppObject(L, const_cast<LuaClassDefinition*>(ClassDefinition), Ptr, PassByPointer, false);
-    }
-    else
-    {
-        CppObject* obj = (CppObject*) lua_newuserdata(L, sizeof(CppObject));
-        obj->Ptr = Ptr;
-        obj->TypeId = TypeId;
-        obj->NeedDelete = false;
-    }
+    lua_assert(ClassDefinition);
+    BindCppObject(L, const_cast<LuaClassDefinition*>(ClassDefinition), Ptr, PassByPointer, false);
     return lua_gettop(L);
 }
 
@@ -176,140 +154,92 @@ std::weak_ptr<int> CppObjectMapper::GetLuaEnvLifeCycleTracker()
 
 void CppObjectMapper::BindCppObject(lua_State* L, LuaClassDefinition* ClassDefinition, void* Ptr, bool PassByPointer, bool create)
 {
-    ObjectCacheNode* CacheNodePtr = nullptr;
-    if (!create)
-    {
-     /*   CacheNodePtr = &ObjectCacheNode(ClassDefinition->TypeId);
-        CDataCache.emplace(Ptr, CacheNodePtr);
-    }
-    else
-    {*/
-        auto Iter = CDataCache.find(Ptr);
-
-        if (Iter != CDataCache.end())
-        {
-            CacheNodePtr = Iter->second.Add(ClassDefinition->TypeId);
-        }
-        else
-        {
-            CacheNodePtr = &ObjectCacheNode(ClassDefinition->TypeId);
-            CDataCache.emplace(Ptr, CacheNodePtr);
-        }
-    }
-    BindCppObject(L, ClassDefinition, Ptr, PassByPointer, CacheNodePtr);
-}
-
-void CppObjectMapper::BindCppObject(lua_State* L, LuaClassDefinition* ClassDefinition, void* Ptr, bool PassByPointer, ObjectCacheNode* CacheNodePtr)
-{
     CppObject* obj = (CppObject*) lua_newuserdata(L, sizeof(CppObject));
     obj->Ptr = Ptr;
     obj->TypeId = ClassDefinition->TypeId;
     obj->NeedDelete = !PassByPointer;
-    
     int meta_ref = GetMetaRefOfClass(L, ClassDefinition);
     lua_rawgeti(L, LUA_REGISTRYINDEX, meta_ref);
     lua_setmetatable(L, -2);
-    if (CacheNodePtr)
+
+    if (!create)
     {
         lua_rawgeti(L, LUA_REGISTRYINDEX, CacheRef);
         lua_pushvalue(L, -2);
-        CacheNodePtr->Value = luaL_ref(L, -2);
-        if (PassByPointer)
-        {
-            CacheNodePtr->MustCallFinalize = true;
-        }
+        int ref = luaL_ref(L, -2);
         lua_pop(L, 1);
+        
+        auto Iter = CDataCache.find(Ptr);
+        lua_assert(Iter != CDataCache.end());
+        CDataCache[Ptr] = ref;
     }
+    
     if (ClassDefinition->OnEnter)
     {
         obj->UserData = ClassDefinition->OnEnter(Ptr, ClassDefinition->Data, DataTransfer::GetLuaEnvPrivate());
     }
-    
 }
 
 void* CppObjectMapper::GetPrivateData(lua_State* L, int index)
 {
-    if (index < 0)
+    lua_rawgeti(L, LUA_REGISTRYINDEX, CachePrivateDataRef);
+    lua_pushvalue(L, index);
+    lua_rawget(L, -2);
+    if (lua_isnil(L, -1))
     {
-        index = lua_gettop(L) + index + 1;
-    }
-
-    if (!lua_getmetatable(L, index))
-    {
+        lua_pop(L, 2);
         return nullptr;
     }
-    lua_pushvalue(L, index);
-    lua_gettable(L, -2);
     void* data = lua_touserdata(L, -1);
     lua_pop(L, 2);
-
     return data;
 }
 
-void CppObjectMapper::SetPrivateData(lua_State* L, int index, void* Ptr)
+void CppObjectMapper::SetPrivateData(lua_State* L, int value_ref, void* Ptr)
 {
-    if (index < 0)
+    lua_rawgeti(L, LUA_REGISTRYINDEX, CachePrivateDataRef);
+    lua_rawgeti(L, LUA_REGISTRYINDEX, value_ref);
+    if (Ptr == nullptr)
     {
-        index = lua_gettop(L) + index + 1;
-    }
-    if (lua_getmetatable(L, index))
-    {
-        lua_pushvalue(L, index);
-        lua_pushlightuserdata(L, Ptr);
-        lua_settable(L, -3);
+        lua_pushnil(L);
     }
     else
     {
-        lua_newtable(L);
-
-        lua_pushvalue(L, index);
         lua_pushlightuserdata(L, Ptr);
-        lua_settable(L, -3);
-
-        lua_setmetatable(L, index);
     }
+    lua_rawset(L, -3);
+    lua_pop(L, 1);
 }
 
 void CppObjectMapper::UnBindCppObject(lua_State* L, LuaClassDefinition* ClassDefinition, void* Ptr, void* UserData)
 {
     CDataFinalizeMap.erase(Ptr);
     auto Iter = CDataCache.find(Ptr);
-    if (Iter != CDataCache.end())
+    lua_assert(Iter != CDataCache.end());
+    CDataCache.erase(Ptr);
+    if (ClassDefinition->OnExit)
     {
-        auto Removed = Iter->second.Remove(ClassDefinition->TypeId, true);
-        if (!Iter->second.TypeId)    // last one
-        {
-            CDataCache.erase(Ptr);
-        }
-        if (ClassDefinition->OnExit)
-        {
-            ClassDefinition->OnExit(Ptr, ClassDefinition->Data, DataTransfer::GetLuaEnvPrivate(), UserData);
-        }
+        ClassDefinition->OnExit(Ptr, ClassDefinition->Data, DataTransfer::GetLuaEnvPrivate(), UserData);
     }
 }
 
 void CppObjectMapper::UnInitialize(lua_State* L)
 {
     auto PData = DataTransfer::GetLuaEnvPrivate();
+    lua_rawgeti(L, LUA_REGISTRYINDEX, CacheRef);
     for (auto& KV : CDataCache)
     {
-        ObjectCacheNode* PNode = &KV.second;
-        while (PNode)
+        lua_rawgeti(L, -1, KV.second);
+        lua_assert(lua_isuserdata(L, -1));
+        CppObject* obj = (CppObject*)lua_touserdata(L, -1);
+        const LuaClassDefinition* ClassDefinition = FindClassByID(obj->TypeId);
+        if (ClassDefinition && ClassDefinition->Finalize)
         {
-            const LuaClassDefinition* ClassDefinition = FindClassByID(PNode->TypeId);
-            if (PNode->MustCallFinalize)
-            {
-                if (ClassDefinition && ClassDefinition->Finalize)
-                {
-                    ClassDefinition->Finalize(&g_pesapi_ffi, KV.first, ClassDefinition->Data, PData);
-                }
-                PNode->MustCallFinalize = false;
-            }
-            if (ClassDefinition && ClassDefinition->OnExit)
-            {
-                ClassDefinition->OnExit(KV.first, ClassDefinition->Data, PData, PNode->UserData);
-            }
-            PNode = PNode->Next;
+            ClassDefinition->Finalize(&g_pesapi_ffi, KV.first, ClassDefinition->Data, PData);
+        }
+        if (ClassDefinition && ClassDefinition->OnExit)
+        {
+            ClassDefinition->OnExit(KV.first, ClassDefinition->Data, PData, nullptr);
         }
     }
     for (int i = 0; i < FunctionDatas.size(); ++i)
@@ -320,6 +250,7 @@ void CppObjectMapper::UnInitialize(lua_State* L)
     CDataCache.clear();
     TypeIdToMetaMap.clear();
     luaL_unref(L, LUA_REGISTRYINDEX, CacheRef);
+    luaL_unref(L, LUA_REGISTRYINDEX, CachePrivateDataRef);
     ms_Instance = nullptr;
 }
 
@@ -333,7 +264,7 @@ static int obj_indexer(lua_State* L)
         if (!lua_isnil(L, -1))
         {    // has method
             return 1;
-        }        
+        }
         lua_pop(L, 1);
     }
 
@@ -399,7 +330,7 @@ int obj_newindexer(lua_State* L)
 
 static int object_new(lua_State* L)
 {
-    //auto starttime = system_clock::now();
+    // auto starttime = system_clock::now();
     LuaClassDefinition* class_definition = (LuaClassDefinition*) lua_touserdata(L, lua_upvalueindex(1));
     pesapi_callback_info__ callback_info{L, 1, 0};
     xlua::CppObjectMapper::Get()->BindCppObject(
@@ -617,7 +548,6 @@ int CppObjectMapper::GetMetaRefOfClass(lua_State* L, const LuaClassDefinition* C
                 // printf("v get %s, %p \n", PropertyInfo->Name, PropertyInfo);
                 lua_pushcclosure(L, variable_getter_wrap, 2);
                 lua_rawset(L, static_getters);
-                
             }
             if (PropertyInfo->Setter)
             {
@@ -630,7 +560,7 @@ int CppObjectMapper::GetMetaRefOfClass(lua_State* L, const LuaClassDefinition* C
             }
             ++PropertyInfo;
         }
-        
+
         LuaFunctionInfo* FunctionInfo = ClassDefinition->Methods;
         while (FunctionInfo && FunctionInfo->Name && FunctionInfo->Callback)
         {
@@ -656,7 +586,7 @@ int CppObjectMapper::GetMetaRefOfClass(lua_State* L, const LuaClassDefinition* C
 
         luaL_newmetatable(L, ClassDefinition->ScriptName);
         int meta = lua_gettop(L);
-        
+
         lua_pushstring(L, "__index");
         lua_pushvalue(L, obj_methods);
         lua_pushvalue(L, obj_getters);
@@ -697,7 +627,7 @@ int CppObjectMapper::GetMetaRefOfClass(lua_State* L, const LuaClassDefinition* C
 
         lua_createtable(L, 0, 0);
         int cls_meta = lua_gettop(L);
-        
+
         lua_pushstring(L, "__call");
         lua_pushlightuserdata(L, const_cast<LuaClassDefinition*>(ClassDefinition));
         lua_pushlightuserdata(L, ClassDefinition->Data);
