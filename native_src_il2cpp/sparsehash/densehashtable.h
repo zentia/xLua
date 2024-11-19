@@ -91,7 +91,7 @@
 // #define JUMP_(key, num_probes)    ( 1 )
 // Quadratic-ish probing
 #define JUMP_(key, num_probes)    ( num_probes )
-#define Assert lua_assert
+#define Assert ((void) 0)
 
 // Hashtable class, used to implement the hashed associative containers
 // hash_set and hash_map.
@@ -394,17 +394,17 @@ class dense_hashtable {
   //                 and take a const key_type instead of const value_type.
   void set_empty_key(const value_type &val) {
     // Once you set the empty key, you can't change it
-      lua_assert(!use_empty);
+      Assert(!use_empty);
     // The deleted indicator (if specified) and the empty indicator
     // must be different.
-    lua_assert(!use_deleted || !equals(get_key(val), get_key(delval)));
+      Assert(!use_deleted || !equals(get_key(val), get_key(delval)));
     use_empty = true;
     set_value(&emptyval, val);
 
-    lua_assert(!table);    // must set before first use
+    Assert(!table);    // must set before first use
     // num_buckets was set in constructor even though table was NULL
 	table = _Alval.allocate(num_buckets);
-    lua_assert(table);
+    Assert(table);
     fill_range_with_empty(table, table + num_buckets);
   }
 
@@ -436,9 +436,9 @@ class dense_hashtable {
   // Returns true if actually resized.
   bool maybe_shrink() {
 	bool did_resize = false;
-      lua_assert(num_elements >= num_deleted);
-    lua_assert((bucket_count() & (bucket_count()-1)) == 0); // is a power of two
-      lua_assert(bucket_count() >= HT_MIN_BUCKETS);
+      Assert(num_elements >= num_deleted);
+    Assert((bucket_count() & (bucket_count() - 1)) == 0);    // is a power of two
+      Assert(bucket_count() >= HT_MIN_BUCKETS);
 
     if ( (num_elements-num_deleted) < shrink_threshold &&
          bucket_count() > HT_MIN_BUCKETS ) {
@@ -647,11 +647,11 @@ class dense_hashtable {
 	num_buckets = min_size(0,0);          // our new size
     reset_thresholds();
 	value_type* new_table = _Alval.allocate(num_buckets);
-	lua_assert(new_table);
+	Assert(new_table);
 	if(table)
 		_Alval.deallocate(table, old_bucket_count);
 	table = new_table;
-    lua_assert(table);
+    Assert(table);
 	fill_range_with_empty(table, table + num_buckets);
 	num_elements = 0;
 	num_deleted = 0;
@@ -698,7 +698,7 @@ class dense_hashtable {
       }
       ++num_probes;                        // we're doing another probe
       bucknum = (bucknum + JUMP_(key, num_probes)) & bucket_count_minus_one;
-      lua_assert(num_probes < bucket_count()); // don't probe too many times!
+      Assert(num_probes < bucket_count());    // don't probe too many times!
     }
   }
 
@@ -755,7 +755,7 @@ class dense_hashtable {
         const_iterator delpos(this, table + pos.second,              // shrug:
                               table + num_buckets, false);// shouldn't need const
         clear_deleted(delpos);
-        lua_assert( num_deleted > 0);
+        Assert(num_deleted > 0);
         --num_deleted;                       // used to be, now it isn't
       } else {
         ++num_elements;                      // replacing an empty bucket

@@ -22,6 +22,7 @@
 #include "gc/GCHandle.h"
 #include "pesapi.h"
 #include "TDataTrans.h"
+#include "../../external/google/sparsehash/dense_hash_map.h"
 
 #include <vector>
 #include <mutex>
@@ -190,8 +191,17 @@ Il2CppClass* GetParameterType(const MethodInfo* method, int index)
     }
 }
 
-static std::map<const MethodInfo*, const MethodInfo*> WrapFuncPtrToMethodInfo;
-static std::recursive_mutex WrapFuncPtrToMethodInfoMutex;
+struct MethodInfoFunctor
+{
+    inline size_t operator()(const MethodInfo* x) const
+    {
+        return (size_t) x;
+    }
+};
+
+static google::dense_hash_map<const MethodInfo*, const MethodInfo*, MethodInfoFunctor, std::equal_to<const MethodInfo*>>
+    WrapFuncPtrToMethodInfo =
+        google::dense_hash_map<const MethodInfo*, const MethodInfo*, MethodInfoFunctor, std::equal_to<const MethodInfo*>>();
 
 Il2CppDelegate* FunctionPointerToDelegate(Il2CppMethodPointer functionPtr, Il2CppClass* delegateType, Il2CppObject* target)
 {
@@ -199,27 +209,24 @@ Il2CppDelegate* FunctionPointerToDelegate(Il2CppMethodPointer functionPtr, Il2Cp
     const MethodInfo* invoke = il2cpp::vm::Runtime::GetDelegateInvoke(delegateType);
 
     const MethodInfo* method = NULL;
+    auto iter = WrapFuncPtrToMethodInfo.find(invoke);
+    if (iter == WrapFuncPtrToMethodInfo.end())
     {
-        std::lock_guard<std::recursive_mutex> lock(WrapFuncPtrToMethodInfoMutex);
-        auto iter = WrapFuncPtrToMethodInfo.find(invoke);
-        if (iter == WrapFuncPtrToMethodInfo.end())
-        {
-            MethodInfo* newMethod = (MethodInfo*) IL2CPP_CALLOC(1, sizeof(MethodInfo));
-            newMethod->name = invoke->name;
-            newMethod->klass = invoke->klass;
-            newMethod->methodPointer = functionPtr;
-            newMethod->invoker_method = invoke->invoker_method;
-            newMethod->return_type = invoke->return_type;
-            newMethod->parameters_count = invoke->parameters_count;
-            newMethod->parameters = invoke->parameters;
-            newMethod->slot = kInvalidIl2CppMethodSlot;
-            WrapFuncPtrToMethodInfo.insert(std::make_pair(invoke, newMethod));
-            method = newMethod;
-        }
-        else
-        {
-            method = iter->second;
-        }
+        MethodInfo* newMethod = (MethodInfo*) IL2CPP_CALLOC(1, sizeof(MethodInfo));
+        newMethod->name = invoke->name;
+        newMethod->klass = invoke->klass;
+        newMethod->methodPointer = functionPtr;
+        newMethod->invoker_method = invoke->invoker_method;
+        newMethod->return_type = invoke->return_type;
+        newMethod->parameters_count = invoke->parameters_count;
+        newMethod->parameters = invoke->parameters;
+        newMethod->slot = kInvalidIl2CppMethodSlot;
+        WrapFuncPtrToMethodInfo[invoke] = newMethod;
+        method = newMethod;
+    }
+    else
+    {
+        method = iter->second;
     }
 
     Type::ConstructClosedDelegate((Il2CppDelegate*) delegate, target, functionPtr, method);
@@ -1912,7 +1919,6 @@ struct LuaEnvPrivate
 {
     struct pesapi_ffi* apis;
     pesapi_env_ref envRef;
-    std::mutex pendingKillRefsMutex;
     std::unordered_set<pesapi_value_ref> pendingKillRefs;
     MethodInfoHelper<int32_t(Il2CppObject* obj)> objPoolAdd;
     MethodInfoHelper<Il2CppObject*(int32_t index)> objPoolRemove;
@@ -1929,7 +1935,6 @@ struct LuaEnvPrivate
         void** store = apis->get_ref_internal_fields(valueRef, &fieldCount);
         if (fieldCount == 1 && store)
         {
-            std::lock_guard<std::mutex> guard(pendingKillRefsMutex);
             pendingKillRefs.insert(valueRef);
         }
         else
@@ -1941,9 +1946,7 @@ struct LuaEnvPrivate
     void CleanupPendingKillScriptObjects()
     {
         auto env = apis->get_env_from_ref(envRef);
-        AutoValueScope ValueScope(apis, env);
 
-        std::lock_guard<std::mutex> guard(pendingKillRefsMutex);
         auto size = pendingKillRefs.size();
         if (size == 0)
         {
@@ -2001,6 +2004,7 @@ static void LoadTypeWrapper(struct pesapi_ffi* apis, pesapi_callback_info info)
 xlua::LuaEnvPrivate* InitialPapiEnvRef(struct pesapi_ffi* apis, pesapi_env_ref envRef, Il2CppObject* objPool,
     Il2CppReflectionMethod* objPoolAddMethodInfo, Il2CppReflectionMethod* objPoolRemoveMethodInfo)
 {
+    WrapFuncPtrToMethodInfo.set_empty_key((const MethodInfo*) 0);
     auto env = apis->get_env_from_ref(envRef);
     xlua::AutoValueScope ValueScope(apis, env);
     
@@ -2034,6 +2038,7 @@ void CleanupPapiEnvRef(struct pesapi_ffi* apis, pesapi_env_ref envRef)
 void DestroyLuaEnvPrivate(LuaEnvPrivate* luaEnvPrivate)
 {
     delete luaEnvPrivate;
+    WrapFuncPtrToMethodInfo.clear();
 }
 
 }    // namespace xlua

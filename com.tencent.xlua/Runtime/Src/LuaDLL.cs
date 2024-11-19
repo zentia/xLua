@@ -6,20 +6,13 @@ namespace XLua.LuaDLL
     using System.Text;
     using XLua;
 
-#if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN || XLUA_GENERAL || (UNITY_WSA && !UNITY_EDITOR)
+#if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN || (UNITY_WSA && !UNITY_EDITOR)
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate int lua_CSFunction(IntPtr L);
 
-#if GEN_CODE_MINIMIZE
-    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate int CSharpWrapperCaller(IntPtr L, int funcidx, int top);
-#endif
 #else
     public delegate int lua_CSFunction(IntPtr L);
 
-#if GEN_CODE_MINIMIZE
-    public delegate int CSharpWrapperCaller(IntPtr L, int funcidx, int top);
-#endif
 #endif
 
 

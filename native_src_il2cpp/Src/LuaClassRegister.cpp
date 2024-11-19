@@ -1,14 +1,7 @@
-/*
- * Tencent is pleased to support the open source community by making Puerts available.
- * Copyright (C) 2020 THL A29 Limited, a Tencent company.  All rights reserved.
- * Puerts is licensed under the BSD 3-Clause License, except for the third-party components listed in the file 'LICENSE' which may
- * be subject to their corresponding license terms. This file is subject to the terms and conditions defined in file 'LICENSE',
- * which is part of this source code package.
- */
-
 #include "LuaClassRegister.h"
 #include <map>
 #include <cstring>
+#include "sparsehash/dense_hash_map.h"
 
 namespace xlua
 {
@@ -100,13 +93,14 @@ public:
     const LuaClassDefinition* FindCppTypeClassByName(const std::string& Name);
 
 private:
-    std::map<const void*, LuaClassDefinition*> CDataIdToClassDefinition;
+    dense_hash_map<const void*, LuaClassDefinition*, ConstPointerHashFunctor, std::equal_to<const void*>> CDataIdToClassDefinition;
     std::map<std::string, LuaClassDefinition*> CDataNameToClassDefinition;
     pesapi_class_not_found_callback ClassNotFoundCallback = nullptr;
 };
 
 LuaClassRegister::LuaClassRegister()
 {
+    CDataIdToClassDefinition.set_empty_key((const void*) 0);
 }
 
 LuaClassRegister::~LuaClassRegister()

@@ -5,6 +5,7 @@ using System.IO;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using XLua.LuaDLL;
 using XLuaIl2cpp;
 
 [LuaCallCSharp]
@@ -70,15 +71,25 @@ public class PerfMain : MonoBehaviour {
 	private void OnGUI()
     {
         const float height = 50;
-        const float width = 200;
-        for (var i = 0; i < 7; i++)
+        const float width = 300;
+        if (GUI.Button(new Rect(0,0,width, height), "GC"))
         {
-            var loopTimes = (int)Math.Pow(10, i);
+            luaenv.FullGc();
+            luaenv.GC();
+        }
+        
+        for (var i = 1; i < 7; i++)
+        {
+            var loopTimes = (int)Math.Pow(10, i-1);
             if (GUI.Button(new Rect(0, i * height, width, height), $"All Test {loopTimes}"))
             {
                 Process(loopTimes);
             }
-            if (GUI.Button(new Rect(width, i * height, width, height), $"Construct Struct {loopTimes}"))
+            if (GUI.Button(new Rect(width*1, i * height, width, height), $"struct parameter function {loopTimes}"))
+            {
+                ProcessStructParameterFunction(loopTimes);
+            }
+            if (GUI.Button(new Rect(width*2, i * height, width, height), $"Construct Struct {loopTimes}"))
             {
                 ProcessConstructStruct(loopTimes);
             }
@@ -105,6 +116,21 @@ public class PerfMain : MonoBehaviour {
         PerformanceTest("lua construct struct : ", loopTimes, func);
         sw.Close();
     }
+    private void ProcessStructParameterFunction(int loopTimes)
+    {
+        var fs = new FileStream($"{resultPath}ConstructStruct{loopTimes}.log", FileMode.Create);
+        sw = new StreamWriter(fs);
+        FuncStructPara funcStructPara = luaenv.Global.Get<FuncStructPara>("FuncStructPara");
+        ParaStruct paraStruct = new ParaStruct();
+        PerformanceTest("C# call lua : struct parameter function :", loopTimes, loop_times =>
+        {
+            for (int i = 0; i < loop_times; i++)
+            {
+                funcStructPara(paraStruct);
+            }
+        });
+        sw.Close();
+    }
 
     private void PerformanceTest(string title, int loopTimes, PerfTest execute)
     {
@@ -117,13 +143,13 @@ public class PerfMain : MonoBehaviour {
         sw.WriteLine(log);
     }
 
-	private void StartCSCallLua(int LOOP_TIMES)
+	private void StartCSCallLua(int loopTimes)
 	{
         Debug.Log ("C# call lua :");
 		sw.WriteLine ("C# call lua :");
 
 		FuncBasePara funcBaseParm = luaenv.Global.Get<FuncBasePara>("FuncBasePara");
-        PerformanceTest("C# call lua : base parameter function :", LOOP_TIMES, loop_times =>
+        PerformanceTest("C# call lua : base parameter function :", loopTimes, loop_times =>
         {
             for (int i = 0; i < loop_times; i++)
             {
@@ -133,7 +159,7 @@ public class PerfMain : MonoBehaviour {
 
         FuncClassPara funcClassPara = luaenv.Global.Get<FuncClassPara> ("FuncClassPara");
 		ParaClass paraClass = new ParaClass ();
-        PerformanceTest("C# call lua : class parameter function :", LOOP_TIMES, loop_times =>
+        PerformanceTest("C# call lua : class parameter function :", loopTimes, loop_times =>
         {
             for (int i = 0; i < loop_times; i++)
             {
@@ -143,7 +169,7 @@ public class PerfMain : MonoBehaviour {
 
         FuncStructPara funcStructPara = luaenv.Global.Get<FuncStructPara> ("FuncStructPara");
 		ParaStruct paraStruct = new ParaStruct ();
-        PerformanceTest("C# call lua : struct parameter function :", LOOP_TIMES, loop_times =>
+        PerformanceTest("C# call lua : struct parameter function :", loopTimes, loop_times =>
         {
             for (int i = 0; i < loop_times; i++)
             {
@@ -152,7 +178,7 @@ public class PerfMain : MonoBehaviour {
         });
 
         FuncTwoBasePara funcTwoBasePara = luaenv.Global.Get<FuncTwoBasePara> ("FuncTwoBasePara");
-        PerformanceTest("C# call lua : two base parameter function :", LOOP_TIMES, loop_times =>
+        PerformanceTest("C# call lua : two base parameter function :", loopTimes, loop_times =>
         {
             for (int i = 0; i < loop_times; i++)
             {
@@ -163,7 +189,7 @@ public class PerfMain : MonoBehaviour {
         sw.WriteLine ("C# access lua table : ");
 
 		var iTAccess = luaenv.Global.Get<List<int>> ("luaTable");
-        PerformanceTest("C# access lua table : access member, get : ", LOOP_TIMES, loop_times =>
+        PerformanceTest("C# access lua table : access member, get : ", loopTimes, loop_times =>
         {
             for (int i = 0; i < loop_times; i++)
             {

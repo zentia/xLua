@@ -93,8 +93,23 @@
 //#include <ext/hash_fun.h>                  // defined in config.h
 #include "densehashtable.h"
 
-
 using std::pair;
+
+struct ConstPointerHashFunctor
+{
+    inline size_t operator()(const void* x) const
+    {
+        return (size_t) x;
+    }
+};
+
+struct PointerHashFunctor
+{
+    inline size_t operator()(void* x) const
+    {
+        return (size_t) x;
+    }
+};
 
 template <class Key, class T,
           class HashFcn,

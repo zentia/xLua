@@ -98,6 +98,7 @@ void CppObjectMapper::Initialize(lua_State* L)
     lua_setmetatable(L, -2);
     CacheRef = luaL_ref(L, LUA_REGISTRYINDEX);
     TypeIdToMetaMap.set_empty_key((const void*)0);
+    CDataCache.set_empty_key((void*) 0);
     ms_Instance = this;
 }
 
@@ -114,7 +115,7 @@ int CppObjectMapper::FindOrAddCppObject(lua_State* L, const void* TypeId, void* 
         auto Iter = CDataCache.find(Ptr);
         if (Iter != CDataCache.end())
         {
-            auto CacheNodePtr = Iter->second.Find(TypeId);
+            auto CacheNodePtr = Iter->second->Find(TypeId);
             if (CacheNodePtr)
             {
                 // printf("find in cache:%p\n", Ptr);
@@ -188,12 +189,12 @@ void CppObjectMapper::BindCppObject(lua_State* L, LuaClassDefinition* ClassDefin
 
         if (Iter != CDataCache.end())
         {
-            CacheNodePtr = Iter->second.Add(ClassDefinition->TypeId);
+            CacheNodePtr = Iter->second->Add(ClassDefinition->TypeId);
         }
         else
         {
-            CacheNodePtr = &ObjectCacheNode(ClassDefinition->TypeId);
-            CDataCache.emplace(Ptr, CacheNodePtr);
+            CacheNodePtr = new ObjectCacheNode(ClassDefinition->TypeId);
+            CDataCache[Ptr] = CacheNodePtr;
         }
     }
     BindCppObject(L, ClassDefinition, Ptr, PassByPointer, CacheNodePtr);
@@ -276,10 +277,12 @@ void CppObjectMapper::UnBindCppObject(lua_State* L, LuaClassDefinition* ClassDef
     auto Iter = CDataCache.find(Ptr);
     if (Iter != CDataCache.end())
     {
-        auto Removed = Iter->second.Remove(ClassDefinition->TypeId, true);
-        if (!Iter->second.TypeId)    // last one
+        xlua::ObjectCacheNode* node = Iter->second;
+        auto Removed = node->Remove(ClassDefinition->TypeId, true);
+        if (!node->TypeId)    // last one
         {
             CDataCache.erase(Ptr);
+            delete node;
         }
         if (ClassDefinition->OnExit)
         {
@@ -293,7 +296,7 @@ void CppObjectMapper::UnInitialize(lua_State* L)
     auto PData = DataTransfer::GetLuaEnvPrivate();
     for (auto& KV : CDataCache)
     {
-        ObjectCacheNode* PNode = &KV.second;
+        ObjectCacheNode* PNode = KV.second;
         while (PNode)
         {
             const LuaClassDefinition* ClassDefinition = FindClassByID(PNode->TypeId);
@@ -309,7 +312,9 @@ void CppObjectMapper::UnInitialize(lua_State* L)
             {
                 ClassDefinition->OnExit(KV.first, ClassDefinition->Data, PData, PNode->UserData);
             }
+            ObjectCacheNode* temp = PNode;
             PNode = PNode->Next;
+            delete temp;
         }
     }
     for (int i = 0; i < FunctionDatas.size(); ++i)

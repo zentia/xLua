@@ -38,13 +38,6 @@ struct PesapiCallbackData
     void* Data;
 };
 
-struct TypeIdHashFunctor
-{
-    inline size_t operator()(const void* x) const
-    {
-        return (size_t) x;
-    }
-};
 class CppObjectMapper
 {
 public:
@@ -74,9 +67,9 @@ public:
 
     static CppObjectMapper* Get();
 private:
-    std::map<void*, ObjectCacheNode> CDataCache;
+    dense_hash_map<void*, ObjectCacheNode*, PointerHashFunctor, std::equal_to<void*>> CDataCache;
 
-    dense_hash_map<const void*, int, TypeIdHashFunctor, std::equal_to<const void*>> TypeIdToMetaMap;
+    dense_hash_map<const void*, int, ConstPointerHashFunctor, std::equal_to<const void*>> TypeIdToMetaMap;
 
     int PointerConstructor;
 
