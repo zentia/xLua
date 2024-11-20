@@ -41,24 +41,6 @@ inline void LinkOuterImpl(lua_State* L, int Outer, int Inner)
 class LUAENV_API DataTransfer
 {
 public:
-    template <typename T>
-    FORCEINLINE static T* GetPointerFast(lua_State* L, int Index)
-    {
-        return xlua_tocsobj_fast(L, Index);
-    }
-
-    template <typename T>
-    FORCEINLINE static T* GetPointerFast(lua_State* L)
-    {
-        return xlua_tocsobj_fast(L, 1);
-    }
-
-    template <typename T>
-    FORCEINLINE static T* GetPointer(lua_State* L, int Index = 0)
-    {
-        return xlua_tocsobj_safe(L, Index);
-    }
-
     // 替代 Object->SetAlignedPointerInInternalField(Index, Ptr);
     FORCEINLINE static void SetPointer(lua_State* L, void* Object, const void* Ptr, int Index)
     {
@@ -85,27 +67,6 @@ public:
     static void UpdateRef(lua_State* L, int Outer, int Value);
 
     static std::weak_ptr<int> GetLuaEnvLifeCycleTracker(lua_State* L);
-
-    template <typename T1, typename T2>
-    FORCEINLINE static void LinkOuter(lua_State* L, void* Outer, void* Inner)
-    {
-        TOuterLinker<T1, T2>::Link(Context, Outer, Inner);
-    }
-
-    FORCEINLINE static void ThrowException(lua_State* L, const char* Message)
-    {
-        luaL_error(L, "%s", Message);
-    }
-
-    FORCEINLINE static std::string ExceptionToString(lua_State* L, int oldTop)
-    {
-        return std::string();
-    }
-
-    template <typename T>
-    FORCEINLINE void PushByType(lua_State* L, T v)
-    {
-    }
 
     static void* ms_LuaEnvPrivate;
 };

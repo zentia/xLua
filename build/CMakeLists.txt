@@ -4,7 +4,7 @@
 # http://opensource.org/licenses/MIT
 # Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.22)
 
 if ( WIN32 AND NOT CYGWIN AND NOT ( CMAKE_SYSTEM_NAME STREQUAL "WindowsStore" ) AND NOT ANDROID)
 	set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} /MT" CACHE STRING "")
@@ -23,7 +23,6 @@ if ( IOS )
 endif ()
 
 option ( UINT_ESPECIALLY "using custom ulong" OFF )
-option ( USING_LUAJIT "using luajit" OFF )
 option ( GC64 "using gc64" OFF )
 option ( LUAC_COMPATIBLE_FORMAT "compatible format" OFF )
 
@@ -35,65 +34,25 @@ find_path(XLUA_PROJECT_DIR NAMES SConstruct
 
 MARK_AS_ADVANCED(XLUA_PROJECT_DIR)
 
-if (NOT LUA_VERSION)
-    set(LUA_VERSION "5.4.7")
-endif()
+set(LUA_VERSION "5.4.7")
 
-set(LUA_SRC_PATH ../build/lua-${LUA_VERSION}/src)
-set(LUAJIT_SRC_PATH luajit-2.1.0b3/src)
+set(LUA_SRC_PATH ./lua-${LUA_VERSION}/src)
 
-if (USING_LUAJIT)
-	
-    if (APPLE AND NOT IOS AND NOT ANDROID)
-	    include_directories(
-		  ${CMAKE_SOURCE_DIR}
-		  lua-5.1.5/src
-		  lua-5.1.5/etc
-		  ${CMAKE_CURRENT_BINARY_DIR}
-		  ${THIRDPART_INC}
-	    )
-	    set ( LUA_CORE lua-5.1.5/src/lapi.c lua-5.1.5/src/lcode.c lua-5.1.5/src/ldebug.c lua-5.1.5/src/ldo.c lua-5.1.5/src/ldump.c lua-5.1.5/src/lfunc.c 
-          lua-5.1.5/src/lgc.c lua-5.1.5/src/llex.c lua-5.1.5/src/lmem.c lua-5.1.5/src/lobject.c lua-5.1.5/src/lopcodes.c lua-5.1.5/src/lparser.c lua-5.1.5/src/lstate.c 
-          lua-5.1.5/src/lstring.c lua-5.1.5/src/ltable.c lua-5.1.5/src/ltm.c lua-5.1.5/src/lundump.c lua-5.1.5/src/lvm.c lua-5.1.5/src/lzio.c lua-5.1.5/src/lauxlib.c 
-          lua-5.1.5/src/lbaselib.c lua-5.1.5/src/ldblib.c lua-5.1.5/src/liolib.c lua-5.1.5/src/lmathlib.c lua-5.1.5/src/loslib.c lua-5.1.5/src/ltablib.c 
-          lua-5.1.5/src/lstrlib.c lua-5.1.5/src/linit.c lua-5.1.5/src/loadlib.c)
-	else ()
-	    include_directories(
-		  ${CMAKE_SOURCE_DIR}
-		  ${LUAJIT_SRC_PATH}
-		  ${CMAKE_CURRENT_BINARY_DIR}
-		  ${THIRDPART_INC}
-	    )
+include_directories(
+    Inc
+    ${CMAKE_SOURCE_DIR}
+    ${LUA_SRC_PATH}
+    ${CMAKE_CURRENT_BINARY_DIR}
+    ${THIRDPART_INC}
+)
 
-	    set ( LUA_CORE )
-	    set_property( SOURCE xlua.c APPEND PROPERTY COMPILE_DEFINITIONS USING_LUAJIT )
-    endif ()
-	set ( LUA_LIB )
-else ()
-	include_directories(
-        ../build
-        Inc
-	    ${CMAKE_SOURCE_DIR}
-		${LUA_SRC_PATH}
-		${CMAKE_CURRENT_BINARY_DIR}
-		${THIRDPART_INC}
-	)
-
-    aux_source_directory(${LUA_SRC_PATH} LUA_CORE)
-    list(REMOVE_ITEM LUA_CORE ${LUA_SRC_PATH}/lua.c ${LUA_SRC_PATH}/luac.c)
-	set ( LUA_LIB )
-
-	# set ( LUA_CORE ${LUA_SRC_PATH}/lapi.c ${LUA_SRC_PATH}/lcode.c ${LUA_SRC_PATH}/lctype.c ${LUA_SRC_PATH}/ldebug.c ${LUA_SRC_PATH}/ldo.c ${LUA_SRC_PATH}/ldump.c
-	#   ${LUA_SRC_PATH}/lfunc.c ${LUA_SRC_PATH}/lgc.c ${LUA_SRC_PATH}/llex.c ${LUA_SRC_PATH}/lmem.c ${LUA_SRC_PATH}/lobject.c ${LUA_SRC_PATH}/lopcodes.c ${LUA_SRC_PATH}/lparser.c
-	#   ${LUA_SRC_PATH}/lstate.c ${LUA_SRC_PATH}/lstring.c ${LUA_SRC_PATH}/ltable.c ${LUA_SRC_PATH}/ltm.c ${LUA_SRC_PATH}/lundump.c ${LUA_SRC_PATH}/lvm.c ${LUA_SRC_PATH}/lzio.c )
-	# set ( LUA_LIB ${LUA_SRC_PATH}/lauxlib.c ${LUA_SRC_PATH}/lbaselib.c ${LUA_SRC_PATH}/lbitlib.c ${LUA_SRC_PATH}/lcorolib.c ${LUA_SRC_PATH}/ldblib.c
-	#   ${LUA_SRC_PATH}/liolib.c ${LUA_SRC_PATH}/lmathlib.c ${LUA_SRC_PATH}/loslib.c ${LUA_SRC_PATH}/lstrlib.c ${LUA_SRC_PATH}/ltablib.c ${LUA_SRC_PATH}/linit.c
-	#   ${LUA_SRC_PATH}/lutf8lib.c ${LUA_SRC_PATH}/loadlib.c )
-endif ()
+aux_source_directory(${LUA_SRC_PATH} LUA_CORE)
+list(REMOVE_ITEM LUA_CORE ${LUA_SRC_PATH}/lua.c ${LUA_SRC_PATH}/luac.c)
+set ( LUA_LIB )
 
 set ( XLUA_CORE
-    ../build/i64lib.h
-    ../build/i64lib.c
+    i64lib.h
+    i64lib.c
     Inc/XLua.h
     Src/XLua.cpp
     Inc/pesapi.h
@@ -113,9 +72,7 @@ set ( XLUA_CORE
     sparsehash/type_traits.h
 )
 
-if (NOT USING_LUAJIT)
-    list (APPEND XLUA_CORE ../build/memory_leak_checker.c)
-endif ( )
+list (APPEND XLUA_CORE memory_leak_checker.c)
 
 macro(source_group_by_dir proj_dir source_files)
     if(MSVC OR APPLE)

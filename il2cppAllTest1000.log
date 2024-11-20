@@ -1,7 +1,7 @@
 C# call lua :
 1000 C# call lua : base parameter function :0ms
 1000 C# call lua : class parameter function :0ms
-1000 C# call lua : struct parameter function :2ms
+1000 C# call lua : struct parameter function :0ms
 1000 C# call lua : two base parameter function :0ms
 C# access lua table : 
 1000 C# access lua table : access member, get : 0ms
@@ -54,5 +54,5 @@ C# call lua callbak :
 1000 invoke struct param callback : 0ms
 1000 invoke vector3 param callback : 0ms
 lua call construct :
-1000 lua construct class : 0ms
-1000 lua construct struct : 0ms
+1000 lua construct class : 6ms
+1000 lua construct struct : 11ms

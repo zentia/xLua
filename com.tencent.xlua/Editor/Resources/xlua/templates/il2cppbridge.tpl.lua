@@ -82,7 +82,7 @@ static ]], SToCPPType(bridgeInfo.ReturnSignature), ' b_', bridgeInfo.Signature, 
 
     ]], genBridgeArgs(parameterSignatures), [[
 
-    auto luaret = apis->call_function(env, func, nullptr, ]], #parameterSignatures, '',
+    auto luaret = apis->call_function(env, func, 0, ]], #parameterSignatures, '',
         hasVarArgs and ' + arrayLength - 1' or '', [[, argv);
 
     if (apis->has_caught(env))

@@ -17,7 +17,7 @@ bool w_]], wrapperInfo.Signature, [[(struct pesapi_ffi* apis, MethodInfo* method
 
     int lua_args_len = apis->get_args_len(info);
 ]],
-        table.join(table.map(parameterSignatures,function(x, i) return string.format('    pesapi_value _sv%d = apis->get_arg(info, %d);', i-1, i-1) end), '\n'),
+        table.join(table.map(parameterSignatures,function(x, i) return string.format('    int _sv%d = apis->get_arg(info, %d);', i-1, i-1) end), '\n'),
         [[
 
     if (]], #table.filter(parameterSignatures, function(s) return s:sub(1,1) == 'D' end) > 0 and 'true' or 'checkLuaArgument', [[) {

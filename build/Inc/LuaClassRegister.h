@@ -1,12 +1,4 @@
-﻿/*
- * Tencent is pleased to support the open source community by making Puerts available.
- * Copyright (C) 2020 THL A29 Limited, a Tencent company.  All rights reserved.
- * Puerts is licensed under the BSD 3-Clause License, except for the third-party components listed in the file 'LICENSE' which may
- * be subject to their corresponding license terms. This file is subject to the terms and conditions defined in file 'LICENSE',
- * which is part of this source code package.
- */
-
-#pragma once
+﻿#pragma once
 
 #include "functional"
 
@@ -38,13 +30,6 @@ struct LUAENV_API LuaFunctionInfo
     {
     }
 
-    template <typename CallbackType>
-    LuaFunctionInfo(
-        const char* InName, CallbackType InCallback, void* InData = nullptr, const FunctionInfo* InReflectionInfo = nullptr)
-        : Name(InName), Callback(reinterpret_cast<pesapi_callback>(InCallback)), Data(InData), ReflectionInfo(InReflectionInfo)
-    {
-    }
-
     const char* Name;
     FunctionCallback Callback;
     void* Data = nullptr;
@@ -60,17 +45,6 @@ struct LUAENV_API LuaPropertyInfo
     LuaPropertyInfo(const char* InName, pesapi_callback InGetter, pesapi_callback InSetter, void* InGetterData = nullptr,
         void* InSetterData = nullptr)
         : Name(InName), Getter(InGetter), Setter(InSetter), GetterData(InGetterData), SetterData(InSetterData)
-    {
-    }
-
-    template <typename CallbackType>
-    LuaPropertyInfo(const char* InName, CallbackType InGetter, CallbackType InSetter, void* InGetterData = nullptr,
-        void* InSetterData = nullptr)
-        : Name(InName)
-        , Getter(reinterpret_cast<pesapi_callback>(InGetter))
-        , Setter(reinterpret_cast<pesapi_callback>(InSetter))
-        , GetterData(InGetterData)
-        , SetterData(InSetterData)
     {
     }
 
@@ -130,12 +104,3 @@ LUAENV_API bool TraceObjectLifecycle(
     const void* TypeId, pesapi_on_native_object_enter OnEnter, pesapi_on_native_object_exit OnExit);
 
 }    // namespace xlua
-
-#define XLUA_MODULE(Name, RegFunc)                 \
-    static struct FAutoRegisterFor##Name           \
-    {                                              \
-        FAutoRegisterFor##Name()                   \
-        {                                          \
-            xlua::RegisterAddon(#Name, (RegFunc)); \
-        }                                          \
-    } _AutoRegisterFor##Name

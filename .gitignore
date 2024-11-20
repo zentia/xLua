@@ -31,3 +31,4 @@ Assets/Gen
 com.tencent.xlua/Plugins/x86_64/xlua_il2cpp.dll
 com.tencent.xlua/Plugins/x86_64/xlua_il2cpp.dll.meta
 .vsconfig
+*.log

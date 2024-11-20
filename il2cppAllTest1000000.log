@@ -1,51 +1,51 @@
 C# call lua :
-1000000 C# call lua : base parameter function :111ms
-1000000 C# call lua : class parameter function :604ms
-1000000 C# call lua : struct parameter function :2789ms
-1000000 C# call lua : two base parameter function :122ms
+1000000 C# call lua : base parameter function :72ms
+1000000 C# call lua : class parameter function :170ms
+1000000 C# call lua : struct parameter function :1124ms
+1000000 C# call lua : two base parameter function :80ms
 C# access lua table : 
-1000000 C# access lua table : access member, get : 8ms
+1000000 C# access lua table : access member, get : 1ms
 lua call C# member : 
-1000000 lua call C# member : base member, get : 166ms
-1000000 lua call C# member : base member, set : 139ms
-1000000 lua call C# member : class member, get : 659ms
-1000000 lua call C# member : class member, set : 206ms
-1000000 lua call C# member : struct member, get : 543ms
-1000000 lua call C# member : struct member, set : 258ms
-1000000 lua call C# member : vector3 member, get : 529ms
-1000000 lua call C# member : vector3 member, set : 531ms
+1000000 lua call C# member : base member, get : 139ms
+1000000 lua call C# member : base member, set : 110ms
+1000000 lua call C# member : class member, get : 273ms
+1000000 lua call C# member : class member, set : 126ms
+1000000 lua call C# member : struct member, get : 215ms
+1000000 lua call C# member : struct member, set : 141ms
+1000000 lua call C# member : vector3 member, get : 216ms
+1000000 lua call C# member : vector3 member, set : 216ms
 lua call C# member funtion : 
-1000000 lua call C# member funtion : base parameter member function : 161ms
-1000000 lua call C# member funtion : class parameter member function : 209ms
-1000000 lua call C# member funtion : struct parameter member function : 190ms
-1000000 lua call C# member funtion : vector3 parameter member function : 214ms
-1000000 lua call C# member funtion : input parameter member function : 196ms
-1000000 lua call C# member funtion : output parameter member function : 198ms
-1000000 lua call C# member funtion : in & output parameter member function : 224ms
-1000000 lua call C# member funtion : two parameter member function : 186ms
+1000000 lua call C# member funtion : base parameter member function : 80ms
+1000000 lua call C# member funtion : class parameter member function : 125ms
+1000000 lua call C# member funtion : struct parameter member function : 119ms
+1000000 lua call C# member funtion : vector3 parameter member function : 121ms
+1000000 lua call C# member funtion : input parameter member function : 121ms
+1000000 lua call C# member funtion : output parameter member function : 124ms
+1000000 lua call C# member funtion : in & output parameter member function : 143ms
+1000000 lua call C# member funtion : two parameter member function : 132ms
 lua call static memeber :
-1000000 lua call C# static member : base member, get : 149ms
-1000000 lua call C# static member : base member, set : 151ms
-1000000 lua call C# static member : class member, get : 603ms
-1000000 lua call C# static member : class member, set : 200ms
-1000000 lua call C# static member : struct member, get : 480ms
-1000000 lua call C# static member : struct member, set : 273ms
-1000000 lua call C# static member : vector3 member, get : 477ms
-1000000 lua call C# static member : vector3 member, set : 289ms
+1000000 lua call C# static member : base member, get : 108ms
+1000000 lua call C# static member : base member, set : 106ms
+1000000 lua call C# static member : class member, get : 243ms
+1000000 lua call C# static member : class member, set : 131ms
+1000000 lua call C# static member : struct member, get : 233ms
+1000000 lua call C# static member : struct member, set : 130ms
+1000000 lua call C# static member : vector3 member, get : 188ms
+1000000 lua call C# static member : vector3 member, set : 136ms
 lua call C# member funtion : 
-1000000 lua call C# static member funtion : base parameter member function : 180ms
-1000000 lua call C# static member funtion : class parameter member function : 230ms
-1000000 lua call C# static member funtion : struct parameter member function : 216ms
-1000000 lua call C# static member funtion : vector3 parameter member function : 232ms
-1000000 lua call C# static member funtion : input parameter member function : 215ms
-1000000 lua call C# static member funtion : output parameter member function : 227ms
-1000000 lua call C# static member funtion : in & output parameter member function : 253ms
-1000000 lua call C# static member funtion : two parameter member function : 212ms
+1000000 lua call C# static member funtion : base parameter member function : 140ms
+1000000 lua call C# static member funtion : class parameter member function : 147ms
+1000000 lua call C# static member funtion : struct parameter member function : 142ms
+1000000 lua call C# static member funtion : vector3 parameter member function : 146ms
+1000000 lua call C# static member funtion : input parameter member function : 144ms
+1000000 lua call C# static member funtion : output parameter member function : 159ms
+1000000 lua call C# static member funtion : in & output parameter member function : 174ms
+1000000 lua call C# static member funtion : two parameter member function : 158ms
 lua call C# array & enum : 
-1000000 lua call C# member : enum member, get : 235ms
-1000000 lua call C# member : enum member, set : 200ms
-1000000 lua call C# member : array member, get : 4ms
-1000000 lua call C# member : array member, set : 5ms
+1000000 lua call C# member : enum member, get : 146ms
+1000000 lua call C# member : enum member, set : 121ms
+1000000 lua call C# member : array member, get : 5ms
+1000000 lua call C# member : array member, set : 4ms
 lua add & remove call back : 
 1000000 lua add & remove callback : 0ms
 C# call lua callbak :
@@ -54,5 +54,5 @@ C# call lua callbak :
 1000000 invoke struct param callback : 0ms
 1000000 invoke vector3 param callback : 0ms
 lua call construct :
-1000000 lua construct class : 1112ms
-1000000 lua construct struct : 1339ms
+1000000 lua construct class : 566ms
+1000000 lua construct struct : 652ms
