@@ -98,11 +98,15 @@ namespace XLua
             rawL = XLuaIl2cpp.NativeAPI.GetLuaState(nativeLuaEnv);
 
             AddSearcher(LoadFromResource, 4);
-
+#if UNITY_ANDROID
+            DoResourcesString("xlua/init_il2cpp");
+            DoResourcesString("xlua/log");
+            DoResourcesString("xlua/csharp");
+#else
             DoResourcesString("xlua/init_il2cpp.lua");
             DoResourcesString("xlua/log.lua");
             DoResourcesString("xlua/csharp.lua");
-
+#endif
             XLuaIl2cpp.pesapi_ffi ffi = Marshal.PtrToStructure<XLuaIl2cpp.pesapi_ffi>(apis);
             var scope = ffi.open_scope(rawL);
             var env = ffi.get_env_from_ref(nativePesapiEnv);
@@ -237,7 +241,12 @@ namespace XLua
 
         public void DoResourcesString(string filename)
         {
+#if UNITY_ANDROID
+            UnityEngine.TextAsset file = (UnityEngine.TextAsset)UnityEngine.Resources.Load(filename);
+            var bytes = file.bytes;
+#else
             var bytes = System.IO.File.ReadAllBytes(System.IO.Path.Combine(Application.streamingAssetsPath, filename));
+#endif
             XLuaIl2cpp.NativeAPI.DoString(apis, nativePesapiEnv, bytes, "@" + filename, null, null);
         }
 

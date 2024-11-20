@@ -21,7 +21,9 @@ obj
 Packages/packages-lock.json
 UserSettings
 noil2cppwin
+noil2cppandroid
 il2cppwin
+il2cppandroid
 .vscode
 com.tencent.xlua/Plugins/xlua_il2cpp/
 Packages/ProjectCache

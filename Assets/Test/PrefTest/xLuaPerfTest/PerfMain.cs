@@ -37,14 +37,19 @@ public class PerfMain : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        var arr = typeof(ClassLuaCallCS).GetEvents(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public);
-#if UNITY_ANDROID && !UNITY_EDITOR
-	    resultPath = "/sdcard/testResult_android";
+        UnityEngine.Debug.SetParseFromLocal(true);
+#if UNITY_ANDROID
+#if XLUA_IL2CPP
+        resultPath = Application.temporaryCachePath + "/il2cpp";
+#else
+        resultPath = Application.temporaryCachePath + "/noil2cpp";
+#endif
+
 #elif UNITY_IPHONE || UNITY_IOS
 	    resultPath = Application.persistentDataPath + "/testResult_iOS";
 #elif UNITY_STANDALONE_WIN
 #if XLUA_IL2CPP
-		resultPath = Application.dataPath + "/../../../../il2cpp";
+        resultPath = Application.dataPath + "/../../../../il2cpp";
 #else
         resultPath = Application.dataPath + "/../../../../noil2cpp";
 #endif
@@ -62,7 +67,7 @@ public class PerfMain : MonoBehaviour
         Debug.Log("start cost: " + (Time.realtimeSinceStartup - start));
         var endMem = System.GC.GetTotalMemory(true);
         Debug.Log("startMem: " + startMem + ", endMem: " + endMem + ", " + "cost mem: " + (endMem - startMem));
-#if UNITY_EDITOR || !XLUA_IL2CPP        
+#if UNITY_EDITOR || !XLUA_IL2CPP || UNITY_ANDROID     
         luaenv.DoString("require 'luaTest'");
 #else
         luaenv.DoResourcesString("luaTest.lua");
@@ -71,8 +76,8 @@ public class PerfMain : MonoBehaviour
 
     private void OnGUI()
     {
-        const float height = 50;
-        const float width = 300;
+        const float height = 100;
+        const float width = 400;
         if (GUI.Button(new Rect(0, 0, width, height), "GC"))
         {
             luaenv.FullGc();
@@ -167,11 +172,7 @@ public class PerfMain : MonoBehaviour
 
         if (GUI.Button(new Rect(0, height*2, width, height), $"LuaCallCSMemberFuncBaseParamMemberFunc"))
         {
-            var fs = new FileStream($"{resultPath}LuaCallCSMemberFuncBaseParamMemberFunc.log", FileMode.Create);
-            sw = new StreamWriter(fs);
-            var func = luaenv.Global.Get<PerfTest>("LuaAccessCSBaseMemberFunc");
-            PerformanceTest("lua call C# member function : base parameter member function : ", loopTimes, func);
-            sw.Close();
+            LuaCallCSMemberFuncBaseParamMemberFunc(loopTimes);
         }
         if (GUI.Button(new Rect(width * 1, height*2, width, height), "CSCallLuaBaseParameterFunction"))
         {
@@ -245,6 +246,15 @@ public class PerfMain : MonoBehaviour
             });
             sw.Close();
         }
+    }
+
+    private void LuaCallCSMemberFuncBaseParamMemberFunc(int loopTimes)
+    {
+        var fs = new FileStream($"{resultPath}LuaCallCSMemberFuncBaseParamMemberFunc.log", FileMode.Create);
+        sw = new StreamWriter(fs);
+        var func = luaenv.Global.Get<PerfTest>("LuaAccessCSBaseMemberFunc");
+        PerformanceTest("lua call C# member function : base parameter member function : ", loopTimes, func);
+        sw.Close();
     }
 
     private void PerformanceTest(string title, int loopTimes, PerfTest execute)
