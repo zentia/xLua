@@ -22,8 +22,12 @@ Packages/packages-lock.json
 UserSettings
 noil2cppwin
 noil2cppandroid
+noil2cppios
+noil2cppios.zip
 il2cppwin
 il2cppandroid
+il2cppios
+il2cppios.zip
 .vscode
 com.tencent.xlua/Plugins/xlua_il2cpp/
 Packages/ProjectCache
@@ -34,3 +38,4 @@ com.tencent.xlua/Plugins/x86_64/xlua_il2cpp.dll
 com.tencent.xlua/Plugins/x86_64/xlua_il2cpp.dll.meta
 .vsconfig
 *.log
+ProjectSettings/ProjectSettings.asset
