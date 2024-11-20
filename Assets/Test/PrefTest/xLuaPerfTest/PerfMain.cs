@@ -38,23 +38,18 @@ public class PerfMain : MonoBehaviour
     void Start()
     {
         UnityEngine.Debug.SetParseFromLocal(true);
-#if UNITY_ANDROID
+#if UNITY_ANDROID || UNITY_IOS
 #if XLUA_IL2CPP
         resultPath = Application.temporaryCachePath + "/il2cpp";
 #else
         resultPath = Application.temporaryCachePath + "/noil2cpp";
 #endif
-
-#elif UNITY_IPHONE || UNITY_IOS
-	    resultPath = Application.persistentDataPath + "/testResult_iOS";
 #elif UNITY_STANDALONE_WIN
 #if XLUA_IL2CPP
         resultPath = Application.dataPath + "/../../../../il2cpp";
 #else
         resultPath = Application.dataPath + "/../../../../noil2cpp";
 #endif
-#else
-        resultPath = "";
 #endif
         var start = Time.realtimeSinceStartup;
         var startMem = System.GC.GetTotalMemory(true);
