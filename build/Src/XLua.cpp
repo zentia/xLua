@@ -83,7 +83,7 @@ struct LuaEnv
 }    // namespace xlua
 
 extern pesapi_func_ptr reg_apis[];
-extern pesapi_ffi g_pesapi_ffi;
+
 /*
 ** stdcall C function support
 */

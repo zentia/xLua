@@ -10,6 +10,8 @@
 
 #include "LuaClassRegister.h"
 
+extern pesapi_ffi g_pesapi_ffi;
+
 typedef struct
 {
     void* Ptr;
