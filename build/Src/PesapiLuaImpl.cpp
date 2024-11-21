@@ -763,7 +763,8 @@ struct pesapi_property_descriptor__
         pesapi_signature_info signature_info;
     } info;
 };
-
+namespace xlua
+{
 pesapi_type_info pesapi_alloc_type_infos(size_t count)
 {
     auto ret = new pesapi_type_info__[count];
@@ -966,15 +967,17 @@ const void* pesapi_find_type_id(const char* module_name, const char* type_name)
     const auto class_def = xlua::FindCppTypeClassByName(fullname);
     return class_def ? class_def->TypeId : nullptr;
 }
+}
+
 EXTERN_C_END
 
 
 MSVC_PRAGMA(warning(push))
 MSVC_PRAGMA(warning(disable : 4191))
-pesapi_func_ptr reg_apis[] = {(pesapi_func_ptr) &pesapi_alloc_type_infos, (pesapi_func_ptr) &pesapi_set_type_info,
-    (pesapi_func_ptr) &pesapi_create_signature_info, (pesapi_func_ptr) &pesapi_alloc_property_descriptors,
-    (pesapi_func_ptr) &pesapi_set_method_info, (pesapi_func_ptr) &pesapi_set_property_info, (pesapi_func_ptr) &pesapi_define_class,
-    (pesapi_func_ptr) &pesapi_get_class_data, (pesapi_func_ptr) &pesapi_trace_native_object_lifecycle,
-    (pesapi_func_ptr) &pesapi_on_class_not_found, (pesapi_func_ptr) &pesapi_class_type_info,
-    (pesapi_func_ptr) &pesapi_find_type_id};
+pesapi_func_ptr reg_apis[] = {(pesapi_func_ptr) &xlua::pesapi_alloc_type_infos, (pesapi_func_ptr) &xlua::pesapi_set_type_info,
+    (pesapi_func_ptr) &xlua::pesapi_create_signature_info, (pesapi_func_ptr) &xlua::pesapi_alloc_property_descriptors,
+    (pesapi_func_ptr) &xlua::pesapi_set_method_info, (pesapi_func_ptr) &xlua::pesapi_set_property_info,
+    (pesapi_func_ptr) &xlua::pesapi_define_class, (pesapi_func_ptr) &xlua::pesapi_get_class_data,
+    (pesapi_func_ptr) &xlua::pesapi_trace_native_object_lifecycle, (pesapi_func_ptr) &xlua::pesapi_on_class_not_found,
+    (pesapi_func_ptr) &xlua::pesapi_class_type_info, (pesapi_func_ptr) &xlua::pesapi_find_type_id};
 MSVC_PRAGMA(warning(pop))

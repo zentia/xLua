@@ -159,6 +159,8 @@ if (LUAC_COMPATIBLE_FORMAT AND NOT USING_LUAJIT)
     target_compile_definitions (xlua_il2cpp PRIVATE LUAC_COMPATIBLE_FORMAT)
 endif ()
 
+target_compile_definitions (xlua_il2cpp PRIVATE XLUA_IL2CPP)
+
 set_property(
 	SOURCE ${LUA_SOCKET}
 	APPEND

@@ -313,7 +313,10 @@ struct pesapi_ffi
     pesapi_get_env_private_func get_env_private;
     pesapi_set_env_private_func set_env_private;
 };
-
+#if XLUA_IL2CPP
+namespace xlua
+{
+#endif
 PESAPI_EXTERN pesapi_type_info pesapi_alloc_type_infos(size_t count);
 
 PESAPI_EXTERN void pesapi_set_type_info(
@@ -346,6 +349,9 @@ PESAPI_EXTERN void pesapi_class_type_info(const char* proto_magic_id, const void
     const void* methods_info, const void* functions_info, const void* properties_info, const void* variables_info);
 
 PESAPI_EXTERN const void* pesapi_find_type_id(const char* module_name, const char* type_name);
+#if XLUA_IL2CPP
+}
+#endif
 
 EXTERN_C_END
 
