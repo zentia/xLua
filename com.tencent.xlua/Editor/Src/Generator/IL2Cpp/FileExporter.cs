@@ -555,7 +555,7 @@ namespace XLuaIl2cpp.Editor
                     luaEnv.DoString<LuaFunction>(bytes, path);
                     var func = luaEnv.Global.Get<LuaFunction>("unityenv_for_xlua");
                     string macroHeaderContent = func.Func<bool, bool, string>(true,
-#if UNITY_ANDROID || UNITY_IPHONE
+#if UNITY_IPHONE
                         false
 #else
                         true
