@@ -9,8 +9,14 @@
 #include "sparsehash/dense_hash_map.h"
 
 #include "LuaClassRegister.h"
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 extern pesapi_ffi g_pesapi_ffi;
+#ifdef __cplusplus
+}
+#endif
 
 typedef struct
 {
