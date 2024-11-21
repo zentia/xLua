@@ -763,35 +763,34 @@ struct pesapi_property_descriptor__
         pesapi_signature_info signature_info;
     } info;
 };
-namespace xlua
-{
-pesapi_type_info pesapi_alloc_type_infos(size_t count)
+
+pesapi_type_info alloc_type_infos(size_t count)
 {
     auto ret = new pesapi_type_info__[count];
     memset(ret, 0, sizeof(pesapi_type_info__) * count);
     return ret;
 }
 
-void pesapi_set_type_info(
+void set_type_info(
     pesapi_type_info type_infos, size_t index, const char* name, bool is_pointer, bool is_const, bool is_ref, bool is_primitive)
 {
     type_infos[index] = {name, is_pointer, is_const, is_ref, is_primitive};
 }
 
-pesapi_signature_info pesapi_create_signature_info(
+pesapi_signature_info create_signature_info(
     pesapi_type_info return_type, size_t parameter_count, pesapi_type_info parameter_types)
 {
     return new pesapi_signature_info__{return_type, parameter_count, parameter_types};
 }
 
-pesapi_property_descriptor pesapi_alloc_property_descriptors(size_t count)
+pesapi_property_descriptor alloc_property_descriptors(size_t count)
 {
     auto ret = new pesapi_property_descriptor__[count];
     memset(ret, 0, sizeof(pesapi_property_descriptor__) * count);
     return ret;
 }
 
-void pesapi_set_method_info(pesapi_property_descriptor properties, size_t index, const char* name, bool is_static,
+void set_method_info(pesapi_property_descriptor properties, size_t index, const char* name, bool is_static,
     pesapi_callback method, void* data, pesapi_signature_info signature_info)
 {
     properties[index].name = name;
@@ -801,7 +800,7 @@ void pesapi_set_method_info(pesapi_property_descriptor properties, size_t index,
     properties[index].info.signature_info = signature_info;
 }
 
-void pesapi_set_property_info(pesapi_property_descriptor properties, size_t index, const char* name, bool is_static,
+void set_property_info(pesapi_property_descriptor properties, size_t index, const char* name, bool is_static,
     pesapi_callback getter, pesapi_callback setter, void* getter_data, void* setter_data, pesapi_type_info type_info)
 {
     properties[index].name = name;
@@ -856,7 +855,7 @@ const char* GPesapiModuleName = nullptr;
 
 MSVC_PRAGMA(warning(push))
 MSVC_PRAGMA(warning(disable : 4191))
-void pesapi_define_class(const void* type_id, const void* super_type_id, const char* type_name, pesapi_constructor constructor,
+void define_class(const void* type_id, const void* super_type_id, const char* type_name, pesapi_constructor constructor,
     pesapi_finalize finalize, size_t property_count, pesapi_property_descriptor properties, void* userdata)
 {
     xlua::LuaClassDefinition classDef = LuaClassEmptyDefinition;
@@ -929,24 +928,24 @@ void pesapi_define_class(const void* type_id, const void* super_type_id, const c
 }
 MSVC_PRAGMA(warning(pop))
 
-void* pesapi_get_class_data(const void* type_id, bool force_load)
+void* get_class_data(const void* type_id, bool force_load)
 {
     auto clsDef = force_load ? xlua::LoadClassByID(type_id) : xlua::FindClassByID(type_id);
     return clsDef ? clsDef->Data : nullptr;
 }
 
-bool pesapi_trace_native_object_lifecycle(
+bool trace_native_object_lifecycle(
     const void* type_id, pesapi_on_native_object_enter on_enter, pesapi_on_native_object_exit on_exit)
 {
     return xlua::TraceObjectLifecycle(type_id, on_enter, on_exit);
 }
 
-void pesapi_on_class_not_found(pesapi_class_not_found_callback callback)
+void on_class_not_found(pesapi_class_not_found_callback callback)
 {
     xlua::OnClassNotFound(callback);
 }
 
-void pesapi_class_type_info(const char* proto_magic_id, const void* type_id, const void* constructor_info, const void* methods_info,
+void class_type_info(const char* proto_magic_id, const void* type_id, const void* constructor_info, const void* methods_info,
     const void* functions_info, const void* properties_info, const void* variables_info)
 {
     if (strcmp(proto_magic_id, XLUA_BINDING_PROTO_ID()) != 0)
@@ -959,7 +958,7 @@ void pesapi_class_type_info(const char* proto_magic_id, const void* type_id, con
         static_cast<const xlua::NamedPropertyInfo*>(properties_info), static_cast<const xlua::NamedPropertyInfo*>(variables_info));
 }
 
-const void* pesapi_find_type_id(const char* module_name, const char* type_name)
+const void* find_type_id(const char* module_name, const char* type_name)
 {
     std::string fullname = module_name;
     fullname += ".";
@@ -967,17 +966,16 @@ const void* pesapi_find_type_id(const char* module_name, const char* type_name)
     const auto class_def = xlua::FindCppTypeClassByName(fullname);
     return class_def ? class_def->TypeId : nullptr;
 }
-}
 
 EXTERN_C_END
 
 
 MSVC_PRAGMA(warning(push))
 MSVC_PRAGMA(warning(disable : 4191))
-pesapi_func_ptr reg_apis[] = {(pesapi_func_ptr) &xlua::pesapi_alloc_type_infos, (pesapi_func_ptr) &xlua::pesapi_set_type_info,
-    (pesapi_func_ptr) &xlua::pesapi_create_signature_info, (pesapi_func_ptr) &xlua::pesapi_alloc_property_descriptors,
-    (pesapi_func_ptr) &xlua::pesapi_set_method_info, (pesapi_func_ptr) &xlua::pesapi_set_property_info,
-    (pesapi_func_ptr) &xlua::pesapi_define_class, (pesapi_func_ptr) &xlua::pesapi_get_class_data,
-    (pesapi_func_ptr) &xlua::pesapi_trace_native_object_lifecycle, (pesapi_func_ptr) &xlua::pesapi_on_class_not_found,
-    (pesapi_func_ptr) &xlua::pesapi_class_type_info, (pesapi_func_ptr) &xlua::pesapi_find_type_id};
+pesapi_func_ptr reg_apis[] = {(pesapi_func_ptr) &alloc_type_infos, (pesapi_func_ptr) &set_type_info,
+    (pesapi_func_ptr) &create_signature_info, (pesapi_func_ptr) &alloc_property_descriptors,
+    (pesapi_func_ptr) &set_method_info, (pesapi_func_ptr) &set_property_info,
+    (pesapi_func_ptr) &define_class, (pesapi_func_ptr) &get_class_data,
+    (pesapi_func_ptr) &trace_native_object_lifecycle, (pesapi_func_ptr) &on_class_not_found,
+    (pesapi_func_ptr) &class_type_info, (pesapi_func_ptr) &find_type_id};
 MSVC_PRAGMA(warning(pop))
