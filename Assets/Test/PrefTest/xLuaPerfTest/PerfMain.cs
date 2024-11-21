@@ -37,12 +37,12 @@ public class PerfMain : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        UnityEngine.Debug.SetParseFromLocal(true);
+        //UnityEngine.Debug.SetParseFromLocal(true);
 #if UNITY_ANDROID || UNITY_IOS
 #if XLUA_IL2CPP
-        resultPath = Application.temporaryCachePath + "/il2cpp";
+        resultPath = Application.persistentDataPath + "/il2cpp";
 #else
-        resultPath = Application.temporaryCachePath + "/noil2cpp";
+        resultPath = Application.persistentDataPath + "/noil2cpp";
 #endif
 #elif UNITY_STANDALONE_WIN
 #if XLUA_IL2CPP

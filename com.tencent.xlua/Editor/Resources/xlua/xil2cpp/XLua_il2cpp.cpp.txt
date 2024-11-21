@@ -200,7 +200,7 @@ Il2CppDelegate* FunctionPointerToDelegate(Il2CppMethodPointer functionPtr, Il2Cp
 
     const MethodInfo* method = NULL;
     {
-        std::lock_guard<std::recursive_mutex> lock(WrapFuncPtrToMethodInfoMutex);
+        //std::lock_guard<std::recursive_mutex> lock(WrapFuncPtrToMethodInfoMutex);
         auto iter = WrapFuncPtrToMethodInfo.find(invoke);
         if (iter == WrapFuncPtrToMethodInfo.end())
         {
@@ -1896,7 +1896,7 @@ struct LuaEnvPrivate
         void** store = apis->get_ref_internal_fields(valueRef, &fieldCount);
         if (fieldCount == 1 && store)
         {
-            std::lock_guard<std::mutex> guard(pendingKillRefsMutex);
+            //std::lock_guard<std::mutex> guard(pendingKillRefsMutex);
             pendingKillRefs.insert(valueRef);
         }
         else
@@ -1910,7 +1910,7 @@ struct LuaEnvPrivate
         auto env = apis->get_env_from_ref(envRef);
         AutoValueScope ValueScope(apis, env);
 
-        std::lock_guard<std::mutex> guard(pendingKillRefsMutex);
+        //std::lock_guard<std::mutex> guard(pendingKillRefsMutex);
         auto size = pendingKillRefs.size();
         if (size == 0)
         {
