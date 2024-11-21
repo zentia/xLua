@@ -1,3 +1,6 @@
+--package.cpath = package.cpath .. ';C:/Users/Administrator/AppData/Roaming/JetBrains/Rider2024.2/plugins/EmmyLua/debugger/emmy/windows/x64/?.dll'
+--local dbg = require('emmy_core')
+--dbg.tcpConnect('localhost', 9966)
 require("tte")
 require("il2cpp_snippets")
 
@@ -5,19 +8,30 @@ function defineValueType(valueTypeInfo)
     if not valueTypeInfo.Signature then
         return ''
     end
+    local fieldSignatures = listToLuaArray(valueTypeInfo.FieldSignatures)
     return TaggedTemplateEngine('// ', valueTypeInfo.CsName, [[
 
 struct ]], valueTypeInfo.Signature, [[
 
 {
-]], FOR(listToLuaArray(valueTypeInfo.FieldSignatures), function(s, i)
+]],
+            IF(#fieldSignatures == 0),[[
+    union
+    {
+        struct
+        {
+        };
+        uint8_t __padding[1];
+    };            
+]],ELSE(),
+            FOR(fieldSignatures, function(s, i)
         return TaggedTemplateEngine([[
 ]], IF(isNullableStruct(valueTypeInfo.Signature) and i == valueTypeInfo.NullableHasValuePosition), [[
     ]], SToCPPType(s), [[ hasValue;
     ]], ELSE(), [[
     ]], SToCPPType(s), ' p', i, [[;
     ]], ENDIF())
-    end), [[
+    end),ENDIF(), [[
 };
     ]])
 end
