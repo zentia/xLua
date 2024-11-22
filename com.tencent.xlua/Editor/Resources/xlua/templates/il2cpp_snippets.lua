@@ -282,17 +282,18 @@ function LuaValToCSVal(signature, LuaName, CSName)
     // LuaValToCSVal string with default
     Il2CppString* %s = OptionalParameter<Il2CppString*>::GetString(apis, env, info, method, wrapData, lua_args_len, %d);]],
                 CSName, start)
-        elseif si == 'o' or si == 'O' or si == 'a' then
+        elseif si == 'o' or si == 'O' then
             return string.format([[
     // LuaValToCSVal ref with default
     Il2CppObject* %s = OptionalParameter<Il2CppObject*>::GetRefType(apis, env, info, method, wrapData, lua_args_len, %d, TI%s);]],
                 CSName, start, CSName)
         elseif (string.startsWith(si, sigs.StructPrefix) or string.startsWith(si, sigs.NullableStructPrefix)) and string.endsWith(si, '_') then
-            return string.format([[ // LuaValToCSVal valuetype with default
+            return string.format([[
+    // LuaValToCSVal valuetype with default
     %s %s = OptionalParameter<%s>::GetValueType(apis, env, info, method, wrapData, lua_args_len, %d);
-            ]], CSName, si, start)
+            ]], si, CSName, si, start)
         else
-            return string.format([[ // LuaValToCSVal unknown type with default
+            return string.format([[// LuaValToCSVal unknown type with default
     void* %s = nullptr;
             ]], CSName)
         end

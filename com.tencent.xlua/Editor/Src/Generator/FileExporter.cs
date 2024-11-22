@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -10,15 +10,9 @@ namespace XLua.Editor
     {
         public class FileExporter
         {
-            public static void GenRegisterInfo(string outDir)
+            public static void GenRegisterInfo(string outDir, List<Type> types)
             {
-                var configure = Configure.GetConfigureByTags(new List<string>()
-                {
-                    "XLua.LuaCallCSharpAttribute"
-                });
-                var genTypes = configure["XLua.LuaCallCSharpAttribute"].Select(kv => kv.Key)
-                    .Where(o => o is Type)
-                    .Cast<Type>()
+                var genTypes = types
                     .Where(t => !t.IsGenericTypeDefinition && !t.Name.StartsWith("<"))
                     .Distinct()
                     .ToList();

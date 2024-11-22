@@ -1,4 +1,4 @@
-﻿#if ENABLE_IL2CPP && XLUA_IL2CPP
+#if ENABLE_IL2CPP && XLUA_IL2CPP
 using System;
 using System.Runtime.InteropServices;
 using System.Runtime.CompilerServices;
@@ -24,7 +24,7 @@ namespace XLuaIl2cpp
 #if (UNITY_IPHONE || UNITY_TVOS || UNITY_WEBGL || UNITY_SWITCH) && !UNITY_EDITOR
         const string DLLNAME = "__Internal";
 #else
-        const string DLLNAME = "xlua_il2cpp";
+        const string DLLNAME = "GameCore";
 #endif
 
         [DllImport("__Internal", CallingConvention = CallingConvention.Cdecl)]

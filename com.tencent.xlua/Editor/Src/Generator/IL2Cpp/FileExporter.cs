@@ -184,10 +184,101 @@ namespace XLuaIl2cpp.Editor
                 }
             }
 
-            public static void GenCPPWrap(string saveTo)
+            private static Type ParseType(string input)
             {
-                var types = XLua.Utils.GetAllTypes().Where(t=>(t.IsDefined(typeof(LuaCallCSharpAttribute)) || t.IsDefined(typeof(CSharpCallLuaAttribute))));
-                types = types.Append(typeof(Type));
+                input = input.Trim();
+                switch (input)
+                {
+                    case "bool":
+                        return typeof(System.Boolean);
+                    case "int":
+                        return typeof(System.Int32);
+                    case "uint":
+                        return typeof(System.UInt32);
+                    case "T":
+                        return null;
+                    case "float":
+                        return typeof(System.Single);
+                    case "string":
+                        return typeof(System.String);
+                    default:
+                    {
+                        var index = input.IndexOf('<');
+                        string output;
+                        Type type;
+                        if (index > -1)
+                        {
+                            output = input[..index] + "`";
+                            input = input[(index + 1)..input.LastIndexOf('>')];
+                            var parameterTypes = input.Split(',');
+                            output += $"{parameterTypes.Length}";
+                            type = Utils.GetType(output);
+                            if (type == null)
+                            {
+                                Debug.LogError($"{input} {output}");
+                                return null;
+                            }
+                            var typeArguments = new List<Type>();
+                            foreach (var parameterType in parameterTypes)
+                            {
+                                var t = Utils.GetType(parameterType);
+                                if (t == null)
+                                {
+                                    t = ParseType(parameterType);
+                                    if (t == null)
+                                    {
+                                        Debug.LogError($"{input} {output}");
+                                        return null;
+                                    }
+                                }
+                                typeArguments.Add(t);
+                            }
+                            return type.MakeGenericType(typeArguments.ToArray());
+                        }
+                        index = input.LastIndexOf('.');
+                        output = input[..index] + '+' + input[(index + 1)..];
+                        type = Utils.GetType(output);
+                        if (type == null)
+                        {
+                            index = output.LastIndexOf('.');
+                            output = output[..index] + '+' + output[(index + 1)..];
+                            type = Utils.GetType(output);
+                            if (type == null)
+                                Debug.LogError($"{input} {output}");
+                        }
+
+                        return type;
+                        }
+                }
+                
+            }
+
+            public static List<Type> GenCPPWrap(string saveTo)
+            {
+                
+                var allLines = File.ReadAllLines("DevAssets/CSTypeUsedInLua.txt");
+                var types = new List<Type>();
+                foreach (var line in allLines)
+                {
+                    if (line == "")
+                    {
+                        continue;
+                    }
+                    var type = Utils.GetType(line);
+                    if (type != null)
+                    {
+                        types.Add(type);
+                    }
+                    else
+                    {
+                        type = ParseType(line);
+                        if (type != null)
+                        {
+                            types.Add(type);
+                        }
+                    }
+                }
+                
                 var typeExcludeDelegate = types.Where(t => !typeof(MulticastDelegate).IsAssignableFrom(t));
                 Utils.SetFilters(Configure.GetFilters());
                 var ctorToWrapper = new List<ConstructorInfo>();
@@ -236,7 +327,6 @@ namespace XLuaIl2cpp.Editor
 
                 HashSet<Type> typeInGenericArgument = new HashSet<Type>();
                 HashSet<MethodBase> processed = new HashSet<MethodBase>();
-#if !XLUA_GENERAL
                 foreach (var method in methodToWrap)
                 {
                     GenericArgumentInInstructions(method, typeInGenericArgument, processed, mb =>
@@ -256,7 +346,6 @@ namespace XLuaIl2cpp.Editor
                         }
                     });
                 }
-#endif
                 HashSet<Type> allTypes = new HashSet<Type>();
                 foreach (var type in wrapperUsedTypes.Concat(XLuaDelegates).Concat(typeInGenericArgument))
                 {
@@ -446,26 +535,19 @@ namespace XLuaIl2cpp.Editor
                         }
                     }
                 }
+
+                return types;
             }
 
-            public static void GenExtensionMethodInfos(string outDir)
+            public static void GenExtensionMethodInfos(string outDir, List<Type> types)
             {
-                var configure = XLua.Configure.GetConfigureByTags(new List<string>() {
-                    "XLua.LuaCallCSharpAttribute"
-                });
-
-                var genTypes = new HashSet<Type>(configure["XLua.LuaCallCSharpAttribute"].Select(kv => kv.Key)
-                    .Where(o => o is Type)
-                    .Cast<Type>()
+                var genTypes = types
                     .Where(t => !t.IsGenericTypeDefinition && !t.Name.StartsWith("<"))
                     .Distinct()
-                    .ToList());
+                    .ToList();
 
                 genTypes.Add(typeof(ArrayExtension));
                 var extendedType2extensionType = (from type in genTypes
-#if UNITY_EDITOR
-                    where !System.IO.Path.GetFileName(type.Assembly.Location).Contains("Editor")
-#endif
                                                   from method in type.GetMethods(BindingFlags.Static | BindingFlags.Public).Select(method => TypeUtils.HandleMaybeGenericMethod(method)).Where(method => method != null)
                                                   where Utils.isDefined(method, typeof(ExtensionAttribute))
                                                   group type by Utils.getExtendedType(method)).ToDictionary(g => g.Key, g => (g as IEnumerable<Type>).Distinct().ToList()).ToList();
@@ -489,15 +571,9 @@ namespace XLuaIl2cpp.Editor
                 }
             }
 
-            public static void GenLinkXml(string outDir)
+            public static void GenLinkXml(string outDir, List<Type> types)
             {
-                var configure = XLua.Configure.GetConfigureByTags(new List<string>() {
-                    "XLua.BindingAttribute",
-                    "XLua.LuaCallCSharpAttribute"
-                    });
-                var genTypes = configure["XLua.BindingAttribute"].Select(kv => kv.Key)
-                    .Where(o => o is Type)
-                    .Cast<Type>()
+                var genTypes = types
                     .Where(t => !t.IsGenericTypeDefinition && !t.Name.StartsWith("<"))
                     .Distinct()
                     .ToList();

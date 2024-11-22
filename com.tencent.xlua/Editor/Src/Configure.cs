@@ -98,7 +98,7 @@ namespace XLua
 
         public static string GetCodeOutputDirectory()
         {
-            return UnityEngine.Application.dataPath + "/Gen/";
+            return CSObjectWrapEditor.GeneratorConfig.common_path;
         }
     }
 }

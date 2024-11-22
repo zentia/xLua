@@ -14,6 +14,26 @@ namespace CSObjectWrapEditor
     public static class GeneratorConfig
     {
         public static string common_path = Application.dataPath + "/Gen/";
+
+        static GeneratorConfig()
+        {
+            foreach (var type in (from type in XLua.Utils.GetAllTypes()
+                         where type.IsAbstract && type.IsSealed
+                         select type))
+            {
+                foreach (var field in type.GetFields(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.DeclaredOnly))
+                {
+                    if (field.FieldType == typeof(string) && field.IsDefined(typeof(GenPathAttribute), false))
+                    {
+                        common_path = field.GetValue(null) as string;
+                        if (!common_path.EndsWith("/"))
+                        {
+                            common_path = common_path + "/";
+                        }
+                    }
+                }
+            }
+        }
     }
 
     public struct CustomGenTask

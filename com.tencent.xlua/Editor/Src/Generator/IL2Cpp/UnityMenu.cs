@@ -1,68 +1,51 @@
 using System.IO;
 using System;
-#if !XLUA_GENERAL
+using System.Collections.Generic;
 using UnityEditor;
-using UnityEngine;
-#endif
 
-#if !XLUA_GENERAL
 namespace XLuaIl2cpp.Editor
 {
-    namespace Generator {
-
-        public static class UnityMenu {
+    namespace Generator
+    {
+        public static class UnityMenu
+        {
             [MenuItem("XLua/Generate For xIl2cpp mode (all in one)", false, 2)]
-            public static void GenV2() {
-                CSObjectWrapEditor.Generator.Clear(XLua.Configure.GetCodeOutputDirectory());
-                GenerateCppWrappers();
-                GenerateExtensionMethodInfos();
-                GenerateLinkXML();
+            public static void Gen()
+            {
+                var types = GenerateCppWrappers();
+                GenerateExtensionMethodInfos(types);
+                GenerateLinkXML(types);
                 GenerateCppPlugin();
-                XLua.Editor.Generator.UnityMenu.GenRegisterInfo();
+                XLua.Editor.Generator.UnityMenu.GenRegisterInfo(types);
+                AssetDatabase.Refresh();
             }
 
-            [MenuItem("XLua/Generate/xIl2cpp c file", false, 6)]
             public static void GenerateCppPlugin()
-            {   
+            {
                 var saveTo = Path.Combine(Path.GetFullPath("Packages/com.tencent.xlua/"), "Plugins/xlua_il2cpp/");
-                Directory.CreateDirectory(saveTo);
                 FileExporter.CopyXIl2cppCPlugin(saveTo);
                 FileExporter.GenMarcoHeader(saveTo);
             }
 
-            [MenuItem("XLua/Generate/xIl2cpp wrapper bridge", false, 6)]
-            public static void GenerateCppWrappers()
-            {   
-                var start = DateTime.Now;
+            public static List<Type> GenerateCppWrappers()
+            {
                 var saveTo = Path.Combine(Path.GetFullPath("Packages/com.tencent.xlua/"), "Plugins/xlua_il2cpp/");
                 Directory.CreateDirectory(saveTo);
-                FileExporter.GenCPPWrap(saveTo);
-                Debug.Log("finished! use " + (DateTime.Now - start).TotalMilliseconds + " ms Outputed to " + saveTo);
-            }
-  
-            [MenuItem("XLua/Generate/xIl2cpp ExtensionMethodInfos_Gen.cs", false, 6)]
-            public static void GenerateExtensionMethodInfos()
-            {
-                var start = DateTime.Now;
-                var saveTo = XLua.Configure.GetCodeOutputDirectory();
-                
-                Directory.CreateDirectory(saveTo);
-                FileExporter.GenExtensionMethodInfos(saveTo);
-                Debug.Log("finished! use " + (DateTime.Now - start).TotalMilliseconds + " ms Outputed to " + saveTo);
-                AssetDatabase.Refresh();
+                return FileExporter.GenCPPWrap(saveTo);
             }
 
-            [MenuItem("XLua/Generate/Link.xml", false, 6)]
-            public static void GenerateLinkXML()
+            public static void GenerateExtensionMethodInfos(List<Type> types)
             {
-                var start = DateTime.Now;
                 var saveTo = XLua.Configure.GetCodeOutputDirectory();
                 Directory.CreateDirectory(saveTo);
-                FileExporter.GenLinkXml(saveTo);
-                Debug.Log("finished! use " + (DateTime.Now - start).TotalMilliseconds + " ms Outputed to " + saveTo);
-                AssetDatabase.Refresh();
+                FileExporter.GenExtensionMethodInfos(saveTo, types);
+            }
+
+            public static void GenerateLinkXML(List<Type> types)
+            {
+                var saveTo = XLua.Configure.GetCodeOutputDirectory();
+                FileExporter.GenLinkXml(saveTo, types);
             }
         }
     }
 }
-#endif

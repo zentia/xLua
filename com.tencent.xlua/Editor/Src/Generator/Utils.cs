@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using UnityEditorInternal;
 using XLua.TypeMapping;
 
 namespace XLua.Editor
@@ -465,6 +466,26 @@ namespace XLua.Editor
                 }
                 if (type.IsGenericType) return type.GetGenericTypeDefinition();
                 return type;
+            }
+
+            public static Type GetType(string name)
+            {
+                var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+                for (int i = 0; i < assemblies.Length; i++)
+                {
+#if UNITY_EDITOR && !NET_STANDARD_2_0
+                    if (!(assemblies[i].ManifestModule is System.Reflection.Emit.ModuleBuilder))
+                    {
+#endif
+                        var type = assemblies[i].GetType(name);
+                        if (type != null)
+                            return type;
+#if UNITY_EDITOR && !NET_STANDARD_2_0
+                    }
+#endif
+                }
+
+                return null;
             }
         }
     }
