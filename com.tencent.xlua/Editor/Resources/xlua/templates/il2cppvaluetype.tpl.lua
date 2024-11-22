@@ -14,8 +14,7 @@ function defineValueType(valueTypeInfo)
 struct ]], valueTypeInfo.Signature, [[
 
 {
-]],
-            IF(#fieldSignatures == 0),[[
+]], IF(#fieldSignatures == 0),[[
     union
     {
         struct
@@ -23,8 +22,7 @@ struct ]], valueTypeInfo.Signature, [[
         };
         uint8_t __padding[1];
     };            
-]],ELSE(),
-            FOR(fieldSignatures, function(s, i)
+]],ELSE(), FOR(fieldSignatures, function(s, i)
         return TaggedTemplateEngine([[
 ]], IF(isNullableStruct(valueTypeInfo.Signature) and i == valueTypeInfo.NullableHasValuePosition), [[
     ]], SToCPPType(s), [[ hasValue;

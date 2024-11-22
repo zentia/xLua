@@ -91,9 +91,9 @@ public class PerfMain : MonoBehaviour
             StartConstruct(loopTimes);
             sw.Close();
         }
-        if (GUI.Button(new Rect(width * 1, height, width, height), "CSCallLuaBaseParameterFunction"))
+        if (GUI.Button(new Rect(width * 1, height, width, height), "FuncBasePara"))
         {
-            var fs = new FileStream($"{resultPath}CSCallLuaBaseParameterFunction.log", FileMode.Create);
+            var fs = new FileStream($"{resultPath}FuncBasePara.log", FileMode.Create);
             sw = new StreamWriter(fs);
             FuncBasePara funcBaseParm = luaenv.Global.Get<FuncBasePara>("FuncBasePara");
             PerformanceTest("C# call lua : base parameter function :", loopTimes, loop_times =>
@@ -105,9 +105,9 @@ public class PerfMain : MonoBehaviour
             });
             sw.Close();
         }
-        if (GUI.Button(new Rect(width * 2, height, width, height), $"CSCallLuaClassParameterFunction"))
+        if (GUI.Button(new Rect(width * 2, height, width, height), $"FuncClassPara"))
         {
-            var fs = new FileStream($"{resultPath}CSCallLuaClassParameterFunction.log", FileMode.Create);
+            var fs = new FileStream($"{resultPath}FuncClassPara.log", FileMode.Create);
             sw = new StreamWriter(fs);
             FuncClassPara funcClassPara = luaenv.Global.Get<FuncClassPara>("FuncClassPara");
             ParaClass paraClass = new ParaClass();
@@ -120,9 +120,9 @@ public class PerfMain : MonoBehaviour
             });
             sw.Close();
         }
-        if (GUI.Button(new Rect(width * 3, height, width, height), $"CSCallLuaStructParameterFunction"))
+        if (GUI.Button(new Rect(width * 3, height, width, height), $"FuncStructPara"))
         {
-            var fs = new FileStream($"{resultPath}CSCallLuaStructParameterFunction.log", FileMode.Create);
+            var fs = new FileStream($"{resultPath}FuncStructPara.log", FileMode.Create);
             sw = new StreamWriter(fs);
             FuncStructPara funcStructPara = luaenv.Global.Get<FuncStructPara>("FuncStructPara");
             ParaStruct paraStruct = new ParaStruct();
@@ -135,9 +135,9 @@ public class PerfMain : MonoBehaviour
             });
             sw.Close();
         }
-        if (GUI.Button(new Rect(width * 4, height, width, height), $"CSCallLuaTwoBaseParameterFunction"))
+        if (GUI.Button(new Rect(width * 4, height, width, height), $"FuncTwoBasePara"))
         {
-            var fs = new FileStream($"{resultPath}CSCallLuaTwoBaseParameterFunction.log", FileMode.Create);
+            var fs = new FileStream($"{resultPath}FuncTwoBasePara.log", FileMode.Create);
             sw = new StreamWriter(fs);
             FuncTwoBasePara funcTwoBasePara = luaenv.Global.Get<FuncTwoBasePara>("FuncTwoBasePara");
             PerformanceTest("C# call lua : two base parameter function :", loopTimes, loop_times =>
@@ -149,9 +149,9 @@ public class PerfMain : MonoBehaviour
             });
             sw.Close();
         }
-        if (GUI.Button(new Rect(width * 5, height, width, height), $"CSAccessLuaTableAccessMemberGet"))
+        if (GUI.Button(new Rect(width * 5, height, width, height), $"luaTable"))
         {
-            var fs = new FileStream($"{resultPath}CSAccessLuaTableAccessMemberGet.log", FileMode.Create);
+            var fs = new FileStream($"{resultPath}luaTable.log", FileMode.Create);
             sw = new StreamWriter(fs);
             var iTAccess = luaenv.Global.Get<List<int>>("luaTable");
             PerformanceTest("C# access lua table : access member, get : ", loopTimes, loop_times =>
@@ -165,27 +165,26 @@ public class PerfMain : MonoBehaviour
         }
 
 
-        if (GUI.Button(new Rect(0, height*2, width, height), $"LuaCallCSMemberFuncBaseParamMemberFunc"))
+        if (GUI.Button(new Rect(0, height*2, width, height), $"LuaAccessCSBaseMemberFunc"))
         {
-            LuaCallCSMemberFuncBaseParamMemberFunc(loopTimes);
-        }
-        if (GUI.Button(new Rect(width * 1, height*2, width, height), "CSCallLuaBaseParameterFunction"))
-        {
-            var fs = new FileStream($"{resultPath}CSCallLuaBaseParameterFunction.log", FileMode.Create);
+            var fs = new FileStream($"{resultPath}LuaAccessCSBaseMemberFunc.log", FileMode.Create);
             sw = new StreamWriter(fs);
-            FuncBasePara funcBaseParm = luaenv.Global.Get<FuncBasePara>("FuncBasePara");
-            PerformanceTest("C# call lua : base parameter function :", loopTimes, loop_times =>
-            {
-                for (int i = 0; i < loop_times; i++)
-                {
-                    funcBaseParm(i);
-                }
-            });
+            var func = luaenv.Global.Get<PerfTest>("LuaAccessCSBaseMemberFunc");
+            PerformanceTest("lua call C# member function : base parameter member function : ", loopTimes, func);
             sw.Close();
         }
-        if (GUI.Button(new Rect(width * 2, height*2, width, height), $"CSCallLuaClassParameterFunction"))
+        if (GUI.Button(new Rect(width * 1, height*2, width, height), "LuaConstructClass"))
         {
-            var fs = new FileStream($"{resultPath}CSCallLuaClassParameterFunction.log", FileMode.Create);
+            var fs = new FileStream($"{resultPath}LuaConstructClass.log", FileMode.Create);
+            sw = new StreamWriter(fs);
+            sw.WriteLine("lua call construct :");
+            PerfTest func = luaenv.Global.Get<PerfTest>("LuaConstructClass");
+            PerformanceTest("lua construct class : ", loopTimes, func);
+            sw.Close();
+        }
+        if (GUI.Button(new Rect(width * 2, height*2, width, height), $"FuncClassPara"))
+        {
+            var fs = new FileStream($"{resultPath}FuncClassPara.log", FileMode.Create);
             sw = new StreamWriter(fs);
             FuncClassPara funcClassPara = luaenv.Global.Get<FuncClassPara>("FuncClassPara");
             ParaClass paraClass = new ParaClass();
@@ -198,9 +197,9 @@ public class PerfMain : MonoBehaviour
             });
             sw.Close();
         }
-        if (GUI.Button(new Rect(width * 3, height*2, width, height), $"CSCallLuaStructParameterFunction"))
+        if (GUI.Button(new Rect(width * 3, height*2, width, height), $"FuncStructPara"))
         {
-            var fs = new FileStream($"{resultPath}CSCallLuaStructParameterFunction.log", FileMode.Create);
+            var fs = new FileStream($"{resultPath}FuncStructPara.log", FileMode.Create);
             sw = new StreamWriter(fs);
             FuncStructPara funcStructPara = luaenv.Global.Get<FuncStructPara>("FuncStructPara");
             ParaStruct paraStruct = new ParaStruct();
@@ -213,9 +212,9 @@ public class PerfMain : MonoBehaviour
             });
             sw.Close();
         }
-        if (GUI.Button(new Rect(width * 4, height*2, width, height), $"CSCallLuaTwoBaseParameterFunction"))
+        if (GUI.Button(new Rect(width * 4, height*2, width, height), $"FuncTwoBasePara"))
         {
-            var fs = new FileStream($"{resultPath}CSCallLuaTwoBaseParameterFunction.log", FileMode.Create);
+            var fs = new FileStream($"{resultPath}FuncTwoBasePara.log", FileMode.Create);
             sw = new StreamWriter(fs);
             FuncTwoBasePara funcTwoBasePara = luaenv.Global.Get<FuncTwoBasePara>("FuncTwoBasePara");
             PerformanceTest("C# call lua : two base parameter function :", loopTimes, loop_times =>
@@ -227,9 +226,9 @@ public class PerfMain : MonoBehaviour
             });
             sw.Close();
         }
-        if (GUI.Button(new Rect(width * 5, height*2, width, height), $"CSAccessLuaTableAccessMemberGet"))
+        if (GUI.Button(new Rect(width * 5, height*2, width, height), $"luaTable"))
         {
-            var fs = new FileStream($"{resultPath}CSAccessLuaTableAccessMemberGet.log", FileMode.Create);
+            var fs = new FileStream($"{resultPath}luaTable.log", FileMode.Create);
             sw = new StreamWriter(fs);
             var iTAccess = luaenv.Global.Get<List<int>>("luaTable");
             PerformanceTest("C# access lua table : access member, get : ", loopTimes, loop_times =>
@@ -241,15 +240,6 @@ public class PerfMain : MonoBehaviour
             });
             sw.Close();
         }
-    }
-
-    private void LuaCallCSMemberFuncBaseParamMemberFunc(int loopTimes)
-    {
-        var fs = new FileStream($"{resultPath}LuaCallCSMemberFuncBaseParamMemberFunc.log", FileMode.Create);
-        sw = new StreamWriter(fs);
-        var func = luaenv.Global.Get<PerfTest>("LuaAccessCSBaseMemberFunc");
-        PerformanceTest("lua call C# member function : base parameter member function : ", loopTimes, func);
-        sw.Close();
     }
 
     private void PerformanceTest(string title, int loopTimes, PerfTest execute)
@@ -506,7 +496,12 @@ public delegate void NullEventHandler();
 
 [LuaCallCSharp]
 public class ParaClass
-{ }
+{
+    ~ParaClass()
+    {
+        Debug.Log("~ParaClass()");
+    }
+}
 
 [GCOptimize]
 [LuaCallCSharp]
