@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEditor;
 using System.Collections.Generic;
 using System.IO;
@@ -33,7 +33,10 @@ namespace CSObjectWrapEditor
     {
 
     }
+    public class GenPathAttribute : Attribute
+    {
 
+    }
     public struct XLuaTemplate
     {
         public string name;

@@ -1,21 +1,34 @@
-#if !ENABLE_IL2CPP || !XLUA_IL2CPP
+/*
+ * Tencent is pleased to support the open source community by making xLua available.
+ * Copyright (C) 2016 THL A29 Limited, a Tencent company. All rights reserved.
+ * Licensed under the MIT License (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+ * http://opensource.org/licenses/MIT
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+*/
+
+#if USE_UNI_LUA
+using LuaAPI = UniLua.Lua;
+using RealStatePtr = UniLua.ILuaState;
+using LuaCSFunction = UniLua.CSharpFunctionDelegate;
+#else
 using LuaAPI = XLua.LuaDLL.Lua;
 using RealStatePtr = System.IntPtr;
 using LuaCSFunction = XLua.LuaDLL.lua_CSFunction;
+#endif
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 using XLua.LuaDLL;
-
 
 namespace XLua
 {
-    using System;
-    using System.Collections.Generic;
-
     public class LuaEnv : IDisposable
     {
         public const string CSHARP_NAMESPACE = "xlua_csharp_namespace";
         public const string MAIN_SHREAD = "xlua_main_thread";
 
-        public RealStatePtr rawL;
+        internal RealStatePtr rawL;
 
         public RealStatePtr L
         {
@@ -33,7 +46,7 @@ namespace XLua
 
         public ObjectTranslator translator;
 
-        public int errorFuncRef = -1;
+        internal int errorFuncRef = -1;
 
 #if THREAD_SAFE || HOTFIX_ENABLE
         internal /*static*/ object luaLock = new object();
@@ -49,20 +62,22 @@ namespace XLua
 
         const int LIB_VERSION_EXPECT = 105;
 
-        public LuaEnv(Type bridgeType = null, Type translatorType = null)
+        public LuaEnv()
         {
-            LuaDLL.Lua.SetLogCallback(LuaDLL.Lua.Log);
             if (LuaAPI.xlua_get_lib_version() != LIB_VERSION_EXPECT)
             {
                 throw new InvalidProgramException("wrong lib version expect:"
                     + LIB_VERSION_EXPECT + " but got:" + LuaAPI.xlua_get_lib_version());
             }
 
-#if THREAD_SAFE
+#if THREAD_SAFE || HOTFIX_ENABLE
             lock(luaEnvLock)
 #endif
             {
                 LuaIndexes.LUA_REGISTRYINDEX = LuaAPI.xlua_get_registry_index();
+#if GEN_CODE_MINIMIZE
+                LuaAPI.xlua_set_csharp_wrapper_caller(InternalGlobals.CSharpWrapperCallerPtr);
+#endif
                 // Create State
                 rawL = LuaAPI.luaL_newstate();
 
@@ -70,37 +85,40 @@ namespace XLua
                 LuaAPI.luaopen_xlua(rawL);
                 LuaAPI.luaopen_i64lib(rawL);
 
-                if (translatorType != null)
-                {
-                    translator = Activator.CreateInstance(translatorType, this, rawL, bridgeType) as ObjectTranslator;
-                }
-                else
-                {
-                    translator = new ObjectTranslator(this, rawL, bridgeType);    
-                }
-                
+                translator = new ObjectTranslator(this, rawL);
                 translator.createFunctionMetatable(rawL);
                 translator.OpenLib(rawL);
                 ObjectTranslatorPool.Instance.Add(rawL, translator);
 
                 LuaAPI.lua_atpanic(rawL, StaticLuaCallbacks.Panic);
 
-
+#if !XLUA_GENERAL
                 LuaAPI.lua_pushstdcallcfunction(rawL, StaticLuaCallbacks.Print);
                 if (0 != LuaAPI.xlua_setglobal(rawL, "print"))
                 {
                     throw new Exception("call xlua_setglobal fail!");
                 }
+#endif
 
                 //template engine lib register
                 TemplateEngine.LuaTemplate.OpenLib(rawL);
 
                 AddSearcher(StaticLuaCallbacks.LoadBuiltinLib, 2); // just after the preload searcher
                 AddSearcher(StaticLuaCallbacks.LoadFromCustomLoaders, 3);
-                AddSearcher(StaticLuaCallbacks.LoadFromResource, 4);
-                AddSearcher(StaticLuaCallbacks.LoadFromStreamingAssetsPath, -1);
-                DoString(init_xlua, "Init");
+                //#if !XLUA_GENERAL
+                //                AddSearcher(StaticLuaCallbacks.LoadFromResource, 4);
+                //                AddSearcher(StaticLuaCallbacks.LoadFromStreamingAssetsPath, -1);
+                //#endif
+
+                errorFuncRef = LuaAPI.get_error_func_ref(rawL);
+
+                DoStringWithoutReturnValue(init_xlua, "Init");
                 init_xlua = null;
+
+                //#if (!UNITY_SWITCH && !UNITY_WEBGL) || UNITY_EDITOR
+                //                AddBuildin("socket.core", StaticLuaCallbacks.LoadSocketCore);
+                //                AddBuildin("socket", StaticLuaCallbacks.LoadSocketCore);
+                //#endif
 
                 AddBuildin("CS", StaticLuaCallbacks.LoadCS);
 
@@ -157,8 +175,6 @@ namespace XLua
                 translator.Get(rawL, -1, out _G);
                 LuaAPI.lua_pop(rawL, 1);
 
-                errorFuncRef = LuaAPI.get_error_func_ref(rawL);
-
                 if (initers != null)
                 {
                     for (int i = 0; i < initers.Count; i++)
@@ -167,9 +183,9 @@ namespace XLua
                     }
                 }
 
+                translator.CreateEnumerablePairs(rawL);
                 translator.CreateArrayMetatable(rawL);
                 translator.CreateDelegateMetatable(rawL);
-                translator.CreateEnumerablePairs(rawL);
             }
         }
 
@@ -233,7 +249,7 @@ namespace XLua
         {
             return LoadString<LuaFunction>(chunk, chunkName, env);
         }
-
+        // 为了兼容il2cpp模式，这里不支持多返回值，有需求请联系zentiali
         public T DoString<T>(byte[] chunk, string chunkName = "chunk", LuaTable env = null)
         {
 #if THREAD_SAFE || HOTFIX_ENABLE
@@ -268,10 +284,70 @@ namespace XLua
 #endif
         }
 
-        public T DoString<T>(string chunk, string chunkName = "chunk", LuaTable env = null)
+        public object DoString(byte[] chunk, Type type, string chunkName = "chunk", LuaTable env = null)
         {
-            byte[] bytes = System.Text.Encoding.UTF8.GetBytes(chunk);
-            return DoString<T>(bytes, chunkName, env);
+#if THREAD_SAFE || HOTFIX_ENABLE
+            lock (luaEnvLock)
+            {
+#endif
+            var _L = L;
+            int oldTop = LuaAPI.lua_gettop(_L);
+            int errFunc = LuaAPI.load_error_func(_L, errorFuncRef);
+            if (LuaAPI.xluaL_loadbuffer(_L, chunk, chunk.Length, chunkName) == 0)
+            {
+                if (env != null)
+                {
+                    env.push(_L);
+                    LuaAPI.lua_setfenv(_L, -2);
+                }
+
+                if (LuaAPI.lua_pcall(_L, 0, -1, errFunc) == 0)
+                {
+                    LuaAPI.lua_remove(_L, errFunc);
+                    return translator.popValue(_L, oldTop, type);
+                }
+                else
+                    ThrowExceptionFromError(oldTop);
+            }
+            else
+                ThrowExceptionFromError(oldTop);
+
+            return default;
+#if THREAD_SAFE || HOTFIX_ENABLE
+            }
+#endif
+        }
+
+        public void DoStringWithoutReturnValue(byte[] chunk, string chunkName = "chunk", LuaTable env = null)
+        {
+#if THREAD_SAFE || HOTFIX_ENABLE
+            lock (luaEnvLock)
+            {
+#endif
+            var _L = L;
+            int oldTop = LuaAPI.lua_gettop(_L);
+            int errFunc = LuaAPI.load_error_func(_L, errorFuncRef);
+            if (LuaAPI.xluaL_loadbuffer(_L, chunk, chunk.Length, chunkName) == 0)
+            {
+                if (env != null)
+                {
+                    env.push(_L);
+                    LuaAPI.lua_setfenv(_L, -2);
+                }
+
+                if (LuaAPI.lua_pcall(_L, 0, -1, errFunc) == 0)
+                {
+                    LuaAPI.lua_remove(_L, errFunc);
+                }
+                else
+                    ThrowExceptionFromError(oldTop);
+            }
+            else
+                ThrowExceptionFromError(oldTop);
+
+#if THREAD_SAFE || HOTFIX_ENABLE
+            }
+#endif
         }
 
         public LuaFunction DoString(string chunk, string chunkName = "chunk", LuaTable env = null)
@@ -279,9 +355,27 @@ namespace XLua
             return DoString<LuaFunction>(chunk, chunkName, env);
         }
 
+        public T DoString<T>(string chunk, string chunkName = "chunk", LuaTable env = null)
+        {
+            byte[] bytes = System.Text.Encoding.UTF8.GetBytes(chunk);
+            return DoString<T>(bytes, chunkName, env);
+        }
+
+        public object DoString(string chunk, Type t, string chunkName = "chunk", LuaTable env = null)
+        {
+            byte[] bytes = System.Text.Encoding.UTF8.GetBytes(chunk);
+            return DoString(bytes, t, chunkName, env);
+        }
+
+        public void DoStringWithoutReturnValue(string chunk, string chunkName = "chunk", LuaTable env = null)
+        {
+            byte[] bytes = System.Text.Encoding.UTF8.GetBytes(chunk);
+            DoStringWithoutReturnValue(bytes, chunkName, env);
+        }
+
         private void AddSearcher(LuaCSFunction searcher, int index)
         {
-#if THREAD_SAFE
+#if THREAD_SAFE || HOTFIX_ENABLE
             lock (luaEnvLock)
             {
 #endif
@@ -302,7 +396,7 @@ namespace XLua
             LuaAPI.lua_pushstdcallcfunction(_L, searcher);
             LuaAPI.xlua_rawseti(_L, -2, index);
             LuaAPI.lua_pop(_L, 1);
-#if THREAD_SAFE
+#if THREAD_SAFE || HOTFIX_ENABLE
             }
 #endif
         }
@@ -322,7 +416,7 @@ namespace XLua
             return (!(obj is UnityEngine.Object)) || ((obj as UnityEngine.Object) != null);
         }
 
-        Func<object, bool> object_valid_checker = new Func<object, bool>(ObjectValidCheck);
+        Func<object, bool> object_valid_checker = new(ObjectValidCheck);
 #endif
 
         public void Tick()
@@ -348,6 +442,7 @@ namespace XLua
 #endif
         }
 
+        //兼容API
         public void GC()
         {
             Tick();
@@ -374,6 +469,8 @@ namespace XLua
 
         private bool disposed = false;
 
+        public bool Disposed => disposed;
+
         public void Dispose()
         {
             FullGc();
@@ -388,7 +485,6 @@ namespace XLua
 
         public virtual void Dispose(bool dispose)
         {
-
 #if THREAD_SAFE || HOTFIX_ENABLE
             lock (luaEnvLock)
             {
@@ -398,7 +494,22 @@ namespace XLua
 
             if (!translator.AllDelegateBridgeReleased())
             {
-                throw new InvalidOperationException("try to dispose a LuaEnv with C# callback!");
+                try
+                {
+                    LuaFunction func = Global.Get<LuaFunction>("print_func_ref_by_csharp");
+                    if (func != null)
+                    {
+                        LuaTable table = NewTable();
+                        func.Call(table);
+                        for (int i = 0; i < table.Length; i++)
+                        {
+                            string error = table.Get<string>(i + 1);
+                           UnityEngine.Debug.LogErrorFormat("Unreleased C# referenced lua function {0}", error);
+                        }
+                        table.Dispose();
+                    }
+                }
+                catch (Exception) { }
             }
 
             ObjectTranslatorPool.Instance.Remove(L);
@@ -412,6 +523,14 @@ namespace XLua
 #if THREAD_SAFE || HOTFIX_ENABLE
             }
 #endif
+        }
+
+        public void ClearDelegateBridge()
+        {
+            if (translator != null)
+            {
+                translator.ClearDelegateBridge(rawL);
+            }
         }
 
         public void ThrowExceptionFromError(int oldTop)
@@ -441,7 +560,7 @@ namespace XLua
             public bool IsDelegate;
         }
 
-        Queue<GCAction> refQueue = new Queue<GCAction>();
+        Queue<GCAction> refQueue = new();
 
         internal void equeueGCAction(GCAction action)
         {
@@ -451,7 +570,7 @@ namespace XLua
             }
         }
 
-        private string init_xlua = @" 
+        private string init_xlua = @"
             local metatable = {}
             local rawget = rawget
             local setmetatable = setmetatable
@@ -459,7 +578,7 @@ namespace XLua
             local import_generic_type = xlua.import_generic_type
             local load_assembly = xlua.load_assembly
 
-            function metatable:__index(key) 
+            function metatable:__index(key)
                 local fqn = rawget(self,'.fqn')
                 fqn = ((fqn and fqn .. '.') or '') .. key
 
@@ -570,7 +689,7 @@ namespace XLua
                 impl.UnderlyingSystemType = parent[name].UnderlyingSystemType
                 rawset(parent, name, impl)
             end
-            
+
             local base_mt = {
                 __index = function(t, k)
                     local csobj = t['__csobj']
@@ -583,20 +702,36 @@ namespace XLua
             base = function(csobj)
                 return setmetatable({__csobj = csobj}, base_mt)
             end
+
+            local __print = print
+
+            function print_func_ref_by_csharp(errorArray)
+                local registry = debug.getregistry()
+                for k, v in pairs(registry) do
+                    if type(k) == 'number' and type(v) == 'function' and registry[v] == k then
+                        if function_tostring then
+                            errorArray[#errorArray + 1] = function_tostring(v)
+                        else
+                            local info = debug.getinfo(v)
+                            errorArray[#errorArray + 1] = string.format('%s:%d', info.short_src, info.linedefined)
+                        end
+                    end
+                end
+            end
             ";
 
         public delegate byte[] CustomLoader(ref string filepath);
 
-        internal List<CustomLoader> customLoaders = new List<CustomLoader>();
+        internal List<CustomLoader> customLoaders = new();
 
-        //loader : CustomLoader?? filepath????????ref???????????require??????????????????????????????????
-        //                        ??????????????null?????????????????????????????UTF8?????byte[]
+        //loader : CustomLoader， filepath参数：（ref类型）输入是require的参数，如果需要支持调试，需要输出真实路径。
+        //                        返回值：如果返回null，代表加载该源下无合适的文件，否则返回UTF8编码的byte[]
         public void AddLoader(CustomLoader loader)
         {
             customLoaders.Add(loader);
         }
 
-        internal Dictionary<string, LuaCSFunction> buildin_initer = new Dictionary<string, LuaCSFunction>();
+        internal Dictionary<string, LuaCSFunction> buildin_initer = new();
 
         public void AddBuildin(string name, LuaCSFunction initer)
         {
@@ -607,9 +742,9 @@ namespace XLua
             buildin_initer.Add(name, initer);
         }
 
-        //The garbage-collector pause controls how long the collector waits before starting a new cycle. 
-        //Larger values make the collector less aggressive. Values smaller than 100 mean the collector 
-        //will not wait to start a new cycle. A value of 200 means that the collector waits for the total 
+        //The garbage-collector pause controls how long the collector waits before starting a new cycle.
+        //Larger values make the collector less aggressive. Values smaller than 100 mean the collector
+        //will not wait to start a new cycle. A value of 200 means that the collector waits for the total
         //memory in use to double before starting a new cycle.
         public int GcPause
         {
@@ -639,10 +774,10 @@ namespace XLua
             }
         }
 
-        //The step multiplier controls the relative speed of the collector relative to memory allocation. 
-        //Larger values make the collector more aggressive but also increase the size of each incremental 
-        //step. Values smaller than 100 make the collector too slow and can result in the collector never 
-        //finishing a cycle. The default, 200, means that the collector runs at "twice" the speed of memory 
+        //The step multiplier controls the relative speed of the collector relative to memory allocation.
+        //Larger values make the collector more aggressive but also increase the size of each incremental
+        //step. Values smaller than 100 make the collector too slow and can result in the collector never
+        //finishing a cycle. The default, 200, means that the collector runs at "twice" the speed of memory
         //allocation.
         public int GcStepmul
         {
@@ -736,5 +871,3 @@ namespace XLua
         }
     }
 }
-
-#endif

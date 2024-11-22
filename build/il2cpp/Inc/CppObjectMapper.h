@@ -6,7 +6,7 @@
 #include <memory>
 #include <vector>
 
-#include "sparsehash/dense_hash_map.h"
+#include "dense_hash_map.h"
 
 #include "LuaClassRegister.h"
 #ifdef __cplusplus

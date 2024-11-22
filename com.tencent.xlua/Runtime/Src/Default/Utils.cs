@@ -1,4 +1,4 @@
-﻿#if !ENABLE_IL2CPP || !XLUA_IL2CPP
+#if !ENABLE_IL2CPP || !XLUA_IL2CPP
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -1514,9 +1514,18 @@ namespace XLua
 			LuaAPI.lua_pushstdcallcfunction(L, func);
 			LuaAPI.lua_rawset(L, idx);
 		}
+
+        public static void RegisterRefFunc(RealStatePtr L, int idx, string name, int valueRef)
+        {
+            LuaAPI.lua_checkstack(L, 2);
+            idx = abs_idx(LuaAPI.lua_gettop(L), idx);
+            LuaAPI.xlua_pushasciistring(L, name);
+            LuaAPI.lua_getref(L, valueRef);
+            LuaAPI.lua_rawset(L, idx);
+        }
 #endif
 
-		public static void RegisterLazyFunc(RealStatePtr L, int idx, string name, Type type, LazyMemberTypes memberType, bool isStatic)
+        public static void RegisterLazyFunc(RealStatePtr L, int idx, string name, Type type, LazyMemberTypes memberType, bool isStatic)
 		{
 			idx = abs_idx(LuaAPI.lua_gettop(L), idx);
 			LuaAPI.xlua_pushasciistring(L, name);

@@ -155,7 +155,7 @@ PlayerSettings:
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
     Android: com.DefaultCompany.il2cpp
-    Standalone: com.DefaultCompany.xLua
+    Standalone: com.DefaultCompany.noil2cpp
     iPhone: com.DefaultCompany.noil2cpp
   buildNumber:
     Bratwurst: 0
@@ -751,7 +751,7 @@ PlayerSettings:
   webGLPowerPreference: 2
   scriptingDefineSymbols:
     Android: XLUA_IL2CPP
-    Standalone: XLUA_IL2CPP
+    Standalone: 
     iPhone: 
   additionalCompilerArguments: {}
   platformArchitecture: {}
