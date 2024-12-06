@@ -26,6 +26,48 @@ public delegate void PerfTest(int load);
 
 public class PerfMain : MonoBehaviour
 {
+
+    internal static byte[] LoadFromStreamingAssetsPath(ref string filename)
+    {
+        try
+        {
+            filename = filename.Replace('.', '/') + ".lua";
+            var filepath = UnityEngine.Application.streamingAssetsPath + "/" + filename;
+#if UNITY_ANDROID && !UNITY_EDITOR
+            UnityEngine.WWW www = new UnityEngine.WWW(filepath);
+            while (true)
+            {
+                if (www.isDone || !string.IsNullOrEmpty(www.error))
+                {
+                    System.Threading.Thread.Sleep(50);
+                    if (!string.IsNullOrEmpty(www.error))
+                    {
+                        return null;
+                    }
+                    else
+                    {
+                        return www.bytes;
+                    }
+                    break;
+                }
+            }
+#else
+            if (File.Exists(filepath))
+            {
+                // string text = File.ReadAllText(filepath);
+                return File.ReadAllBytes(filepath);
+
+            }
+#endif
+        }
+        catch (System.Exception e)
+        {
+            
+        }
+        return null;
+    }
+
+
     string resultPath = "";
 
     LuaEnv luaenv;
@@ -51,6 +93,7 @@ public class PerfMain : MonoBehaviour
         resultPath = Application.dataPath + "/../../../../noil2cpp";
 #endif
 #endif
+
         var start = Time.realtimeSinceStartup;
         var startMem = System.GC.GetTotalMemory(true);
 #if UNITY_EDITOR || XLUA_IL2CPP
@@ -58,15 +101,11 @@ public class PerfMain : MonoBehaviour
 #else
 		luaenv = new LuaEnv(typeof(DelegateBridgeWrap), typeof(ObjectTranslatorWrap));
 #endif
-
+        luaenv.AddLoader(LoadFromStreamingAssetsPath);
         Debug.Log("start cost: " + (Time.realtimeSinceStartup - start));
         var endMem = System.GC.GetTotalMemory(true);
         Debug.Log("startMem: " + startMem + ", endMem: " + endMem + ", " + "cost mem: " + (endMem - startMem));
-#if UNITY_EDITOR || !XLUA_IL2CPP || UNITY_ANDROID     
         luaenv.DoString("require 'luaTest'");
-#else
-        luaenv.DoResourcesString("luaTest.lua");
-#endif
     }
 
     private void OnGUI()

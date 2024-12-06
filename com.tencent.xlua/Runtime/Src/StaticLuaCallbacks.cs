@@ -696,67 +696,6 @@ namespace XLua
         }
 
         [MonoPInvokeCallback(typeof(LuaCSFunction))]
-        internal static int LoadFromStreamingAssetsPath(RealStatePtr L)
-        {
-            try
-            {
-                string filename = LuaAPI.lua_tostring(L, 1).Replace('.', '/') + ".lua";
-                var filepath = UnityEngine.Application.streamingAssetsPath + "/" + filename;
-#if UNITY_ANDROID && !UNITY_EDITOR
-                UnityEngine.WWW www = new UnityEngine.WWW(filepath);
-                while (true)
-                {
-                    if (www.isDone || !string.IsNullOrEmpty(www.error))
-                    {
-                        System.Threading.Thread.Sleep(50); //�Ƚ�hacker������
-                        if (!string.IsNullOrEmpty(www.error))
-                        {
-                            LuaAPI.lua_pushstring(L, string.Format(
-                               "\n\tno such file '{0}' in streamingAssetsPath!", filename));
-                        }
-                        else
-                        {
-                            UnityEngine.Debug.LogWarning("load lua file from StreamingAssets is obsolete, filename:" + filename);
-                            if (LuaAPI.xluaL_loadbuffer(L, www.bytes, www.bytes.Length , "@" + filename) != 0)
-                            {
-                                return LuaAPI.luaL_error(L, String.Format("error loading module {0} from streamingAssetsPath, {1}",
-                                    LuaAPI.lua_tostring(L, 1), LuaAPI.lua_tostring(L, -1)));
-                            }
-                        }
-                        break;
-                    }
-                }
-#else
-                if (File.Exists(filepath))
-                {
-                    // string text = File.ReadAllText(filepath);
-                    var bytes = File.ReadAllBytes(filepath);
-
-                    UnityEngine.Debug.LogWarning("load lua file from StreamingAssets is obsolete, filename:" + filename);
-                    if (LuaAPI.xluaL_loadbuffer(L, bytes, bytes.Length, "@" + filename) != 0)
-                    {
-                        return LuaAPI.luaL_error(L, String.Format("error loading module {0} from streamingAssetsPath, {1}",
-                            LuaAPI.lua_tostring(L, 1), LuaAPI.lua_tostring(L, -1)));
-                    }
-                }
-                else
-                {
-                    LuaAPI.lua_pushstring(L, string.Format(
-                        "\n\tno such file '{0}' in streamingAssetsPath!", filename));
-                }
-#endif
-                return 1;
-            }
-            catch (System.Exception e)
-            {
-                return LuaAPI.luaL_error(L, "c# exception in LoadFromStreamingAssetsPath:" + e);
-            }
-        }
-#endif
-
-
-
-        [MonoPInvokeCallback(typeof(LuaCSFunction))]
         internal static int LoadFromCustomLoaders(RealStatePtr L)
         {
             try
@@ -1230,3 +1169,4 @@ namespace XLua
 
     }
 }
+#endif
