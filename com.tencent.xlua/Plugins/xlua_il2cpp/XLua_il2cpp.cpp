@@ -1223,10 +1223,9 @@ static bool GetValueTypeFromLua(struct pesapi_ffi* apis, pesapi_env env, int lua
         if (hasValue)
         {
             memcpy(storage, &data, valueSize);
-            return true;
         }
     }
-    return true;
+    return hasValue;
 }
 
 static int LuaObjectUnRef(struct pesapi_ffi* apis, pesapi_env env, int luaValue)
