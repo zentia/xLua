@@ -219,12 +219,7 @@ namespace XLua.Editor
                 if (mbi is FieldInfo)
                 {
                     FieldInfo fi = (mbi as FieldInfo);
-                    if (
-                        fi.FieldType.IsPointer
-#if UNITY_2021_2_OR_NEWER
-                        || fi.FieldType.IsByRefLike
-#endif
-                    )
+                    if (fi.FieldType.IsPointer || fi.FieldType.IsByRefLike)
                     {
                         return true;
                     }
@@ -240,12 +235,7 @@ namespace XLua.Editor
                 if (mbi is PropertyInfo)
                 {
                     PropertyInfo pi = (mbi as PropertyInfo);
-                    if (
-                        pi.PropertyType.IsPointer
-#if UNITY_2021_2_OR_NEWER
-                        || pi.PropertyType.IsByRefLike
-#endif
-                    )
+                    if (pi.PropertyType.IsPointer || pi.PropertyType.IsByRefLike)
                     {
                         return true;
                     }
@@ -273,11 +263,7 @@ namespace XLua.Editor
                         // fix #964
                         return true;
                     }
-                    if (mi.ReturnType.IsPointer
-#if UNITY_2021_2_OR_NEWER
-                        || mi.ReturnType.IsByRefLike
-#endif
-                    )
+                    if (mi.ReturnType.IsPointer || mi.ReturnType.IsByRefLike)
                     {
                         return true;
                     }

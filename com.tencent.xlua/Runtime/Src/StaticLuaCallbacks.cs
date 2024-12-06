@@ -1,4 +1,3 @@
-#if !ENABLE_IL2CPP || !XLUA_IL2CPP
 using LuaAPI = XLua.LuaDLL.Lua;
 using RealStatePtr = System.IntPtr;
 using LuaCSFunction = XLua.LuaDLL.lua_CSFunction;
@@ -12,6 +11,7 @@ namespace XLua
 
     public partial class StaticLuaCallbacks
     {
+#if !XLUA_IL2CPP || !ENABLE_IL2CPP
         internal LuaCSFunction GcMeta, ToStringMeta, EnumAndMeta, EnumOrMeta;
 
         internal LuaCSFunction StaticCSFunctionWraper, FixCSFunctionWraper;
@@ -152,7 +152,7 @@ namespace XLua
                 if (udata != -1)
                 {
                     ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
-                    if ( translator != null )
+                    if (translator != null)
                     {
                         translator.collectObject(udata);
                     }
@@ -632,16 +632,18 @@ namespace XLua
             LuaAPI.lua_rawget(L, LuaIndexes.LUA_REGISTRYINDEX);
             return 1;
         }
-
+#endif
         [MonoPInvokeCallback(typeof(LuaCSFunction))]
         internal static int LoadBuiltinLib(RealStatePtr L)
         {
             try
             {
                 string builtin_lib = LuaAPI.lua_tostring(L, 1);
-
+#if XLUA_IL2CPP && ENABLE_IL2CPP
+                LuaEnv self = LuaEnv.Instance;
+#else
                 LuaEnv self = ObjectTranslatorPool.Instance.Find(L).luaEnv;
-
+#endif
                 LuaCSFunction initer;
 
                 if (self.buildin_initer.TryGetValue(builtin_lib, out initer))
@@ -752,15 +754,19 @@ namespace XLua
         }
 #endif
 
+
+
         [MonoPInvokeCallback(typeof(LuaCSFunction))]
         internal static int LoadFromCustomLoaders(RealStatePtr L)
         {
             try
             {
                 string filename = LuaAPI.lua_tostring(L, 1);
-
+#if !ENABLE_IL2CPP || !XLUA_IL2CPP
                 LuaEnv self = ObjectTranslatorPool.Instance.Find(L).luaEnv;
-
+#else
+                LuaEnv self = LuaEnv.Instance;
+#endif
                 foreach (var loader in self.customLoaders)
                 {
                     string real_file_path = filename;
@@ -784,6 +790,9 @@ namespace XLua
                 return LuaAPI.luaL_error(L, "c# exception in LoadFromCustomLoaders:" + e);
             }
         }
+
+
+#if !XLUA_IL2CPP || !ENABLE_IL2CPP
 
         [MonoPInvokeCallback(typeof(LuaCSFunction))]
         public static int LoadAssembly(RealStatePtr L)
@@ -875,7 +884,7 @@ namespace XLua
                 else
                 {
                     Type[] typeArguments = new Type[top - 1];
-                    for(int i = 2; i <= top; i++)
+                    for (int i = 2; i <= top; i++)
                     {
 
                         typeArguments[i - 2] = getType(L, translator, i);
@@ -923,7 +932,6 @@ namespace XLua
                 return LuaAPI.luaL_error(L, "c# exception in xlua.cast:" + e);
             }
         }
-
         static Type getType(RealStatePtr L, ObjectTranslator translator, int idx)
         {
             if (LuaAPI.lua_type(L, idx) == LuaTypes.LUA_TTABLE)
@@ -1024,7 +1032,7 @@ namespace XLua
                     return LuaAPI.luaL_error(L, "xlua.private_accessible, can not find c# type");
                 }
 
-                while(type != null)
+                while (type != null)
                 {
                     translator.PrivateAccessible(L, type);
                     type = type.BaseType();
@@ -1081,6 +1089,7 @@ namespace XLua
             }
         }
 
+
         [MonoPInvokeCallback(typeof(LuaCSFunction))]
         public static int DelegateConstructor(RealStatePtr L)
         {
@@ -1133,7 +1142,7 @@ namespace XLua
                 translator.Get(L, LuaAPI.xlua_upvalueindex(1), out genericMethod);
                 int n = LuaAPI.lua_gettop(L);
                 Type[] typeArguments = new Type[n];
-                for(int i = 0; i < n; i++)
+                for (int i = 0; i < n; i++)
                 {
                     Type type = getType(L, translator, i + 1);
                     if (type == null)
@@ -1171,7 +1180,7 @@ namespace XLua
                 }
                 System.Collections.Generic.List<MethodInfo> matchMethods = new System.Collections.Generic.List<MethodInfo>();
                 var allMethods = type.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance);
-                for(int i = 0; i < allMethods.Length; i++)
+                for (int i = 0; i < allMethods.Length; i++)
                 {
                     var method = allMethods[i];
                     if (method.Name == methodName && method.IsGenericMethodDefinition)
@@ -1217,6 +1226,7 @@ namespace XLua
                 return LuaAPI.luaL_error(L, "c# exception in ReleaseCsObject: " + e);
             }
         }
+#endif
+
     }
 }
-#endif

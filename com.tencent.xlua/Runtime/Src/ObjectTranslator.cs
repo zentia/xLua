@@ -1,3 +1,4 @@
+
 /*
  * Tencent is pleased to support the open source community by making xLua available.
  * Copyright (C) 2016 THL A29 Limited, a Tencent company. All rights reserved.
@@ -83,7 +84,7 @@ namespace XLua
         LUA_ERRERR = 5,
     }
 
-    sealed class LuaIndexes
+    public class LuaIndexes
     {
         public static int LUA_REGISTRYINDEX
         {
@@ -97,16 +98,12 @@ namespace XLua
             }
         }
     }
-
-#if GEN_CODE_MINIMIZE
-    public delegate int CSharpWrapper(IntPtr L, int top);
-#endif
-
+#if !XLUA_IL2CPP || !ENABLE_IL2CPP
     public partial class ObjectTranslator
     {
         internal MethodWrapsCache methodWrapsCache;
         internal ObjectCheckers objectCheckers;
-        internal ObjectCasters objectCasters;
+        public ObjectCasters objectCasters;
 
         internal readonly ObjectPool objects = new();
         public readonly Dictionary<object, int> reverseMap = new(new ReferenceEqualsComparer());
@@ -217,8 +214,9 @@ namespace XLua
             }
         }
 
-        public ObjectTranslator(LuaEnv luaenv, RealStatePtr L)
+        public ObjectTranslator(LuaEnv luaenv, RealStatePtr L, Type bridgeType)
         {
+            delegate_birdge_type = bridgeType;
 #if XLUA_GENERAL  || (UNITY_WSA && !UNITY_EDITOR)
             var dumb_field = typeof(ObjectTranslator).GetField("s_gen_reg_dumb_obj", BindingFlags.Static| BindingFlags.DeclaredOnly | BindingFlags.NonPublic);
             if (dumb_field != null)
@@ -266,17 +264,16 @@ namespace XLua
             initCSharpCallLua();
         }
 
-        internal enum LOGLEVEL
+        public enum LOGLEVEL
         {
             NO,
             INFO,
             WARN,
             ERROR
         }
-
-#if (UNITY_EDITOR || XLUA_GENERAL) && !NET_STANDARD_2_0
         Type delegate_birdge_type;
 
+#if UNITY_EDITOR && !NET_STANDARD_2_0
         class CompareByArgRet : IEqualityComparer<MethodInfo>
         {
             public bool Equals(MethodInfo x, MethodInfo y)
@@ -528,13 +525,11 @@ namespace XLua
             DelegateBridgeBase bridge;
             try
             {
-#if (UNITY_EDITOR || XLUA_GENERAL) && !NET_STANDARD_2_0
-                if (!DelegateBridge.Gen_Flag)
+                if (delegate_birdge_type != null)
                 {
                     bridge = Activator.CreateInstance(delegate_birdge_type, reference, luaEnv) as DelegateBridgeBase;
                 }
                 else
-#endif
                 {
                     bridge = new DelegateBridge(reference, luaEnv);
                 }
@@ -1057,7 +1052,7 @@ namespace XLua
             }
         }
 
-        internal int getTypeId(RealStatePtr L, Type type, out bool is_first, LOGLEVEL log_level = LOGLEVEL.WARN)
+        public int getTypeId(RealStatePtr L, Type type, out bool is_first, LOGLEVEL log_level = LOGLEVEL.WARN)
         {
             LuaAPI.lua_checkstack(L, 4);
             int type_id;
@@ -1413,12 +1408,12 @@ namespace XLua
             return null;
         }
 
-        internal object SafeGetCSObj(RealStatePtr L, int index)
+        public object SafeGetCSObj(RealStatePtr L, int index)
         {
             return getCsObj(L, index, LuaAPI.xlua_tocsobj_safe(L, index));
         }
 
-        internal object FastGetCSObj(RealStatePtr L, int index)
+        public object FastGetCSObj(RealStatePtr L, int index)
         {
             return getCsObj(L, index, LuaAPI.xlua_tocsobj_fast(L, index));
         }
@@ -1782,4 +1777,6 @@ namespace XLua
             }
         }
     }
+#endif
 }
+

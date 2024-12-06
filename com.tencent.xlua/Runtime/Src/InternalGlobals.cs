@@ -1,4 +1,4 @@
-﻿using LuaAPI = XLua.LuaDLL.Lua;
+using LuaAPI = XLua.LuaDLL.Lua;
 using RealStatePtr = System.IntPtr;
 using LuaCSFunction = XLua.LuaDLL.lua_CSFunction;
 
@@ -10,7 +10,7 @@ namespace XLua
 {
     public partial class InternalGlobals
     {
-#if !THREAD_SAFE && !HOTFIX_ENABLE
+#if !THREAD_SAFE
         internal static byte[] strBuff = new byte[256];
 #endif
 #if !ENABLE_IL2CPP || !XLUA_IL2CPP
@@ -20,7 +20,7 @@ namespace XLua
         public static volatile TryArraySet genTryArraySetPtr = null;
 
         internal static volatile ObjectTranslatorPool objectTranslatorPool = new ObjectTranslatorPool();
-
+#endif
         internal static volatile int LUA_REGISTRYINDEX = -10000;
 
         internal static volatile Dictionary<string, string> supportOp = new Dictionary<string, string>()
@@ -43,14 +43,8 @@ namespace XLua
         };
 
         public static volatile Dictionary<Type, IEnumerable<MethodInfo>> extensionMethodMap = null;
-
-#if GEN_CODE_MINIMIZE
-        internal static volatile LuaDLL.CSharpWrapperCaller CSharpWrapperCallerPtr = new LuaDLL.CSharpWrapperCaller(StaticLuaCallbacks.CSharpWrapperCallerImpl);
-#endif
-
+#if !ENABLE_IL2CPP || !XLUA_IL2CPP
         internal static volatile LuaCSFunction LazyReflectionWrap = new LuaCSFunction(Utils.LazyReflectionCall);
 #endif
     }
-
 }
-

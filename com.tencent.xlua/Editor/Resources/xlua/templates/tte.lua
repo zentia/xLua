@@ -406,7 +406,7 @@ end
 
 function getSignatureWithoutRefAndPrefix(signature)
     if signature:sub(1,1) == 'P' or signature:sub(1,1) == 'D' then
-        return string.sub(signature, 1)
+        return string.sub(signature, 2)
     else
         return signature
     end

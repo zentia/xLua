@@ -23,7 +23,7 @@ typedef struct
     void* Ptr;
     const void* TypeId;
     bool NeedDelete;
-    void* UserData;
+    int index;
 } CppObject;
 
 struct pesapi_callback_info__
@@ -46,9 +46,8 @@ struct PesapiCallbackData
 class CppObjectMapper
 {
 public:
+    CppObjectMapper();
     void Initialize(lua_State* L);
-
-    int LoadCppType(lua_State* L);
 
     bool IsInstanceOfCppObject(lua_State* L, const void* TypeId, int ObjectIndex);
 
@@ -58,7 +57,7 @@ public:
 
     int CreateFunction(lua_State* L, pesapi_callback Callback, void* Data);
 
-    void UnBindCppObject(lua_State* L, LuaClassDefinition* ClassDefinition, void* Ptr, void* UserData);
+    void UnBindCppObject(lua_State* L, LuaClassDefinition* ClassDefinition, void* Ptr, int UserData);
 
     void BindCppObject(lua_State* L, LuaClassDefinition* ClassDefinition, void* Ptr, bool PassByPointer, bool create);
 
@@ -80,11 +79,13 @@ private:
     int PointerConstructor;
 
     std::map<void*, FinalizeFunc> CDataFinalizeMap;
+    std::map<std::string, const char*> supportOp;
 
     std::shared_ptr<int> Ref = std::make_shared<int>(0);
 
     int CacheRef = 0;
     int CachePrivateDataRef = 0;
+    int PairsRef = 0;
 
     int GetMetaRefOfClass(lua_State* L, const LuaClassDefinition* ClassDefinition);
 

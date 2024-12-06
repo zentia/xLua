@@ -112,8 +112,8 @@ typedef struct pesapi_property_descriptor__* pesapi_property_descriptor;
 typedef void (*pesapi_callback)(struct pesapi_ffi* apis, pesapi_callback_info info);
 typedef void* (*pesapi_constructor)(struct pesapi_ffi* apis, pesapi_callback_info info);
 typedef void (*pesapi_finalize)(struct pesapi_ffi* apis, void* Ptr, void* class_data, void* env_private);
-typedef void* (*pesapi_on_native_object_enter)(void* ptr, void* class_data, void* env_private);
-typedef void (*pesapi_on_native_object_exit)(void* ptr, void* class_data, void* env_private, void* userdata);
+typedef int (*pesapi_on_native_object_enter)(void* ptr, void* class_data, void* env_private);
+typedef void (*pesapi_on_native_object_exit)(void* ptr, void* class_data, void* env_private, int userdata);
 typedef bool (*pesapi_class_not_found_callback)(const void* type_id);
 typedef void (*pesapi_func_ptr)(void);
 
@@ -140,14 +140,14 @@ typedef int (*pesapi_create_function_func)(pesapi_env env, pesapi_callback nativ
 typedef int (*pesapi_create_class_func)(pesapi_env env, const void* type_id);
 
 typedef bool (*pesapi_get_value_bool_func)(pesapi_env env, int value);
-typedef int32_t (*pesapi_get_value_int32_func)(pesapi_env env, int value);
-typedef uint32_t (*pesapi_get_value_uint32_func)(pesapi_env env, int value);
-typedef int64_t (*pesapi_get_value_int64_func)(pesapi_env env, int value);
-typedef uint64_t (*pesapi_get_value_uint64_func)(pesapi_env env, int value);
+typedef int32_t(*pesapi_get_value_int32_func)(pesapi_env env, int value);
+typedef uint32_t(*pesapi_get_value_uint32_func)(pesapi_env env, int value);
+typedef int64_t(*pesapi_get_value_int64_func)(pesapi_env env, int value);
+typedef uint64_t(*pesapi_get_value_uint64_func)(pesapi_env env, int value);
 typedef double (*pesapi_get_value_double_func)(pesapi_env env, int value);
 typedef const char* (*pesapi_get_value_string_utf8_func)(pesapi_env env, int value, char* buf, size_t* bufsize);
 typedef void* (*pesapi_get_value_binary_func)(pesapi_env env, int pvalue, size_t* bufsize);
-typedef uint32_t (*pesapi_get_array_length_func)(pesapi_env env, int value);
+typedef uint32_t(*pesapi_get_array_length_func)(pesapi_env env, int value);
 
 typedef bool (*pesapi_is_null_func)(pesapi_env env, int value);
 typedef bool (*pesapi_is_undefined_func)(pesapi_env env, int value);
@@ -163,31 +163,32 @@ typedef bool (*pesapi_is_function_func)(pesapi_env env, int value);
 typedef bool (*pesapi_is_binary_func)(pesapi_env env, int value);
 typedef bool (*pesapi_is_array_func)(pesapi_env env, int value);
 
-typedef pesapi_value (*pesapi_native_object_to_value_func)(
+typedef pesapi_value(*pesapi_native_object_to_value_func)(
     pesapi_env env, const void* type_id, void* object_ptr, bool call_finalize);
 typedef void* (*pesapi_get_native_object_ptr_func)(pesapi_env env, pesapi_value value);
+typedef int (*pesapi_get_native_object_index_func)(pesapi_env env, pesapi_value value);
 typedef const void* (*pesapi_get_native_object_typeid_func)(pesapi_env env, pesapi_value value);
 typedef bool (*pesapi_is_instance_of_func)(pesapi_env env, const void* type_id, pesapi_value value);
 
-typedef pesapi_value (*pesapi_boxing_func)(pesapi_env env, pesapi_value value);
-typedef pesapi_value (*pesapi_unboxing_func)(pesapi_env env, pesapi_value value);
+typedef pesapi_value(*pesapi_boxing_func)(pesapi_env env, pesapi_value value);
+typedef pesapi_value(*pesapi_unboxing_func)(pesapi_env env, pesapi_value value);
 typedef void (*pesapi_update_boxed_value_func)(pesapi_env env, pesapi_value boxed_value, pesapi_value value);
 typedef bool (*pesapi_is_boxed_value_func)(pesapi_env env, pesapi_value value);
 
 typedef int (*pesapi_get_args_len_func)(pesapi_callback_info info);
-typedef pesapi_value (*pesapi_get_arg_func)(pesapi_callback_info info, int index);
-typedef pesapi_env (*pesapi_get_env_func)(pesapi_callback_info info);
-typedef pesapi_value (*pesapi_get_this_func)(pesapi_callback_info info);
-typedef pesapi_value (*pesapi_get_holder_func)(pesapi_callback_info info);
+typedef pesapi_value(*pesapi_get_arg_func)(pesapi_callback_info info, int index);
+typedef pesapi_env(*pesapi_get_env_func)(pesapi_callback_info info);
+typedef pesapi_value(*pesapi_get_this_func)(pesapi_callback_info info);
+typedef pesapi_value(*pesapi_get_holder_func)(pesapi_callback_info info);
 typedef void* (*pesapi_get_userdata_func)(pesapi_callback_info info);
 typedef void* (*pesapi_get_constructor_userdata_func)(pesapi_callback_info info);
 typedef void (*pesapi_add_return_func)(pesapi_callback_info info, pesapi_value value);
 typedef void (*pesapi_throw_by_string_func)(pesapi_callback_info pinfo, const char* msg);
 
-typedef pesapi_env_ref (*pesapi_create_env_ref_func)(pesapi_env env);
+typedef pesapi_env_ref(*pesapi_create_env_ref_func)(pesapi_env env);
 typedef bool (*pesapi_env_ref_is_valid_func)(pesapi_env_ref env);
-typedef pesapi_env (*pesapi_get_env_from_ref_func)(pesapi_env_ref env_ref);
-typedef pesapi_env_ref (*pesapi_duplicate_env_ref_func)(pesapi_env_ref env_ref);
+typedef pesapi_env(*pesapi_get_env_from_ref_func)(pesapi_env_ref env_ref);
+typedef pesapi_env_ref(*pesapi_duplicate_env_ref_func)(pesapi_env_ref env_ref);
 typedef void (*pesapi_release_env_ref_func)(pesapi_env_ref env_ref);
 
 typedef int (*pesapi_open_scope_func)(pesapi_env env);
@@ -197,33 +198,33 @@ typedef const char* (*pesapi_get_exception_as_string_func)(pesapi_env env, bool 
 typedef void (*pesapi_close_scope_func)(pesapi_env env, int scope);
 typedef void (*pesapi_close_scope_placement_func)(pesapi_env env, int scope);
 
-typedef pesapi_value_ref (*pesapi_create_value_ref_func)(pesapi_env env, pesapi_value value, uint32_t internal_field_count);
-typedef pesapi_value_ref (*pesapi_duplicate_value_ref_func)(pesapi_value_ref value_ref);
+typedef pesapi_value_ref(*pesapi_create_value_ref_func)(pesapi_env env, pesapi_value value);
+typedef pesapi_value_ref(*pesapi_duplicate_value_ref_func)(pesapi_value_ref value_ref);
 typedef void (*pesapi_release_value_ref_func)(pesapi_value_ref value_ref);
-typedef pesapi_value (*pesapi_get_value_from_ref_func)(pesapi_env env, pesapi_value_ref value_ref);
+typedef pesapi_value(*pesapi_get_value_from_ref_func)(pesapi_env env, pesapi_value_ref value_ref);
 typedef void (*pesapi_set_ref_weak_func)(pesapi_env env, pesapi_value_ref value_ref);
 // Optional api: return false if can not fulfill
 typedef bool (*pesapi_set_owner_func)(pesapi_env env, pesapi_value value, pesapi_value owner);
-typedef pesapi_env (*pesapi_get_ref_associated_env_func)(pesapi_value_ref value_ref);
-typedef void** (*pesapi_get_ref_internal_fields_func)(pesapi_value_ref value_ref, uint32_t* pinternal_field_count);
+typedef pesapi_env(*pesapi_get_ref_associated_env_func)(pesapi_value_ref value_ref);
+typedef void** (*pesapi_get_ref_internal_fields_func)(pesapi_value_ref value_ref);
 
-typedef pesapi_value (*pesapi_get_property_func)(pesapi_env env, pesapi_value object, const char* key);
+typedef pesapi_value(*pesapi_get_property_func)(pesapi_env env, pesapi_value object, const char* key);
 typedef void (*pesapi_set_property_func)(pesapi_env env, pesapi_value object, const char* key, pesapi_value value);
 typedef bool (*pesapi_get_private_func)(pesapi_env env, pesapi_value object, void** out_ptr);
 typedef bool (*pesapi_set_private_func)(pesapi_env env, pesapi_value object, void* ptr);
 
-typedef pesapi_value (*pesapi_get_property_uint64_func)(pesapi_env env, pesapi_value object, uint64_t key);
+typedef pesapi_value(*pesapi_get_property_uint64_func)(pesapi_env env, pesapi_value object, uint64_t key);
 typedef void (*pesapi_set_property_uint64_func)(pesapi_env env, pesapi_value object, uint64_t key, pesapi_value value);
 
-typedef pesapi_value (*pesapi_call_function_func)(
+typedef pesapi_value(*pesapi_call_function_func)(
     pesapi_env env, pesapi_value func, pesapi_value this_object, int argc, const pesapi_value argv[]);
 
 typedef int (*pesapi_dostring_func)(
     pesapi_env env, const uint8_t* code, size_t code_size, const char* path, pesapi_value_ref value_ref);
-typedef pesapi_value (*pesapi_loadstring_func)(
+typedef pesapi_value(*pesapi_loadstring_func)(
     pesapi_env env, const uint8_t* code, size_t code_size, const char* path, pesapi_value_ref value_ref);
 
-typedef pesapi_value (*pesapi_global_func)(pesapi_env env);
+typedef pesapi_value(*pesapi_global_func)(pesapi_env env);
 typedef const void* (*pesapi_get_env_private_func)(pesapi_env env);
 typedef void (*pesapi_set_env_private_func)(pesapi_env env, const void* ptr);
 
@@ -267,6 +268,7 @@ struct pesapi_ffi
     pesapi_is_array_func is_array;
     pesapi_native_object_to_value_func native_object_to_value;
     pesapi_get_native_object_ptr_func get_native_object_ptr;
+    pesapi_get_native_object_index_func get_native_object_index_ptr;
     pesapi_get_native_object_typeid_func get_native_object_typeid;
     pesapi_is_instance_of_func is_instance_of;
     pesapi_boxing_func boxing;
@@ -313,10 +315,7 @@ struct pesapi_ffi
     pesapi_get_env_private_func get_env_private;
     pesapi_set_env_private_func set_env_private;
 };
-#if XLUA_IL2CPP
-namespace xlua
-{
-#endif
+
 PESAPI_EXTERN pesapi_type_info pesapi_alloc_type_infos(size_t count);
 
 PESAPI_EXTERN void pesapi_set_type_info(
@@ -349,9 +348,6 @@ PESAPI_EXTERN void pesapi_class_type_info(const char* proto_magic_id, const void
     const void* methods_info, const void* functions_info, const void* properties_info, const void* variables_info);
 
 PESAPI_EXTERN const void* pesapi_find_type_id(const char* module_name, const char* type_name);
-#if XLUA_IL2CPP
-}
-#endif
 
 EXTERN_C_END
 

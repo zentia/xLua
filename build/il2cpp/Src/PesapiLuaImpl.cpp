@@ -1,4 +1,4 @@
-﻿#include "pesapi.h"
+#include "pesapi.h"
 #include "lua.hpp"
 #include "LuaClassRegister.h"
 #include "CppObjectMapper.h"
@@ -214,7 +214,7 @@ bool pesapi_is_double(pesapi_env env, pesapi_value pvalue)
 bool pesapi_is_string(pesapi_env env, pesapi_value pvalue)
 {
     lua_State* L = reinterpret_cast<lua_State*>(env);
-    return lua_isstring(L, pvalue);
+    return lua_type(L, pvalue) == LUA_TSTRING;
 }
 
 bool pesapi_is_object(pesapi_env env, pesapi_value pvalue)
@@ -253,6 +253,13 @@ void* pesapi_get_native_object_ptr(pesapi_env env, pesapi_value pvalue)
     return cppObject ? cppObject->Ptr : nullptr;
 }
 
+int pesapi_get_native_object_index(pesapi_env env, pesapi_value pvalue)
+{
+    lua_State* L = reinterpret_cast<lua_State*>(env);
+    CppObject* cppObject = (CppObject*)lua_touserdata(L, pvalue);
+    return cppObject ? cppObject->index : -1;
+}
+
 const void* pesapi_get_native_object_typeid(pesapi_env env, pesapi_value pvalue)
 {
     lua_State* L = reinterpret_cast<lua_State*>(env);
@@ -279,7 +286,12 @@ int pesapi_boxing(pesapi_env env, pesapi_value pvalue)
 int pesapi_unboxing(pesapi_env env, pesapi_value pvalue)
 {
     lua_State* L = reinterpret_cast<lua_State*>(env);
-    intptr_t index = pvalue;
+    int index = lua_absindex(L, pvalue);
+    int top = lua_gettop(L);
+    if (top < index)
+    {
+        return 0;
+    }
     int t = lua_type(L, index);
     if (t == LUA_TTABLE)
     {
@@ -438,12 +450,15 @@ struct pesapi_value_ref__
     void* userdata;
 };
 
-pesapi_value_ref pesapi_create_value_ref(pesapi_env env, pesapi_value pvalue, uint32_t internal_field_count)
+pesapi_value_ref pesapi_create_value_ref(pesapi_env env, pesapi_value pvalue)
 {
     lua_State* L = reinterpret_cast<lua_State*>(env);
+    lua_rawgeti(L, LUA_REGISTRYINDEX, LUA_RIDX_MAINTHREAD);
+    lua_State* mL = lua_tothread(L, -1);
+    lua_pop(L, 1);
     lua_pushvalue(L, pvalue);
     int ref = luaL_ref(L, LUA_REGISTRYINDEX);
-    pesapi_value_ref value_ref = new pesapi_value_ref__(L, ref);
+    pesapi_value_ref value_ref = new pesapi_value_ref__(mL, ref);
     xlua::CppObjectMapper::Get()->SetPrivateData(L, ref, value_ref);
     return value_ref;
 }
@@ -473,7 +488,6 @@ int pesapi_get_value_from_ref(pesapi_env env, pesapi_value_ref value_ref)
 
 void pesapi_set_ref_weak(pesapi_env env, pesapi_value_ref value_ref)
 {
-    luaL_unref(value_ref->L, LUA_REGISTRYINDEX, value_ref->value_ref);
 }
 
 bool pesapi_set_owner(pesapi_env env, pesapi_value pvalue, pesapi_value powner)
@@ -493,7 +507,7 @@ pesapi_env pesapi_get_ref_associated_env(pesapi_value_ref value_ref)
     return reinterpret_cast<pesapi_env>(value_ref->L);
 }
 
-void** pesapi_get_ref_internal_fields(pesapi_value_ref value_ref, uint32_t* pinternal_field_count)
+void** pesapi_get_ref_internal_fields(pesapi_value_ref value_ref)
 {
     return &value_ref->userdata;
 }
@@ -574,15 +588,21 @@ static int debug_traceback(lua_State* L)
 int pesapi_call_function(pesapi_env env, pesapi_value pfunc, pesapi_value this_object, int argc, const pesapi_value argv[])
 {
     lua_State* L = reinterpret_cast<lua_State*>(env);
-    // printf("pesapi_call_function: argc=%d, top=%d\n", argc, lua_gettop(L));
     lua_pushcclosure(L, debug_traceback, 0);
     int errfunc = lua_gettop(L);
+
     lua_pushvalue(L, pfunc);
+
     for (int i = 0; i < argc; i++)
     {
         lua_pushvalue(L, argv[i]);
     }
+
     int res = lua_pcall(L, argc, 1, errfunc);
+    if (res == 0)
+    {
+        lua_remove(L, errfunc);
+    }
 
     lua_pushinteger(L, res);
     return lua_gettop(L) - 1;
@@ -591,6 +611,7 @@ int pesapi_call_function(pesapi_env env, pesapi_value pfunc, pesapi_value this_o
 int pesapi_dostring(pesapi_env env, const uint8_t* code, size_t code_size, const char* path, pesapi_value_ref value_ref)
 {
     lua_State* L = reinterpret_cast<lua_State*>(env);
+    int oldTop = lua_gettop(L);
     lua_pushcclosure(L, debug_traceback, 0);
     int errfunc = lua_gettop(L);
 
@@ -605,11 +626,10 @@ int pesapi_dostring(pesapi_env env, const uint8_t* code, size_t code_size, const
         ret = lua_pcall(L, 0, -1, errfunc);
         if (ret == 0)
         {
-            lua_remove(L, -1);
+            lua_remove(L, errfunc);
         }
     }
-    lua_pushinteger(L, ret);
-    return lua_gettop(L) - 1;
+    return oldTop + 1;
 }
 
 int pesapi_loadstring(pesapi_env env, const uint8_t* code, size_t code_size, const char* path, pesapi_value_ref value_ref)
@@ -684,6 +704,7 @@ pesapi_ffi g_pesapi_ffi{
     &pesapi_is_array,
     &pesapi_native_object_to_value,
     &pesapi_get_native_object_ptr,
+    &pesapi_get_native_object_index,
     &pesapi_get_native_object_typeid,
     &pesapi_is_instance_of,
     &pesapi_boxing,

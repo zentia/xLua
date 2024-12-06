@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace XLua.LuaDLL
 {
 
@@ -198,38 +200,28 @@ namespace XLua.LuaDLL
 
 		[DllImport(LUADLL,CallingConvention=CallingConvention.Cdecl)]
 		public static extern int luaL_ref(IntPtr L, int registryIndex);
-#if !ENABLE_IL2CPP || !XLUA_IL2CPP
 		public static int luaL_ref(IntPtr L)//[-1, +0, m]
 		{
 			return luaL_ref(L,LuaIndexes.LUA_REGISTRYINDEX);
 		}
-#endif
-		
-		
 		[DllImport(LUADLL,CallingConvention=CallingConvention.Cdecl)]
 		public static extern void xlua_rawgeti(IntPtr L, int tableIndex, long index);
 
 		[DllImport(LUADLL,CallingConvention=CallingConvention.Cdecl)]
 		public static extern void xlua_rawseti(IntPtr L, int tableIndex, long index);//[-1, +0, m]
-#if !ENABLE_IL2CPP || !XLUA_IL2CPP
 		public static void lua_getref(IntPtr L, int reference)
 		{
 			xlua_rawgeti(L,LuaIndexes.LUA_REGISTRYINDEX,reference);
 		}
-#endif
-        
-
         [DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
         public static extern int pcall_prepare(IntPtr L, int error_func_ref, int func_ref);
 
         [DllImport(LUADLL,CallingConvention=CallingConvention.Cdecl)]
 		public static extern void luaL_unref(IntPtr L, int registryIndex, int reference);
-#if !ENABLE_IL2CPP || !XLUA_IL2CPP
 		public static void lua_unref(IntPtr L, int reference)
 		{
 			luaL_unref(L,LuaIndexes.LUA_REGISTRYINDEX,reference);
 		}
-#endif
 		[DllImport(LUADLL,CallingConvention=CallingConvention.Cdecl)]
 		public static extern bool lua_isstring(IntPtr L, int index);
 
@@ -285,15 +277,23 @@ namespace XLua.LuaDLL
                 Marshal.Copy(str, buffer, 0, len);
                 return Encoding.UTF8.GetString(buffer);
 #else
-                string ret = Marshal.PtrToStringAnsi(str, strlen.ToInt32());
-                if (ret == null)
+                try
                 {
-                    int len = strlen.ToInt32();
-                    byte[] buffer = new byte[len];
-                    Marshal.Copy(str, buffer, 0, len);
-                    return Encoding.UTF8.GetString(buffer);
+                    string ret = Marshal.PtrToStringAnsi(str, strlen.ToInt32());
+                    if (ret == null)
+                    {
+                        int len = strlen.ToInt32();
+                        byte[] buffer = new byte[len];
+                        Marshal.Copy(str, buffer, 0, len);
+                        return Encoding.UTF8.GetString(buffer);
+                    }
+                    return ret;
                 }
-                return ret;
+                catch (Exception e)
+                {
+                    Debug.LogException(e);
+                    return null;
+                }
 #endif
             }
             else
@@ -351,7 +351,6 @@ namespace XLua.LuaDLL
 
         [DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void xlua_pushlstring(IntPtr L, byte[] str, int size);
-#if !ENABLE_IL2CPP || !XLUA_IL2CPP
         public static void xlua_pushasciistring(IntPtr L, string str) // for inner use only
         {
             if (str == null)
@@ -379,7 +378,7 @@ namespace XLua.LuaDLL
 #endif
             }
         }
-#endif
+
         public static void lua_pushstring(IntPtr L, byte[] str)
         {
             if (str == null)

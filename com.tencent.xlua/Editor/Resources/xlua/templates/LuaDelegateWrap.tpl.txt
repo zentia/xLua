@@ -92,7 +92,7 @@ namespace XLua.CSObjectWrap
 					return <%=out_num+(has_return and 1 or 0)%>;
 				}
 			} catch(System.Exception __gen_e) {
-				return LuaAPI.luaL_error(L, "c# exception:" + __gen_e);
+				return LuaAPI.luaL_error(L, "c# exception in __CallMeta:" + __gen_e);
 			}
             return LuaAPI.luaL_error(L, "invalid arguments to Delegate <%=CsFullTypeName(type)%>!");
 		}
@@ -107,7 +107,7 @@ namespace XLua.CSObjectWrap
 				<%=GetPushStatement(type, "leftside + rightside")%>;
 				return 1;
 			} catch(System.Exception __gen_e) {
-				return LuaAPI.luaL_error(L, "c# exception:" + __gen_e);
+				return LuaAPI.luaL_error(L, "c# exception in __AddMeta:" + __gen_e);
 			}
 		}
 		
@@ -121,7 +121,7 @@ namespace XLua.CSObjectWrap
 				<%=GetPushStatement(type, "leftside - rightside")%>;
 				return 1;
 			} catch(System.Exception __gen_e) {
-				return LuaAPI.luaL_error(L, "c# exception:" + __gen_e);
+				return LuaAPI.luaL_error(L, "c# exception in __SubMeta:" + __gen_e);
 			}
 		}
 	}

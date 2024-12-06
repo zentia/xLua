@@ -1,4 +1,4 @@
-﻿#if ENABLE_IL2CPP && XLUA_IL2CPP
+#if ENABLE_IL2CPP && XLUA_IL2CPP
 using System;
 using System.Reflection;
 using XLua.TypeMapping;
@@ -55,9 +55,13 @@ namespace XLua
         public int errorFuncRef = -1;
 
         const int LIB_VERSION_EXPECT = 105;
+        public XLuaIl2cpp.pesapi_ffi ffi;
+
+        public static LuaEnv Instance;
 
         public LuaEnv()
         {
+            Instance = this;
             LuaDLL.Lua.SetLogCallback(LuaDLL.Lua.Log);
             XLuaIl2cpp.NativeAPI.InitialXLua(XLuaIl2cpp.NativeAPI.GetRegisterApi());
             apis = XLuaIl2cpp.NativeAPI.GetFFIApi();
@@ -66,8 +70,8 @@ namespace XLua
 
             persistentObjectInfoType = typeof(XLua.LuaTable);
             XLuaIl2cpp.NativeAPI.SetGlobalType_TypedValue(typeof(TypedValue));
-            XLuaIl2cpp.NativeAPI.SetGlobalType_IList(typeof(IList));
             XLuaIl2cpp.NativeAPI.SetGlobalType_LuaTable(typeof(LuaTable));
+            XLuaIl2cpp.NativeAPI.SetGlobalType_ArrayBuffer(typeof(byte[]));
 
             nativeLuaEnv = XLuaIl2cpp.NativeAPI.CreateNativeLuaEnv();
             nativePesapiEnv = XLuaIl2cpp.NativeAPI.GetPapiEnvRef(nativeLuaEnv);
@@ -76,7 +80,6 @@ namespace XLua
 
             XLuaIl2cpp.NativeAPI.SetObjectToGlobal(apis, nativePesapiEnv, "luaEnv", this);
 
-#if !DISABLE_AUTO_REGISTER
             const string AutoStaticCodeRegisterClassName = "XLuaStaticWrap.XLuaRegisterInfo_Gen";
             var autoRegister = Type.GetType(AutoStaticCodeRegisterClassName, false);
             if (autoRegister == null)
@@ -92,22 +95,13 @@ namespace XLua
                 var methodInfoOfRegister = autoRegister.GetMethod("AddRegisterInfoGetterIntoLuaEnv");
                 methodInfoOfRegister.Invoke(null, new object[] { this });
             }
-#endif
 
             XLuaIl2cpp.ExtensionMethodInfo.LoadExtensionMethodInfo();
             rawL = XLuaIl2cpp.NativeAPI.GetLuaState(nativeLuaEnv);
+            AddSearcher(StaticLuaCallbacks.LoadBuiltinLib, 2);
+            AddSearcher(StaticLuaCallbacks.LoadFromCustomLoaders, 3);
 
-            AddSearcher(LoadFromResource, 4);
-#if UNITY_ANDROID
-            DoResourcesString("xlua/init_il2cpp");
-            DoResourcesString("xlua/log");
-            DoResourcesString("xlua/csharp");
-#else
-            DoResourcesString("xlua/init_il2cpp.lua");
-            DoResourcesString("xlua/log.lua");
-            DoResourcesString("xlua/csharp.lua");
-#endif
-            XLuaIl2cpp.pesapi_ffi ffi = Marshal.PtrToStructure<XLuaIl2cpp.pesapi_ffi>(apis);
+            ffi = Marshal.PtrToStructure<XLuaIl2cpp.pesapi_ffi>(apis);
             var scope = ffi.open_scope(rawL);
             var env = ffi.get_env_from_ref(nativePesapiEnv);
             var func = ffi.create_function(env, FooImpl, IntPtr.Zero);
@@ -239,15 +233,10 @@ namespace XLua
             XLuaIl2cpp.NativeAPI.DoString(apis, nativePesapiEnv, bytes, chunkName, env, null);
         }
 
-        public void DoResourcesString(string filename)
+        public object DoString(string chunk, Type t, string chunkName = "chunk", LuaTable env = null)
         {
-#if UNITY_ANDROID
-            UnityEngine.TextAsset file = (UnityEngine.TextAsset)UnityEngine.Resources.Load(filename);
-            var bytes = file.bytes;
-#else
-            var bytes = System.IO.File.ReadAllBytes(System.IO.Path.Combine(Application.streamingAssetsPath, filename));
-#endif
-            XLuaIl2cpp.NativeAPI.DoString(apis, nativePesapiEnv, bytes, "@" + filename, null, null);
+            byte[] bytes = System.Text.Encoding.UTF8.GetBytes(chunk);
+            return XLuaIl2cpp.NativeAPI.DoString(apis, nativePesapiEnv, bytes, chunkName, env, t);
         }
 
         int last_check_point = 0;
@@ -274,7 +263,7 @@ namespace XLua
         
         public void FullGc()
         {
-            LuaAPI.lua_gc(L, XLua.LuaDLL.LuaGCOptions.LUA_GCCOLLECT, 0);
+            LuaAPI.lua_gc(L, XLua.LuaGCOptions.LUA_GCCOLLECT, 0);
         }
 
         public LuaTable NewTable()
@@ -299,6 +288,7 @@ namespace XLua
                 XLuaIl2cpp.NativeAPI.DestroyLuaEnvPrivate(nativeScriptObjectsRefsMgr);
                 nativeScriptObjectsRefsMgr = IntPtr.Zero;
                 rawL = IntPtr.Zero;
+                Instance = null;
                 disposed = true;
             }
         }
@@ -344,6 +334,23 @@ namespace XLua
 #if THREAD_SAFE
             }
 #endif
+        }
+
+        public object SafeGetCSObj(int index)
+        {
+            var idx = ffi.get_native_object_index(L, index);
+            return objectPool[index];
+        }
+
+        internal Dictionary<string, LuaCSFunction> buildin_initer = new();
+
+        public void AddBuildin(string name, LuaCSFunction initer)
+        {
+            if (!Utils.IsStaticPInvokeCSFunction(initer))
+            {
+                throw new Exception("initer must be static and has MonoPInvokeCallback Attribute!");
+            }
+            buildin_initer.Add(name, initer);
         }
     }
 }

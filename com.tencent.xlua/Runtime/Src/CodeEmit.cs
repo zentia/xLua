@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Tencent is pleased to support the open source community by making xLua available.
  * Copyright (C) 2016 THL A29 Limited, a Tencent company. All rights reserved.
  * Licensed under the MIT License (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
@@ -12,6 +12,8 @@ using System.Reflection.Emit;
 using System.Reflection;
 using System;
 using System.Linq;
+using System.Runtime.InteropServices;
+
 
 #if USE_UNI_LUA
 using LuaAPI = UniLua.Lua;
@@ -135,6 +137,10 @@ namespace XLua
         private void emitPush(ILGenerator il, Type type, short dataPos, bool isParam, LocalBuilder L, LocalBuilder translator, bool isArg)
         {
             var paramElemType = type.IsByRef ? type.GetElementType() : type;
+            if (paramElemType.IsEnum)
+            {
+                paramElemType = typeof(int);
+            }
             var ldd = isArg ? OpCodes.Ldarg : OpCodes.Ldloc;
             MethodInfo pusher;
             if (fixPush.TryGetValue(paramElemType, out pusher))
@@ -152,6 +158,11 @@ namespace XLua
                     {
                         il.Emit(OpCodes.Ldind_Ref);
                     }
+                }
+
+                if (type.IsEnum)
+                {
+                    il.Emit(OpCodes.Conv_I4);
                 }
 
                 il.Emit(OpCodes.Call, pusher);
@@ -1337,7 +1348,8 @@ namespace XLua
 
             foreach (var ev in toBeWrap.GetEvents(instanceFlag).Where(m => !isMemberInBlackList(m)))
             {
-                emitRegisterFunc(il, emitEventWrap(wrapTypeBuilder, ev), Utils.METHOD_IDX, ev.Name);
+                emitRegisterFunc(il, emitAddEventWrap(wrapTypeBuilder, ev), Utils.METHOD_IDX, $"add_{ev.Name}");
+                emitRegisterFunc(il, emitRemoveEventWrap(wrapTypeBuilder, ev), Utils.METHOD_IDX, $"remove_{ev.Name}");
             }
 
             //end obj
@@ -1393,7 +1405,8 @@ namespace XLua
 
             foreach (var ev in toBeWrap.GetEvents(staticFlag).Where(m => !isMemberInBlackList(m)))
             {
-                emitRegisterFunc(il, emitEventWrap(wrapTypeBuilder, ev), Utils.CLS_IDX, ev.Name);
+                emitRegisterFunc(il, emitAddEventWrap(wrapTypeBuilder, ev), Utils.CLS_IDX, $"add_{ev.Name}");
+                emitRegisterFunc(il, emitRemoveEventWrap(wrapTypeBuilder, ev), Utils.CLS_IDX, $"remove_{ev.Name}");
             }
 
             foreach (var prop in staticProperties)
@@ -1455,19 +1468,13 @@ namespace XLua
             return wrapTypeBuilder.CreateType();
         }
 
-        MethodBuilder emitEventWrap(TypeBuilder typeBuilder, EventInfo ev)
+        MethodBuilder emitAddEventWrap(TypeBuilder typeBuilder, EventInfo ev)
         {
             var addEvent = ev.GetAddMethod();
-            var removeEvent = ev.GetRemoveMethod();
 
-            if (addEvent == null && removeEvent == null)
-            {
-                return null;
-            }
+            bool isStatic = addEvent.IsStatic;
 
-            bool isStatic = addEvent != null ? addEvent.IsStatic : removeEvent.IsStatic;
-
-            var methodBuilder = typeBuilder.DefineMethod(ev.Name + (genID++), MethodAttributes.Static, typeof(int), parameterTypeOfWrap);
+            var methodBuilder = typeBuilder.DefineMethod($"add_{ev.Name}{genID++}", MethodAttributes.Static, typeof(int), parameterTypeOfWrap);
             methodBuilder.DefineParameter(1, ParameterAttributes.None, "L");
 
             ILGenerator il = methodBuilder.GetILGenerator();
@@ -1488,70 +1495,105 @@ namespace XLua
             il.Emit(OpCodes.Call, ObjectTranslatorPool_FindTranslator);
             il.Emit(OpCodes.Stloc, translator);
 
-            EmitGetObject(il, isStatic ? 2 : 3, ev.EventHandlerType, L, translator, null);
+            EmitGetObject(il, isStatic ? 1 : 2, ev.EventHandlerType, L, translator, null);
             il.Emit(OpCodes.Stloc, callback);
             il.Emit(OpCodes.Ldloc, callback);
             Label ifBlock = il.DefineLabel();
             il.Emit(OpCodes.Brtrue, ifBlock);
 
             il.Emit(OpCodes.Ldarg_0);
-            il.Emit(OpCodes.Ldstr, string.Format("#{0}, need {1}", isStatic ? 2 : 3, ev.EventHandlerType));
+            il.Emit(OpCodes.Ldstr, string.Format("#{0}, need {1}", isStatic ? 1 : 2, ev.EventHandlerType));
             il.Emit(OpCodes.Call, LuaAPI_luaL_error);
             il.Emit(OpCodes.Stloc, wrapRet);
             il.Emit(OpCodes.Leave, retPoint);
             il.MarkLabel(ifBlock);
 
-            if (addEvent != null)
+            if (!isStatic)
             {
-                il.Emit(OpCodes.Ldarg_0);
-                il.Emit(isStatic ? OpCodes.Ldc_I4_1 : OpCodes.Ldc_I4_2);
-                il.Emit(OpCodes.Ldstr, "+");
-                il.Emit(OpCodes.Call, LuaAPI_xlua_is_eq_str);
-                ifBlock = il.DefineLabel();
-                il.Emit(OpCodes.Brfalse, ifBlock);
-
-                if (!isStatic)
+                EmitGetObject(il, 1, ev.DeclaringType, L, translator, null);
+                if (ev.DeclaringType.IsValueType)
                 {
-                    EmitGetObject(il, 1, ev.DeclaringType, L, translator, null);
-                    if (ev.DeclaringType.IsValueType)
-                    {
-                        var self = il.DeclareLocal(ev.DeclaringType);
-                        il.Emit(OpCodes.Stloc, self);
-                        il.Emit(OpCodes.Ldloca, self);
-                    }
+                    var self = il.DeclareLocal(ev.DeclaringType);
+                    il.Emit(OpCodes.Stloc, self);
+                    il.Emit(OpCodes.Ldloca, self);
                 }
-                il.Emit(OpCodes.Ldloc, callback);
-                il.Emit(OpCodes.Call, addEvent);
-                il.Emit(OpCodes.Ldc_I4_0);
-                il.Emit(OpCodes.Leave, retPoint);
-                il.MarkLabel(ifBlock);
             }
+            il.Emit(OpCodes.Ldloc, callback);
+            il.Emit(OpCodes.Call, addEvent);
+            il.Emit(OpCodes.Ldc_I4_0);
+            il.Emit(OpCodes.Leave, retPoint);
 
-            if (removeEvent != null)
+
+            il.Emit(OpCodes.Leave, exceptionBlock);
+
+            emitCatchBlock(il, ex, wrapRet, retPoint, exceptionBlock);
+
+            il.Emit(OpCodes.Ldarg_0);
+            il.Emit(OpCodes.Ldstr, "invalid arguments to " + ev.DeclaringType + "." + ev.Name + "!");
+            il.Emit(OpCodes.Call, LuaAPI_luaL_error);
+            il.Emit(OpCodes.Ret);
+
+            il.MarkLabel(retPoint);
+            il.Emit(OpCodes.Ldloc, wrapRet);
+            il.Emit(OpCodes.Ret);
+
+            return methodBuilder;
+        }
+
+        MethodBuilder emitRemoveEventWrap(TypeBuilder typeBuilder, EventInfo ev)
+        {
+            var removeEvent = ev.GetRemoveMethod();
+
+            bool isStatic = removeEvent.IsStatic;
+
+            var methodBuilder = typeBuilder.DefineMethod($"remove_{ev.Name}{genID++}", MethodAttributes.Static, typeof(int), parameterTypeOfWrap);
+            methodBuilder.DefineParameter(1, ParameterAttributes.None, "L");
+
+            ILGenerator il = methodBuilder.GetILGenerator();
+
+            LocalBuilder wrapRet = il.DeclareLocal(typeof(int));
+            LocalBuilder ex = il.DeclareLocal(typeof(Exception));
+            LocalBuilder L = il.DeclareLocal(typeof(RealStatePtr));
+            LocalBuilder translator = il.DeclareLocal(typeof(ObjectTranslator));
+            LocalBuilder callback = il.DeclareLocal(ev.EventHandlerType);
+
+            il.Emit(OpCodes.Ldarg_0);
+            il.Emit(OpCodes.Stloc, L);
+
+            Label exceptionBlock = il.BeginExceptionBlock();
+            Label retPoint = il.DefineLabel();
+
+            il.Emit(OpCodes.Ldarg_0);
+            il.Emit(OpCodes.Call, ObjectTranslatorPool_FindTranslator);
+            il.Emit(OpCodes.Stloc, translator);
+
+            EmitGetObject(il, isStatic ? 1 : 2, ev.EventHandlerType, L, translator, null);
+            il.Emit(OpCodes.Stloc, callback);
+            il.Emit(OpCodes.Ldloc, callback);
+            Label ifBlock = il.DefineLabel();
+            il.Emit(OpCodes.Brtrue, ifBlock);
+
+            il.Emit(OpCodes.Ldarg_0);
+            il.Emit(OpCodes.Ldstr, string.Format("#{0}, need {1}", isStatic ? 1 : 2, ev.EventHandlerType));
+            il.Emit(OpCodes.Call, LuaAPI_luaL_error);
+            il.Emit(OpCodes.Stloc, wrapRet);
+            il.Emit(OpCodes.Leave, retPoint);
+            il.MarkLabel(ifBlock);
+
+            if (!isStatic)
             {
-                il.Emit(OpCodes.Ldarg_0);
-                il.Emit(isStatic ? OpCodes.Ldc_I4_1 : OpCodes.Ldc_I4_2);
-                il.Emit(OpCodes.Ldstr, "-");
-                il.Emit(OpCodes.Call, LuaAPI_xlua_is_eq_str);
-                ifBlock = il.DefineLabel();
-                il.Emit(OpCodes.Brfalse, ifBlock);
-
-                if (!isStatic)
+                EmitGetObject(il, 1, ev.DeclaringType, L, translator, null);
+                if (ev.DeclaringType.IsValueType)
                 {
-                    EmitGetObject(il, 1, ev.DeclaringType, L, translator, null);
-                    if (ev.DeclaringType.IsValueType)
-                    {
-                        var self = il.DeclareLocal(ev.DeclaringType);
-                        il.Emit(OpCodes.Stloc, self);
-                        il.Emit(OpCodes.Ldloca, self);
-                    }
+                    var self = il.DeclareLocal(ev.DeclaringType);
+                    il.Emit(OpCodes.Stloc, self);
+                    il.Emit(OpCodes.Ldloca, self);
                 }
-                il.Emit(OpCodes.Ldloc, callback);
-                il.Emit(OpCodes.Call, removeEvent);
-                il.Emit(OpCodes.Ldc_I4_0);
-                il.Emit(OpCodes.Leave, retPoint);
-                il.MarkLabel(ifBlock);
             }
+            il.Emit(OpCodes.Ldloc, callback);
+            il.Emit(OpCodes.Call, removeEvent);
+            il.Emit(OpCodes.Ldc_I4_0);
+            il.Emit(OpCodes.Leave, retPoint);
 
             il.Emit(OpCodes.Leave, exceptionBlock);
 

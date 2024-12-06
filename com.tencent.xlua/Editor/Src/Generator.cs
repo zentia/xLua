@@ -85,34 +85,27 @@ namespace CSObjectWrapEditor
 
         static Generator()
         {
-#if !XLUA_GENERAL
-            TemplateRef template_ref = ScriptableObject.CreateInstance<TemplateRef>();
-
+            var LuaClassWrap = Resources.Load<TextAsset>("xlua/templates/LuaClassWrap.tpl");
+            var LuaDelegateBridge = Resources.Load<TextAsset>("xlua/templates/LuaDelegateBridge.tpl");
+            var LuaDelegateWrap = Resources.Load<TextAsset>("xlua/templates/LuaDelegateWrap.tpl");
+            var LuaEnumWrap = Resources.Load<TextAsset>("xlua/templates/LuaEnumWrap.tpl");
+            var LuaInterfaceBridge = Resources.Load<TextAsset>("xlua/templates/LuaInterfaceBridge.tpl");
+            var LuaRegister = Resources.Load<TextAsset>("xlua/templates/LuaRegister.tpl");
+            var LuaWrapPusher = Resources.Load<TextAsset>("xlua/templates/LuaWrapPusher.tpl");
+            var PackUnpack = Resources.Load<TextAsset>("xlua/templates/PackUnpack.tpl");
+            var TemplateCommon = Resources.Load<TextAsset>("xlua/templates/TemplateCommon.lua");
             templateRef = new XLuaTemplates()
             {
-#if GEN_CODE_MINIMIZE
-                LuaClassWrap = { name = template_ref.LuaClassWrapGCM.name, text = template_ref.LuaClassWrapGCM.text },
-#else
-                LuaClassWrap = { name = template_ref.LuaClassWrap.name, text = template_ref.LuaClassWrap.text },
-#endif
-                LuaDelegateBridge = { name = template_ref.LuaDelegateBridge.name, text = template_ref.LuaDelegateBridge.text },
-                LuaDelegateWrap = { name = template_ref.LuaDelegateWrap.name, text = template_ref.LuaDelegateWrap.text },
-#if GEN_CODE_MINIMIZE
-                LuaEnumWrap = { name = template_ref.LuaEnumWrapGCM.name, text = template_ref.LuaEnumWrapGCM.text },
-#else
-                LuaEnumWrap = { name = template_ref.LuaEnumWrap.name, text = template_ref.LuaEnumWrap.text },
-#endif
-                LuaInterfaceBridge = { name = template_ref.LuaInterfaceBridge.name, text = template_ref.LuaInterfaceBridge.text },
-#if GEN_CODE_MINIMIZE
-                LuaRegister = { name = template_ref.LuaRegisterGCM.name, text = template_ref.LuaRegisterGCM.text },
-#else
-                LuaRegister = { name = template_ref.LuaRegister.name, text = template_ref.LuaRegister.text },
-#endif
-                LuaWrapPusher = { name = template_ref.LuaWrapPusher.name, text = template_ref.LuaWrapPusher.text },
-                PackUnpack = { name = template_ref.PackUnpack.name, text = template_ref.PackUnpack.text },
-                TemplateCommon = { name = template_ref.TemplateCommon.name, text = template_ref.TemplateCommon.text },
+                LuaClassWrap = { name = LuaClassWrap.name, text = LuaClassWrap.text },
+                LuaDelegateBridge = { name = LuaDelegateBridge.name, text = LuaDelegateBridge.text },
+                LuaDelegateWrap = { name = LuaDelegateWrap.name, text = LuaDelegateWrap.text },
+                LuaEnumWrap = { name = LuaEnumWrap.name, text = LuaEnumWrap.text },
+                LuaInterfaceBridge = { name = LuaInterfaceBridge.name, text = LuaInterfaceBridge.text },
+                LuaRegister = { name = LuaRegister.name, text = LuaRegister.text },
+                LuaWrapPusher = { name = LuaWrapPusher.name, text = LuaWrapPusher.text },
+                PackUnpack = { name = PackUnpack.name, text = PackUnpack.text },
+                TemplateCommon = { name = TemplateCommon.name, text = TemplateCommon.text },
             };
-#endif
             luaenv.AddLoader((ref string filepath) =>
             {
                 if (filepath == "TemplateCommon")
@@ -587,11 +580,7 @@ namespace CSObjectWrapEditor
             }
             catch (Exception e)
             {
-#if XLUA_GENERAL
-                System.Console.WriteLine("Error: gen wrap file fail! err=" + e.Message + ", stack=" + e.StackTrace);
-#else
                 Debug.LogError("gen wrap file fail! err=" + e.Message + ", stack=" + e.StackTrace);
-#endif
             }
             finally
             {
@@ -1017,7 +1006,6 @@ namespace CSObjectWrapEditor
             {
                 Directory.Delete(path, true);
                 AssetDatabase.DeleteAsset(path.Substring(path.IndexOf("Assets") + "Assets".Length));
-                AssetDatabase.Refresh();
             }
         }
 
@@ -1586,9 +1574,11 @@ namespace CSObjectWrapEditor
         [MenuItem("XLua/Generate Code", false, 1)]
         public static void GenAll()
         {
-            var start = DateTime.Now;
-            Clear(GeneratorConfig.common_path);
+            ClearAll();
             Directory.CreateDirectory(GeneratorConfig.common_path);
+#if XLUA_IL2CPP
+            XLuaIl2cpp.Editor.Generator.FileExporter.Gen(GeneratorConfig.common_path);
+#else
             GetGenConfig(XLua.Utils.GetAllTypes());
             luaenv.DoString("require 'TemplateCommon'");
             var gen_push_types_setter = luaenv.Global.Get<LuaFunction>("SetGenPushAndUpdateTypes");
@@ -1600,8 +1590,7 @@ namespace CSObjectWrapEditor
             GenCodeForClass();
             GenLuaRegister();
             callCustomGen();
-            Debug.Log("finished! use " + (DateTime.Now - start).TotalMilliseconds + " ms");
-            AssetDatabase.Refresh();
+#endif
         }
 
 #if UNITY_EDITOR_OSX || UNITY_EDITOR_WIN

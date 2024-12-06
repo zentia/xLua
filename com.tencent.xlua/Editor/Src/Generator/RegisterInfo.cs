@@ -67,52 +67,56 @@ namespace XLua.Editor
                 }
             }
 
-            public static List<RegisterInfoForGenerate> GetRegisterInfos(List<Type> genTypes)
+            public static List<RegisterInfoForGenerate> GetRegisterInfos(Dictionary<Type, XLuaIl2cpp.Editor.Generator.FileExporter.Script> genTypes, bool isFull)
             {
                 BindingFlags flag = BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public;
 
-                return genTypes.Where(type => 
-                        !(type.IsEnum || type.IsArray || (Generator.Utils.IsDelegate(type) && type != typeof(Delegate)))
-                    )
+                return genTypes.Where(type => !(type.Key.IsEnum || type.Key.IsArray || (Utils.IsDelegate(type.Key) && type.Key != typeof(Delegate))))
                     .Select(type =>
                     {
                         var Collector = new MRICollector();
 
-                        var ctors = type.GetConstructors(flag).ToArray();
-                        var hasParamlessCtor = false;
-                        foreach (var m in ctors)
+                        if (isFull || type.Value.isWhiteList || type.Value.Methods.ContainsKey("ctor"))
                         {
-                            if (m.GetParameters().Length == 0) hasParamlessCtor = true;
-                            Collector.Add(m.Name, new MemberRegisterInfoForGenerate
+                            var ctors = type.Key.GetConstructors(flag);
+                            var hasParamlessCtor = false;
+                            foreach (var m in ctors)
                             {
-                                Name = m.Name,
-                                UseBindingMode = Utils.getBindingMode(m).ToString(),
-                                MemberType = "Constructor",
-                                IsStatic = false,
+                                if (m.GetParameters().Length == 0)
+                                    hasParamlessCtor = true;
+                                Collector.Add(m.Name, new MemberRegisterInfoForGenerate
+                                {
+                                    Name = m.Name,
+                                    UseBindingMode = Utils.getBindingMode(m).ToString(),
+                                    MemberType = "Constructor",
+                                    IsStatic = false,
 
-                                Constructor = "Constructor",
-                            }, false);
-                        }
-                        if (!hasParamlessCtor && type.IsValueType)
-                        {
-                            Collector.Add(".ctor", new MemberRegisterInfoForGenerate
+                                    Constructor = "Constructor",
+                                }, false);
+                            }
+                            if (!hasParamlessCtor && type.Key.IsValueType)
                             {
-                                Name = ".ctor",
-                                UseBindingMode = "FastBinding",
-                                MemberType = "Constructor",
-                                IsStatic = false,
+                                Collector.Add(".ctor", new MemberRegisterInfoForGenerate
+                                {
+                                    Name = ".ctor",
+                                    UseBindingMode = "FastBinding",
+                                    MemberType = "Constructor",
+                                    IsStatic = false,
 
-                                Constructor = "Constructor",
-                            }, false);
+                                    Constructor = "Constructor",
+                                }, false);
+                            }
                         }
+                        
 
-                        foreach (var m in XLua.Utils.GetMethodAndOverrideMethod(type, flag)
+                        foreach (var m in XLua.Utils.GetMethodAndOverrideMethod(type.Key, flag)
                                     .Where(m => !Utils.IsNotSupportedMember(m))
-                                    .Where(m => XLua.Utils.IsNotGenericOrValidGeneric(m))
-                                    .ToArray()
-                        )
+                                    .Where(m => XLua.Utils.IsNotGenericOrValidGeneric(m)))
                         {
-                            if (m.DeclaringType == type && m.IsSpecialName && m.Name.StartsWith("op_") && m.IsStatic)
+                            if (!isFull && !type.Value.isWhiteList && !type.Value.Methods.ContainsKey(m.Name))
+                                continue;
+
+                            if (m.DeclaringType == type.Key && m.IsSpecialName && m.Name.StartsWith("op_") && m.IsStatic)
                             {
                                 if (m.Name == "op_Explicit" || m.Name == "op_Implicit") continue;
                                 Collector.Add(m.Name, new MemberRegisterInfoForGenerate
@@ -140,17 +144,14 @@ namespace XLua.Editor
                             }
                         }
 
-                        foreach (var m in XLua
-                                    .Editor
-                                    .Generator
-                                    .Utils
-                                    .GetExtensionMethods(type, new HashSet<Type>(genTypes))
+                        foreach (var m in Utils.GetExtensionMethods(type.Key, new HashSet<Type>(genTypes.Keys))
                                     .Where(m => !Utils.IsNotSupportedMember(m))
-                                    .Where(m => !m.IsGenericMethodDefinition || XLua.Utils.IsNotGenericOrValidGeneric(m)).ToArray()
-                                    .Where(m => genTypes == null ? true : genTypes.Contains(m.DeclaringType))
-                                    .ToArray()
-                        )
+                                    .Where(m => !m.IsGenericMethodDefinition || XLua.Utils.IsNotGenericOrValidGeneric(m))
+                                    .Where(m => genTypes.Keys.Contains(m.DeclaringType)))
                         {
+                            if (!isFull && !type.Value.isWhiteList && !type.Value.Methods.ContainsKey(m.Name))
+                                continue;
+
                             Collector.Add(m.Name, new MemberRegisterInfoForGenerate
                             {
                                 Name = m.Name,
@@ -162,16 +163,19 @@ namespace XLua.Editor
                             }, false);
                         }
 
-                        foreach (var m in type
+                        foreach (var m in type.Key
                                     .GetEvents(Utils.Flags)
-                                    .Where(m => !Utils.IsNotSupportedMember(m))
-                                    .ToArray()
-                        )
+                                    .Where(m => !Utils.IsNotSupportedMember(m)))
                         {
+                            if (!isFull && !type.Value.isWhiteList && !type.Value.Fields.Contains(m.Name))
+                            {
+                                continue;
+                            }
+
                             var addMethod = m.GetAddMethod();
                             var removeMethod = m.GetRemoveMethod();
 
-                            if (addMethod != null && addMethod.IsPublic)
+                            if (addMethod.IsPublic)
                             {
                                 Collector.Add("add_" + m.Name, new MemberRegisterInfoForGenerate
                                 {
@@ -183,7 +187,7 @@ namespace XLua.Editor
                                     Method = "A_" + m.Name,
                                 }, false);
                             }
-                            if (removeMethod != null && removeMethod.IsPublic)
+                            if (removeMethod.IsPublic)
                             {
                                 Collector.Add("remove_" + m.Name, new MemberRegisterInfoForGenerate
                                 {
@@ -197,12 +201,13 @@ namespace XLua.Editor
                             }
                         }
 
-                        foreach (var m in type
+                        foreach (var m in type.Key
                                     .GetProperties(flag)
-                                    .Where(m => !Utils.IsNotSupportedMember(m))
-                                    .ToArray()
-                        )
+                                    .Where(m => !Utils.IsNotSupportedMember(m)))
                         {
+                            if (!isFull && !type.Value.isWhiteList && !type.Value.Fields.Contains(m.Name))
+                                continue;
+
                             if (m.GetIndexParameters().GetLength(0) == 1)
                             {
                                 var getMethod = m.GetGetMethod();
@@ -248,12 +253,13 @@ namespace XLua.Editor
                             }
                         }
 
-                        foreach (var m in type
+                        foreach (var m in type.Key
                             .GetFields(flag)
-                            .Where(f => !Utils.IsNotSupportedMember(f))
-                            .ToArray()
-                        )
+                            .Where(f => !Utils.IsNotSupportedMember(f)))
                         {
+                            if (!isFull && !type.Value.isWhiteList && !type.Value.Fields.Contains(m.Name))
+                                continue;
+
                             Collector.Add(m.Name, new MemberRegisterInfoForGenerate
                             {
                                 Name = m.Name,
@@ -268,9 +274,9 @@ namespace XLua.Editor
 
                         return new RegisterInfoForGenerate
                         {
-                            WrapperName = Utils.GetWrapTypeName(type),
+                            WrapperName = Utils.GetWrapTypeName(type.Key),
 
-                            Type = type,
+                            Type = type.Key,
 
                             Members = Collector.GetAllMember(),
                         };

@@ -12,5 +12,8 @@
     "url": "https://github.com/zentia/xlua"
   },
   "category": "Libraries",
-  "unity": "2022.3"
+  "unity": "2022.3",
+  "dependencies": {
+    "com.unity.nuget.newtonsoft-json": "2.0.0"
+  }
 }

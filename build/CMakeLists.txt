@@ -5,13 +5,14 @@
 # Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 
 cmake_minimum_required(VERSION 3.22)
-
-set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} /MT" CACHE STRING "")
-set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} /MTd /Zi /Od" CACHE STRING "")
-set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT" CACHE STRING "")
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MTd /Zi /Od" CACHE STRING "")
-set(CMAKE_EXE_LINKER_FLAGS_DEBUG "${CMAKE_EXE_LINKER_FLAGS_DEBUG} /DEBUG")
-set(CMAKE_SHARED_LINKER_FLAGS_DEBUG "${CMAKE_SHARED_LINKER_FLAGS_DEBUG} /DEBUG")
+if ( WIN32 AND NOT CYGWIN AND NOT ( CMAKE_SYSTEM_NAME STREQUAL "WindowsStore" ) AND NOT ANDROID)
+    set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} /MT" CACHE STRING "")
+    set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} /MTd /Zi /Od" CACHE STRING "")
+    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT" CACHE STRING "")
+    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MTd /Zi /Od" CACHE STRING "")
+    set(CMAKE_EXE_LINKER_FLAGS_DEBUG "${CMAKE_EXE_LINKER_FLAGS_DEBUG} /DEBUG")
+    set(CMAKE_SHARED_LINKER_FLAGS_DEBUG "${CMAKE_SHARED_LINKER_FLAGS_DEBUG} /DEBUG")
+endif ()
 
 project(XLuaPlugin)
 
@@ -40,7 +41,7 @@ set(LUA_VERSION "5.4.7")
 set(LUA_SRC_PATH ./lua-${LUA_VERSION}/src)
 
 include_directories(
-    Inc
+    il2cpp/Inc
     ${CMAKE_SOURCE_DIR}
     ${LUA_SRC_PATH}
     ${CMAKE_CURRENT_BINARY_DIR}
@@ -54,22 +55,23 @@ set ( LUA_LIB )
 set ( XLUA_CORE
     i64lib.h
     i64lib.c
-    Inc/XLua.h
-    Src/XLua.cpp
-    Inc/LuaClassRegister.h
-    Src/LuaClassRegister.cpp
-    Inc/CppObjectMapper.h
-    Src/CppObjectMapper.cpp
-    Inc/DataTransfer.h
-    Src/DataTransfer.cpp
-    Src/PesapiAddonLoad.cpp
-    Src/PesapiLuaImpl.cpp
-    sparsehash/dense_hash_map.h
-    sparsehash/densehashtable.h
-    sparsehash/sparse_hash_map.h
-    sparsehash/sparsehashtable.h
-    sparsehash/sparsetable.h
-    sparsehash/type_traits.h
+    xlua.c
+    il2cpp/Inc/XLua.h
+    il2cpp/Src/XLua.cpp
+    il2cpp/Inc/LuaClassRegister.h
+    il2cpp/Src/LuaClassRegister.cpp
+    il2cpp/Inc/CppObjectMapper.h
+    il2cpp/Src/CppObjectMapper.cpp
+    il2cpp/Inc/DataTransfer.h
+    il2cpp/Src/DataTransfer.cpp
+    il2cpp/Src/PesapiAddonLoad.cpp
+    il2cpp/Src/PesapiLuaImpl.cpp
+    il2cpp/Inc/dense_hash_map.h
+    il2cpp/Inc/densehashtable.h
+    il2cpp/Inc/sparse_hash_map.h
+    il2cpp/Inc/sparsehashtable.h
+    il2cpp/Inc/sparsetable.h
+    il2cpp/Inc/type_traits.h
 )
 
 list (APPEND XLUA_CORE memory_leak_checker.c)
@@ -99,19 +101,19 @@ if (APPLE)
     if (IOS)
         ADD_DEFINITIONS(-DLUA_USE_IOS) # Despite claiming to be ISO C, iOS does not implement 'system'.(iOS11)
         set(CMAKE_OSX_ARCHITECTURES "$(ARCHS_STANDARD)")
-        add_library(xlua_il2cpp STATIC
+        add_library(GameCore STATIC
            ${LUA_CORE}
            ${LUA_LIB}
            ${XLUA_CORE}
            ${THIRDPART_SRC}
         )
-		set_xcode_property (xlua_il2cpp IPHONEOS_DEPLOYMENT_TARGET "7.0" "all")
+		set_xcode_property (GameCore IPHONEOS_DEPLOYMENT_TARGET "7.0" "all")
     else ()
         ADD_DEFINITIONS(-DLUA_USE_MACOSX) #osx platform emmylua debugger must have this option or can not load cpath
         if (BUILD_SILICON)
            set(CMAKE_OSX_ARCHITECTURES arm64)
 
-            add_library(xlua_il2cpp SHARED
+            add_library(GameCore SHARED
                 ${LUA_CORE}
                 ${LUA_LIB}
                 ${XLUA_CORE}
@@ -119,27 +121,27 @@ if (APPLE)
             )
         else ()
             set(CMAKE_OSX_ARCHITECTURES "$(ARCHS_STANDARD_64_BIT)")
-            add_library(xlua_il2cpp MODULE
+            add_library(GameCore MODULE
                 ${LUA_CORE}
                 ${LUA_LIB}
                 ${XLUA_CORE}
                 ${THIRDPART_SRC}
             )
-            set_target_properties ( xlua_il2cpp PROPERTIES BUNDLE TRUE )
+            set_target_properties ( GameCore PROPERTIES BUNDLE TRUE )
             #set_target_properties ( xlua PROPERTIES FRAMEWORK TRUE )
             #set_target_properties ( xlua PROPERTIES MACOSX_RPATH TRUE )
         endif ()
     endif ()
 elseif ("${CMAKE_SYSTEM_NAME}" STREQUAL "Switch")
-    add_library(xlua_il2cpp STATIC
+    add_library(GameCore STATIC
         ${LUA_CORE}
         ${LUA_LIB}
         ${XLUA_CORE}
         ${THIRDPART_SRC}
     )
-    target_compile_options(xlua_il2cpp PRIVATE -m64 -mcpu=cortex-a57+fp+simd+crypto+crc -fno-common -fno-short-enums -ffunction-sections -fdata-sections -fPIC -fms-extensions)
+    target_compile_options(GameCore PRIVATE -m64 -mcpu=cortex-a57+fp+simd+crypto+crc -fno-common -fno-short-enums -ffunction-sections -fdata-sections -fPIC -fms-extensions)
 else ( )
-    add_library(xlua_il2cpp SHARED
+    add_library(GameCore SHARED
         ${LUA_CORE}
         ${LUA_LIB}
         ${XLUA_CORE}
@@ -148,18 +150,18 @@ else ( )
 endif ( )
 
 if ( WIN32 AND NOT CYGWIN )
-    target_compile_definitions (xlua_il2cpp PRIVATE LUA_BUILD_AS_DLL)
+    target_compile_definitions (GameCore PRIVATE LUA_BUILD_AS_DLL)
 endif ( )
 
 if (GC64 AND USING_LUAJIT)
-    target_compile_definitions (xlua_il2cpp PRIVATE LUAJIT_ENABLE_GC64)
+    target_compile_definitions (GameCore PRIVATE LUAJIT_ENABLE_GC64)
 endif ()
 
 if (LUAC_COMPATIBLE_FORMAT AND NOT USING_LUAJIT)
     target_compile_definitions (xlua_il2cpp PRIVATE LUAC_COMPATIBLE_FORMAT)
 endif ()
 
-target_compile_definitions (xlua_il2cpp PRIVATE XLUA_IL2CPP)
+target_compile_definitions (GameCore PRIVATE XLUA_IL2CPP)
 
 set_property(
 	SOURCE ${LUA_SOCKET}
@@ -174,26 +176,26 @@ endif()
 	
 if ( WIN32 AND NOT CYGWIN )
     if (USING_LUAJIT)
-        target_link_libraries(xlua_il2cpp
+        target_link_libraries(GameCore
             ${CMAKE_SOURCE_DIR}/${LUAJIT_SRC_PATH}/lua51.lib
             ws2_32
             ${THIRDPART_LIB} 
         )
     else ()
-        target_link_libraries(xlua_il2cpp
+        target_link_libraries(GameCore
             ws2_32
             ${THIRDPART_LIB} 
         )
     endif()
 else ( )
     if (USING_LUAJIT AND NOT APPLE)
-		target_link_libraries(xlua_il2cpp
+		target_link_libraries(GameCore
 			${CMAKE_SOURCE_DIR}/${LUAJIT_SRC_PATH}/libluajit.a
 			m
             ${THIRDPART_LIB} 
 		)
     else ()
-        target_link_libraries(xlua_il2cpp
+        target_link_libraries(GameCore
             m
             ${THIRDPART_LIB} 
         )

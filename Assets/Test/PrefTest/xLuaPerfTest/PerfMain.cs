@@ -547,7 +547,7 @@ public class ClassLuaCallCS
     public void funcBaseParam(int x)
     { }
 
-    public void funcClassParam(ParaClass x)
+    public void funcClassParam(LuaEnum e, ParaClass x)
     { }
 
     public void funcStructParam(ParaStruct x)

@@ -193,76 +193,77 @@ namespace XLua.TypeMapping
                             }
                         }
                     }
+                }
+                Action<string, MethodInfo, bool, bool, bool> AddMethodToType = (string name, MethodInfo method, bool isGetter, bool isSetter, bool isExtensionethod) => 
+                {
+                    method = TypeUtils.HandleMaybeGenericMethod(method);
+                    if (method == null) return;
+                    List<Type> usedTypes = TypeUtils.GetUsedTypes(method, isExtensionethod);
+                    var signature = TypeUtils.GetMethodSignature(method, false, isExtensionethod);
 
-                    Action<string, MethodInfo, bool, bool, bool> AddMethodToType = (string name, MethodInfo method, bool isGetter, bool isSetter, bool isExtensionethod) => 
+                    var wrapper = GetWrapperFunc(registerInfo, method, signature);
+                    if (wrapper == IntPtr.Zero)
                     {
-                        method = TypeUtils.HandleMaybeGenericMethod(method);
-                        if (method == null) return;
-                        List<Type> usedTypes = TypeUtils.GetUsedTypes(method, isExtensionethod);
-                        var signature = TypeUtils.GetMethodSignature(method, false, isExtensionethod);
-
-                        var wrapper = GetWrapperFunc(registerInfo, method, signature);
-                        if (wrapper == IntPtr.Zero)
-                        {
-                            UnityEngine.Debug.LogWarning(string.Format("wrapper is null for {0}:{1}, signature:{2}", type, method, TypeUtils.GetMethodSignature(method, false, isExtensionethod)));
-                            return;
-                        }
-
-                        var methodInfoPointer = NativeAPI.GetMethodInfoPointer(method);
-                        var methodPointer = NativeAPI.GetMethodPointer(method);
-                        if (methodInfoPointer == IntPtr.Zero)
-                        {
-                            UnityEngine.Debug.LogWarning(string.Format("cannot get method info for {0}:{1}, signature:{2}", type, method, TypeUtils.GetMethodSignature(method, false, isExtensionethod)));
-                            return;
-                        }
-                        if (methodPointer == IntPtr.Zero)
-                        {
-                            UnityEngine.Debug.LogWarning(string.Format("cannot get method pointer for {0}:{1}, signature:{2}", type, method, TypeUtils.GetMethodSignature(method, false, isExtensionethod)));
-                            return;
-                        }
-                        var wrapData = NativeAPI.AddMethod(
-                            typeInfo,
-                            signature,
-                            wrapper,
-                            name,
-                            !isExtensionethod && method.IsStatic,
-                            isExtensionethod,
-                            isGetter,
-                            isSetter,
-                            methodInfoPointer,
-                            methodPointer,
-                            usedTypes.Count
-                        );
-                        if (wrapData == IntPtr.Zero)
-                        {
-                            if (throwifMemberFail)
-                            {
-                                throw new Exception(string.Format("add method for {0}:{1}, signature:{2}", type, method, TypeUtils.GetMethodSignature(method, false, isExtensionethod)));
-                            }
-                            else
-                            {
-#if WARNING_IF_MEMBERFAIL
-                                UnityEngine.Debug.LogWarning(string.Format("add method for {0}:{1} fail, signature:{2}"), type, method, TypeUtils.GetMethodSignature(method, fail, isExtensionethod));
-#endif
-                                return;
-                            }
-                        }
-                        for (int i = 0; i < usedTypes.Count; i++)
-                        {
-                            var usedTypeId = NativeAPI.GetTypeId(usedTypes[i]);
-                            NativeAPI.SetTypeInfo(wrapData, i, usedTypeId);
-                        }
-                    };
-
-                    if (methods != null && (!type.IsArray || type == typeof(System.Array)))
-                    {
-                        foreach (var method in methods)
-                        {
-                            if (method.IsAbstract) continue;
-                            AddMethodToType(method.Name, method as MethodInfo, false, false, false);
-                        }
+                        UnityEngine.Debug.LogWarning(string.Format("wrapper is null for {0}:{1}, signature:{2}", type, method, TypeUtils.GetMethodSignature(method, false, isExtensionethod)));
+                        return;
                     }
 
+                    var methodInfoPointer = NativeAPI.GetMethodInfoPointer(method);
+                    var methodPointer = NativeAPI.GetMethodPointer(method);
+                    if (methodInfoPointer == IntPtr.Zero)
+                    {
+                        UnityEngine.Debug.LogWarning(string.Format("cannot get method info for {0}:{1}, signature:{2}", type, method, TypeUtils.GetMethodSignature(method, false, isExtensionethod)));
+                        return;
+                    }
+                    if (methodPointer == IntPtr.Zero)
+                    {
+                        UnityEngine.Debug.LogWarning(string.Format("cannot get method pointer for {0}:{1}, signature:{2}", type, method, TypeUtils.GetMethodSignature(method, false, isExtensionethod)));
+                        return;
+                    }
+                    var wrapData = NativeAPI.AddMethod(
+                        typeInfo,
+                        signature,
+                        wrapper,
+                        name,
+                        !isExtensionethod && method.IsStatic,
+                        isExtensionethod,
+                        isGetter,
+                        isSetter,
+                        methodInfoPointer,
+                        methodPointer,
+                        usedTypes.Count
+                    );
+                    if (wrapData == IntPtr.Zero)
+                    {
+                        if (throwifMemberFail)
+                        {
+                            throw new Exception(string.Format("add method for {0}:{1}, signature:{2}", type, method, TypeUtils.GetMethodSignature(method, false, isExtensionethod)));
+                        }
+                        else
+                        {
+#if WARNING_IF_MEMBERFAIL
+                            UnityEngine.Debug.LogWarning(string.Format("add method for {0}:{1} fail, signature:{2}"), type, method, TypeUtils.GetMethodSignature(method, fail, isExtensionethod));
+#endif
+                            return;
+                        }
+                    }
+                    for (int i = 0; i < usedTypes.Count; i++)
+                    {
+                        var usedTypeId = NativeAPI.GetTypeId(usedTypes[i]);
+                        NativeAPI.SetTypeInfo(wrapData, i, usedTypeId);
+                    }
+                };
+
+                if (methods != null && (!type.IsArray || type == typeof(System.Array)))
+                {
+                    foreach (var method in methods)
+                    {
+                        if (method.IsAbstract) continue;
+                        AddMethodToType(method.Name, method as MethodInfo, false, false, false);
+                    }
+                }
+                if (!isDelegate)
+                {
                     var extensionMethods = ExtensionMethodInfo.Get(type);
                     if (extensionMethods != null)
                     {

@@ -304,7 +304,12 @@ function GetCasterStatement(t, idx, var_name, need_declare, is_v_params)
     local is_struct = IsStruct(t)
 	
     if need_declare then
-        statement = CsFullTypeName(t) .. " " .. var_name
+        if t.IsEnum then
+            statement = "long " .. var_name
+        else
+            statement = CsFullTypeName(t) .. " " .. var_name
+        end
+        
         if is_struct and not typedCaster[testname] and not fixCaster[testname] then
             statement = statement .. ";"
         else
@@ -379,6 +384,8 @@ function GetPushStatement(t, variable, is_v_params)
 	    return "translator.PushByType(L, "..variable..")"
 	elseif t.IsInterface or GetNullableUnderlyingType(t) then
 	    return "translator.PushAny(L, "..variable..")"
+    elseif t.IsEnum then
+        return "translator.PushAny(L, System.Convert.ToInt64("..variable.."))"
     else
         return "translator.Push(L, "..variable..")"
     end
@@ -421,9 +428,8 @@ function PushObjectNeedTranslator(type_info)
 end
 
 local GenericParameterAttributes = CS.System.Reflection.GenericParameterAttributes
-local enum_and_op = debug.getmetatable(CS.System.Reflection.BindingFlags.Public).__band
 local has_generic_flag = function(f1, f2)
-    return (f1 ~= GenericParameterAttributes.None) and (enum_and_op(f1, f2) == f2)
+    return (f1 ~= GenericParameterAttributes.None) and ((f1 & f2) == f2)
 end
 
 function GenericArgumentList(type)

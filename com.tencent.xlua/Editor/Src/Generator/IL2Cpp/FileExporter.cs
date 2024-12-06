@@ -5,9 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using Newtonsoft.Json;
 using XLua.TypeMapping;
 using XLua;
 using Utils = XLua.Editor.Generator.Utils;
+using XLua.Editor.Generator;
+using Object = System.Object;
+
 
 #if !PUERTS_GENERAL && !UNITY_WEBGL
 using Mono.Reflection;
@@ -26,14 +30,7 @@ namespace XLuaIl2cpp.Editor
                 if (type.BaseType != null && type.BaseType.IsValueType) ret.Add(XLuaIl2cpp.TypeUtils.GetTypeSignature(type.BaseType));
                 foreach (var field in type.GetFields(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic))
                 {
-                    // if ((field.FieldType.IsValueType && !field.FieldType.IsPrimitive))
-                    // {
-                    //     ret.AddRange(GetValueTypeFieldSignatures(field.FieldType));
-                    // }
-                    // else
-                    // {
                     ret.Add(XLuaIl2cpp.TypeUtils.GetTypeSignature(field.FieldType));
-                    // }
                 }
                 return ret;
             }
@@ -143,187 +140,224 @@ namespace XLuaIl2cpp.Editor
                 return true;
             }
 
-            private static void IterateAllType(Type type, HashSet<Type> allTypes)
+            private static void IterateAllType(Type type, HashSet<Type> allTypes, HashSet<MethodInfo> delegateTypes)
             {
-                if (!allTypes.Contains(type))
+                while (type != null)
                 {
-                    allTypes.Add(type);
-                    try
+                    if (!allTypes.Add(type))
+                        return;
+                    if (type.IsPrimitive || typeof(string) == type || type == typeof(Type) || type.IsArray || type == typeof(void) || type.IsEnum)
+                        return;
+                    
+                    var fields = type.GetFields(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public);
+                    foreach (var field in fields)
                     {
-                        var fields = type.GetFields(BindingFlags.DeclaredOnly | BindingFlags.Instance |
-                                                    BindingFlags.Public | BindingFlags.NonPublic);
-                        foreach (var field in fields)
-                        {
-                            IterateAllType(field.FieldType, allTypes);
-                        }
+                        if (type == field.FieldType)
+                            continue;
+                        IterateAllType(field.FieldType, allTypes, delegateTypes);
                     }
-                    catch { }
 
-                    MethodInfo[] methods = new MethodInfo[] { };
-                    try
+                    var methods = type.GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public);
+                    foreach (var method in methods)
                     {
-                        methods = type.GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-                        foreach (var method in methods)
+                        if (method.Name == "Invoke")
+                            delegateTypes.Add(method);
+                        if (method.ReturnType == type)
                         {
-                            IterateAllType(method.ReturnType, allTypes);
+                            continue;
                         }
+                        IterateAllType(method.ReturnType, allTypes, delegateTypes);
                     }
-                    catch { }
-                    try
+                    var methodBases = methods.Cast<MethodBase>().Concat(type.GetConstructors(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public));
+                    foreach (var methodBase in methodBases)
                     {
-                        var methodBases = methods.Cast<MethodBase>().Concat(type.GetConstructors(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic));
-                        foreach (var methodBase in methodBases)
+                        foreach (var parameter in methodBase.GetParameters())
                         {
-                            foreach (var parameter in methodBase.GetParameters())
+                            if (parameter.ParameterType == type || parameter.ParameterType.IsPrimitive || parameter.ParameterType == typeof(string))
                             {
-                                IterateAllType(parameter.ParameterType, allTypes);
+                                continue;
                             }
+                            IterateAllType(parameter.ParameterType, allTypes, delegateTypes);
                         }
                     }
-                    catch { }
+                    type = type.BaseType;
                 }
             }
 
-            private static Type ParseType(string input)
+            private static readonly string[] ExcludeTypes =
             {
-                input = input.Trim();
-                switch (input)
+                "Assets.Scripts.GameLogic.NewbieGuideUIPathValidate, Scripts",
+                "ElectronQQLogin, Scripts"
+            };
+
+            private static readonly string[] WhiteList =
+            {
+                
+            };
+
+            private static readonly Type[] XLuaDelegates =
+            {
+                typeof(Func<float>), // luaboot使用
+                typeof(Func<string, XLua.LuaTable>),
+                typeof(Func<XLua.LuaTable, string, string>),
+                typeof(Func<XLua.LuaTable, string, int>),
+                typeof(Func<XLua.LuaTable, string, uint>),
+                typeof(Func<XLua.LuaTable, string, long>),
+                typeof(Func<XLua.LuaTable, string, ulong>),
+                typeof(Func<XLua.LuaTable, string, short>),
+                typeof(Func<XLua.LuaTable, string, ushort>),
+                typeof(Func<XLua.LuaTable, string, float>),
+                typeof(Func<XLua.LuaTable, string, double>),
+                typeof(Func<XLua.LuaTable, string, XLua.LuaTable>)
+            };
+
+            public class Method
+            {
+                [JsonProperty("ReturnType")]
+                public string ReturnType { get; set; }
+                [JsonProperty("ParameterType")]
+                public List<string> ParameterType { get; set; }
+
+                public bool IsEmpty()
                 {
-                    case "bool":
-                        return typeof(System.Boolean);
-                    case "int":
-                        return typeof(System.Int32);
-                    case "uint":
-                        return typeof(System.UInt32);
-                    case "T":
+                    return string.IsNullOrEmpty(ReturnType) && (ParameterType == null || ParameterType.Count == 0);
+                }
+            }
+
+            public class Script
+            {
+                [JsonProperty("Fields")]
+                public List<string> Fields { get; set; }
+                [JsonProperty("Methods")]
+                public Dictionary<string,Method> Methods { get; set; }
+
+                public bool isWhiteList;
+            }
+
+            // EventProxy`1[System.Boolean, mscorlib], Scripts
+            private static Type ParseGenericType(string key)
+            {
+                if (string.IsNullOrEmpty(key))
+                    return null;
+                var index1 = key.IndexOf('[');
+                var index2 = key.IndexOf(']');
+                if (index1 < 0 || index2 < 0)
+                    return null;
+                var input = key[..index1] + key[(index2+1)..];
+                var type = Type.GetType(input);
+                if (type == null)
+                    return null;
+                input = key[(index1+1)..index2];
+                var args = input.Split(',');
+                var count = args.Length / 2;
+                var types = new Type[count];
+                for (var i = 0; i < count; i++)
+                {
+                    var typeString = $"{args[i*2]},{args[i * 2 + 1]}";
+                    var item = Type.GetType(typeString);
+                    if (item == null)
                         return null;
-                    case "float":
-                        return typeof(System.Single);
-                    case "string":
-                        return typeof(System.String);
-                    default:
-                    {
-                        var index = input.IndexOf('<');
-                        string output;
-                        Type type;
-                        if (index > -1)
-                        {
-                            output = input[..index] + "`";
-                            input = input[(index + 1)..input.LastIndexOf('>')];
-                            var parameterTypes = input.Split(',');
-                            output += $"{parameterTypes.Length}";
-                            type = Utils.GetType(output);
-                            if (type == null)
-                            {
-                                Debug.LogError($"{input} {output}");
-                                return null;
-                            }
-                            var typeArguments = new List<Type>();
-                            foreach (var parameterType in parameterTypes)
-                            {
-                                var t = Utils.GetType(parameterType);
-                                if (t == null)
-                                {
-                                    t = ParseType(parameterType);
-                                    if (t == null)
-                                    {
-                                        Debug.LogError($"{input} {output}");
-                                        return null;
-                                    }
-                                }
-                                typeArguments.Add(t);
-                            }
-                            return type.MakeGenericType(typeArguments.ToArray());
-                        }
-                        index = input.LastIndexOf('.');
-                        output = input[..index] + '+' + input[(index + 1)..];
-                        type = Utils.GetType(output);
-                        if (type == null)
-                        {
-                            index = output.LastIndexOf('.');
-                            output = output[..index] + '+' + output[(index + 1)..];
-                            type = Utils.GetType(output);
-                            if (type == null)
-                                Debug.LogError($"{input} {output}");
-                        }
-
-                        return type;
-                        }
+                    types[i] = item;
                 }
-                
+
+                return type.MakeGenericType(types);
             }
 
-            public static List<Type> GenCPPWrap(string saveTo)
+            public static Dictionary<Type, Script> GenCPPWrap(string saveTo)
             {
                 
-                var allLines = File.ReadAllLines("DevAssets/CSTypeUsedInLua.txt");
-                var types = new List<Type>();
-                foreach (var line in allLines)
+                var jsonString = File.ReadAllText("DevAssets/CSTypeUsedInLua.json");
+                var scripts = JsonConvert.DeserializeObject<Dictionary<string, Script>>(jsonString);
+
+                foreach (var type in WhiteList)
                 {
-                    if (line == "")
+                    if (scripts.TryGetValue(type, out var value))
                     {
-                        continue;
-                    }
-                    var type = Utils.GetType(line);
-                    if (type != null)
-                    {
-                        types.Add(type);
+                        value.isWhiteList = true;
                     }
                     else
                     {
-                        type = ParseType(line);
-                        if (type != null)
+                        scripts.Add(type, new Script
                         {
-                            types.Add(type);
+                            isWhiteList = true
+                        });
+                    }
+                }
+
+                var types = new Dictionary<Type, Script>();
+                foreach (var line in scripts)
+                {
+                    if (ExcludeTypes.Any(e=>e == line.Key))
+                    {
+                        continue;
+                    }
+                    var type = Type.GetType(line.Key);
+                    if (type != null)
+                    {
+                        types.Add(type, line.Value);
+                    }
+                    else
+                    {
+                        type = ParseGenericType(line.Key);
+                        if (type != null)
+                            types.Add(type, line.Value);
+                        else
+                        {
+                            Debug.LogError(line.Key);
                         }
                     }
                 }
-                
-                var typeExcludeDelegate = types.Where(t => !typeof(MulticastDelegate).IsAssignableFrom(t));
+
                 Utils.SetFilters(Configure.GetFilters());
                 var ctorToWrapper = new List<ConstructorInfo>();
                 var methodToWrap = new List<MethodInfo>();
                 var fieldToWrapper = new List<FieldInfo>();
+                var nestedToWrapper = new List<Type>();
+                var evalTypes = new HashSet<Type>();
                 const BindingFlags flag = BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public;
-                foreach (var type in typeExcludeDelegate)
+                foreach (var type in types)
                 {
-                    foreach (var constructorInfo in type.GetConstructors(flag))
+                    foreach (var constructorInfo in type.Key.GetConstructors(flag))
                     {
                         ctorToWrapper.Add(constructorInfo);
                     }
 
-                    foreach (var methodInfo in type.GetMethods(flag))
+                    foreach (var methodInfo in type.Key.GetMethods(flag))
                     {
                         methodToWrap.Add(methodInfo);
                     }
 
-                    foreach (var fieldInfo in type.GetFields(flag))
+                    foreach (var fieldInfo in type.Key.GetFields(flag))
                     {
                         fieldToWrapper.Add(fieldInfo);
                     }
+
+                    nestedToWrapper.AddRange(type.Key.GetNestedTypes());
                 }
+
                 
-                var wrapperUsedTypes = types
+                var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+                foreach (var assembly in assemblies)
+                {
+                    var item = assembly.GetTypes();
+                    foreach (var type in item)
+                    {
+                        var fields = type.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+                        foreach (var fieldInfo in fields)
+                        {
+                            if (fieldInfo.GetCustomAttribute<LuaEvalAttribute>(false) != null)
+                            {
+                                evalTypes.Add(fieldInfo.FieldType);
+                            }
+                        }
+                    }
+                }
+                var wrapperUsedTypes = types.Keys
                     .Concat(ctorToWrapper.SelectMany(c => c.GetParameters()).Select(pi => GetUnrefParameterType(pi)))
                     .Concat(methodToWrap.SelectMany(m => m.GetParameters()).Select(pi => GetUnrefParameterType(pi)))
                     .Concat(methodToWrap.Select(m => m.ReturnType))
                     .Concat(fieldToWrapper.Select(f => f.FieldType))
                     .Distinct();
-
-
-                Type[] XLuaDelegates = {
-                    typeof(Func<string, XLua.LuaTable>),
-                    typeof(Func<XLua.LuaTable, string, string>),
-                    typeof(Func<XLua.LuaTable, string, int>),
-                    typeof(Func<XLua.LuaTable, string, uint>),
-                    typeof(Func<XLua.LuaTable, string, long>),
-                    typeof(Func<XLua.LuaTable, string, ulong>),
-                    typeof(Func<XLua.LuaTable, string, short>),
-                    typeof(Func<XLua.LuaTable, string, ushort>),
-                    typeof(Func<XLua.LuaTable, string, float>),
-                    typeof(Func<XLua.LuaTable, string, double>),
-                    typeof(Func<XLua.LuaTable, string, XLua.LuaTable>)
-                };
 
                 HashSet<Type> typeInGenericArgument = new HashSet<Type>();
                 HashSet<MethodBase> processed = new HashSet<MethodBase>();
@@ -347,17 +381,11 @@ namespace XLuaIl2cpp.Editor
                     });
                 }
                 HashSet<Type> allTypes = new HashSet<Type>();
-                foreach (var type in wrapperUsedTypes.Concat(XLuaDelegates).Concat(typeInGenericArgument))
+                HashSet<MethodInfo> delegateInvokes = new HashSet<MethodInfo>();
+                foreach (var type in wrapperUsedTypes.Concat(XLuaDelegates).Concat(typeInGenericArgument).Concat(evalTypes).Concat(nestedToWrapper))
                 {
-                    IterateAllType(type, allTypes);
+                    IterateAllType(type, allTypes, delegateInvokes);
                 }
-                var delegateToBridge = allTypes
-                    .Distinct()
-                    .Where(t => typeof(MulticastDelegate).IsAssignableFrom(t));
-
-                var delegateInvokes = delegateToBridge
-                    .Select(t => t.GetMethod("Invoke"))
-                    .Where(m => m != null);
 
                 var delegateUsedTypes = delegateInvokes.SelectMany(m => m.GetParameters()).Select(pi => GetUnrefParameterType(pi))
                     .Concat(delegateInvokes.Select(m => m.ReturnType));
@@ -398,7 +426,7 @@ namespace XLuaIl2cpp.Editor
                             CsName = m.ToString(),
                             ReturnSignature = XLuaIl2cpp.TypeUtils.GetTypeSignature(m.ReturnType),
                             ThisSignature = XLuaIl2cpp.TypeUtils.GetThisSignature(m, isExtensionMethod),
-                            ParameterSignatures = m.GetParameters().Skip(isExtensionMethod ? 1 : 0).Select(p => XLuaIl2cpp.TypeUtils.GetParameterSignature(p)).ToList()
+                            ParameterSignatures = m.GetParameters().Skip(isExtensionMethod ? 1 : 0).Select(p => TypeUtils.GetParameterSignature(p)).ToList()
                         };
                     })
                     .Concat(
@@ -539,9 +567,9 @@ namespace XLuaIl2cpp.Editor
                 return types;
             }
 
-            public static void GenExtensionMethodInfos(string outDir, List<Type> types)
+            public static void GenExtensionMethodInfos(string outDir, Dictionary<Type, FileExporter.Script> types)
             {
-                var genTypes = types
+                var genTypes = types.Keys
                     .Where(t => !t.IsGenericTypeDefinition && !t.Name.StartsWith("<"))
                     .Distinct()
                     .ToList();
@@ -571,9 +599,9 @@ namespace XLuaIl2cpp.Editor
                 }
             }
 
-            public static void GenLinkXml(string outDir, List<Type> types)
+            public static void GenLinkXml(string outDir, Dictionary<Type, FileExporter.Script> types)
             {
-                var genTypes = types
+                var genTypes = types.Keys
                     .Where(t => !t.IsGenericTypeDefinition && !t.Name.StartsWith("<"))
                     .Distinct()
                     .ToList();
@@ -596,27 +624,6 @@ namespace XLuaIl2cpp.Editor
                 }
             }
 
-            public static void CopyXIl2cppCPlugin(string outDir)
-            {
-                Dictionary<string, string> cPluginCode = new Dictionary<string, string>()
-                {
-                    { "pesapi_adpt.c", Resources.Load<TextAsset>("xlua/xil2cpp/pesapi_adpt.c").text },
-                    { "pesapi.h", Resources.Load<TextAsset>("xlua/xil2cpp/pesapi.h").text },
-                    { "XLua_il2cpp.cpp", Resources.Load<TextAsset>("xlua/xil2cpp/XLua_il2cpp.cpp").text },
-                    { "TDataTrans.h", Resources.Load<TextAsset>("xlua/xil2cpp/TDataTrans.h").text }
-                };
-
-                foreach (var cPlugin in cPluginCode)
-                {
-                    var path = outDir + cPlugin.Key;
-                    using (StreamWriter textWriter = new StreamWriter(path, false, Encoding.UTF8))
-                    {
-                        textWriter.Write(cPlugin.Value);
-                        textWriter.Flush();
-                    }
-                }
-            }
-
             public static void GenMarcoHeader(string outDir)
             {
                 var filePath = outDir + "unityenv_for_xlua.h";
@@ -626,7 +633,7 @@ namespace XLuaIl2cpp.Editor
                     var assetPath = Path.GetFullPath("Packages/com.tencent.xlua/");
                     assetPath = assetPath.Replace("\\", "/");
                     luaEnv.DoString($"package.path = package.path..';{assetPath + "Editor/Resources/xlua/templates"}/?.lua'");
-                    var path = Path.Combine(assetPath, "Editor/Resources/xlua/xil2cpp/unityenv_for_xlua.h.tpl.lua");
+                    var path = Path.Combine(assetPath, "Editor/Resources/xlua/templates/unityenv_for_xlua.h.tpl.lua");
                     var bytes = File.ReadAllBytes(path);
                     luaEnv.DoString<LuaFunction>(bytes, path);
                     var func = luaEnv.Global.Get<LuaFunction>("unityenv_for_xlua");
@@ -644,6 +651,42 @@ namespace XLuaIl2cpp.Editor
                         textWriter.Flush();
                     }
                 }
+            }
+
+            public static void GenRegisterInfo(string outDir, Dictionary<Type, XLuaIl2cpp.Editor.Generator.FileExporter.Script> types)
+            {
+#if XLUA_FULL
+                var registerInfos = RegisterInfoGenerator.GetRegisterInfos(types, true);
+#else
+                var registerInfos = RegisterInfoGenerator.GetRegisterInfos(types, false);
+#endif
+                using (var luaEnv = new LuaEnv())
+                {
+                    var assetPath = Path.GetFullPath("Packages/com.tencent.xlua/");
+                    assetPath = assetPath.Replace("\\", "/");
+                    luaEnv.DoString($"package.path = package.path..';{assetPath + "Editor/Resources/xlua/templates"}/?.lua'");
+                    var path = Path.Combine(assetPath, "Editor/Resources/xlua/templates/registerinfo.tpl.lua");
+                    var bytes = File.ReadAllBytes(path);
+                    luaEnv.DoString<LuaFunction>(bytes, path);
+                    var func = luaEnv.Global.Get<LuaFunction>("RegisterInfoTemplate");
+                    var registerInfoContent = func.Func<List<RegisterInfoForGenerate>, string>(registerInfos);
+                    var registerInfoPath = outDir + "RegisterInfo_Gen.cs";
+                    using (var textWriter = new StreamWriter(registerInfoPath, false, Encoding.UTF8))
+                    {
+                        textWriter.Write(registerInfoContent);
+                        textWriter.Flush();
+                    }
+                }
+            }
+
+            public static void Gen(string csPath)
+            {
+                var saveTo = Path.Combine(Path.GetFullPath("Packages/com.tencent.xlua/"), "Plugins/xlua_il2cpp/");
+                var types = GenCPPWrap(saveTo);
+                GenMarcoHeader(saveTo);
+                GenLinkXml("Assets/XLua/", types);
+                GenExtensionMethodInfos(csPath, types);
+                GenRegisterInfo(csPath, types);
             }
         }
     }

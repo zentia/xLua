@@ -6,6 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 */
 
+#if !ENABLE_IL2CPP || !XLUA_IL2CPP
 #if USE_UNI_LUA
 using LuaAPI = UniLua.Lua;
 using RealStatePtr = UniLua.ILuaState;
@@ -18,7 +19,6 @@ using LuaCSFunction = XLua.LuaDLL.lua_CSFunction;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 using XLua.LuaDLL;
 
 namespace XLua
@@ -28,7 +28,7 @@ namespace XLua
         public const string CSHARP_NAMESPACE = "xlua_csharp_namespace";
         public const string MAIN_SHREAD = "xlua_main_thread";
 
-        internal RealStatePtr rawL;
+        public RealStatePtr rawL;
 
         public RealStatePtr L
         {
@@ -46,7 +46,7 @@ namespace XLua
 
         public ObjectTranslator translator;
 
-        internal int errorFuncRef = -1;
+        public int errorFuncRef = -1;
 
 #if THREAD_SAFE || HOTFIX_ENABLE
         internal /*static*/ object luaLock = new object();
@@ -62,7 +62,7 @@ namespace XLua
 
         const int LIB_VERSION_EXPECT = 105;
 
-        public LuaEnv()
+        public LuaEnv(Type bridgeType = null)
         {
             if (LuaAPI.xlua_get_lib_version() != LIB_VERSION_EXPECT)
             {
@@ -75,9 +75,6 @@ namespace XLua
 #endif
             {
                 LuaIndexes.LUA_REGISTRYINDEX = LuaAPI.xlua_get_registry_index();
-#if GEN_CODE_MINIMIZE
-                LuaAPI.xlua_set_csharp_wrapper_caller(InternalGlobals.CSharpWrapperCallerPtr);
-#endif
                 // Create State
                 rawL = LuaAPI.luaL_newstate();
 
@@ -85,7 +82,7 @@ namespace XLua
                 LuaAPI.luaopen_xlua(rawL);
                 LuaAPI.luaopen_i64lib(rawL);
 
-                translator = new ObjectTranslator(this, rawL);
+                translator = new ObjectTranslator(this, rawL, bridgeType);
                 translator.createFunctionMetatable(rawL);
                 translator.OpenLib(rawL);
                 ObjectTranslatorPool.Instance.Add(rawL, translator);
@@ -355,6 +352,7 @@ namespace XLua
             return DoString<LuaFunction>(chunk, chunkName, env);
         }
 
+        //除了LuaEval调用任何地方都需要加入白名单，因为exporter找不到这个类型！
         public T DoString<T>(string chunk, string chunkName = "chunk", LuaTable env = null)
         {
             byte[] bytes = System.Text.Encoding.UTF8.GetBytes(chunk);
@@ -871,3 +869,4 @@ namespace XLua
         }
     }
 }
+#endif

@@ -47,6 +47,8 @@ function genBridge(bridgeInfo)
     local parameterSignatures = listToLuaArray(bridgeInfo.ParameterSignatures)
     local hasVarArgs = #parameterSignatures > 0 and parameterSignatures[#parameterSignatures]:sub(1,1) == 'V'
     return TaggedTemplateEngine([[
+// ]], bridgeInfo.CsName, [[
+
 static ]], SToCPPType(bridgeInfo.ReturnSignature), ' b_', bridgeInfo.Signature, '(void* target, ', table.join(table.map(table.map(parameterSignatures, function(S, i) return string.format('%s p%d', SToCPPType(S), i-1) end),
                 function(s) return string.format('%s, ', s) end), ''), [[MethodInfo* method) {
     // PLog("Running b_]], bridgeInfo.Signature, [[");

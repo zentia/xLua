@@ -7,6 +7,11 @@
 #include <chrono>
 using namespace std::chrono;
 
+EXTERN_C_START
+int pesapi_dostring(pesapi_env env, const uint8_t* code, size_t code_size, const char* path, pesapi_value_ref value_ref);
+int pesapi_create_function(pesapi_env env, pesapi_callback native_impl, void* data);
+EXTERN_C_END
+
 namespace xlua
 {
 
@@ -14,39 +19,30 @@ static int dummy_idx_tag = 0;
 
 CppObjectMapper* CppObjectMapper::ms_Instance = nullptr;
 
+    CppObjectMapper::CppObjectMapper()
+    {
+        supportOp = {
+            { "op_Addition", "__add" },
+            { "op_Subtraction", "__sub" },
+            { "op_Multiply", "__mul" },
+            { "op_Division", "__div" },
+            { "op_Equality", "__eq" },
+            { "op_UnaryNegation", "__unm" },
+            { "op_LessThan", "__lt" },
+            { "op_LessThanOrEqual", "__le" },
+            { "op_Modulus", "__mod" },
+            { "op_BitwiseAnd", "__band" },
+            { "op_BitwiseOr", "__bor" },
+            { "op_ExclusiveOr", "__bxor" },
+            { "op_OnesComplement", "__bnot" },
+            { "op_LeftShift", "__shl" },
+            { "op_RightShift", "__shr" },
+        };
+    }
+
 CppObjectMapper* CppObjectMapper::Get()
 {
     return ms_Instance;
-}
-
-int CppObjectMapper::LoadCppType(lua_State* L)
-{
-    auto ClassDef = FindCppTypeClassByName(lua_tostring(L, 1));
-    if (ClassDef)
-    {
-        lua_createtable(L, 0, 0);
-        lua_pushlightuserdata(L, const_cast<void*>(ClassDef->TypeId));
-        lua_setfield(L, -2, "__p_innerType");
-
-        int meta_ref = GetMetaRefOfClass(L, ClassDef);
-        lua_rawgeti(L, LUA_REGISTRYINDEX, meta_ref);
-        lua_pushlightuserdata(L, &dummy_idx_tag);
-        lua_rawget(L, -2);
-        lua_remove(L, -2);
-        if (!lua_isnil(L, -1))
-        {
-            lua_setmetatable(L, -2);
-            return 1;
-        }
-        else
-        {
-            return luaL_error(L, "type meta not find %s", lua_tostring(L, 1));
-        }
-    }
-    else
-    {
-        return luaL_error(L, "no such type %s", lua_tostring(L, 1));
-    }
 }
 
 int CppObjectMapper::LoadTypeById(lua_State* L, const void* TypeId)
@@ -55,8 +51,6 @@ int CppObjectMapper::LoadTypeById(lua_State* L, const void* TypeId)
     if (ClassDef)
     {
         lua_createtable(L, 0, 0);
-        lua_pushlightuserdata(L, const_cast<void*>(TypeId));
-        lua_setfield(L, -2, "__p_innerType");
 
         int meta_ref = GetMetaRefOfClass(L, ClassDef);
         lua_rawgeti(L, LUA_REGISTRYINDEX, meta_ref);
@@ -86,8 +80,40 @@ void CppObjectMapper::Initialize(lua_State* L)
     lua_newtable(L);
     CachePrivateDataRef = luaL_ref(L, LUA_REGISTRYINDEX);
     TypeIdToMetaMap.set_empty_key((const void*) 0);
+    TypeIdToMetaMap.set_deleted_key((const void*) - 1);
     CDataCache.set_empty_key((void*) 0);
+    CDataCache.set_deleted_key((void*) - 1);
     ms_Instance = this;
+
+    const char* __pairs = R"(return function(obj)
+        local isKeyValuePair
+        local function lua_iter(cs_iter, k)
+            if cs_iter:MoveNext() then
+                local current = cs_iter.Current
+                if isKeyValuePair == nil then
+                    if type(current) == 'userdata' then
+                        local t = current:GetType()
+                        isKeyValuePair = t.Name == 'KeyValuePair`2' and t.Namespace == 'System.Collections.Generic'
+                    else
+                        isKeyValuePair = false
+                    end
+                    --print(current, isKeyValuePair)
+                end
+                if isKeyValuePair then
+                    return current.Key, current.Value
+                else
+                    return k + 1, current
+                end
+            end
+        end
+        return lua_iter, obj:GetEnumerator(), -1
+    end)";
+    const size_t size = strlen(__pairs);
+    int oldTop = lua_gettop(L);
+    int index = pesapi_dostring(reinterpret_cast<pesapi_env>(L), reinterpret_cast<const uint8_t*>(__pairs), size, "__pairs", nullptr);
+    lua_pushvalue(L, index);
+    PairsRef = luaL_ref(L, LUA_REGISTRYINDEX);
+    lua_settop(L, oldTop);
 }
 
 int CppObjectMapper::FindOrAddCppObject(lua_State* L, const void* TypeId, void* Ptr, bool PassByPointer)
@@ -164,14 +190,16 @@ void CppObjectMapper::BindCppObject(lua_State* L, LuaClassDefinition* ClassDefin
         int ref = luaL_ref(L, -2);
         lua_pop(L, 1);
         
-        auto Iter = CDataCache.find(Ptr);
-        lua_assert(Iter != CDataCache.end());
         CDataCache[Ptr] = ref;
     }
     
     if (ClassDefinition->OnEnter)
     {
-        obj->UserData = ClassDefinition->OnEnter(Ptr, ClassDefinition->Data, DataTransfer::GetLuaEnvPrivate());
+        obj->index = ClassDefinition->OnEnter(Ptr, ClassDefinition->Data, DataTransfer::GetLuaEnvPrivate());
+    }
+    else
+    {
+        obj->index = -1;
     }
 }
 
@@ -206,12 +234,12 @@ void CppObjectMapper::SetPrivateData(lua_State* L, int value_ref, void* Ptr)
     lua_pop(L, 1);
 }
 
-void CppObjectMapper::UnBindCppObject(lua_State* L, LuaClassDefinition* ClassDefinition, void* Ptr, void* UserData)
+void CppObjectMapper::UnBindCppObject(lua_State* L, LuaClassDefinition* ClassDefinition, void* Ptr, int UserData)
 {
     CDataFinalizeMap.erase(Ptr);
     auto Iter = CDataCache.find(Ptr);
-    lua_assert(Iter != CDataCache.end());
-    CDataCache.erase(Ptr);
+    if (Iter != CDataCache.end())
+        CDataCache.erase(Ptr);
     if (ClassDefinition->OnExit)
     {
         ClassDefinition->OnExit(Ptr, ClassDefinition->Data, DataTransfer::GetLuaEnvPrivate(), UserData);
@@ -234,8 +262,9 @@ void CppObjectMapper::UnInitialize(lua_State* L)
         }
         if (ClassDefinition && ClassDefinition->OnExit)
         {
-            ClassDefinition->OnExit(KV.first, ClassDefinition->Data, PData, nullptr);
+            ClassDefinition->OnExit(KV.first, ClassDefinition->Data, PData, 0);
         }
+        lua_pop(L, 1);
     }
     for (int i = 0; i < FunctionDatas.size(); ++i)
     {
@@ -246,37 +275,57 @@ void CppObjectMapper::UnInitialize(lua_State* L)
     TypeIdToMetaMap.clear();
     luaL_unref(L, LUA_REGISTRYINDEX, CacheRef);
     luaL_unref(L, LUA_REGISTRYINDEX, CachePrivateDataRef);
+    luaL_unref(L, LUA_REGISTRYINDEX, PairsRef);
     ms_Instance = nullptr;
 }
 
 // param   --- [1]: obj, [2]: key
-static int obj_indexer(lua_State* L)
+static int obj_internal_indexer(lua_State* L, bool is_indexer)
 {
+    // method
     if (!lua_isnil(L, lua_upvalueindex(1)))
     {
-        lua_pushvalue(L, 2);
-        lua_gettable(L, lua_upvalueindex(1));
-        if (!lua_isnil(L, -1))
-        {    // has method
-            return 1;
+        if (is_indexer)
+        {
+            lua_gettable(L, lua_upvalueindex(1));
+            if (!lua_isnil(L, -1))
+            {
+                // has method
+                lua_pushvalue(L, 1);
+                lua_pushvalue(L, 2);
+                lua_call(L, 2, 1);
+                return 1;
+            }
+            lua_pop(L, 1);
         }
-        lua_pop(L, 1);
+        else
+        {
+            lua_pushvalue(L, 2);
+            lua_gettable(L, lua_upvalueindex(1));
+            if (!lua_isnil(L, -1))
+            {    // has method
+                return 1;
+            }
+            lua_pop(L, 1);
+        }
     }
-
-    if (!lua_isnil(L, lua_upvalueindex(2)))
+    // getter
+    if (!is_indexer)
     {
-        lua_pushvalue(L, 2);
-        lua_gettable(L, lua_upvalueindex(2));
-        if (!lua_isnil(L, -1))
-        {    // has getter
-            lua_pushvalue(L, 1);
-            lua_call(L, 1, 1);
-            return 1;
+        if (!lua_isnil(L, lua_upvalueindex(2)))
+        {
+            lua_pushvalue(L, 2);
+            lua_gettable(L, lua_upvalueindex(2));
+            if (!lua_isnil(L, -1))
+            {    // has getter
+                lua_pushvalue(L, 1);
+                lua_call(L, 1, 1);
+                return 1;
+            }
+            lua_pop(L, 1);
         }
-        const void* p = lua_topointer(L, lua_upvalueindex(1));
-        lua_pop(L, 1);
     }
-
+    // parent
     if (!lua_isnil(L, lua_upvalueindex(3)))
     {
         lua_settop(L, 2);
@@ -291,28 +340,64 @@ static int obj_indexer(lua_State* L)
     }
 }
 
+// param   --- [1]: obj, [2]: key
+static int obj_indexer(lua_State* L)
+{
+    int t = lua_type(L, 2);
+    if (t == LUA_TSTRING)
+    {
+        return obj_internal_indexer(L, false);
+    }
+    else if ( t == LUA_TNUMBER)
+    {
+        lua_pushstring(L, "get_Item");
+        return obj_internal_indexer(L, true);
+    }
+    else
+    {
+        return 0;
+    }
+}
 // upvalue --- [1]:setters, [2]:base_newindex
 // param   --- [1]: obj, [2]: key, [3]: value
-int obj_newindexer(lua_State* L)
+static int obj_internal_newindexer(lua_State* L, bool is_indexer)
 {
-    if (!lua_isnil(L, lua_upvalueindex(1)))
+    if (is_indexer)
     {
-        lua_pushvalue(L, 2);
         lua_gettable(L, lua_upvalueindex(1));
         if (!lua_isnil(L, -1))
-        {    // has setter
+        {
+            // has method
             lua_pushvalue(L, 1);
             lua_pushvalue(L, 3);
             lua_call(L, 2, 0);
-            return 0;
+            return 1;
         }
         lua_pop(L, 1);
     }
+    else
+    {
+        // setter
+        if (!lua_isnil(L, lua_upvalueindex(2)))
+        {
+            if (!is_indexer)
+                lua_pushvalue(L, 2);
+            lua_gettable(L, lua_upvalueindex(2));
+            if (!lua_isnil(L, -1))
+            {    // has setter
+                lua_pushvalue(L, 1);
+                lua_pushvalue(L, 3);
+                lua_call(L, 2, 0);
+                return 0;
+            }
+            lua_pop(L, 1);
+        }
+    }
 
-    if (!lua_isnil(L, lua_upvalueindex(2)))
+    if (!lua_isnil(L, lua_upvalueindex(3)))
     {
         lua_settop(L, 3);
-        lua_pushvalue(L, lua_upvalueindex(2));
+        lua_pushvalue(L, lua_upvalueindex(3));
         lua_insert(L, 1);
         lua_call(L, 3, 0);
         return 0;
@@ -320,6 +405,26 @@ int obj_newindexer(lua_State* L)
     else
     {
         return luaL_error(L, "class cannot set %s, no such field", lua_tostring(L, 2));
+    }
+}
+
+// upvalue --- [1]:setters, [2]:base_newindex
+// param   --- [1]: obj, [2]: key, [3]: value
+static int obj_newindexer(lua_State* L)
+{
+    int t = lua_type(L, 2);
+    if (t == LUA_TSTRING)
+    {
+        return obj_internal_newindexer(L, false);
+    }
+    else if (t == LUA_TNUMBER)
+    {
+        lua_pushstring(L, "set_Item");
+        return obj_internal_newindexer(L, true);
+    }
+    else
+    {
+        return 0;
     }
 }
 
@@ -339,7 +444,10 @@ static int object_gc(lua_State* L)
 {
     LuaClassDefinition* class_definition = (LuaClassDefinition*) lua_touserdata(L, lua_upvalueindex(1));
     CppObject* cppObject = (CppObject*) lua_touserdata(L, -1);
-    xlua::CppObjectMapper::Get()->UnBindCppObject(L, class_definition, cppObject->Ptr, cppObject->UserData);
+    auto instance = xlua::CppObjectMapper::Get();
+    if (instance == nullptr)
+        return 0;
+    instance->UnBindCppObject(L, class_definition, cppObject->Ptr, cppObject->index);
     if (cppObject->NeedDelete)
     {
         // printf("Finalize %p\n", cppObject->Ptr);
@@ -508,8 +616,11 @@ int CppObjectMapper::GetMetaRefOfClass(lua_State* L, const LuaClassDefinition* C
         lua_createtable(L, 0, 0);
         int static_setters = lua_gettop(L);
 
+        luaL_newmetatable(L, ClassDefinition->ScriptName);
+        int meta = lua_gettop(L);
+
         LuaPropertyInfo* PropertyInfo = ClassDefinition->Properties;
-        while (PropertyInfo && PropertyInfo->Name && PropertyInfo->Getter)
+        while (PropertyInfo && PropertyInfo->Name)
         {
             if (PropertyInfo->Getter)
             {
@@ -533,7 +644,7 @@ int CppObjectMapper::GetMetaRefOfClass(lua_State* L, const LuaClassDefinition* C
         }
 
         PropertyInfo = ClassDefinition->Variables;
-        while (PropertyInfo && PropertyInfo->Name && PropertyInfo->Getter)
+        while (PropertyInfo && PropertyInfo->Name)
         {
             if (PropertyInfo->Getter)
             {
@@ -559,28 +670,55 @@ int CppObjectMapper::GetMetaRefOfClass(lua_State* L, const LuaClassDefinition* C
         LuaFunctionInfo* FunctionInfo = ClassDefinition->Methods;
         while (FunctionInfo && FunctionInfo->Name && FunctionInfo->Callback)
         {
-            lua_pushstring(L, FunctionInfo->Name);
-            lua_pushlightuserdata(L, FunctionInfo);
-            lua_pushlightuserdata(L, FunctionInfo->Data);
-            // printf("m %s, %p \n", FunctionInfo->Name, FunctionInfo);
-            lua_pushcclosure(L, method_wrap, 2);
-            lua_rawset(L, obj_methods);
+            if (strcmp(FunctionInfo->Name, "Invoke") == 0)
+            {
+                lua_pushstring(L, "__call");
+                lua_pushlightuserdata(L, FunctionInfo);
+                lua_pushlightuserdata(L, FunctionInfo->Data);
+                lua_pushcclosure(L, method_wrap, 2);
+                lua_rawset(L, meta);
+            }
+            else
+            {
+                if (strcmp(FunctionInfo->Name, "GetEnumerator") == 0)
+                {
+                    lua_pushstring(L, "__pairs");
+                    lua_rawgeti(L, LUA_REGISTRYINDEX, PairsRef);
+                    lua_rawset(L, meta);
+                }
+                lua_pushstring(L, FunctionInfo->Name);
+                lua_pushlightuserdata(L, FunctionInfo);
+                lua_pushlightuserdata(L, FunctionInfo->Data);
+                // printf("m %s, %p \n", FunctionInfo->Name, FunctionInfo);
+                lua_pushcclosure(L, method_wrap, 2);
+                lua_rawset(L, obj_methods);
+            }
             ++FunctionInfo;
         }
         FunctionInfo = ClassDefinition->Functions;
         while (FunctionInfo && FunctionInfo->Name && FunctionInfo->Callback)
         {
-            lua_pushstring(L, FunctionInfo->Name);
-            lua_pushlightuserdata(L, FunctionInfo);
-            lua_pushlightuserdata(L, FunctionInfo->Data);
-            // printf("f %s, %p \n", FunctionInfo->Name, FunctionInfo);
-            lua_pushcclosure(L, function_wrap, 2);
-            lua_rawset(L, static_functions);
+            auto iter = supportOp.find(FunctionInfo->Name);
+            if (iter != supportOp.end())
+            {
+                lua_pushstring(L, iter->second);
+                lua_pushlightuserdata(L, FunctionInfo);
+                lua_pushlightuserdata(L, FunctionInfo->Data);
+                // printf("f %s, %p \n", FunctionInfo->Name, FunctionInfo);
+                lua_pushcclosure(L, function_wrap, 2);
+                lua_rawset(L, meta);
+            }
+            else 
+            {
+                lua_pushstring(L, FunctionInfo->Name);
+                lua_pushlightuserdata(L, FunctionInfo);
+                lua_pushlightuserdata(L, FunctionInfo->Data);
+                // printf("f %s, %p \n", FunctionInfo->Name, FunctionInfo);
+                lua_pushcclosure(L, function_wrap, 2);
+                lua_rawset(L, static_functions);
+            }
             ++FunctionInfo;
         }
-
-        luaL_newmetatable(L, ClassDefinition->ScriptName);
-        int meta = lua_gettop(L);
 
         lua_pushstring(L, "__index");
         lua_pushvalue(L, obj_methods);
@@ -600,6 +738,7 @@ int CppObjectMapper::GetMetaRefOfClass(lua_State* L, const LuaClassDefinition* C
         lua_rawset(L, meta);
 
         lua_pushstring(L, "__newindex");
+        lua_pushvalue(L, obj_methods);
         lua_pushvalue(L, obj_setters);
         if (has_super)
         {
@@ -612,7 +751,7 @@ int CppObjectMapper::GetMetaRefOfClass(lua_State* L, const LuaClassDefinition* C
         {
             lua_pushnil(L);
         }
-        lua_pushcclosure(L, obj_newindexer, 2);
+        lua_pushcclosure(L, obj_newindexer, 3);
         lua_rawset(L, meta);
 
         lua_pushstring(L, "__gc");

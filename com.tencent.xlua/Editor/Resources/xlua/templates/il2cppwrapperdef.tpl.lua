@@ -12,7 +12,7 @@ function genFuncWrapper(wrapperInfo)
 // ]], wrapperInfo.CsName, [[
 
 bool w_]], wrapperInfo.Signature, [[(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_]], wrapperInfo.ThisSignature, [[");
+    // PLog("Running w_]], wrapperInfo.Signature, [[");
     ]], declareTypeInfo(wrapperInfo), [[
 
     int lua_args_len = apis->get_args_len(info);
@@ -29,29 +29,33 @@ bool w_]], wrapperInfo.Signature, [[(struct pesapi_ffi* apis, MethodInfo* method
         
     }
 ]],
-        table.join(
-            table.map(parameterSignatures,
-                function(x, i) return LuaValToCSVal(x, string.format('_sv%d', i-1), string.format('p%d', i-1)) end), '\n'),
+        table.join(table.map(parameterSignatures, function(x, i) return LuaValToCSVal(x, string.format('_sv%d', i-1), string.format('p%d', i-1)) end), '\n'),
         [[
 
     typedef ]], SToCPPType(wrapperInfo.ReturnSignature), ' (*FuncToCall)(', needThis(wrapperInfo) and 'void*,' or '', '',
-        table.join(
-            table.map(
-                table.map(parameterSignatures, function(S, i) return string.format('%s p%d', SToCPPType(S), i) end),
+        table.join(table.map(table.map(parameterSignatures, function(S, i) return string.format('%s p%d', SToCPPType(S), i) end),
                 function(s) return string.format('%s, ', s) end), ''), [[const void* method);
-    ]], IF(wrapperInfo.ReturnSignature ~= 'v'), '', SToCPPType(wrapperInfo.ReturnSignature), ' ret = ', ENDIF(),
-        '((FuncToCall)methodPointer)(', needThis(wrapperInfo) and 'self,' or '', ' ',
-        table.join(table.map(parameterSignatures, function(_, i) return string.format('p%d, ', i-1) end), ''), [[ method);
-
-    ]], FOR(parameterSignatures, function(x, i)
-            return refSetback(x, i-1, wrapperInfo)
-        end), '\n', IF(wrapperInfo.ReturnSignature ~= 'v'), '\t', 
-            returnToLua(wrapperInfo.ReturnSignature), [[
-]], ENDIF(), [[
-
-    return true;
-}
-]])
+    ]], IF(wrapperInfo.ReturnSignature ~= 'v'), '', 
+            SToCPPType(wrapperInfo.ReturnSignature), 
+            ' ret = ', 
+            ENDIF(), 
+            '((FuncToCall)methodPointer)(', needThis(wrapperInfo) and 'self,' or '', ' ', table.join(table.map(parameterSignatures, function(_, i) return string.format('p%d, ', i-1) end), ''), ' method);', 
+            IF(wrapperInfo.ReturnSignature ~= 'v'),  
+            string.format('\n\tint r = %s;', CSValToLuaVal(wrapperInfo.ReturnSignature, 'ret')),
+            ENDIF(),
+            '',
+            FOR(parameterSignatures, function(x, i)
+                return refSetback(x, i-1, wrapperInfo)
+            end),
+            '',
+            IF(wrapperInfo.ReturnSignature ~= 'v'),
+            '\n\tapis->add_return(info, r);',
+            ENDIF(),
+            '',
+            FOR(parameterSignatures, function(x, i)
+                return refSetReturn(x, i - 1, wrapperInfo)
+            end),
+             '\n\treturn true;\n}')
 end
 
 function Gen(genInfos)

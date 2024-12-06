@@ -154,7 +154,7 @@ PlayerSettings:
   androidSupportedAspectRatio: 1
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
-    Android: com.DefaultCompany.il2cpp
+    Android: com.DefaultCompany.noil2cpp
     Standalone: com.DefaultCompany.noil2cpp
     iPhone: com.DefaultCompany.noil2cpp
   buildNumber:
@@ -750,8 +750,8 @@ PlayerSettings:
   webGLMemoryGeometricGrowthCap: 96
   webGLPowerPreference: 2
   scriptingDefineSymbols:
-    Android: XLUA_IL2CPP
-    Standalone: 
+    Android: XLUA_IL2CPP;XLUA_FULL
+    Standalone: XLUA_IL2CPP;XLUA_FULL
     iPhone: 
   additionalCompilerArguments: {}
   platformArchitecture: {}

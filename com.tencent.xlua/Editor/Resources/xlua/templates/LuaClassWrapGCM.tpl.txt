@@ -130,7 +130,9 @@ namespace XLua
             <%end)%>
 			<%ForEachCsList(methods, function(method) if not method.IsStatic then %>Utils.RegisterFunc(L, Utils.METHOD_IDX, "<%=method.Name%>", <%=v_type_name%>_m_<%=method.Name%><%=generic_arg_list%>);
 			<% end end)%>
-			<%ForEachCsList(events, function(event) if not event.IsStatic then %>Utils.RegisterFunc(L, Utils.METHOD_IDX, "<%=event.Name%>", <%=v_type_name%>_e_<%=event.Name%><%=generic_arg_list%>);
+			<%ForEachCsList(events, function(event) if not event.IsStatic then %>Utils.RegisterFunc(L, Utils.METHOD_IDX, "add_<%=event.Name%>", <%=v_type_name%>_e_add_<%=event.Name%><%=generic_arg_list%>);
+			<% end end)%>
+			<%ForEachCsList(events, function(event) if not event.IsStatic then %>Utils.RegisterFunc(L, Utils.METHOD_IDX, "remove_<%=event.Name%>", <%=v_type_name%>_e_remove_<%=event.Name%><%=generic_arg_list%>);
 			<% end end)%>
 			<%ForEachCsList(getters, function(getter) if not getter.IsStatic then %>Utils.RegisterFunc(L, Utils.GETTER_IDX, "<%=getter.Name%>", <%=v_type_name%>_g_get_<%=getter.Name%><%=generic_arg_list%>);
             <%end end)%>
@@ -144,7 +146,9 @@ namespace XLua
 		    Utils.BeginClassRegister(type, L, __CreateInstance<%=v_type_name%><%=generic_arg_list%>, <%=cls_field_count%>, <%=cls_getter_count%>, <%=cls_setter_count%>);
 			<%ForEachCsList(methods, function(method) if method.IsStatic then %>Utils.RegisterFunc(L, Utils.CLS_IDX, "<%=method.Overloads[0].Name%>", <%=v_type_name%>_m_<%=method.Name%><%=generic_arg_list%>);
             <% end end)%>
-			<%ForEachCsList(events, function(event) if event.IsStatic then %>Utils.RegisterFunc(L, Utils.CLS_IDX, "<%=event.Name%>", <%=v_type_name%>_e_<%=event.Name%><%=generic_arg_list%>);
+			<%ForEachCsList(events, function(event) if event.IsStatic then %>Utils.RegisterFunc(L, Utils.CLS_IDX, "add_<%=event.Name%>", <%=v_type_name%>_e_add_<%=event.Name%><%=generic_arg_list%>);
+			<% end end)%>
+			<%ForEachCsList(events, function(event) if event.IsStatic then %>Utils.RegisterFunc(L, Utils.CLS_IDX, "remove_<%=event.Name%>", <%=v_type_name%>_e_remove_<%=event.Name%><%=generic_arg_list%>);
 			<% end end)%>
             <%ForEachCsList(getters, function(getter) if getter.IsStatic and getter.ReadOnly then %>Utils.RegisterObject(L, this, Utils.CLS_IDX, "<%=getter.Name%>", <%=CsFullTypeName(type).."."..getter.Name%>);
             <%end end)%>
@@ -191,7 +195,7 @@ namespace XLua
 				if pi >= real_param_count then return end 
 				%><%=GetCasterStatement(parameter.ParameterType, pi+2, LocalName(parameter.Name), true, has_v_params and pi == param_count - 1)%>;
 				<%end)%>
-				var gen_ret = new <%=CsFullTypeName(type)%>(<%ForEachCsList(parameters, function(parameter, pi) if pi >= real_param_count then return end; if pi ~=0 then %><%=', '%><% end ;if parameter.IsOut and parameter.ParameterType.IsByRef then %>out <% elseif parameter.ParameterType.IsByRef and not parameter.IsIn then %>ref <% end %><%=LocalName(parameter.Name)%><% end)%>);
+				var gen_ret = new <%=CsFullTypeName(type)%>(<%ForEachCsList(parameters, function(parameter, pi) if pi >= real_param_count then return end; if pi ~=0 then %><%=', '%><% end ;if parameter.IsOut and parameter.ParameterType.IsByRef then %>out <% elseif parameter.ParameterType.IsByRef then %>ref <% end %><%=LocalName(parameter.Name)%><% end)%>);
 				<%=GetPushStatement(type, "gen_ret")%>;
 				<%local in_pos = 0
 				ForEachCsList(parameters, function(parameter, pi)
@@ -387,7 +391,7 @@ namespace XLua
 				%>gen_to_be_invoked.<%=UnK(overload.Name)%><%
 				end%>( <%ForEachCsList(parameters, function(parameter, pi) 
 					if pi >= real_param_count then return end
-					if pi ~= 0 then %>, <% end; if parameter.IsOut and parameter.ParameterType.IsByRef then %>out <% elseif parameter.ParameterType.IsByRef and not parameter.IsIn then %>ref <% end %><%=LocalName(parameter.Name)%><% end) %> );
+					if pi ~= 0 then %>, <% end; if parameter.IsOut and parameter.ParameterType.IsByRef then %>out <% elseif parameter.ParameterType.IsByRef then %>ref <% end %><%=LocalName(parameter.Name)%><% end) %> );
 				<%
 				if has_return then
 				%><%=GetPushStatement(overload.ReturnType, "gen_ret")%>;
@@ -460,28 +464,39 @@ namespace XLua
         <%end)%>
 		
 		<%ForEachCsList(events, function(event) if not event.IsStatic then %>
-        int <%=v_type_name%>_e_<%=event.Name%><%=generic_arg_list%>(RealStatePtr L, int gen_param_count) <%=type_constraints%>
+        int <%=v_type_name%>_e_add_<%=event.Name%><%=generic_arg_list%>(RealStatePtr L, int gen_param_count) <%=type_constraints%>
         {
             ObjectTranslator translator = this;
 			<%=GetSelfStatement(type)%>;
-			<%=GetCasterStatement(event.Type, 3, "gen_delegate", true)%>;
+			<%=GetCasterStatement(event.Type, 2, "gen_delegate", true)%>;
 			if (gen_delegate == null) {
-				return LuaAPI.luaL_error(L, "#3 need <%=CsFullTypeName(event.Type)%>!");
+				return LuaAPI.luaL_error(L, "#2 need <%=CsFullTypeName(event.Type)%>!");
 			}
 			
-			if (gen_param_count == 3)
+			if (gen_param_count == 2)
 			{
 				<%if event.CanAdd then%>
-				if (LuaAPI.xlua_is_eq_str(L, 2, "+")) {
-					gen_to_be_invoked.<%=UnK(event.Name)%> += gen_delegate;
-					return 0;
-				} 
+				gen_to_be_invoked.<%=UnK(event.Name)%> += gen_delegate;
+				return 0;
 				<%end%>
+			}
+			LuaAPI.luaL_error(L, "invalid arguments to <%=CsFullTypeName(type)%>.<%=event.Name%>!");
+            return 0;
+        }
+		int <%=v_type_name%>_e_remove_<%=event.Name%><%=generic_arg_list%>(RealStatePtr L, int gen_param_count) <%=type_constraints%>
+        {
+            ObjectTranslator translator = this;
+			<%=GetSelfStatement(type)%>;
+			<%=GetCasterStatement(event.Type, 2, "gen_delegate", true)%>;
+			if (gen_delegate == null) {
+				return LuaAPI.luaL_error(L, "#2 need <%=CsFullTypeName(event.Type)%>!");
+			}
+			
+			if (gen_param_count == 2)
+			{
 				<%if event.CanRemove then%>
-				if (LuaAPI.xlua_is_eq_str(L, 2, "-")) {
-					gen_to_be_invoked.<%=UnK(event.Name)%> -= gen_delegate;
-					return 0;
-				} 
+				gen_to_be_invoked.<%=UnK(event.Name)%> -= gen_delegate;
+				return 0;
 				<%end%>
 			}
 			LuaAPI.luaL_error(L, "invalid arguments to <%=CsFullTypeName(type)%>.<%=event.Name%>!");
@@ -490,22 +505,32 @@ namespace XLua
         <%end end)%>
 		
 		<%ForEachCsList(events, function(event) if event.IsStatic then %>
-        int <%=v_type_name%>_e_<%=event.Name%><%=generic_arg_list%>(RealStatePtr L, int gen_param_count) <%=type_constraints%>
+        int <%=v_type_name%>_e_add_<%=event.Name%><%=generic_arg_list%>(RealStatePtr L, int gen_param_count) <%=type_constraints%>
         {
             ObjectTranslator translator = this;
-			<%=GetCasterStatement(event.Type, 2, "gen_delegate", true)%>;
+			<%=GetCasterStatement(event.Type, 1, "gen_delegate", true)%>;
 			if (gen_delegate == null) {
-				return LuaAPI.luaL_error(L, "#2 need <%=CsFullTypeName(event.Type)%>!");
+				return LuaAPI.luaL_error(L, "#1 need <%=CsFullTypeName(event.Type)%>!");
 			}
 			
 			<%if event.CanAdd then%>
-			if (gen_param_count == 2 && LuaAPI.xlua_is_eq_str(L, 1, "+")) {
+			if (gen_param_count == 1) {
 				<%=CsFullTypeName(type)%>.<%=UnK(event.Name)%> += gen_delegate;
 				return 0;
 			} 
 			<%end%>
+			return LuaAPI.luaL_error(L, "invalid arguments to <%=CsFullTypeName(type)%>.<%=event.Name%>!");
+        }
+		int <%=v_type_name%>_e_remove_<%=event.Name%><%=generic_arg_list%>(RealStatePtr L, int gen_param_count) <%=type_constraints%>
+        {
+            ObjectTranslator translator = this;
+			<%=GetCasterStatement(event.Type, 1, "gen_delegate", true)%>;
+			if (gen_delegate == null) {
+				return LuaAPI.luaL_error(L, "#1 need <%=CsFullTypeName(event.Type)%>!");
+			}
+			
 			<%if event.CanRemove then%>
-			if (gen_param_count == 2 && LuaAPI.xlua_is_eq_str(L, 1, "-")) {
+			if (gen_param_count == 1) {
 				<%=CsFullTypeName(type)%>.<%=UnK(event.Name)%> -= gen_delegate;
 				return 0;
 			} 

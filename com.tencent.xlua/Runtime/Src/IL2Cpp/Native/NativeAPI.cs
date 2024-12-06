@@ -96,6 +96,7 @@ namespace XLuaIl2cpp
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static void SetRegisterNoThrow(MethodBase methodInfo)
         {
+            throw new NotImplementedException();
         }
 
         [MethodImpl(MethodImplOptions.InternalCall)]
@@ -157,15 +158,15 @@ namespace XLuaIl2cpp
         {
             throw new NotImplementedException();
         }
-        
+
         [MethodImpl(MethodImplOptions.InternalCall)]
-        public static void SetGlobalType_TypedValue(Type type)
+        public static void SetGlobalType_ArrayBuffer(Type type)
         {
             throw new NotImplementedException();
         }
-
+        
         [MethodImpl(MethodImplOptions.InternalCall)]
-        public static void SetGlobalType_IList(Type type)
+        public static void SetGlobalType_TypedValue(Type type)
         {
             throw new NotImplementedException();
         }
@@ -243,7 +244,8 @@ namespace XLuaIl2cpp
     public delegate bool pesapi_is_array_func(IntPtr env, IntPtr value);
 
     public delegate IntPtr pesapi_native_object_to_value_func(IntPtr env, IntPtr type_id, IntPtr object_ptr, bool call_finalize);
-    public delegate IntPtr pesapi_get_native_object_ptr_func(IntPtr env, IntPtr value);
+    public delegate IntPtr pesapi_get_native_object_ptr_func(IntPtr env, int value);
+    public delegate int pesapi_get_native_object_index_func(IntPtr env, int value);
     public delegate IntPtr pesapi_get_native_object_typeid_func(IntPtr env, IntPtr value);
     public delegate bool pesapi_is_instance_of_func(IntPtr env, IntPtr type_id, IntPtr value);
 
@@ -337,6 +339,7 @@ namespace XLuaIl2cpp
         public pesapi_is_array_func is_array;
         public pesapi_native_object_to_value_func native_object_to_value;
         public pesapi_get_native_object_ptr_func get_native_object;
+        public pesapi_get_native_object_index_func get_native_object_index;
         public pesapi_get_native_object_typeid_func get_native_object_typeid;
         public pesapi_is_instance_of_func is_instance_of;
         public pesapi_boxing_func boxing;

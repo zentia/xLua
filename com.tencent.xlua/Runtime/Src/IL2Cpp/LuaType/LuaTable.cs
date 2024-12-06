@@ -47,6 +47,11 @@ namespace XLua
             return (T)GetLuaTableValueByString(apis, key, typeof(T));
         }
 
+        public void Get<T>(string key, out T value)
+        {
+            value = (T)GetLuaTableValueByString(apis, key, typeof(T));
+        }
+
         public T Get<T>(int index)
         {
             return (T)GetLuaTableValueyUInt64(apis, (ulong)index, typeof(T));

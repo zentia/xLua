@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Tencent is pleased to support the open source community by making XLua available.
  * Copyright (C) 2020 THL A29 Limited, a Tencent company.  All rights reserved.
  * XLua is licensed under the BSD 3-Clause License, except for the third-party components listed in the file 'LICENSE' which may
@@ -61,10 +61,6 @@ public:
     }
 
     static bool IsInstanceOf(lua_State* L, const void* TypeId, int ObjectIndex);
-
-    static void UnRef(lua_State* L, int Ref);
-
-    static void UpdateRef(lua_State* L, int Outer, int Value);
 
     static std::weak_ptr<int> GetLuaEnvLifeCycleTracker(lua_State* L);
 

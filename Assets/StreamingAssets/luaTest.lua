@@ -1,3 +1,10 @@
+--package.cpath = package.cpath ..
+--';C:/Users/36347/AppData/Roaming/JetBrains/Rider2024.2/plugins/EmmyLua/debugger/emmy/windows/x64/?.dll'
+--local dbg = require('emmy_core')
+--dbg.tcpConnect('localhost', 9966)
+
+require("init_il2cpp")
+
 function FuncBasePara(x)
 end
 
@@ -91,9 +98,11 @@ function LuaAccessCSClassMemberFunc(num)
     local csObj = ClassLuaCallCS()
     local clsObj = CS.ParaClass()
     for i = 1, num do
-        csObj:funcClassParam(clsObj)
+        csObj:funcClassParam(CS.ClassLuaCallCS.LuaEnum.ONE, clsObj)
     end
 end
+
+LuaAccessCSClassMemberFunc(1)
 
 function LuaAccessCSStructMemberFunc(num)
     local csObj = ClassLuaCallCS()

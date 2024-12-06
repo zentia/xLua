@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Tencent is pleased to support the open source community by making xLua available.
  * Copyright (C) 2016 THL A29 Limited, a Tencent company. All rights reserved.
  * Licensed under the MIT License (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
@@ -452,7 +452,7 @@ namespace XLua
             return delegateCache[type];
         }
 
-        public LuaCSFunction GetEventWrap(Type type, string eventName)
+        public LuaCSFunction GetAddEventWrap(Type type, string eventName)
         {
             if (!methodsCache.ContainsKey(type))
             {
@@ -460,28 +460,28 @@ namespace XLua
             }
 
             var methodsOfType = methodsCache[type];
-            if (!methodsOfType.ContainsKey(eventName))
+            var addEventName = $"add_{eventName}";
+            if (!methodsOfType.ContainsKey(addEventName))
             {
                 {
                     EventInfo eventInfo = type.GetEvent(eventName, BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly | BindingFlags.Static | BindingFlags.NonPublic);
                     if (eventInfo == null)
                     {
-                        throw new Exception(type.Name + " has no event named: " + eventName);
+                        throw new Exception(type.Name + " has no event named: " + addEventName);
                     }
                     int start_idx = 0;
 
                     MethodInfo add = eventInfo.GetAddMethod(true);
-                    MethodInfo remove = eventInfo.GetRemoveMethod(true);
 
-                    if (add == null && remove == null)
+                    if (add == null)
                     {
                         throw new Exception(type.Name + "'s " + eventName + " has either add nor remove");
                     }
 
-                    bool is_static = add != null ? add.IsStatic : remove.IsStatic;
+                    bool is_static = add.IsStatic;
                     if (!is_static) start_idx = 1;
 
-                    methodsOfType[eventName] = (L) =>
+                    methodsOfType[addEventName] = (L) =>
                     {
                         object obj = null;
 
@@ -496,30 +496,12 @@ namespace XLua
 
                         try
                         {
-                            object handlerDelegate = translator.CreateDelegateBridge(L, eventInfo.EventHandlerType, start_idx + 2);
+                            object handlerDelegate = translator.CreateDelegateBridge(L, eventInfo.EventHandlerType, start_idx + 1);
                             if (handlerDelegate == null)
                             {
                                 return LuaAPI.luaL_error(L, "invalid #" + (start_idx + 2) + ", needed:" + eventInfo.EventHandlerType);
                             }
-                            switch (LuaAPI.lua_tostring(L, start_idx + 1))
-                            {
-                                case "+":
-                                    if (add == null)
-                                    {
-                                        return LuaAPI.luaL_error(L, "no add for event " + eventName);
-                                    }
-                                    add.Invoke(obj, new object[] { handlerDelegate });
-                                    break;
-                                case "-":
-                                    if (remove == null)
-                                    {
-                                        return LuaAPI.luaL_error(L, "no remove for event " + eventName);
-                                    }
-                                    remove.Invoke(obj, new object[] { handlerDelegate });
-                                    break;
-                                default:
-                                    return LuaAPI.luaL_error(L, "invalid #" + (start_idx + 1) + ", needed: '+' or '-'" + eventInfo.EventHandlerType);
-                            }
+                            add.Invoke(obj, new object[] { handlerDelegate });
                         }
                         catch (System.Exception e)
                         {
@@ -530,7 +512,70 @@ namespace XLua
                     };
                 }
             }
-            return methodsOfType[eventName];
+            return methodsOfType[addEventName];
+        }
+
+        public LuaCSFunction GetRemoveEventWrap(Type type, string eventName)
+        {
+            if (!methodsCache.ContainsKey(type))
+            {
+                methodsCache[type] = new Dictionary<string, LuaCSFunction>();
+            }
+
+            var methodsOfType = methodsCache[type];
+            var removeEventName = $"remove_{eventName}";
+            if (!methodsOfType.ContainsKey(removeEventName))
+            {
+                {
+                    EventInfo eventInfo = type.GetEvent(eventName, BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly | BindingFlags.Static | BindingFlags.NonPublic);
+                    if (eventInfo == null)
+                    {
+                        throw new Exception(type.Name + " has no event named: " + removeEventName);
+                    }
+                    int start_idx = 0;
+
+                    MethodInfo remove = eventInfo.GetRemoveMethod(true);
+
+                    if (remove == null)
+                    {
+                        throw new Exception(type.Name + "'s " + removeEventName + " not exist!");
+                    }
+
+                    bool is_static = remove.IsStatic;
+                    if (!is_static) start_idx = 1;
+
+                    methodsOfType[removeEventName] = (L) =>
+                    {
+                        object obj = null;
+
+                        if (!is_static)
+                        {
+                            obj = translator.GetObject(L, 1, type);
+                            if (obj == null)
+                            {
+                                return LuaAPI.luaL_error(L, "invalid #1, needed:" + type);
+                            }
+                        }
+
+                        try
+                        {
+                            object handlerDelegate = translator.CreateDelegateBridge(L, eventInfo.EventHandlerType, start_idx + 1);
+                            if (handlerDelegate == null)
+                            {
+                                return LuaAPI.luaL_error(L, "invalid #" + (start_idx + 2) + ", needed:" + eventInfo.EventHandlerType);
+                            }
+                            remove.Invoke(obj, new object[] { handlerDelegate });
+                        }
+                        catch (System.Exception e)
+                        {
+                            return LuaAPI.luaL_error(L, "c# exception:" + e + ",stack:" + e.StackTrace);
+                        }
+
+                        return 0;
+                    };
+                }
+            }
+            return methodsOfType[removeEventName];
         }
 
         public MethodWrap _GenMethodWrap(Type type, string methodName, IEnumerable<MemberInfo> methodBases, bool forceCheck = false)
