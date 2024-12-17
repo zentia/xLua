@@ -13,25 +13,25 @@ function defineValueType(valueTypeInfo)
 
 struct ]], valueTypeInfo.Signature, [[
 
-{
-]], IF(#fieldSignatures == 0),[[
+{]], IF(#fieldSignatures == 0),[[
+
     union
     {
         struct
         {
         };
         uint8_t __padding[1];
-    };            
-]],ELSE(), FOR(fieldSignatures, function(s, i)
-        return TaggedTemplateEngine([[
-]], IF(isNullableStruct(valueTypeInfo.Signature) and i == valueTypeInfo.NullableHasValuePosition), [[
-    ]], SToCPPType(s), [[ hasValue;
-    ]], ELSE(), [[
-    ]], SToCPPType(s), ' p', i, [[;
-    ]], ENDIF())
-    end),ENDIF(), [[
-};
-    ]])
+    };]],
+            ELSE(), 
+            FOR(fieldSignatures, function(s, i)
+        return TaggedTemplateEngine('', IF(isNullableStruct(valueTypeInfo.Signature) and i - 1 == valueTypeInfo.NullableHasValuePosition), 
+                string.format('\n\t%s hasValue;', SToCPPType(s)),
+                ELSE(), 
+                string.format('\n\t%s p%d;', SToCPPType(s), i), 
+                ENDIF())
+    end),
+            ENDIF(), '\n};'
+    )
 end
 
 function Gen(genInfos)
@@ -55,7 +55,7 @@ typedef uint16_t Il2CppChar;
 
 namespace xlua
 {
-    ]], table.join(table.map(valueTypeInfos, defineValueType), '\n'), [[
+]], table.join(table.map(valueTypeInfos, defineValueType), '\n'), [[
 
 }
 

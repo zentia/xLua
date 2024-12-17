@@ -417,8 +417,7 @@ namespace XLua
                 if (member.MemberType == MemberTypes.Method)
                 {
                     MethodInfo method = member as MethodInfo;
-                    if (method.Name.StartsWith("get_") || method.Name.StartsWith("set_") ||
-                        method.Name.StartsWith("add_") || method.Name.StartsWith("remove_"))
+                    if (method.Name.StartsWith("add_") || method.Name.StartsWith("remove_"))
                     {
                         continue;
                     }
@@ -1269,11 +1268,7 @@ namespace XLua
                 .Where(m => !isMethodInBlackList(m))
                 .Concat(extensionMethods)
                 .Where(m => Utils.IsSupportedMethod(m))
-                .Where(m => !m.IsSpecialName
-                    || (
-                         ((m.Name == "get_Item" && m.GetParameters().Length == 1) || (m.Name == "set_Item" && m.GetParameters().Length == 2))
-                         && m.GetParameters()[0].ParameterType.IsAssignableFrom(typeof(string))
-                       )
+                .Where(m => !m.IsSpecialName || (m.Name == "get_Item" && m.GetParameters().Length == 1) || (m.Name == "set_Item" && m.GetParameters().Length == 2)
                 ).GroupBy(m => m.Name).ToList();
             var supportOperators = toBeWrap.GetMethods(staticFlag)
                 .Where(m => !isMethodInBlackList(m))

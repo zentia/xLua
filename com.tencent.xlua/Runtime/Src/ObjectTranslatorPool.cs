@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Tencent is pleased to support the open source community by making xLua available.
  * Copyright (C) 2016 THL A29 Limited, a Tencent company. All rights reserved.
  * Licensed under the MIT License (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
@@ -7,16 +7,9 @@
 */
 
 #if !ENABLE_IL2CPP || !XLUA_IL2CPP
-#if USE_UNI_LUA
-using LuaAPI = UniLua.Lua;
-using RealStatePtr = UniLua.ILuaState;
-using LuaCSFunction = UniLua.CSharpFunctionDelegate;
-#else
 using LuaAPI = XLua.LuaDLL.Lua;
 using RealStatePtr = System.IntPtr;
 using LuaCSFunction = XLua.LuaDLL.lua_CSFunction;
-#endif
-
 using System.Collections.Generic;
 using System;
 
@@ -45,10 +38,6 @@ namespace XLua
         }
 #endif
 
-        public ObjectTranslatorPool ()
-		{
-		}
-		
 		public void Add (RealStatePtr L, ObjectTranslator translator)
 		{
 #if THREAD_SAFE || HOTFIX_ENABLE

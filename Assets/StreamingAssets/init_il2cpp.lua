@@ -85,7 +85,6 @@ function xlua.getNestedTypes(nameOrCSType)
     end
 end
 
-local GENERIC_INVOKE_ERR_ARG_CHECK_FAILED = {}
 local ARG_FLAG_OUT = 0x01
 local ARG_FLAG_REF = 0x02
 function xlua.get_generic_method(csType, methodName, ...)
@@ -109,12 +108,9 @@ function xlua.get_generic_method(csType, methodName, ...)
     local overloadFunctions = {}
     for i = 1, members.Length do
         ---@suppress NOT_A_MEMBER
+        ---@type System.Reflection.MethodInfo
         local method = members:GetValue(i - 1)
-        ---@suppress NOT_A_MEMBER
         if method.IsGenericMethodDefinition and method:GetGenericArguments().Length == #genericArgs then
-            ---@suppress NOT_A_MEMBER
-            local a = method.GetGenericArguments
-            ---@suppress NOT_A_MEMBER
             local methodImpl = method:MakeGenericMethod(table.unpack(genericArgs))
             table.insert(overloadFunctions, methodImpl)
         end
@@ -150,42 +146,22 @@ function xlua.get_generic_method(csType, methodName, ...)
         local argsCsArr
         local checkArgs = function(...)
             local args = { ... }
-            if needArgCount ~= #args then
-                return GENERIC_INVOKE_ERR_ARG_CHECK_FAILED
-            end
             if needArgCount == 0 then
                 return
             end
             argsCsArr = argsCsArr or CS.System.Array.CreateInstance(typeof_System_Object, needArgCount)
             for i = 1, needArgCount do
-                local val
-                if argFlags[i] & ARG_FLAG_REF > 0 then
-                    if argFlags[i] & ARG_FLAG_OUT == 0 then
-                        ---@suppress NOT_A_MEMBER
-                        val = xlua.unref(args[i])
-                    end
-                else
-                    val = args[i]
-                end
-                local luaValueType = type(val)
-                if luaValueType == 'number' then
-                    ---@suppress NOT_A_MEMBER
-                    argsCsArr:set_Item(i - 1, createTypedValueByTypeCode(val, needArgTypeCode[i]))
-                else
-                    ---@suppress NOT_A_MEMBER
-                    argsCsArr:set_Item(i - 1, val)
-                end
+                ---@suppress NOT_A_MEMBER
+                argsCsArr:set_Item(i - 1, args[i])
             end
             return argsCsArr
         end
         local invoke = function(...)
             local args = { ... }
             local argscs = checkArgs(...)
-            if argscs == GENERIC_INVOKE_ERR_ARG_CHECK_FAILED then
-                if overloadCount == 1 then
-                    return
-                end
-                return GENERIC_INVOKE_ERR_ARG_CHECK_FAILED
+            if not argscs then
+                error('param error.')
+                return
             end
             ---@suppress NOT_A_MEMBER
             local ret = method(xlua, 0, nil, argscs, nil)
@@ -210,10 +186,7 @@ function xlua.get_generic_method(csType, methodName, ...)
         return function(...)
             for index, value in ipairs(invoke) do
                 ---@suppress NOT_A_MEMBER
-                local ret = value.call(xlua, ...)
-                if ret ~= GENERIC_INVOKE_ERR_ARG_CHECK_FAILED then
-                    return ret
-                end
+                return value.call(xlua, ...)
             end
             error('xlua.get_generic_method.overloadfunctions.invoke no match overload')
         end
@@ -297,42 +270,6 @@ function createTypeProxy(namespace)
     local ret = { ['.fqn'] = namespace }
     setmetatable(ret, metatable)
     return ret
-end
-
-function createTypedValueByTypeCode(value, typeCode)
-    if typeCode == CS.System.TypeCode.Char then
-        ---@suppress NOT_A_MEMBER
-        return CS.XLua.CharValue(value)
-    elseif typeCode == CS.System.TypeCode.SByte then
-        ---@suppress NOT_A_MEMBER
-        return CS.XLua.SByteValue(value)
-    elseif typeCode == CS.System.TypeCode.Int16 then
-        ---@suppress NOT_A_MEMBER
-        return CS.XLua.Int16(value)
-    elseif typeCode == CS.System.TypeCode.UInt16 then
-        ---@suppress NOT_A_MEMBER
-        return CS.XLua.UInt16(value)
-    elseif typeCode == CS.System.TypeCode.Int32 then
-        ---@suppress NOT_A_MEMBER
-        return CS.XLua.Int32(value)
-    elseif typeCode == CS.System.TypeCode.UInt32 then
-        ---@suppress NOT_A_MEMBER
-        return CS.XLua.UInt32(value)
-    elseif typeCode == CS.System.TypeCode.Int64 then
-        ---@suppress NOT_A_MEMBER
-        return CS.XLua.Int64(value)
-    elseif typeCode == CS.System.TypeCode.UInt64 then
-        ---@suppress NOT_A_MEMBER
-        return CS.XLua.UInt64(value)
-    elseif typeCode == CS.System.TypeCode.Single then
-        ---@suppress NOT_A_MEMBER
-        return CS.XLua.FloatValue(value)
-    elseif typeCode == CS.System.TypeCode.Double then
-        ---@suppress NOT_A_MEMBER
-        return CS.XLua.DoubleValue(value)
-    else
-        return value
-    end
 end
 
 CS = createTypeProxy()

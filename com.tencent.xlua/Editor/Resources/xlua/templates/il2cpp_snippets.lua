@@ -16,6 +16,22 @@ PrimitiveSignatureCppTypeMap = {
     r4 = 'float'
 }
 
+PrimitiveSignatureCppTypeDefaultValueMap = {
+    v = 'nullptr',
+    b = 'false',
+    u1 = '0',
+    i1 = '0',
+    i2 = '0',
+    u2 = '0',
+    i4 = '0',
+    u4 = '0',
+    i8 = '0',
+    u8 = '0',
+    c = '0x0',
+    r8 = '0',
+    r4 = '0'
+}
+
 function isStructOrNullableStruct(signature)
     return (string.startsWith(signature, sigs.StructPrefix) or string.startsWith(signature, sigs.NullableStructPrefix)) and string.endsWith(signature, '_')
 end
@@ -173,16 +189,22 @@ function refSetback(signature, index)
         ret%d = %s;    
         apis->update_boxed_value(env, _sv%d, ret%d);
     }
-            ]], index, index, index, index, val, index, index)
+    else
+    {
+        ret%d = apis->native_object_to_value(env, TIp%d, p%d, false);
+    }
+]], index, index, index, index, val, index, index, index, index, index)
             elseif string.startsWith(elementSignature, sigs.NullableStructPrefix) and string.endsWith(elementSignature, '+') then
                 return string.format([[if (p%d == &up%d)
     {
-        if (!p%d->hasValue) apis->update_boxed_value(env, _sv%d, apis->create_null(env));
-        if (p%d == &up%d) apis->update_boxed_value(env, _sv%d, %s);
+        if (!p%d->hasValue) 
+            apis->update_boxed_value(env, _sv%d, apis->create_null(env));
+        if (p%d == &up%d) 
+            apis->update_boxed_value(env, _sv%d, %s);
     }
             ]], index, index, index, index, index, index, index, val)
             else
-                return string.format('apis->update_boxed_value(env, _sv%d, %s);', index, val)
+                return string.format('\n\tint ret%d = %s;', index, val)
             end
         end
     end
@@ -197,6 +219,9 @@ function refSetReturn(signature, index)
         local val = CSValToLuaVal(elementSignature, string.format('*p%d', index))
         if val then
             if string.startsWith(elementSignature, sigs.StructPrefix) and string.endsWith(elementSignature, '_') then
+                return string.format('\n\tapis->add_return(info, ret%d);', index)
+            elseif string.startsWith(elementSignature, sigs.NullableStructPrefix) and string.endsWith(elementSignature, '+') then
+            else
                 return string.format('\n\tapis->add_return(info, ret%d);', index)
             end
         end
@@ -215,7 +240,7 @@ function returnToCS(signature)
     ]], LuaValToCSVal(signature, 'luaret', 'ret'))
 end
 
-function LuaValToCSVal(signature, LuaName, CSName)
+function LuaValToCSVal(signature, LuaName, CSName, index)
     if signature == 's' then -- string
         return string.format([[
     // LuaValToCSVal s
@@ -255,22 +280,35 @@ function LuaValToCSVal(signature, LuaName, CSName)
     elseif signature:sub(1, 1) == 'P' and signature ~= 'Pv' then
         local s = string.sub(signature, 2)
         if PrimitiveSignatureCppTypeMap[s] then
-            return string.format([[     // LuaValToCSVal P primitive
+            if index then
+                return string.format([[     
+    // LuaValToCSVal P primitive
+    %s u%s = %s;
+    if (%d < lua_args_len)
+        u%s = %s;
+    %s* %s = &u%s;
+]], SToCPPType(s), CSName, PrimitiveSignatureCppTypeDefaultValueMap[s], index, CSName, getArgValue(s, LuaName, true), SToCPPType(s), CSName, CSName)
+            else
+                return string.format([[     
+    // LuaValToCSVal P primitive
     %s u%s = %s;
     %s* %s = &u%s;
-        ]], SToCPPType(s), CSName, getArgValue(s, LuaName, true), SToCPPType(s), CSName, CSName)
+]], SToCPPType(s), CSName, getArgValue(s, LuaName, true), SToCPPType(s), CSName, CSName)    
+            end
         else
-            return string.format([[ // LuaValToCSVal P not primitive
+            return string.format([[ 
+    // LuaValToCSVal P not primitive
     %s %s = %s;
-            ]], SToCPPType(signature), CSName, getArgValue(s, LuaName, true))
+]], SToCPPType(signature), CSName, getArgValue(s, LuaName, true))
         end
     elseif signature:sub(1, 1) == 'V' then
         local si = string.sub(signature, 2)
         local start = tonumber(string.match(LuaName, '_sv(%d+)'))
         if PrimitiveSignatureCppTypeMap[si] then
-            return string.format([[     // LuaValToCSVal primitive params
+            return string.format([[     
+    // LuaValToCSVal primitive params
     Il2CppArray* %s = Params<%s>::PackPrimitive(apis, env, info, TI%s, lua_args_len, %d);
-            ]], CSName, PrimitiveSignatureCppTypeMap[si], CSName, start)
+]], CSName, PrimitiveSignatureCppTypeMap[si], CSName, start)
         elseif si == 's' then
             return string.format([[     // LuaValToCSVal string params
     Il2CppArray* %s = Params<void*>::PackString(apis, env, info, TI%s, lua_args_len, %d);
@@ -318,6 +356,7 @@ function LuaValToCSVal(signature, LuaName, CSName)
         end
     else
         return string.format([[
+        
     // LuaValToCSVal P any
     %s %s = %s;
         ]], SToCPPType(signature), CSName, getArgValue(signature, LuaName))
@@ -364,7 +403,7 @@ function genArgsLenCheck(parameterSignatures)
     while requireNum < #parameterSignatures and parameterSignatures[requireNum + 1]:sub(1, 1) ~= 'V' and parameterSignatures[requireNum + 1]:sub(1, 1) ~= 'D' do
         requireNum = requireNum + 1
     end
-    return requireNum ~= #parameterSignatures and string.format('lua_args_len < %d', requireNum) or string.format('lua_args_len != %d', #parameterSignatures)
+    return requireNum ~= #parameterSignatures and string.format('lua_args_len < %d || lua_args_len > %d', requireNum, #parameterSignatures) or string.format('lua_args_len != %d', #parameterSignatures)
 end
 
 function declareTypeInfo(wrapperInfo)

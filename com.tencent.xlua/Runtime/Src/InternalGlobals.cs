@@ -43,8 +43,5 @@ namespace XLua
         };
 
         public static volatile Dictionary<Type, IEnumerable<MethodInfo>> extensionMethodMap = null;
-#if !ENABLE_IL2CPP || !XLUA_IL2CPP
-        internal static volatile LuaCSFunction LazyReflectionWrap = new LuaCSFunction(Utils.LazyReflectionCall);
-#endif
     }
 }

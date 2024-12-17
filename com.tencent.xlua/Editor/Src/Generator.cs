@@ -49,10 +49,6 @@ namespace CSObjectWrapEditor
         public IEnumerable<Type> ReflectionUse;
     }
 
-    public class GenCodeMenuAttribute : Attribute
-    {
-
-    }
     public class GenPathAttribute : Attribute
     {
 
@@ -78,13 +74,18 @@ namespace CSObjectWrapEditor
 
     public static class Generator
     {
-        static LuaEnv luaenv = new LuaEnv();
-        static List<string> OpMethodNames = new List<string>() { "op_Addition", "op_Subtraction", "op_Multiply", "op_Division", "op_Equality", "op_UnaryNegation", "op_LessThan", "op_LessThanOrEqual", "op_Modulus",
-            "op_BitwiseAnd", "op_BitwiseOr", "op_ExclusiveOr", "op_OnesComplement", "op_LeftShift", "op_RightShift"};
+        static LuaEnv luaenv;
+        static List<string> OpMethodNames;
         private static XLuaTemplates templateRef;
 
-        static Generator()
+        static void Init()
         {
+            luaenv = new LuaEnv();
+            OpMethodNames = new List<string>()
+            {
+                "op_Addition", "op_Subtraction", "op_Multiply", "op_Division", "op_Equality", "op_UnaryNegation", "op_LessThan", "op_LessThanOrEqual", "op_Modulus",
+                "op_BitwiseAnd", "op_BitwiseOr", "op_ExclusiveOr", "op_OnesComplement", "op_LeftShift", "op_RightShift"
+            };
             var LuaClassWrap = Resources.Load<TextAsset>("xlua/templates/LuaClassWrap.tpl");
             var LuaDelegateBridge = Resources.Load<TextAsset>("xlua/templates/LuaDelegateBridge.tpl");
             var LuaDelegateWrap = Resources.Load<TextAsset>("xlua/templates/LuaDelegateWrap.tpl");
@@ -93,7 +94,7 @@ namespace CSObjectWrapEditor
             var LuaRegister = Resources.Load<TextAsset>("xlua/templates/LuaRegister.tpl");
             var LuaWrapPusher = Resources.Load<TextAsset>("xlua/templates/LuaWrapPusher.tpl");
             var PackUnpack = Resources.Load<TextAsset>("xlua/templates/PackUnpack.tpl");
-            var TemplateCommon = Resources.Load<TextAsset>("xlua/templates/TemplateCommon.lua");
+            var TemplateCommon = Resources.Load<TextAsset>("xlua/templates/TemplateCommon");
             templateRef = new XLuaTemplates()
             {
                 LuaClassWrap = { name = LuaClassWrap.name, text = LuaClassWrap.text },
@@ -1559,27 +1560,31 @@ namespace CSObjectWrapEditor
 
             Gen(warp_types, GCOptimizeList, itf_bridges_types, GeneratorConfig.common_path);
         }
-
-#if !XLUA_GENERAL
-        static void callCustomGen()
+        public static IEnumerable<CustomGenTask> GetTasksLinkXml(LuaEnv lua_env, UserConfig user_cfg)
         {
-            foreach (var method in (from type in XLua.Utils.GetAllTypes()
-                               from method in type.GetMethods(BindingFlags.Static | BindingFlags.Public)
-                               where method.IsDefined(typeof(GenCodeMenuAttribute), false) select method))
-            {
-                method.Invoke(null, new object[] { });
-            }
-        }
+            LuaTable data = lua_env.NewTable();
+            var assembly_infos = (from type in (user_cfg.ReflectionUse.Concat(user_cfg.LuaCallCSharp))
+                group type by type.Assembly.GetName().Name into assembly_info
+                select new { FullName = assembly_info.Key, Types = assembly_info.ToList() }).ToList();
+            data.Set("assembly_infos", assembly_infos);
 
+            yield return new CustomGenTask
+            {
+                Data = data,
+                Output = new StreamWriter(GeneratorConfig.common_path + "/link.xml",
+                    false, Encoding.UTF8)
+            };
+        }
+#if !XLUA_GENERAL
         [MenuItem("XLua/Generate Code", false, 1)]
         public static void GenAll()
         {
-            ClearAll();
             Directory.CreateDirectory(GeneratorConfig.common_path);
 #if XLUA_IL2CPP
             XLuaIl2cpp.Editor.Generator.FileExporter.Gen(GeneratorConfig.common_path);
 #else
-            GetGenConfig(XLua.Utils.GetAllTypes());
+            Init();
+            GetGenConfig(Utils.GetAllTypes());
             luaenv.DoString("require 'TemplateCommon'");
             var gen_push_types_setter = luaenv.Global.Get<LuaFunction>("SetGenPushAndUpdateTypes");
             gen_push_types_setter.Call(GCOptimizeList.Where(t => !t.IsPrimitive && SizeOf(t) != -1).Concat(LuaCallCSharp.Where(t => t.IsEnum)).Distinct().ToList());
@@ -1589,71 +1594,15 @@ namespace CSObjectWrapEditor
             GenEnumWraps();
             GenCodeForClass();
             GenLuaRegister();
-            callCustomGen();
+            CustomGen(templateRef.TemplateCommon.text, GetTasksLinkXml);
 #endif
         }
-
-#if UNITY_EDITOR_OSX || UNITY_EDITOR_WIN
-        public static void GenUsingCLI()
-        {
-#if UNITY_EDITOR_OSX
-            var monoPath = "./Tools/MonoBleedingEdge/bin/mono";
-#else
-            var monoPath = "./Tools/MonoBleedingEdge/bin/mono.exe";
-#endif
-
-            var args = new List<string>()
-            {
-                "./Tools/XLuaGenerate.exe",
-                "./Library/ScriptAssemblies/Assembly-CSharp.dll",
-                "./Library/ScriptAssemblies/Assembly-CSharp-Editor.dll",
-                GeneratorConfig.common_path
-            };
-
-            var searchPaths = new List<string>();
-            foreach (var path in
-                (from asm in AppDomain.CurrentDomain.GetAssemblies() select asm.ManifestModule.FullyQualifiedName)
-                 .Distinct())
-            {
-                try
-                {
-                    searchPaths.Add(Path.GetDirectoryName(path));
-                }
-                catch { }
-            }
-            args.AddRange(searchPaths.Distinct());
-
-            System.Diagnostics.Process process = new System.Diagnostics.Process();
-            process.StartInfo.FileName = monoPath;
-            process.StartInfo.Arguments = "\"" + string.Join("\" \"", args.ToArray()) + "\"";
-            process.StartInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
-            process.StartInfo.RedirectStandardOutput = true;
-            process.StartInfo.RedirectStandardError = true;
-            process.StartInfo.UseShellExecute = false;
-            process.StartInfo.CreateNoWindow = true;
-            process.Start();
-
-            while (!process.StandardError.EndOfStream)
-            {
-                Debug.LogError(process.StandardError.ReadLine());
-            }
-
-            while (!process.StandardOutput.EndOfStream)
-            {
-                Debug.Log(process.StandardOutput.ReadLine());
-            }
-
-            process.WaitForExit();
-            GetGenConfig(XLua.Utils.GetAllTypes());
-            callCustomGen();
-            AssetDatabase.Refresh();
-        }
-#endif
 
         [MenuItem("XLua/Clear Generated Code", false, 2)]
         public static void ClearAll()
         {
             Clear(GeneratorConfig.common_path);
+            AssetDatabase.Refresh();
         }
 
         public delegate IEnumerable<CustomGenTask> GetTasks(LuaEnv lua_env, UserConfig user_cfg);
@@ -1735,19 +1684,5 @@ namespace CSObjectWrapEditor
             }
             return true;
         }
-#if !XLUA_GENERAL
-        [UnityEditor.Callbacks.PostProcessBuild(1)]
-        public static void CheckGenerate(BuildTarget target, string pathToBuiltProject)
-        {
-            if (EditorApplication.isCompiling || Application.isPlaying)
-            {
-                return;
-            }
-            if (!DelegateBridge.Gen_Flag)
-            {
-                throw new InvalidOperationException("Code has not been generated, may be not work in phone!");
-            }
-        }
-#endif
     }
 }

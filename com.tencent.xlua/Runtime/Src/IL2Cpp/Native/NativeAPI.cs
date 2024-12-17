@@ -166,7 +166,19 @@ namespace XLuaIl2cpp
         }
         
         [MethodImpl(MethodImplOptions.InternalCall)]
-        public static void SetGlobalType_TypedValue(Type type)
+        public static void SetGlobalType_Array(Type type)
+        {
+            throw new NotImplementedException();
+        }
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static void SetGlobalType_IList(Type type)
+        {
+            throw new NotImplementedException();
+        }
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static void SetGlobalType_IDictionary(Type type)
         {
             throw new NotImplementedException();
         }
@@ -220,7 +232,7 @@ namespace XLuaIl2cpp
     public delegate IntPtr pesapi_create_class_func(IntPtr env, IntPtr type_id);
 
     public delegate bool pesapi_get_value_bool_func(IntPtr env, IntPtr value);
-    public delegate int pesapi_get_value_int32_func(IntPtr env, IntPtr value);
+    public delegate int pesapi_get_value_int32_func(IntPtr env, int value);
     public delegate uint pesapi_get_value_uint32_func(IntPtr env, IntPtr value);
     public delegate long pesapi_get_value_int64_func(IntPtr env, IntPtr value);
     public delegate ulong pesapi_get_value_uint64_func(IntPtr env, IntPtr value);
@@ -228,6 +240,7 @@ namespace XLuaIl2cpp
     public delegate IntPtr pesapi_get_value_string_utf8_func(IntPtr env, IntPtr value, IntPtr buf, ref UIntPtr bufsize);
     public delegate IntPtr pesapi_get_value_binary_func(IntPtr env, IntPtr pvalue, ref UIntPtr bufsize);
     public delegate uint pesapi_get_array_length_func(IntPtr env, IntPtr value);
+    public delegate void pesapi_get_array_element_func(IntPtr env, int index, int array_index);
 
     public delegate bool pesapi_is_null_func(IntPtr env, IntPtr value);
     public delegate bool pesapi_is_undefined_func(IntPtr env, IntPtr value);
@@ -239,7 +252,7 @@ namespace XLuaIl2cpp
     public delegate bool pesapi_is_double_func(IntPtr env, IntPtr value);
     public delegate bool pesapi_is_string_func(IntPtr env, IntPtr value);
     public delegate bool pesapi_is_object_func(IntPtr env, IntPtr value);
-    public delegate bool pesapi_is_function_func(IntPtr env, IntPtr value);
+    public delegate bool pesapi_is_function_func(IntPtr env, int value);
     public delegate bool pesapi_is_binary_func(IntPtr env, IntPtr value);
     public delegate bool pesapi_is_array_func(IntPtr env, IntPtr value);
 
@@ -255,12 +268,13 @@ namespace XLuaIl2cpp
     public delegate bool pesapi_is_boxed_value_func(IntPtr env, IntPtr value);
 
     public delegate int pesapi_get_args_len_func(IntPtr info);
-    public delegate IntPtr pesapi_get_arg_func(IntPtr info, int index);
+    public delegate int pesapi_get_arg_func(IntPtr info, int index);
     public delegate IntPtr pesapi_get_env_func(IntPtr info);
-    public delegate IntPtr pesapi_get_this_func(IntPtr info);
-    public delegate IntPtr pesapi_get_holder_func(IntPtr info);
+    public delegate int pesapi_get_this_func(IntPtr info);
+    public delegate int pesapi_get_holder_func(IntPtr info);
     public delegate IntPtr pesapi_get_userdata_func(IntPtr info);
     public delegate void pesapi_add_return_func(IntPtr info, IntPtr value);
+    public delegate int pesapi_get_return_num_func(IntPtr info);
     public delegate void pesapi_throw_by_string_func(IntPtr pinfo, string msg);
 
     public delegate IntPtr pesapi_create_env_ref_func(IntPtr env);
@@ -272,10 +286,10 @@ namespace XLuaIl2cpp
     public delegate IntPtr pesapi_open_scope_placement_func(IntPtr env_ref);
     public delegate bool pesapi_has_caught_func(IntPtr scope);
     public delegate IntPtr pesapi_get_exception_as_string_func(IntPtr scope, bool with_stack);
-    public delegate void pesapi_close_scope_func(IntPtr env_ref, int scope);
+    public delegate void pesapi_close_scope_func(IntPtr env_ref, int scope, int reserve);
     public delegate void pesapi_close_scope_placement_func(IntPtr env_ref, int scope);
 
-    public delegate IntPtr pesapi_create_value_ref_func(IntPtr env, IntPtr value, uint internal_field_count);
+    public delegate IntPtr pesapi_create_value_ref_func(IntPtr env, int value, uint internal_field_count);
     public delegate IntPtr pesapi_duplicate_value_ref_func(IntPtr value_ref);
     public delegate void pesapi_release_value_ref_func(IntPtr value_ref);
     public delegate IntPtr pesapi_get_value_from_ref_func(IntPtr env, IntPtr value_ref);
@@ -291,12 +305,13 @@ namespace XLuaIl2cpp
     public delegate IntPtr pesapi_get_property_uint64_func(IntPtr env, IntPtr objectPtr, ulong key);
     public delegate void pesapi_set_property_uint64_func(IntPtr env, IntPtr objectPtr, ulong key, IntPtr value);
 
-    public delegate IntPtr pesapi_call_function_func(IntPtr env, IntPtr func, IntPtr this_object, int argc, IntPtr[] argv);
+    public delegate int pesapi_call_function_func(IntPtr env, IntPtr func, IntPtr this_object, int argc, int[] argv);
     public delegate IntPtr pesapi_dostring_func(IntPtr env, IntPtr code, UIntPtr code_size, string path);
     public delegate IntPtr pesapi_loadstring_func(IntPtr env, IntPtr code, UIntPtr code_size, string path);
     public delegate IntPtr pesapi_global_func(IntPtr env);
     public delegate IntPtr pesapi_get_env_private_func(IntPtr env);
     public delegate void pesapi_set_env_private_func(IntPtr env, IntPtr ptr);
+    public delegate int pesapi_next_func(IntPtr env, int idx);
 
     [StructLayout(LayoutKind.Sequential)]
     public struct pesapi_ffi
@@ -324,6 +339,7 @@ namespace XLuaIl2cpp
         public pesapi_get_value_string_utf8_func get_value_string_utf8;
         public pesapi_get_value_binary_func get_value_binary;
         public pesapi_get_array_length_func get_array_length;
+        public pesapi_get_array_element_func get_array_element;
         public pesapi_is_null_func is_null;
         public pesapi_is_undefined_func is_undefined;
         public pesapi_is_boolean_func is_boolean;
@@ -353,6 +369,7 @@ namespace XLuaIl2cpp
         public pesapi_get_holder_func get_holder;
         public pesapi_get_userdata_func get_userdata;
         public pesapi_add_return_func add_return;
+        public pesapi_get_return_num_func get_return_num;
         public pesapi_throw_by_string_func throw_by_string;
         public pesapi_create_env_ref_func create_env_ref;
         public pesapi_env_ref_is_valid_func env_ref_is_valid;
@@ -385,6 +402,7 @@ namespace XLuaIl2cpp
         public pesapi_global_func global;
         public pesapi_get_env_private_func get_env_private;
         public pesapi_set_env_private_func set_env_private;
+        public pesapi_next_func next;
     }
 }
 

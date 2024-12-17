@@ -9,8 +9,11 @@
 namespace xlua
 {
 typedef void (*FieldWrapFuncPtr)(struct pesapi_ffi* apis, pesapi_callback_info info, FieldInfo* field, size_t offset, Il2CppClass* fieldType);
-typedef bool (*WrapFuncPtr)(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env,
-    void* self, bool checkArgument, struct WrapData* wrapData);
+typedef bool (*WrapFuncPtr)(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env,    void* self, bool checkArgument, struct WrapData* wrapData);
+extern Il2CppClass* g_typeofArray;
+extern Il2CppClass* g_typeofArrayBuffer;
+extern Il2CppClass* g_typeofIList;
+extern Il2CppClass* g_typeofIDictionary;
 
 struct FieldWrapData
 {
@@ -74,16 +77,18 @@ public:
         _apis = apis;
         _env = env;
         scope = apis->open_scope(env);
+        reserve = 0;
     }
 
     ~AutoValueScope()
     {
-        _apis->close_scope(_env, scope);
+        _apis->close_scope(_env, scope, reserve);
     }
 
     struct pesapi_ffi* _apis;
     pesapi_env _env;
     int scope;
+    int reserve;
 };
 
 struct DataTransfer
@@ -105,7 +110,19 @@ struct DataTransfer
             return true;
         }
         auto objClass = (Il2CppClass*) apis->get_native_object_typeid(env, value);
-        return objClass && il2cpp::vm::Class::IsAssignableFrom(klass, objClass);
+        if (objClass)
+        {
+	        return il2cpp::vm::Class::IsAssignableFrom(klass, objClass);
+        }
+        if (apis->is_binary(env, value))
+        {
+            return klass == g_typeofArrayBuffer;
+        }
+        if (apis->is_array(env, value))
+        {
+            return il2cpp::vm::Class::IsAssignableFrom(g_typeofArray, klass);
+        }
+        return false;
     }
 
     template <typename T>
@@ -137,7 +154,7 @@ struct DataTransfer
         {
             return apis->create_null(env);
         }
-        return CopyValueType(apis, env, v.pi, type_id);
+        return CopyValueType(apis, env, v.p1, type_id);
     }
 };
 
@@ -335,7 +352,7 @@ struct Converter<Il2CppString*>
 
     static Il2CppString* toCpp(struct pesapi_ffi* apis, pesapi_env env, int value)
     {
-        if (apis->is_null(env, value) || apis->is_undefined(env, value))
+        if (value == 0 || apis->is_null(env, value) || apis->is_undefined(env, value))
         {
             return nullptr;
         }

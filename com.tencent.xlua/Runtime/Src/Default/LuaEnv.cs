@@ -658,25 +658,6 @@ namespace XLua
                 end
             end
 
-            xlua.hotfix = function(cs, field, func)
-                if func == nil then func = false end
-                local tbl = (type(field) == 'table') and field or {[field] = func}
-                for k, v in pairs(tbl) do
-                    local cflag = ''
-                    if k == '.ctor' then
-                        cflag = '_c'
-                        k = 'ctor'
-                    end
-                    local f = type(v) == 'function' and v or nil
-                    xlua.access(cs, cflag .. '__Hotfix0_'..k, f) -- at least one
-                    pcall(function()
-                        for i = 1, 99 do
-                            xlua.access(cs, cflag .. '__Hotfix'..i..'_'..k, f)
-                        end
-                    end)
-                end
-                xlua.private_accessible(cs)
-            end
             xlua.getmetatable = function(cs)
                 return xlua.metatable_operation(cs)
             end

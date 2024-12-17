@@ -163,6 +163,13 @@ uint32_t pesapi_get_array_length(pesapi_env env, pesapi_value pvalue)
     return (uint32_t) luaL_len(L, pvalue);
 }
 
+void pesapi_get_array_element(pesapi_env env, pesapi_value index, pesapi_value array_index)
+{
+    lua_State* L = reinterpret_cast<lua_State*>(env);
+    lua_pushnumber(L, index + 1);
+    lua_rawget(L, array_index);
+}
+
 bool pesapi_is_null(pesapi_env env, pesapi_value pvalue)
 {
     lua_State* L = reinterpret_cast<lua_State*>(env);
@@ -359,6 +366,11 @@ void pesapi_add_return(pesapi_callback_info pinfo, pesapi_value pvalue)
     pinfo->RetNum++;
 }
 
+pesapi_value pesapi_get_return_num(pesapi_callback_info pinfo)
+{
+    return pinfo->RetNum;
+}
+
 void pesapi_throw_by_string(pesapi_callback_info pinfo, const char* msg)
 {
     luaL_error(pinfo->L, "%s", msg);
@@ -427,16 +439,30 @@ const char* pesapi_get_exception_as_string(pesapi_env env, bool with_stack)
     return lua_tostring(L, -2);
 }
 
-void pesapi_close_scope(pesapi_env env, int scope)
+void pesapi_close_scope(pesapi_env env, int scope, int reserve)
 {
     lua_State* L = reinterpret_cast<lua_State*>(env);
-    lua_settop(L, scope);    // release all value alloc in scope
+    if (reserve == 0)
+        lua_settop(L, scope);    // release all value alloc in scope
+    else
+    {
+        const int top = lua_gettop(L);
+        const int count = top - scope - reserve;
+        if (count <= 0)
+            return;
+        for (int i = scope + count + 1; i <= top; i++)
+        {
+            lua_pushvalue(L, i);
+            lua_replace(L, i - count);
+        }
+        lua_settop(L, top - count);
+    }
 }
 
 void pesapi_close_scope_placement(pesapi_env env, int scope)
 {
     lua_State* L = reinterpret_cast<lua_State*>(env);
-    lua_settop(L, scope);
+    lua_pop(L, scope);
 }
 
 struct pesapi_value_ref__
@@ -455,6 +481,7 @@ pesapi_value_ref pesapi_create_value_ref(pesapi_env env, pesapi_value pvalue)
     lua_State* L = reinterpret_cast<lua_State*>(env);
     lua_rawgeti(L, LUA_REGISTRYINDEX, LUA_RIDX_MAINTHREAD);
     lua_State* mL = lua_tothread(L, -1);
+    lua_assert(mL);
     lua_pop(L, 1);
     lua_pushvalue(L, pvalue);
     int ref = luaL_ref(L, LUA_REGISTRYINDEX);
@@ -570,7 +597,14 @@ int pesapi_get_property_uint64(pesapi_env env, pesapi_value pobject, uint64_t ke
 void pesapi_set_property_uint64(pesapi_env env, pesapi_value pobject, uint64_t key, pesapi_value pvalue)
 {
     lua_State* L = reinterpret_cast<lua_State*>(env);
-    lua_pushvalue(L, pvalue);
+    if (pvalue == 0)
+    {
+        lua_pushnil(L);
+    }
+    else
+    {
+        lua_pushvalue(L, pvalue);
+    }
     lua_rawseti(L, pobject, key);
 }
 
@@ -665,6 +699,12 @@ void pesapi_set_env_private(pesapi_env env, const void* ptr)
 {
     xlua::DataTransfer::SetLuaEnvPrivate(const_cast<void*>(ptr));
 }
+int pesapi_next(pesapi_env env, int idx)
+{
+    lua_State* L = reinterpret_cast<lua_State*>(env);
+    return lua_next(L, idx);
+}
+
 pesapi_ffi g_pesapi_ffi{
     &pesapi_create_null,
     &pesapi_create_undefined,
@@ -689,6 +729,7 @@ pesapi_ffi g_pesapi_ffi{
     &pesapi_get_value_string_utf8,
     &pesapi_get_value_binary,
     &pesapi_get_array_length,
+    &pesapi_get_array_element,
     &pesapi_is_null,
     &pesapi_is_undefined,
     &pesapi_is_boolean,
@@ -718,6 +759,7 @@ pesapi_ffi g_pesapi_ffi{
     &pesapi_get_holder,
     &pesapi_get_userdata,
     &pesapi_add_return,
+    &pesapi_get_return_num,
     &pesapi_throw_by_string,
     &pesapi_create_env_ref,
     &pesapi_env_ref_is_valid,

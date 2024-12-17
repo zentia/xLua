@@ -9,6 +9,7 @@
 #include "dense_hash_map.h"
 
 #include "LuaClassRegister.h"
+#include "ObjectCacheNode.h"
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -43,12 +44,18 @@ struct PesapiCallbackData
     void* Data;
 };
 
+    struct MetaInfo
+    {
+        int ref;
+        bool pairs;
+    };
+
 class CppObjectMapper
 {
 public:
     CppObjectMapper();
     void Initialize(lua_State* L);
-
+  
     bool IsInstanceOfCppObject(lua_State* L, const void* TypeId, int ObjectIndex);
 
     std::weak_ptr<int> GetLuaEnvLifeCycleTracker();
@@ -71,10 +78,21 @@ public:
 
     static CppObjectMapper* Get();
 
-private:
-    dense_hash_map<void*, int, PointerHashFunctor, std::equal_to<void*>> CDataCache;
+#if OSG_PROFILE
+    static int PrefPropertyGetterIndex;
+    static int PrefPropertySetterIndex;
+    static int PrefFieldGetterIndex;
+    static int PrefFieldSetterIndex;
+    static int PrefMethodIndex;
+    static int PrefFunctionIndex;
+    static int PrefNewIndex;
+    static int PrefGCIndex;
+#endif
 
-    dense_hash_map<const void*, int, ConstPointerHashFunctor, std::equal_to<const void*>> TypeIdToMetaMap;
+private:
+    dense_hash_map<void*, ObjectCacheNode*, PointerHashFunctor, std::equal_to<void*>> CDataCache;
+
+    dense_hash_map<const void*, MetaInfo*, ConstPointerHashFunctor, std::equal_to<const void*>> TypeIdToMetaMap;
 
     int PointerConstructor;
 
@@ -87,7 +105,7 @@ private:
     int CachePrivateDataRef = 0;
     int PairsRef = 0;
 
-    int GetMetaRefOfClass(lua_State* L, const LuaClassDefinition* ClassDefinition);
+    int GetMetaRefOfClass(lua_State* L, const LuaClassDefinition* ClassDefinition, bool &pairs);
 
     std::vector<PesapiCallbackData*> FunctionDatas;
     static CppObjectMapper* ms_Instance;

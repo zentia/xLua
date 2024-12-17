@@ -19,7 +19,9 @@ using LuaCSFunction = XLua.LuaDLL.lua_CSFunction;
 
 using System.Collections.Generic;
 using System;
+using System.IO;
 using System.Reflection;
+using Assets.Plugins.Perf;
 
 namespace XLua
 {

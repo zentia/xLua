@@ -7,26 +7,18 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 */
 
-#if USE_UNI_LUA
-using LuaAPI = UniLua.Lua;
-using RealStatePtr = UniLua.ILuaState;
-using LuaCSFunction = UniLua.CSharpFunctionDelegate;
-#else
 using LuaAPI = XLua.LuaDLL.Lua;
 using RealStatePtr = System.IntPtr;
 using LuaCSFunction = XLua.LuaDLL.lua_CSFunction;
-#endif
-
+using System;
+using System.Collections;
+using System.Reflection;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 
 namespace XLua
 {
-    using System;
-    using System.Collections;
-    using System.Reflection;
-    using System.Collections.Generic;
-    using System.Diagnostics;
-    using System.Linq;
-
     class ReferenceEqualsComparer : IEqualityComparer<object>
     {
         public new bool Equals(object o1, object o2)
@@ -99,7 +91,7 @@ namespace XLua
         }
     }
 #if !XLUA_IL2CPP || !ENABLE_IL2CPP
-    public partial class ObjectTranslator
+    public class ObjectTranslator
     {
         internal MethodWrapsCache methodWrapsCache;
         internal ObjectCheckers objectCheckers;
@@ -148,30 +140,7 @@ namespace XLua
             }
             else
             {
-#if !GEN_CODE_MINIMIZE && !ENABLE_IL2CPP && (UNITY_EDITOR || XLUA_GENERAL) && !FORCE_REFLECTION && !NET_STANDARD_2_0
-                if (!DelegateBridge.Gen_Flag && !type.IsEnum() && !typeof(Delegate).IsAssignableFrom(type) && Utils.IsPublic(type))
-                {
-                    Type wrap = ce.EmitTypeWrap(type);
-                    MethodInfo method = wrap.GetMethod("__Register", BindingFlags.Static | BindingFlags.Public);
-                    method.Invoke(null, new object[] { L });
-                }
-                else
-                {
-                    Utils.ReflectionWrap(L, type, privateAccessibleFlags.Contains(type));
-                }
-#else
-                Utils.ReflectionWrap(L, type, privateAccessibleFlags.Contains(type));
-#endif
-#if NOT_GEN_WARNING
-                if (!typeof(Delegate).IsAssignableFrom(type))
-                {
-#if !XLUA_GENERAL
-                    Assets.Plugins.Common.Log.LogW("未配Tag",string.Format("{0} not gen, using reflection instead", type));
-#else
-                    System.Console.WriteLine(string.Format("Warning: {0} not gen, using reflection instead", type));
-#endif
-                }
-#endif
+                Utils.ReflectionWrap(L, type);
             }
             if (top != LuaAPI.lua_gettop(L))
             {
@@ -715,9 +684,6 @@ namespace XLua
             LuaAPI.xlua_pushasciistring(L, "access");
             LuaAPI.lua_pushstdcallcfunction(L, StaticLuaCallbacks.XLuaAccess);
             LuaAPI.lua_rawset(L, -3);
-            LuaAPI.xlua_pushasciistring(L, "private_accessible");
-            LuaAPI.lua_pushstdcallcfunction(L, StaticLuaCallbacks.XLuaPrivateAccessible);
-            LuaAPI.lua_rawset(L, -3);
             LuaAPI.xlua_pushasciistring(L, "metatable_operation");
             LuaAPI.lua_pushstdcallcfunction(L, StaticLuaCallbacks.XLuaMetatableOperation);
             LuaAPI.lua_rawset(L, -3);
@@ -921,12 +887,6 @@ namespace XLua
                 {
                     GetCSObject get;
                     int type_id = LuaAPI.xlua_gettypeid(L, index);
-                    if (type_id != -1 && type_id == decimal_type_id)
-                    {
-                        decimal d;
-                        Get(L, index, out d);
-                        return d;
-                    }
                     Type type_of_struct;
                     if (type_id != -1 && typeMap.TryGetValue(type_id, out type_of_struct) && type.IsAssignableFrom(type_of_struct) && custom_get_funcs.TryGetValue(type, out get))
                     {
@@ -1036,20 +996,6 @@ namespace XLua
         {
             bool isFirst;
             return getTypeId(L, type, out isFirst);
-        }
-
-        HashSet<Type> privateAccessibleFlags = new();
-
-        public void PrivateAccessible(RealStatePtr L, Type type)
-        {
-            if (!privateAccessibleFlags.Contains(type)) //未处理
-            {
-                privateAccessibleFlags.Add(type);
-                if (typeIdMap.ContainsKey(type)) //loaded
-                {
-                    Utils.MakePrivateAccessible(L, type);
-                }
-            }
         }
 
         public int getTypeId(RealStatePtr L, Type type, out bool is_first, LOGLEVEL log_level = LOGLEVEL.WARN)
@@ -1196,10 +1142,6 @@ namespace XLua
             {
                 LuaAPI.lua_pushstring(L, o as byte[]);
             }
-            else if (o is decimal)
-            {
-                PushDecimal(L, (decimal)o);
-            }
             else if (o is LuaBase)
             {
                 ((LuaBase)o).push(L);
@@ -1214,6 +1156,10 @@ namespace XLua
                 if (custom_push_funcs.TryGetValue(o.GetType(), out push))
                 {
                     push(L, o);
+                }
+                else if (type.IsEnum)
+                {
+                    pushPrimitive(L, System.Convert.ToInt64(o));
                 }
                 else
                 {
@@ -1378,12 +1324,6 @@ namespace XLua
                 if (LuaAPI.lua_type(L, index) != LuaTypes.LUA_TUSERDATA) return null;
 
                 Type type = GetTypeOf(L, index);
-                if (type == typeof(decimal))
-                {
-                    decimal v;
-                    Get(L, index, out v);
-                    return v;
-                }
                 GetCSObject get;
                 if (type != null && custom_get_funcs.TryGetValue(type, out get))
                 {
@@ -1600,7 +1540,6 @@ namespace XLua
                     {typeof(long), new Action<RealStatePtr, long>(LuaAPI.lua_pushint64) },
                     {typeof(ulong), new Action<RealStatePtr, ulong>(LuaAPI.lua_pushuint64) },
                     {typeof(IntPtr), new Action<RealStatePtr, IntPtr>(LuaAPI.lua_pushlightuserdata) },
-                    {typeof(decimal), new Action<RealStatePtr, decimal>(PushDecimal) },
                     {typeof(byte),  new Action<RealStatePtr, byte>((L, v) => LuaAPI.xlua_pushinteger(L, v)) },
                     {typeof(sbyte),  new Action<RealStatePtr, sbyte>((L, v) => LuaAPI.xlua_pushinteger(L, v)) },
                     {typeof(char),  new Action<RealStatePtr, char>((L, v) => LuaAPI.xlua_pushinteger(L, v)) },
@@ -1640,11 +1579,6 @@ namespace XLua
                     {typeof(long), new Func<RealStatePtr, int, long>(LuaAPI.lua_toint64) },
                     {typeof(ulong), new Func<RealStatePtr, int, ulong>(LuaAPI.lua_touint64) },
                     {typeof(IntPtr), new Func<RealStatePtr, int, IntPtr>(LuaAPI.lua_touserdata) },
-                    {typeof(decimal), new Func<RealStatePtr, int, decimal>((L, idx) => {
-                        decimal ret;
-                        Get(L, idx, out ret);
-                        return ret;
-                    }) },
                     {typeof(byte), new Func<RealStatePtr, int, byte>((L, idx) => (byte)LuaAPI.xlua_tointeger(L, idx) ) },
                     {typeof(sbyte), new Func<RealStatePtr, int, sbyte>((L, idx) => (sbyte)LuaAPI.xlua_tointeger(L, idx) ) },
                     {typeof(char), new Func<RealStatePtr, int, char>((L, idx) => (char)LuaAPI.xlua_tointeger(L, idx) ) },
@@ -1700,81 +1634,6 @@ namespace XLua
                     update(L, idx, (T)obj);
                 }
             );
-        }
-
-        public void RegisterCaster<T>(GetFunc<T> get)
-        {
-            objectCasters.AddCaster(typeof(T), (L, idx, o) =>
-            {
-                T obj;
-                get(L, idx, out obj);
-                return obj;
-            });
-        }
-
-        int decimal_type_id = -1;
-
-        public void PushDecimal(RealStatePtr L, decimal val)
-        {
-            LuaAPI.lua_checkstack(L, 1);
-            if (decimal_type_id == -1)
-            {
-                bool is_first;
-                decimal_type_id = getTypeId(L, typeof(decimal), out is_first);
-            }
-            IntPtr buff = LuaAPI.xlua_pushstruct(L, 16, decimal_type_id);
-            if (!CopyByValue.Pack(buff, 0, val))
-            {
-                throw new Exception("pack fail for decimal ,value=" + val);
-            }
-
-        }
-
-        public bool IsDecimal(RealStatePtr L, int index)
-        {
-            if (decimal_type_id == -1) return false;
-            return LuaAPI.xlua_gettypeid(L, index) == decimal_type_id;
-        }
-
-        public decimal GetDecimal(RealStatePtr L, int index)
-        {
-            decimal ret;
-            Get(L, index, out ret);
-            return ret;
-        }
-
-        public void Get(RealStatePtr L, int index, out decimal val)
-        {
-            LuaTypes lua_type = LuaAPI.lua_type(L, index);
-            if (lua_type == LuaTypes.LUA_TUSERDATA)
-            {
-                if (LuaAPI.xlua_gettypeid(L, index) != decimal_type_id)
-                {
-                    throw new Exception("invalid userdata for decimal!");
-                }
-
-                IntPtr buff = LuaAPI.lua_touserdata(L, index);
-
-                if (!CopyByValue.UnPack(buff, 0, out val))
-                {
-                    throw new Exception("unpack decimal fail!");
-                }
-            }
-            else if (lua_type == LuaTypes.LUA_TNUMBER)
-            {
-                if (LuaAPI.lua_isint64(L, index))
-                {
-                    val = (decimal)LuaAPI.lua_toint64(L, index);
-                }
-                else
-                {
-                    val = (decimal)LuaAPI.lua_tonumber(L, index); // has gc
-                }
-            }
-            else
-            {
-                throw new Exception("invalid lua value for decimal, LuaType=" + lua_type);
-            }
         }
     }
 #endif

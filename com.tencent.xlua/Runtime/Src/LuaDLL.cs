@@ -130,7 +130,14 @@ namespace XLua.LuaDLL
 
 		[DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
 		public static extern void lua_createtable(IntPtr L, int narr, int nrec);//[-0, +0, m]
+        [DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
+        public static extern int luaregist_stats_custom_name(IntPtr L, Assets.Plugins.Perf.StatsLite.PFRegistCustomName pf);
 
+        [DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
+        public static extern int luastats_begin_sample(IntPtr L, Assets.Plugins.Perf.StatsLite.PFStatsBeginSample pf);
+
+        [DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
+        public static extern int luastats_end_sample_by_index(IntPtr L, Assets.Plugins.Perf.StatsLite.PFStatsEndSampleByIndex pf);
         public static void lua_newtable(IntPtr L)//[-0, +0, m]
         {
 			lua_createtable(L, 0, 0);
@@ -265,42 +272,17 @@ namespace XLua.LuaDLL
 		public static extern IntPtr lua_tolstring(IntPtr L, int index, out IntPtr strLen);//[-0, +0, m]
 
         public static string lua_tostring(IntPtr L, int index)
-		{
-            IntPtr strlen;
-
-            IntPtr str = lua_tolstring(L, index, out strlen);
-            if (str != IntPtr.Zero)
-			{
-#if XLUA_GENERAL || (UNITY_WSA && !UNITY_EDITOR)
-                int len = strlen.ToInt32();
-                byte[] buffer = new byte[len];
-                Marshal.Copy(str, buffer, 0, len);
-                return Encoding.UTF8.GetString(buffer);
-#else
-                try
-                {
-                    string ret = Marshal.PtrToStringAnsi(str, strlen.ToInt32());
-                    if (ret == null)
-                    {
-                        int len = strlen.ToInt32();
-                        byte[] buffer = new byte[len];
-                        Marshal.Copy(str, buffer, 0, len);
-                        return Encoding.UTF8.GetString(buffer);
-                    }
-                    return ret;
-                }
-                catch (Exception e)
-                {
-                    Debug.LogException(e);
-                    return null;
-                }
-#endif
-            }
-            else
-			{
+        {
+            var str = lua_tolstring(L, index, out var strLen);
+            if (str == IntPtr.Zero)
+            {
                 return null;
-			}
-		}
+            }
+            var len = strLen.ToInt32();
+            var buffer = new byte[len];
+            Marshal.Copy(str, buffer, 0, len);
+            return Encoding.UTF8.GetString(buffer);
+        }
 
         [DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
 		public static extern IntPtr lua_atpanic(IntPtr L, lua_CSFunction panicf);

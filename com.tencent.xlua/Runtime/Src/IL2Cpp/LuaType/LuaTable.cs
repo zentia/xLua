@@ -52,9 +52,14 @@ namespace XLua
             value = (T)GetLuaTableValueByString(apis, key, typeof(T));
         }
 
-        public T Get<T>(int index)
+        public T Get<T>(int key)
         {
-            return (T)GetLuaTableValueyUInt64(apis, (ulong)index, typeof(T));
+            return (T)GetLuaTableValueyUInt64(apis, (ulong)key, typeof(T));
+        }
+
+        public void Get<T>(int key, out T value)
+        {
+            value = (T)GetLuaTableValueyUInt64(apis, (ulong)key, typeof(T));
         }
 
         public T Get<T>(uint key)
@@ -97,7 +102,10 @@ namespace XLua
 
         ~LuaTable()
         {
-            XLuaIl2cpp.NativeAPI.AddPendingKillScriptObjects(apis, nativeLuaEnv, valueRef);
+            if (LuaEnv.Instance != null)
+                XLuaIl2cpp.NativeAPI.AddPendingKillScriptObjects(apis, nativeLuaEnv, valueRef);
+            else
+                UnityEngine.Debug.LogError("LuaEnv is Destroy!");
         }
     }
 }

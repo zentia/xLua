@@ -72,7 +72,7 @@ namespace XLua.TypeMapping
             }
 
 #if NOT_GEN_WARNING
-            IF (getter == IntPtr.Zero && setter == IntPtr.Zero)
+            if (getter == IntPtr.Zero && setter == IntPtr.Zero)
             {
                 UnityEngine.Debug.LogWarning(string.Format("can't get static field wrapper for {0}, signature:{1}", name, signature));
             }

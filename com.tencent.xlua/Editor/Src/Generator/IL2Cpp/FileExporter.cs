@@ -234,6 +234,11 @@ namespace XLuaIl2cpp.Editor
                 public bool isWhiteList;
             }
 
+            private static Type ParseNestedType(string key)
+            {
+                return null;
+            }
+
             // EventProxy`1[System.Boolean, mscorlib], Scripts
             private static Type ParseGenericType(string key)
             {
@@ -312,6 +317,8 @@ namespace XLuaIl2cpp.Editor
                 var ctorToWrapper = new List<ConstructorInfo>();
                 var methodToWrap = new List<MethodInfo>();
                 var fieldToWrapper = new List<FieldInfo>();
+                var propertyToWrapper = new List<PropertyInfo>();
+                var eventToWrapper = new List<EventInfo>();
                 var nestedToWrapper = new List<Type>();
                 var evalTypes = new HashSet<Type>();
                 const BindingFlags flag = BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public;
@@ -321,7 +328,7 @@ namespace XLuaIl2cpp.Editor
                     {
                         ctorToWrapper.Add(constructorInfo);
                     }
-
+#if XLUA_FULL
                     foreach (var methodInfo in type.Key.GetMethods(flag))
                     {
                         methodToWrap.Add(methodInfo);
@@ -331,8 +338,87 @@ namespace XLuaIl2cpp.Editor
                     {
                         fieldToWrapper.Add(fieldInfo);
                     }
+#else
+                    foreach (var valueMethod in type.Value.Methods)
+                    {
+                        var parameterType = valueMethod.Value.ParameterType;
+                        var pT = new Type[parameterType.Count];
+                        var found = true;
+                        for (int i = 0; i < parameterType.Count; i++)
+                        {
+                            var t = Type.GetType(parameterType[i]);
+                            if (t != null)
+                            {
+                                pT[i] = t;
+                            }
+                            else
+                            {
+                                t = ParseGenericType(parameterType[i]);
+                                if (t != null)
+                                {
+                                    pT[i] = t;
+                                }
+                                else
+                                {
+                                    Debug.LogError($"{type.Key.FullName}:{valueMethod.Key}:{parameterType[i]}");
+                                    found = false;
+                                    break;
+                                }
+                            }
+                        }
 
-                    nestedToWrapper.AddRange(type.Key.GetNestedTypes());
+                        if (found)
+                        {
+                            var methodInfo = type.Key.GetMethod(valueMethod.Key, pT);
+                            if (methodInfo != null)
+                            {
+                                methodToWrap.Add(methodInfo);
+                            }
+                            else
+                            {
+                                Debug.LogError($"{type.Key.FullName}:{valueMethod.Key}");
+                            }
+                        }
+                    }
+
+                    foreach (var valueField in type.Value.Fields)
+                    {
+                        var field = type.Key.GetField(valueField);
+                        if (field != null)
+                        {
+                            fieldToWrapper.Add(field);
+                        }
+                        else
+                        {
+                            try
+                            {
+                                var property = type.Key.GetProperty(valueField);
+                                if (property != null)
+                                {
+                                    propertyToWrapper.Add(property);
+                                }
+                                else
+                                {
+                                    var e = type.Key.GetEvent(valueField);
+                                    if (e != null)
+                                    {
+                                        eventToWrapper.Add(e);
+                                    }
+                                    else
+                                    {
+                                        Debug.LogError($"{type.Key.FullName}:{valueField}");
+                                    }
+                                }
+                            }
+                            catch (Exception e)
+                            {
+                                Debug.LogError($"{type.Key.FullName}:{valueField}:{e}");
+                            }
+                        }
+                    }
+#endif
+
+                        nestedToWrapper.AddRange(type.Key.GetNestedTypes());
                 }
 
                 
@@ -357,6 +443,8 @@ namespace XLuaIl2cpp.Editor
                     .Concat(methodToWrap.SelectMany(m => m.GetParameters()).Select(pi => GetUnrefParameterType(pi)))
                     .Concat(methodToWrap.Select(m => m.ReturnType))
                     .Concat(fieldToWrapper.Select(f => f.FieldType))
+                    .Concat(propertyToWrapper.Select(p=>p.PropertyType))
+                    .Concat(eventToWrapper.Select(e=>e.GetType()))
                     .Distinct();
 
                 HashSet<Type> typeInGenericArgument = new HashSet<Type>();
@@ -405,7 +493,7 @@ namespace XLuaIl2cpp.Editor
                     .Select(m => new SignatureInfo
                     {
                         Signature = TypeUtils.GetMethodSignature(m, true),
-                        CsName = m.ToString(),
+                        CsName = m + " declare in " + (m.DeclaringType != null ? m.DeclaringType : "unknown class"),
                         ReturnSignature = XLuaIl2cpp.TypeUtils.GetTypeSignature(m.ReturnType),
                         ThisSignature = null,
                         ParameterSignatures = m.GetParameters().Select(p => XLuaIl2cpp.TypeUtils.GetParameterSignature(p)).ToList()
@@ -423,7 +511,7 @@ namespace XLuaIl2cpp.Editor
                         return new SignatureInfo
                         {
                             Signature = XLuaIl2cpp.TypeUtils.GetMethodSignature(m, false, isExtensionMethod),
-                            CsName = m.ToString(),
+                            CsName = m + " declare in " + (m.DeclaringType != null ? m.DeclaringType : "unknown class"),
                             ReturnSignature = XLuaIl2cpp.TypeUtils.GetTypeSignature(m.ReturnType),
                             ThisSignature = XLuaIl2cpp.TypeUtils.GetThisSignature(m, isExtensionMethod),
                             ParameterSignatures = m.GetParameters().Skip(isExtensionMethod ? 1 : 0).Select(p => TypeUtils.GetParameterSignature(p)).ToList()
@@ -437,7 +525,7 @@ namespace XLuaIl2cpp.Editor
                                 return new SignatureInfo
                                 {
                                     Signature = XLuaIl2cpp.TypeUtils.GetMethodSignature(m, false, isExtensionMethod),
-                                    CsName = m.ToString(),
+                                    CsName = m + " declare in " +  (m.DeclaringType != null ? m.DeclaringType : "unknown class"),
                                     ReturnSignature = "v",
                                     ThisSignature = "t",
                                     ParameterSignatures = m.GetParameters().Skip(isExtensionMethod ? 1 : 0).Select(p => XLuaIl2cpp.TypeUtils.GetParameterSignature(p)).ToList()
@@ -453,7 +541,7 @@ namespace XLuaIl2cpp.Editor
                     .Select(f => new SignatureInfo
                     {
                         Signature = (f.IsStatic ? "" : "t") + TypeUtils.GetTypeSignature(f.FieldType),
-                        CsName = f.ToString(),
+                        CsName = f + " declare in " + (f.DeclaringType != null ? f.DeclaringType : "unknown class"),
                         ReturnSignature = TypeUtils.GetTypeSignature(f.FieldType),
                         ThisSignature = (f.IsStatic ? "" : "t"),
                         ParameterSignatures = null

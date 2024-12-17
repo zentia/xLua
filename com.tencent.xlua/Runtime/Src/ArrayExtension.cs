@@ -1,5 +1,4 @@
 #if XLUA_IL2CPP
-using System;
 using XLua;
 
 namespace XLuaIl2cpp
@@ -34,14 +33,7 @@ namespace XLuaIl2cpp
         [UnityEngine.Scripting.Preserve] public static void set_Item(this char[] arr, int idx, char val) { arr[idx] = val; }
         [UnityEngine.Scripting.Preserve] public static void set_Item(this uint[] arr, int idx, uint val) { arr[idx] = val; }
         [UnityEngine.Scripting.Preserve] public static void set_Item(this string[] arr, int idx, string val) { arr[idx] = val; }
-        [UnityEngine.Scripting.Preserve] public static void set_Item(this System.Array arr, int idx, object val) 
-        { 
-            if (val != null && typeof(XLua.TypedValue).IsAssignableFrom(val.GetType())) 
-            {
-                val = ((XLua.TypedValue)val).Target;
-            }
-            arr.SetValue(val, idx); 
-        }
+        [UnityEngine.Scripting.Preserve] public static void set_Item(this System.Array arr, int idx, object val) { arr.SetValue(val, idx); }
     }
 }
 #else 

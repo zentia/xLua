@@ -87,27 +87,27 @@ extern "C"
 {
 #endif
 
-    xlua::LuaEnv* CreateNativeLuaEnv()
+    LUA_API xlua::LuaEnv* CreateNativeLuaEnv()
     {
         return new xlua::LuaEnv();
     }
 
-    lua_State* GetLuaState(xlua::LuaEnv* luaEnv)
+    LUA_API lua_State* GetLuaState(xlua::LuaEnv* luaEnv)
     {
         return luaEnv->L;
     }
 
-    void DestroyNativeLuaEnv(xlua::LuaEnv* luaEnv)
+    LUA_API void DestroyNativeLuaEnv(xlua::LuaEnv* luaEnv)
     {
         delete luaEnv;
     }
 
-    void SetLogCallback(xlua::LogCallback Log)
+    LUA_API void SetLogCallback(xlua::LogCallback Log)
     {
         xlua::GLogCallback = Log;
     }
 
-    pesapi_env_ref GetPapiEnvRef(xlua::LuaEnv* luaEnv)
+    LUA_API pesapi_env_ref GetPapiEnvRef(xlua::LuaEnv* luaEnv)
     {
         lua_State* L = luaEnv->L;
 
@@ -115,12 +115,12 @@ extern "C"
         return g_pesapi_ffi.create_env_ref(env);
     }
 
-    pesapi_ffi* GetFFIApi()
+    LUA_API pesapi_ffi* GetFFIApi()
     {
         return &g_pesapi_ffi;
     }
 
-    pesapi_func_ptr* GetRegisterApi()
+    LUA_API pesapi_func_ptr* GetRegisterApi()
     {
         return reg_apis;
     }

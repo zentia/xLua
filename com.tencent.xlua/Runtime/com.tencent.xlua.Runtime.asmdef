@@ -1,7 +1,9 @@
 {
     "name": "com.tencent.xlua.Runtime",
     "rootNamespace": "",
-    "references": [],
+    "references": [
+        "GUID:92c2e1cda992d204a918f898e24ba068"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

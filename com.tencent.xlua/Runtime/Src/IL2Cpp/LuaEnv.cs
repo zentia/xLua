@@ -69,9 +69,11 @@ namespace XLua
             XLuaIl2cpp.NativeAPI.SetRegisterNoThrow(tryLoadTypeMethodInfo);
 
             persistentObjectInfoType = typeof(XLua.LuaTable);
-            XLuaIl2cpp.NativeAPI.SetGlobalType_TypedValue(typeof(TypedValue));
             XLuaIl2cpp.NativeAPI.SetGlobalType_LuaTable(typeof(LuaTable));
+            XLuaIl2cpp.NativeAPI.SetGlobalType_Array(typeof(Array));
             XLuaIl2cpp.NativeAPI.SetGlobalType_ArrayBuffer(typeof(byte[]));
+            XLuaIl2cpp.NativeAPI.SetGlobalType_IList(typeof(IList));
+            XLuaIl2cpp.NativeAPI.SetGlobalType_IDictionary(typeof(IDictionary));
 
             nativeLuaEnv = XLuaIl2cpp.NativeAPI.CreateNativeLuaEnv();
             nativePesapiEnv = XLuaIl2cpp.NativeAPI.GetPapiEnvRef(nativeLuaEnv);
@@ -107,7 +109,7 @@ namespace XLua
             var func = ffi.create_function(env, FooImpl, IntPtr.Zero);
             var global = ffi.global(env);
             ffi.set_property(env, global, "CSharpFoo", func);
-            ffi.close_scope(rawL, scope);
+            ffi.close_scope(rawL, scope, 0);
             _G = (LuaTable)XLuaIl2cpp.NativeAPI.GetGlobalTable(apis, nativePesapiEnv);
         }
         
@@ -119,7 +121,7 @@ namespace XLua
             XLuaIl2cpp.pesapi_ffi ffi = Marshal.PtrToStructure<XLuaIl2cpp.pesapi_ffi>(apis);
             var env = ffi.get_env(info);
 
-            IntPtr p0 = ffi.get_arg(info, 0);
+            int p0 = ffi.get_arg(info, 0);
             if (ffi.is_function(env, p0))
             {
                 if (storeCallback == IntPtr.Zero)
@@ -132,8 +134,8 @@ namespace XLua
             if (storeCallback != IntPtr.Zero)
             {
                 IntPtr func = ffi.get_value_from_ref(env, storeCallback);
-                IntPtr[] argv = new IntPtr[2] {p0, ffi.get_arg(info, 1)};
-                IntPtr res = ffi.call_function(env, func, IntPtr.Zero, 2, argv);
+                int[] argv = new int[2] {p0, ffi.get_arg(info, 1)};
+                int res = ffi.call_function(env, func, IntPtr.Zero, 2, argv);
                 int sum = ffi.get_value_int32(env, res);
                 UnityEngine.Debug.Log(string.Format("callback result = {0}", sum));
                 return;
@@ -336,10 +338,10 @@ namespace XLua
 #endif
         }
 
-        public object SafeGetCSObj(int index)
+        public object SafeGetCSObj(IntPtr l, int index)
         {
-            var idx = ffi.get_native_object_index(L, index);
-            return objectPool[index];
+            var idx = ffi.get_native_object_index(l, index);
+            return objectPool[idx];
         }
 
         internal Dictionary<string, LuaCSFunction> buildin_initer = new();

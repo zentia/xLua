@@ -49,22 +49,7 @@ namespace XLua
                     var fieldInfo = entry.member as FieldInfo;
                     if (fieldInfo != null)
                     {
-#if OSG_PROFILE
-                        string targetName = target != null ? target.GetType().Name : "null";
-                        string funcName = "";
-                        funcName = targetName;
-                        if (fieldInfo != null)
-                            funcName += $".{fieldInfo.Name}";
-                        if (propertyInfo != null)
-                            funcName += $".{propertyInfo.Name}";
-
-                        string beginSample = "";//"$"local CSInteraction = CS.LuaCallCSharpInteraction\n"
-                                                //+ $"local sampleIndex = CSInteraction.LuaBeginSample(CS.Assets.Plugins.Perf.StatsSampleId.CSharpCallCSharp, \"{funcName}\")";
-                        string endSample = "";// "$"CSStats.EndSampleByIndex(sampleIndex)";
-                        fieldInfo.SetValue(target, L.DoString($"return function(...)\n{beginSample}\nlocal ret = {entry.expression}(...)\n{endSample}\nreturn ret\nend\n", fieldInfo.FieldType,target.ToString(), env));
-#else
                         fieldInfo.SetValue(target, L.DoString("return " + entry.expression, fieldInfo.FieldType, fieldInfo.Name, env));
-#endif
                     }
                 }
                 catch (Exception e)

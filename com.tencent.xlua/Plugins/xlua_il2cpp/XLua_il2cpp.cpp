@@ -36,250 +36,270 @@ using namespace il2cpp::vm;
 
 namespace xlua
 {
-struct CSharpMethodInfo
-{
-    std::string Name;
-    bool IsStatic;
-    bool IsGetter;
-    bool IsSetter;
-    bool NeedBoxing;
-    std::vector<WrapData*> OverloadDatas;
-};
-
-struct CSharpFieldInfo
-{
-    std::string Name;
-    bool IsStatic;
-    FieldWrapData* Data;
-};
-
-struct LuaClassInfoHeader
-{
-    Il2CppClass* TypeId;
-    Il2CppClass* SuperTypeId;
-    bool IsValueType;
-    Il2CppMethodPointer DelegateBridge;
-    WrapData** CtorWrapDatas;
-};
-
-WrapFuncPtr FindWrapFunc(const char* signature);
-struct FieldWrapFuncInfo* FindFieldWrapFuncInfo(const char* signature);
-Il2CppMethodPointer FindBridgeFunc(const char* signature);
-
-struct LuaClassInfo : public LuaClassInfoHeader
-{
-    std::string Name;
-    std::vector<WrapData*> Ctors;
-    std::vector<CSharpMethodInfo> Methods;
-    std::vector<CSharpFieldInfo> Fields;
-};
-
-intptr_t GetMethodPointer(Il2CppReflectionMethod* method)
-{
-    auto methodInfo = method->method;
-    auto ret = MetadataCache::GetMethodPointer(methodInfo->klass->image, methodInfo->token);
-    if (!ret)
+    struct CSharpMethodInfo
     {
-        ret = methodInfo->methodPointer;
-    }
-    return (intptr_t) ret;
-}
+        std::string Name;
+        bool IsStatic;
+        bool IsGetter;
+        bool IsSetter;
+        bool NeedBoxing;
+        std::vector<WrapData*> OverloadDatas;
+    };
 
-intptr_t GetMethodInfoPointer(Il2CppReflectionMethod* method)
-{
-    return (intptr_t) method->method;
-}
-
-int32_t GetFieldOffset(Il2CppReflectionField* field, bool isInValueType)
-{
-    return (int32_t) Field::GetOffset(field->field) -
-           (Class::IsValuetype(Field::GetParent(field->field)) ? sizeof(Il2CppObject) : 0);
-}
-
-intptr_t GetFieldInfoPointer(Il2CppReflectionField* field)
-{
-    return (intptr_t) field->field;
-}
-
-intptr_t GetTypeId(Il2CppReflectionType* type)
-{
-    return (intptr_t) il2cpp_codegen_class_from_type(type->type);
-}
-
-static Il2CppClass* g_typeofPersistentObjectInfo;
-static Il2CppClass* g_typeofArrayBuffer;
-static Il2CppClass* g_typeofTypedValue;
-
-static const Il2CppClass* CSharpTypeToTypeId(Il2CppObject* type)
-{
-    if (type && Class::IsAssignableFrom(il2cpp_defaults.systemtype_class, type->klass))
+    struct CSharpFieldInfo
     {
-        return il2cpp_codegen_class_from_type(((Il2CppReflectionType*)type)->type);
-    }
-    return nullptr;
-}
+        std::string Name;
+        bool IsStatic;
+        FieldWrapData* Data;
+    };
 
-const Il2CppReflectionType* TypeIdToType(Il2CppClass* klass)
-{
-    if (!klass)
-        return nullptr;
-    return Reflection::GetTypeObject(Class::GetType(klass));
-}
-
-static void* ObjectAllocate(Il2CppClass* klass)
-{
-    if (Class::IsValuetype(klass))
+    struct LuaClassInfoHeader
     {
-        auto size = klass->native_size > 0 ? klass->native_size : (klass->instance_size - sizeof(Il2CppObject));
-        auto buff = (void*) (new uint8_t[size]);
-        memset(buff, 0, size);
-        return buff;
-    }
-    else
+        Il2CppClass* TypeId;
+        Il2CppClass* SuperTypeId;
+        bool IsValueType;
+        Il2CppMethodPointer DelegateBridge;
+        WrapData** CtorWrapDatas;
+    };
+
+    WrapFuncPtr FindWrapFunc(const char* signature);
+    struct FieldWrapFuncInfo* FindFieldWrapFuncInfo(const char* signature);
+    Il2CppMethodPointer FindBridgeFunc(const char* signature);
+
+    struct LuaClassInfo : public LuaClassInfoHeader
     {
-        auto obj = il2cpp::vm::Object::New(klass);
-        return obj;
-    }
-}
+        std::string Name;
+        std::vector<WrapData*> Ctors;
+        std::vector<CSharpMethodInfo> Methods;
+        std::vector<CSharpFieldInfo> Fields;
+    };
 
-static void ValueTypeFree(void* ptr)
-{
-    delete[] (uint8_t*) ptr;
-}
-
-static void PApiFree(struct pesapi_ffi* api, void* ptr, void* class_data, void* env_private)
-{
-    ValueTypeFree(ptr);    // TODO: class_data->IsValueType
-}
-
-static MethodInfoHelper<void(const void* typeId, bool includeNonPublic)> g_RegisterNoThrowHelper;
-
-static bool ClassNotFoundCallback(const void* typeId)
-{
-    g_RegisterNoThrowHelper.Call(typeId, false);
-    return true;
-}
-
-static void SetRegisterNoThrow(Il2CppReflectionMethod* method)
-{
-    g_RegisterNoThrowHelper = MethodInfoHelper<void(const void* typeId, bool includeNonPublic)>(method);
-    pesapi_on_class_not_found(ClassNotFoundCallback);
-}
-
-Il2CppClass* GetReturnType(const MethodInfo* method)
-{
-    if (kInvalidIl2CppMethodSlot != method->slot)
+    intptr_t GetMethodPointer(Il2CppReflectionMethod* method)
     {
-        Class::Init(method->klass);
-    }
-    return Class::FromIl2CppType(Method::GetReturnType(method), false);
-}
-
-Il2CppClass* GetParameterType(const MethodInfo* method, int index)
-{
-    if (kInvalidIl2CppMethodSlot != method->slot)
-    {
-        Class::Init(method->klass);
-    }
-    const Il2CppType* type = Method::GetParam(method, index);
-    if (type)
-    {
-        return Class::FromIl2CppType(type, false);
-    }
-    else
-    {
-        return nullptr;
-    }
-}
-
-static std::map<const MethodInfo*, const MethodInfo*> WrapFuncPtrToMethodInfo;
-static std::recursive_mutex WrapFuncPtrToMethodInfoMutex;
-
-Il2CppDelegate* FunctionPointerToDelegate(Il2CppMethodPointer functionPtr, Il2CppClass* delegateType, Il2CppObject* target)
-{
-    Il2CppObject* delegate = il2cpp::vm::Object::New(delegateType);
-    const MethodInfo* invoke = il2cpp::vm::Runtime::GetDelegateInvoke(delegateType);
-
-    const MethodInfo* method = NULL;
-    {
-        //std::lock_guard<std::recursive_mutex> lock(WrapFuncPtrToMethodInfoMutex);
-        auto iter = WrapFuncPtrToMethodInfo.find(invoke);
-        if (iter == WrapFuncPtrToMethodInfo.end())
+        auto methodInfo = method->method;
+        auto ret = MetadataCache::GetMethodPointer(methodInfo->klass->image, methodInfo->token);
+        if (!ret)
         {
-            MethodInfo* newMethod = (MethodInfo*) IL2CPP_CALLOC(1, sizeof(MethodInfo));
-            newMethod->name = invoke->name;
-            newMethod->klass = invoke->klass;
-            newMethod->methodPointer = functionPtr;
-            newMethod->invoker_method = invoke->invoker_method;
-            newMethod->return_type = invoke->return_type;
-            newMethod->parameters_count = invoke->parameters_count;
-            newMethod->parameters = invoke->parameters;
-            newMethod->slot = kInvalidIl2CppMethodSlot;
-            WrapFuncPtrToMethodInfo.insert(std::make_pair(invoke, newMethod));
-            method = newMethod;
+            ret = methodInfo->methodPointer;
+        }
+        return (intptr_t)ret;
+    }
+
+    intptr_t GetMethodInfoPointer(Il2CppReflectionMethod* method)
+    {
+        return (intptr_t)method->method;
+    }
+
+    int32_t GetFieldOffset(Il2CppReflectionField* field, bool isInValueType)
+    {
+        return (int32_t)Field::GetOffset(field->field) -
+            (Class::IsValuetype(Field::GetParent(field->field)) ? sizeof(Il2CppObject) : 0);
+    }
+
+    intptr_t GetFieldInfoPointer(Il2CppReflectionField* field)
+    {
+        return (intptr_t)field->field;
+    }
+
+    intptr_t GetTypeId(Il2CppReflectionType* type)
+    {
+        return (intptr_t)il2cpp_codegen_class_from_type(type->type);
+    }
+
+    static Il2CppClass* g_typeofPersistentObjectInfo;
+    Il2CppClass* g_typeofArray = nullptr;
+    Il2CppClass* g_typeofArrayBuffer = nullptr;
+    Il2CppClass* g_typeofIList = nullptr;
+    Il2CppClass* g_typeofIDictionary = nullptr;
+
+    static const Il2CppClass* CSharpTypeToTypeId(Il2CppObject* type)
+    {
+        if (type && Class::IsAssignableFrom(il2cpp_defaults.systemtype_class, type->klass))
+        {
+            return il2cpp_codegen_class_from_type(((Il2CppReflectionType*)type)->type);
+        }
+        return nullptr;
+    }
+
+    Il2CppReflectionType* TypeIdToType(Il2CppClass* klass)
+    {
+        if (!klass)
+            return nullptr;
+        return Reflection::GetTypeObject(Class::GetType(klass));
+    }
+
+    static void* ObjectAllocate(Il2CppClass* klass)
+    {
+        if (Class::IsValuetype(klass))
+        {
+            auto size = klass->native_size > 0 ? klass->native_size : (klass->instance_size - sizeof(Il2CppObject));
+            auto buff = (void*)(new uint8_t[size]);
+            memset(buff, 0, size);
+            return buff;
         }
         else
         {
-            method = iter->second;
+            auto obj = il2cpp::vm::Object::New(klass);
+            return obj;
         }
     }
 
-    Type::ConstructClosedDelegate((Il2CppDelegate*) delegate, target, functionPtr, method);
-
-    return (Il2CppDelegate*) delegate;
-}
-
-static void* DelegateAllocate(Il2CppClass* klass, Il2CppMethodPointer functionPtr, PObjectRefInfo** outTargetData)
-{
-    Il2CppClass* delegateInfoClass = g_typeofPersistentObjectInfo;
-    if (!delegateInfoClass)
-        return nullptr;
-
-    auto target = il2cpp::vm::Object::New(delegateInfoClass);
-
-    Il2CppDelegate* delegate = FunctionPointerToDelegate(functionPtr, klass, target);
-    
-    if (MethodIsStatic(delegate->method))
-        return nullptr;
-
-    const MethodInfo* ctor = il2cpp_class_get_method_from_name(delegateInfoClass, ".ctor", 0);
-    typedef void (*NativeCtorPtr)(Il2CppObject* ___this, const MethodInfo* method);
-
-    IL2CPP_OBJECT_SETREF(delegate, target, target);
-
-    *outTargetData = GetPObjectRefInfo(target);
-
-    delegate->method_ptr = functionPtr;
-
-    return delegate;
-}
-
-static void SetGlobalType_ArrayBuffer(Il2CppReflectionType* type)
-{
-    if (!type)
+    static void ValueTypeFree(void* ptr)
     {
-        Exception::Raise(Exception::GetInvalidOperationException("type of ArrayBuffer is null"));
+        delete[](uint8_t*) ptr;
     }
-    g_typeofArrayBuffer = il2cpp_codegen_class_from_type(type->type);
-}
 
-static void SetGlobalType_LuaTable(Il2CppReflectionType* type)
-{
-    if (!type)
+    static void PApiFree(struct pesapi_ffi* api, void* ptr, void* class_data, void* env_private)
     {
-        Exception::Raise(Exception::GetInvalidOperationException("type of LuaTable is null"));
+        ValueTypeFree(ptr);    // TODO: class_data->IsValueType
     }
-    g_typeofPersistentObjectInfo = il2cpp_codegen_class_from_type(type->type);
-}
 
-static void SetGlobalType_TypedValue(Il2CppReflectionType* type)
-{
-    if (!type)
+    static MethodInfoHelper<void(const void* typeId, bool includeNonPublic)> g_RegisterNoThrowHelper;
+
+    static bool ClassNotFoundCallback(const void* typeId)
     {
-        Exception::Raise(Exception::GetInvalidOperationException("type of TypedValue is null"));
+        g_RegisterNoThrowHelper.Call(typeId, false);
+        return true;
     }
-    g_typeofTypedValue = il2cpp_codegen_class_from_type(type->type);
-}
+
+    static void SetRegisterNoThrow(Il2CppReflectionMethod* method)
+    {
+        g_RegisterNoThrowHelper = MethodInfoHelper<void(const void* typeId, bool includeNonPublic)>(method);
+        pesapi_on_class_not_found(ClassNotFoundCallback);
+    }
+
+    Il2CppClass* GetReturnType(const MethodInfo* method)
+    {
+        if (kInvalidIl2CppMethodSlot != method->slot)
+        {
+            Class::Init(method->klass);
+        }
+        return Class::FromIl2CppType(Method::GetReturnType(method), false);
+    }
+
+    Il2CppClass* GetParameterType(const MethodInfo* method, int index)
+    {
+        if (kInvalidIl2CppMethodSlot != method->slot)
+        {
+            Class::Init(method->klass);
+        }
+        const Il2CppType* type = Method::GetParam(method, index);
+        if (type)
+        {
+            return Class::FromIl2CppType(type, false);
+        }
+        else
+        {
+            return nullptr;
+        }
+    }
+
+    static std::map<const MethodInfo*, const MethodInfo*> WrapFuncPtrToMethodInfo;
+    //static std::recursive_mutex WrapFuncPtrToMethodInfoMutex;
+
+    Il2CppDelegate* FunctionPointerToDelegate(Il2CppMethodPointer functionPtr, Il2CppClass* delegateType, Il2CppObject* target)
+    {
+        Il2CppObject* delegate = il2cpp::vm::Object::New(delegateType);
+        const MethodInfo* invoke = il2cpp::vm::Runtime::GetDelegateInvoke(delegateType);
+
+        const MethodInfo* method = NULL;
+        {
+            //std::lock_guard<std::recursive_mutex> lock(WrapFuncPtrToMethodInfoMutex);
+            auto iter = WrapFuncPtrToMethodInfo.find(invoke);
+            if (iter == WrapFuncPtrToMethodInfo.end())
+            {
+                MethodInfo* newMethod = (MethodInfo*)IL2CPP_CALLOC(1, sizeof(MethodInfo));
+                newMethod->name = invoke->name;
+                newMethod->klass = invoke->klass;
+                newMethod->methodPointer = functionPtr;
+                newMethod->invoker_method = invoke->invoker_method;
+                newMethod->return_type = invoke->return_type;
+                newMethod->parameters_count = invoke->parameters_count;
+                newMethod->parameters = invoke->parameters;
+                newMethod->slot = kInvalidIl2CppMethodSlot;
+                WrapFuncPtrToMethodInfo.insert(std::make_pair(invoke, newMethod));
+                method = newMethod;
+            }
+            else
+            {
+                method = iter->second;
+            }
+        }
+        Il2CppDelegate* il2cppDelegate = (Il2CppDelegate*)delegate;
+        Type::ConstructClosedDelegate(il2cppDelegate, target, functionPtr, method);
+        return il2cppDelegate;
+    }
+
+    static void* DelegateAllocate(Il2CppClass* klass, Il2CppMethodPointer functionPtr, PObjectRefInfo** outTargetData)
+    {
+        Il2CppClass* delegateInfoClass = g_typeofPersistentObjectInfo;
+        if (!delegateInfoClass)
+            return nullptr;
+
+        auto target = il2cpp::vm::Object::New(delegateInfoClass);
+
+        Il2CppDelegate* delegate = FunctionPointerToDelegate(functionPtr, klass, target);
+
+        if (MethodIsStatic(delegate->method))
+            return nullptr;
+
+        const MethodInfo* ctor = il2cpp_class_get_method_from_name(delegateInfoClass, ".ctor", 0);
+        typedef void (*NativeCtorPtr)(Il2CppObject* ___this, const MethodInfo* method);
+        ((NativeCtorPtr)ctor->methodPointer)(target, ctor);
+
+        IL2CPP_OBJECT_SETREF(delegate, invoke_impl_this, target);
+
+        *outTargetData = GetPObjectRefInfo(target);
+
+        delegate->method_ptr = functionPtr;
+
+        return delegate;
+    }
+
+    static void SetGlobalType_ArrayBuffer(Il2CppReflectionType* type)
+    {
+        if (!type)
+        {
+            Exception::Raise(Exception::GetInvalidOperationException("type of ArrayBuffer is null"));
+        }
+        g_typeofArrayBuffer = il2cpp_codegen_class_from_type(type->type);
+    }
+
+    static void SetGlobalType_LuaTable(Il2CppReflectionType* type)
+    {
+        if (!type)
+        {
+            Exception::Raise(Exception::GetInvalidOperationException("type of LuaTable is null"));
+        }
+        g_typeofPersistentObjectInfo = il2cpp_codegen_class_from_type(type->type);
+    }
+
+    static void SetGlobalType_Array(Il2CppReflectionType* type)
+    {
+        if (!type)
+        {
+            Exception::Raise(Exception::GetInvalidOperationException("type of TypedValue is null"));
+        }
+        g_typeofArray = il2cpp_codegen_class_from_type(type->type);
+    }
+
+    static void SetGlobalType_IList(Il2CppReflectionType* type)
+    {
+	    if (!type)
+	    {
+            Exception::Raise(Exception::GetInvalidOperationException("type of IList is null"));
+	    }
+        g_typeofIList = il2cpp_codegen_class_from_type(type->type);
+    }
+
+    static void SetGlobalType_IDictionary(Il2CppReflectionType* type)
+    {
+	    if (!type)
+	    {
+            Exception::Raise(Exception::GetInvalidOperationException("type of IDictionary is null"));
+	    }
+        g_typeofIDictionary = il2cpp_codegen_class_from_type(type->type);
+    }
 
 static void MethodCallback(struct pesapi_ffi* apis, pesapi_callback_info info)
 {
@@ -498,9 +518,11 @@ static void* CtorCallback(struct pesapi_ffi* apis, pesapi_callback_info info)
 
     return nullptr;
 }
-
+//std::unordered_set<pesapi_value_ref> debug;
 static void SetPObjectRefInfoValue(struct pesapi_ffi* apis, pesapi_env env, PObjectRefInfo* objectInfo, pesapi_value_ref value_ref)
 {
+    
+    
     objectInfo->Apis = apis;
     objectInfo->ValueRef = value_ref;
     objectInfo->EnvPrivate = (void*) apis->get_env_private(env);
@@ -511,8 +533,8 @@ static int GetPObjectRefInfoValue(struct pesapi_ffi* apis, pesapi_env env, const
     return apis->get_value_from_ref(env, objectInfo->ValueRef);
 }
 
-static int32_t* FindOrCreateHandleStoreOfValue(
-    struct pesapi_ffi* apis, pesapi_env env, int value, pesapi_value_ref* out_value_ref, Il2CppObject** out_object)
+    // out_object luaTable
+static int32_t* FindOrCreateHandleStoreOfValue(struct pesapi_ffi* apis, pesapi_env env, int value, pesapi_value_ref* out_value_ref, Il2CppObject** out_object)
 {
     void* out_ptr;
     if (!apis->get_private(env, value, &out_ptr))
@@ -545,6 +567,11 @@ static int32_t* FindOrCreateHandleStoreOfValue(
     else
     {
         *out_object = il2cpp::gc::GCHandle::GetTarget(*res);
+        if (*out_object == nullptr)
+        {
+            apis->duplicate_value_ref(value_ref);
+        }
+        // assert(*out_object != nullptr);
         // PLog("found existed luaobject:%p", *out_object);
     }
 
@@ -562,6 +589,9 @@ static Il2CppObject* FunctionToDelegate(struct pesapi_ffi* apis, pesapi_env env,
 
     if (ret == nullptr)
     {
+        // auto iter = debug.find(value_ref);
+        // assert(iter == debug.end());
+        // debug.insert(value_ref);
         PObjectRefInfo* delegateInfo;
         ret = (Il2CppObject*) DelegateAllocate(classInfo->TypeId, classInfo->DelegateBridge, &delegateInfo);
         auto targetHandle = il2cpp::gc::GCHandle::GetTargetHandle(ret, 0, il2cpp::gc::HANDLE_WEAK);
@@ -738,6 +768,189 @@ union PrimitiveValueType
     double r8;
 };
 
+    Il2CppObject* LuaTableToCSArray(struct pesapi_ffi* apis, Il2CppClass* klass, pesapi_env env, int luaval)
+    {
+        uint32_t len = apis->get_array_length(env, luaval);
+        Il2CppArray* array = Array::NewSpecific(klass, len);
+        Il2CppClass* elementClass = Class::GetElementClass(klass);
+        const Il2CppType* type = Class::GetType(elementClass);
+        int t = type->type;
+        int elementSize = il2cpp::vm::Class::GetArrayElementSize(elementClass);
+        for (int i = 0; i < len; i++)
+        {
+            void* elementAddress = il2cpp_array_addr_with_size(array, elementSize, i);
+            apis->get_array_element(env, i, luaval);
+            switch (t)
+            {
+            case IL2CPP_TYPE_I1:
+	            {
+					int8_t v = static_cast<int8_t>(apis->get_value_int32(env, -1));
+            		memcpy(elementAddress, &v, elementSize);
+	            }
+                break;
+#if IL2CPP_SIZEOF_VOID_P == 4
+            case IL2CPP_TYPE_I:
+#endif
+            case IL2CPP_TYPE_I4:
+	            {
+					int32_t v = apis->get_value_int32(env, -1);
+                    memcpy(elementAddress, &v, elementSize);
+	            }
+                break;
+#if IL2CPP_SIZEOF_VOID_P == 8
+            case IL2CPP_TYPE_U:
+#endif
+            case IL2CPP_TYPE_U8:
+	            {
+					uint64_t v = apis->get_value_uint64(env, -1);
+                    memcpy(elementAddress, &v, elementSize);
+	            }
+                break;
+            case IL2CPP_TYPE_R4:
+	            {
+                float v = static_cast<float>(apis->get_value_double(env, -1));
+                memcpy(elementAddress, &v, elementSize);
+	            }
+                break;
+            case IL2CPP_TYPE_R8:
+	            {
+                double v = apis->get_value_double(env, -1);
+                memcpy(elementAddress, &v, elementSize);
+	            }
+                break;
+            case IL2CPP_TYPE_STRING:
+	            {
+	                size_t bufsize = 0;
+	                auto str = apis->get_value_string_utf8(env, -1, nullptr, &bufsize);
+	                if (str)
+	                {
+	                    Il2CppString* v = il2cpp::vm::String::NewWrapper(str);
+	                    memcpy(elementAddress, &v, elementSize);
+	                    Il2CppCodeGenWriteBarrier(&elementAddress, v);
+	                }
+	            }
+                break;
+            case IL2CPP_TYPE_CLASS:
+	            {
+                if (apis->is_function(env, -1))
+                {
+                    if (IsDelegate(elementClass))
+                    {
+                        LuaClassInfoHeader* luaClassInfo = (LuaClassInfoHeader*)pesapi_get_class_data(elementClass, true);
+                        if (!luaClassInfo)
+                        {
+                            Exception::Raise(Exception::GetInvalidOperationException("call not load type of delegate"));
+                        }
+                        Il2CppObject* v = FunctionToDelegate(apis, env, -1, luaClassInfo);
+                        memcpy(elementAddress, &v, elementSize);
+                        Il2CppCodeGenWriteBarrier(&elementAddress, v);
+                    }
+                    break;
+                }
+                auto ptr = (Il2CppObject*)apis->get_native_object_ptr(env, -1);
+                if (!ptr)
+                {
+                    if ((elementClass == g_typeofArrayBuffer) && apis->is_binary(env, -1))
+                    {
+                        void* data;
+                        size_t length;
+                        data = apis->get_value_binary(env, -1, &length);
+                        Il2CppArray* clone = (Il2CppArray*)il2cpp::vm::Array::NewFull(elementClass, &length, NULL);
+                        const uint32_t elem_size = il2cpp::vm::Array::GetElementSize(elementClass);
+                        memcpy(il2cpp::vm::Array::GetFirstElementAddress(clone), data, elem_size * length);
+                        memcpy(elementAddress, &clone, elementSize);
+                        Il2CppCodeGenWriteBarrier(&elementAddress, clone);
+                        break;
+                    }
+                    if (apis->is_object(env, -1))
+                    {
+                        if (elementClass == g_typeofPersistentObjectInfo || elementClass == il2cpp_defaults.object_class)
+                        {
+                            Il2CppClass* persistentObjectInfoClass = g_typeofPersistentObjectInfo;
+
+                            pesapi_value_ref value_ref;
+                            Il2CppObject* ret = nullptr;
+                            int32_t* handle_store = FindOrCreateHandleStoreOfValue(apis, env, -1, &value_ref, &ret);
+                            if (!handle_store)
+                                break;
+
+                            if (ret == nullptr)
+                            {
+                                ret = il2cpp::vm::Object::New(persistentObjectInfoClass);
+
+                                const MethodInfo* ctor = il2cpp_class_get_method_from_name(persistentObjectInfoClass, ".ctor", 0);
+                                typedef void (*NativeCtorPtr)(Il2CppObject* ___this, const MethodInfo* method);
+                                ((NativeCtorPtr)ctor->methodPointer)(ret, ctor);
+
+                                PObjectRefInfo* objectInfo = GetPObjectRefInfo(ret);
+                                auto targetHandle = il2cpp::gc::GCHandle::GetTargetHandle(ret, 0, il2cpp::gc::HANDLE_WEAK);
+                                il2cpp::vm::Exception::RaiseIfError(targetHandle.GetError());
+                                *handle_store = targetHandle.Get();
+                                SetPObjectRefInfoValue(apis, env, objectInfo, value_ref);
+                            }
+                            memcpy(elementAddress, &ret, elementSize);
+                            Il2CppCodeGenWriteBarrier(&elementAddress, ret);
+                        }
+                    }
+                    break;
+                }
+                auto objClass = (Il2CppClass*)apis->get_native_object_typeid(env, -1);
+                if (Class::IsAssignableFrom(elementClass, objClass))
+                {
+                    Il2CppObject* v = Class::IsValuetype(objClass) ? Object::Box(objClass, ptr) : (Il2CppObject*)ptr;
+                    memcpy(elementAddress, &v, elementSize);
+                    Il2CppCodeGenWriteBarrier(&elementAddress, v);
+                }
+                
+	            }
+                break;
+            }
+            apis->close_scope_placement(env, 1);
+        }
+        return array;
+    }
+
+    Il2CppObject* LuaTableToIList(struct pesapi_ffi* apis, Il2CppClass* klass, pesapi_env env, int luaval)
+    {
+        il2cpp::vm::Class::Init(klass);
+        Il2CppObject* list = il2cpp_object_new(klass);
+        return list;
+    }
+
+    Il2CppObject* LuaTableToIDictionary(struct pesapi_ffi* apis, Il2CppClass* klass, pesapi_env env, int luaval)
+    {
+        il2cpp::vm::Class::Init(klass);
+        Il2CppObject* dictionary = il2cpp_object_new(klass);
+
+        apis->create_null(env);
+        Il2CppReflectionType* type = TypeIdToType(klass);
+        Il2CppArray* array = il2cpp::vm::Type::GetGenericArgumentsInternal(type, true);
+        Il2CppReflectionType* keyType = il2cpp_array_get(array, Il2CppReflectionType*, 0);
+        int keyEnum = keyType->type->type;
+        Il2CppReflectionType* valueType = il2cpp_array_get(array, Il2CppReflectionType*, 1);
+        int valueEnum = valueType->type->type;
+        while (apis->next(env, luaval) != 0)
+        {
+	        switch (keyEnum)
+	        {
+#if IL2CPP_SIZEOF_VOID_P == 4
+	        case IL2CPP_TYPE_U:
+#endif
+	        case IL2CPP_TYPE_U4:
+		        {
+			        
+		        }
+                break;
+	        }
+	        switch (valueEnum)
+	        {
+		        
+	        }
+        }
+        return dictionary;
+    }
+
+
 Il2CppObject* LuaValueToCSRef(struct pesapi_ffi* apis, Il2CppClass* klass, pesapi_env env, int luaval)
 {
     if (klass == il2cpp_defaults.void_class)
@@ -883,31 +1096,46 @@ handle_underlying:
                     memcpy(il2cpp::vm::Array::GetFirstElementAddress(clone), data, elem_size * length);
                     return clone;
                 }
-                if ((klass == g_typeofPersistentObjectInfo || klass == il2cpp_defaults.object_class) && apis->is_object(env, luaval))
+                if (apis->is_object(env, luaval))
                 {
-                    Il2CppClass* persistentObjectInfoClass = g_typeofPersistentObjectInfo;
-
-                    pesapi_value_ref value_ref;
-                    Il2CppObject* ret = nullptr;
-                    int32_t* handle_store = FindOrCreateHandleStoreOfValue(apis, env, luaval, &value_ref, &ret);
-                    if (!handle_store)
-                        return nullptr;
-
-                    if (ret == nullptr)
+                    if (klass == g_typeofPersistentObjectInfo || klass == il2cpp_defaults.object_class)
                     {
-                        ret = il2cpp::vm::Object::New(persistentObjectInfoClass);
+                        Il2CppClass* persistentObjectInfoClass = g_typeofPersistentObjectInfo;
 
-                        const MethodInfo* ctor = il2cpp_class_get_method_from_name(persistentObjectInfoClass, ".ctor", 0);
-                        typedef void (*NativeCtorPtr)(Il2CppObject* ___this, const MethodInfo* method);
-                        ((NativeCtorPtr) ctor->methodPointer)(ret, ctor);
+                        pesapi_value_ref value_ref;
+                        Il2CppObject* ret = nullptr;
+                        int32_t* handle_store = FindOrCreateHandleStoreOfValue(apis, env, luaval, &value_ref, &ret);
+                        if (!handle_store)
+                            return nullptr;
 
-                        PObjectRefInfo* objectInfo = GetPObjectRefInfo(ret);
-                        auto targetHandle = il2cpp::gc::GCHandle::GetTargetHandle(ret, 0, il2cpp::gc::HANDLE_WEAK);
-                        il2cpp::vm::Exception::RaiseIfError(targetHandle.GetError());
-                        *handle_store = targetHandle.Get();
-                        SetPObjectRefInfoValue(apis, env, objectInfo, value_ref);
+                        if (ret == nullptr)
+                        {
+                            ret = il2cpp::vm::Object::New(persistentObjectInfoClass);
+
+                            const MethodInfo* ctor = il2cpp_class_get_method_from_name(persistentObjectInfoClass, ".ctor", 0);
+                            typedef void (*NativeCtorPtr)(Il2CppObject* ___this, const MethodInfo* method);
+                            ((NativeCtorPtr)ctor->methodPointer)(ret, ctor);
+
+                            PObjectRefInfo* objectInfo = GetPObjectRefInfo(ret);
+                            auto targetHandle = il2cpp::gc::GCHandle::GetTargetHandle(ret, 0, il2cpp::gc::HANDLE_WEAK);
+                            il2cpp::vm::Exception::RaiseIfError(targetHandle.GetError());
+                            *handle_store = targetHandle.Get();
+                            SetPObjectRefInfoValue(apis, env, objectInfo, value_ref);
+                        }
+                        return ret;
                     }
-                    return ret;
+                    if (t == IL2CPP_TYPE_SZARRAY)
+                    {
+                        return LuaTableToCSArray(apis, klass, env, luaval);
+                    }
+                    if (Class::IsAssignableFrom(g_typeofIList, klass))
+                    {
+                        return LuaTableToIList(apis, klass, env, luaval);
+                    }
+                    if (Class::IsAssignableFrom(g_typeofIDictionary, klass))
+                    {
+                        return LuaTableToIDictionary(apis, klass, env, luaval);
+                    }
                 }
                 if (klass == il2cpp_defaults.object_class)
                 {
@@ -957,16 +1185,6 @@ handle_underlying:
                 return nullptr;
             }
             auto objClass = (Il2CppClass*) apis->get_native_object_typeid(env, luaval);
-            if (klass == il2cpp_defaults.object_class && g_typeofTypedValue &&
-                Class::IsAssignableFrom(g_typeofTypedValue, objClass))
-            {
-                const MethodInfo* get_Target = il2cpp_class_get_method_from_name(objClass, "get_Target", 0);
-                if (get_Target)
-                {
-                    typedef Il2CppObject* (*NativeFuncPtr)(void* ___this, const MethodInfo* method);
-                    return ((NativeFuncPtr) get_Target->methodPointer)(ptr, get_Target);
-                }
-            }
             if (Class::IsAssignableFrom(klass, objClass))
             {
                 return Class::IsValuetype(objClass) ? Object::Box(objClass, ptr) : (Il2CppObject*) ptr;
@@ -1065,27 +1283,18 @@ static bool GetValueTypeFromLua(struct pesapi_ffi* apis, pesapi_env env, int lua
     uint32_t valueSize = klass->instance_size - sizeof(Il2CppObject);
     if (!luaValue)
         return false;
-
-    if (apis->is_object(env, luaValue))
+    void* ptr;
+    if (apis->is_object(env, luaValue) && (ptr = apis->get_native_object_ptr(env, luaValue)))
     {
-        void* ptr = apis->get_native_object_ptr(env, luaValue);
-        if (ptr)
+        auto objClass = (Il2CppClass*) apis->get_native_object_typeid(env, luaValue);
+        if (Class::IsAssignableFrom(klass, objClass))
         {
-            auto objClass = (Il2CppClass*) apis->get_native_object_typeid(env, luaValue);
-            if (Class::IsAssignableFrom(klass, objClass))
-            {
-                hasValue = true;
-                memcpy(storage, ptr, valueSize);
-            }
-        }
-        else
-        {
-            goto handle_test;
+            hasValue = true;
+            memcpy(storage, ptr, valueSize);
         }
     }
     else
     {
-    handle_test:
         const Il2CppType* type = Class::GetType(klass);
         PrimitiveValueType data;
         data.i8 = 0;
@@ -1797,7 +2006,7 @@ void SetLuaTableValueByUInt64(Il2CppObject* luaTable, struct pesapi_ffi* apis, u
     AutoValueScope ValueScope(apis, env);
     
     auto obj = apis->get_value_from_ref(env, objectInfo->ValueRef);
-    apis->set_property_uint64(env, obj, key, CSRefToLuaValue(apis, env, value->klass, value));
+    apis->set_property_uint64(env, obj, key, value ? CSRefToLuaValue(apis, env, value->klass, value) : 0);
 }
 
 uint32_t GetLuaTableLength(Il2CppObject* luaTable, struct pesapi_ffi* apis)
@@ -1943,6 +2152,7 @@ struct LuaEnvPrivate
     pesapi_env_ref envRef;
     std::mutex pendingKillRefsMutex;
     std::unordered_set<pesapi_value_ref> pendingKillRefs;
+    
     MethodInfoHelper<int32_t(Il2CppObject* obj)> objPoolAdd;
     MethodInfoHelper<Il2CppObject*(int32_t index)> objPoolRemove;
 
@@ -1956,12 +2166,11 @@ struct LuaEnvPrivate
     {
         std::lock_guard<std::mutex> guard(pendingKillRefsMutex);
         pendingKillRefs.insert(valueRef);
+        
     }
 
     void CleanupPendingKillScriptObjects()
     {
-        auto env = apis->get_env_from_ref(envRef);
-
         std::lock_guard<std::mutex> guard(pendingKillRefsMutex);
         auto size = pendingKillRefs.size();
         if (size == 0)
@@ -1977,10 +2186,7 @@ struct LuaEnvPrivate
                 int32_t handle = *store;
                 if (nullptr == il2cpp::gc::GCHandle::GetTarget(handle))
                 {
-                    AutoValueScope ValueScope(apis, env);
                     il2cpp::gc::GCHandle::Free(handle);
-                    int val = apis->get_value_from_ref(env, valueRef);
-                    apis->set_private(env, val, nullptr);
                 }
             }
             apis->release_value_ref(valueRef);
@@ -2076,7 +2282,9 @@ extern "C"
         InternalCalls::Add("XLuaIl2cpp.NativeAPI::GetFieldInfoPointer(System.Reflection.FieldInfo)",(Il2CppMethodPointer) xlua::GetFieldInfoPointer);
         InternalCalls::Add("XLuaIl2cpp.NativeAPI::SetGlobalType_LuaTable(System.Type)", (Il2CppMethodPointer) xlua::SetGlobalType_LuaTable);
         InternalCalls::Add("XLuaIl2cpp.NativeAPI::SetGlobalType_ArrayBuffer(System.Type)", (Il2CppMethodPointer)xlua::SetGlobalType_ArrayBuffer);
-        InternalCalls::Add("XLuaIl2cpp.NativeAPI::SetGlobalType_TypedValue(System.Type)", (Il2CppMethodPointer) xlua::SetGlobalType_TypedValue);
+        InternalCalls::Add("XLuaIl2cpp.NativeAPI::SetGlobalType_Array(System.Type)", (Il2CppMethodPointer) xlua::SetGlobalType_Array);
+        InternalCalls::Add("XLuaIl2cpp.NativeAPI::SetGlobalType_IList(System.Type)", (Il2CppMethodPointer)xlua::SetGlobalType_IList);
+        InternalCalls::Add("XLuaIl2cpp.NativeAPI::SetGlobalType_IDictionary(System.Type)", (Il2CppMethodPointer)xlua::SetGlobalType_IDictionary);
         InternalCalls::Add("XLuaIl2cpp.NativeAPI::DoString(System.IntPtr,System.IntPtr,System.Byte[],System.String,XLua.LuaTable,System.Type)", (Il2CppMethodPointer) xlua::DoString);
         InternalCalls::Add("XLuaIl2cpp.NativeAPI::LoadString(System.IntPtr,System.IntPtr,System.Byte[],System.String,XLua.LuaTable,System.Type)", (Il2CppMethodPointer) xlua::LoadString);
         InternalCalls::Add("XLuaIl2cpp.NativeAPI::SetObjectToGlobal(System.IntPtr,System.IntPtr,System.String,System.Object)",(Il2CppMethodPointer) xlua::SetObjectToGlobal);
@@ -2088,7 +2296,7 @@ extern "C"
         InternalCalls::Add("XLua.LuaTable::GetLuaTableValueByString(System.IntPtr,System.String,System.Type)", (Il2CppMethodPointer) xlua::GetLuaTableValueByString);
         InternalCalls::Add("XLua.LuaTable::SetLuaTableValueByUInt64(System.IntPtr,System.UInt64,System.Object)",(Il2CppMethodPointer) xlua::SetLuaTableValueByUInt64);
         InternalCalls::Add("XLua.LuaTable::SetLuaTableValueByString(System.IntPtr,System.String,System.Object)",(Il2CppMethodPointer) xlua::SetLuaTableValueByString);
-        InternalCalls::Add("XLua.LuaTable::GetLuaTableLength()", (Il2CppMethodPointer) xlua::GetLuaTableLength);
+        InternalCalls::Add("XLua.LuaTable::GetLuaTableLength(System.IntPtr)", (Il2CppMethodPointer) xlua::GetLuaTableLength);
         InternalCalls::Add("XLuaIl2cpp.NativeAPI::SetRegisterNoThrow(System.Reflection.MethodBase)",(Il2CppMethodPointer) xlua::SetRegisterNoThrow);
         InternalCalls::Add("XLuaIl2cpp.NativeAPI::CSRefToLuaValue(System.IntPtr,System.IntPtr,System.Type,System.Object)", (Il2CppMethodPointer)xlua::CSRefToLuaValue);
         InternalCalls::Add("XLuaIl2cpp.NativeAPI::NewTable(System.IntPtr,System.IntPtr)",(Il2CppMethodPointer)xlua::NewTable);

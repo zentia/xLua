@@ -1,15 +1,9 @@
-#if USE_UNI_LUA
-using LuaAPI = UniLua.Lua;
-using RealStatePtr = UniLua.ILuaState;
-using LuaCSFunction = UniLua.CSharpFunctionDelegate;
-#else
 using LuaAPI = XLua.LuaDLL.Lua;
 using RealStatePtr = System.IntPtr;
 using LuaCSFunction = XLua.LuaDLL.lua_CSFunction;
-#endif
-
 using XLua;
 using System.Collections.Generic;
+using Assets.Plugins.Perf;
 <%ForEachCsList(namespaces, function(namespace)%>using <%=namespace%>;<%end)%>
 <%
 require "TemplateCommon"
@@ -161,7 +155,6 @@ namespace XLua.CSObjectWrap
             <%end end)%>
 			Utils.EndClassRegister(type, L, translator);
         }
-        
         [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
         static int __CreateInstance(RealStatePtr L)
         {
@@ -169,7 +162,10 @@ namespace XLua.CSObjectWrap
             if constructors.Count == 0 and (not type.IsValueType)  then 
             %>return LuaAPI.luaL_error(L, "<%=CsFullTypeName(type)%> does not have a constructor!");<% 
             else %>
-			try {
+            int sampleIndex = -1;
+            StatsLite.BeginSample(StatsSampleId.Lua_New, ref sampleIndex);
+			try 
+			{
                 ObjectTranslatorWrap translator = ObjectTranslatorPool.Instance.Find(L) as ObjectTranslatorWrap;
 				<% 
 				local hasZeroParamsCtor = false
@@ -215,6 +211,7 @@ namespace XLua.CSObjectWrap
                         end
                     end)
                     %>
+                    StatsLite.EndSampleByIndex(ref sampleIndex);
 					return <%=out_num + 1%>;
 				}
 				<%end)
@@ -223,39 +220,46 @@ namespace XLua.CSObjectWrap
 				if (LuaAPI.lua_gettop(L) == 1)
 				{
 				    <%=GetPushStatement(type, "default(" .. CsFullTypeName(type).. ")")%>;
+				    StatsLite.EndSampleByIndex(ref sampleIndex);
 			        return 1;
-				}
-				<%end%>
+				}<%end%>
 			}
-			catch(System.Exception gen_e) {
+			catch(System.Exception gen_e) 
+			{
+			    StatsLite.EndSampleByIndex(ref sampleIndex);
 				return LuaAPI.luaL_error(L, "c# exception in __CreateInstance:" + gen_e);
 			}
-            return LuaAPI.luaL_error(L, "invalid arguments to <%=CsFullTypeName(type)%> constructor!");
-            <% end %>
+			StatsLite.EndSampleByIndex(ref sampleIndex);
+            return LuaAPI.luaL_error(L, "invalid arguments to <%=CsFullTypeName(type)%> constructor!");<% end %>
         }
-        
 		<% if type.IsArray or ((indexers.Count or 0) > 0) then %>
         [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
         public static int __CSIndexer(RealStatePtr L)
         {
+            int sampleIndex = -1;
+            StatsLite.BeginSample(StatsSampleId.Lua_Indexer, ref sampleIndex);
 			<%if type.IsArray then %>
-			try {
+			try 
+			{
 			    ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
-			
 				if (<%=GetCheckStatement(type, 1)%> && LuaAPI.lua_isnumber(L, 2))
 				{
 					int index = (int)LuaAPI.lua_tonumber(L, 2);
 					<%=GetSelfStatement(type)%>;
 					LuaAPI.lua_pushboolean(L, true);
 					<%=GetPushStatement(type:GetElementType(), "gen_to_be_invoked[index]")%>;
+					StatsLite.EndSampleByIndex(ref sampleIndex);
 					return 2;
 				}
 			}
-			catch(System.Exception gen_e) {
+			catch(System.Exception gen_e) 
+			{
+			    StatsLite.EndSampleByIndex(ref sampleIndex);
 				return LuaAPI.luaL_error(L, "c# exception in __CSIndexer 1:" + gen_e);
 			}
 			<%elseif indexers.Count > 0 then
-			%>try {
+			%>try 
+			{
 			    ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
 				<%
 					ForEachCsList(indexers, function(indexer)
@@ -263,118 +267,140 @@ namespace XLua.CSObjectWrap
 				%>
 				if (<%=GetCheckStatement(type, 1)%> && <%=GetCheckStatement(paramter.ParameterType, 2)%>)
 				{
-					
 					<%=GetSelfStatement(type)%>;
 					<%=GetCasterStatement(paramter.ParameterType, 2, "index", true)%>;
 					LuaAPI.lua_pushboolean(L, true);
 					<%=GetPushStatement(indexer.ReturnType, "gen_to_be_invoked[index]")%>;
+					StatsLite.EndSampleByIndex(ref sampleIndex);
 					return 2;
 				}
 				<%end)%>
 			}
-			catch(System.Exception gen_e) {
+			catch(System.Exception gen_e) 
+			{
+			    StatsLite.EndSampleByIndex(ref sampleIndex);
 				return LuaAPI.luaL_error(L, "c# exception in __CSIndexer 2:" + gen_e);
 			}
 			<%end%>
+			StatsLite.EndSampleByIndex(ref sampleIndex);
             LuaAPI.lua_pushboolean(L, false);
 			return 1;
         }
-		<% end %>
-        
+        <% end %>
 		<%if type.IsArray or ((newindexers.Count or 0) > 0) then%>
         [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
         public static int __NewIndexer(RealStatePtr L)
         {
+            int sampleIndex = -1;
+            StatsLite.BeginSample(StatsSampleId.Lua_NewIndexer, ref sampleIndex);
 			<%if type.IsArray or newindexers.Count > 0 then %>ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);<%end%>
 			<%if type.IsArray then 
 				local elementType = type:GetElementType()
 			%>
-			try {
+			try 
+			{
 				if (<%=GetCheckStatement(type, 1)%> && LuaAPI.lua_isnumber(L, 2) && <%=GetCheckStatement(elementType, 3)%>)
 				{
 					int index = (int)LuaAPI.lua_tonumber(L, 2);
 					<%=GetSelfStatement(type)%>;
 					<%=GetCasterStatement(elementType, 3, "gen_to_be_invoked[index]")%>;
 					LuaAPI.lua_pushboolean(L, true);
+					StatsLite.EndSampleByIndex(ref sampleIndex);
 					return 1;
 				}
 			}
-			catch(System.Exception gen_e) {
+			catch(System.Exception gen_e) 
+			{
+			    StatsLite.EndSampleByIndex(ref sampleIndex);
 				return LuaAPI.luaL_error(L, "c# exception in __NewIndexer 1:" + gen_e);
 			}
 			<%elseif newindexers.Count > 0 then%>
-			try {
+			try 
+			{
 				<%ForEachCsList(newindexers, function(newindexer)
 						local keyType = newindexer:GetParameters()[0].ParameterType
 						local valueType = newindexer:GetParameters()[1].ParameterType
 				%>
 				if (<%=GetCheckStatement(type, 1)%> && <%=GetCheckStatement(keyType, 2)%> && <%=GetCheckStatement(valueType, 3)%>)
 				{
-					
 					<%=GetSelfStatement(type)%>;
 					<%=GetCasterStatement(keyType, 2, "key", true)%>;
 					<%if IsStruct(valueType) then%><%=GetCasterStatement(valueType, 3, "gen_value", true)%>;
 					gen_to_be_invoked[key] = gen_value;<%else
                   %><%=GetCasterStatement(valueType, 3, "gen_to_be_invoked[key]")%>;<%end%>
 					LuaAPI.lua_pushboolean(L, true);
+					StatsLite.EndSampleByIndex(ref sampleIndex);
 					return 1;
 				}
 				<%end)%>
 			}
-			catch(System.Exception gen_e) {
+			catch(System.Exception gen_e) 
+			{
+			    StatsLite.EndSampleByIndex(ref sampleIndex);
 				return LuaAPI.luaL_error(L, "c# exception in __NewIndexer 2:" + gen_e);
 			}
 			<%end%>
 			LuaAPI.lua_pushboolean(L, false);
+			StatsLite.EndSampleByIndex(ref sampleIndex);
             return 1;
         }
 		<% end %>
-        
         <%ForEachCsList(operators, function(operator) %>
         [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
         static int <%=OpNameMap[operator.Name]%>(RealStatePtr L)
         {
+            int sampleIndex = -1;
+            StatsLite.BeginSample(StatsSampleId.Lua_Operator, ref sampleIndex);
             <% if operator.Name ~= "op_UnaryNegation" and operator.Name ~= "op_OnesComplement"  then %>
-			try {
+			try 
+			{
                 ObjectTranslatorWrap translator = ObjectTranslatorPool.Instance.Find(L) as ObjectTranslatorWrap;
             <%ForEachCsList(operator.Overloads, function(overload)
                 local left_param = overload:GetParameters()[0]
                 local right_param = overload:GetParameters()[1]
             %>
-			
 				if (<%=GetCheckStatement(left_param.ParameterType, 1)%> && <%=GetCheckStatement(right_param.ParameterType, 2)%>)
 				{
 					<%=GetCasterStatement(left_param.ParameterType, 1, "leftside", true)%>;
 					<%=GetCasterStatement(right_param.ParameterType, 2, "rightside", true)%>;
-					
 					<%=GetPushStatement(overload.ReturnType, "leftside " .. OpCallNameMap[operator.Name] .. " rightside")%>;
-					
+					StatsLite.EndSampleByIndex(ref sampleIndex);
 					return 1;
 				}
             <%end)%>
 			}
-			catch(System.Exception gen_e) {
+			catch(System.Exception gen_e) 
+			{
+			    StatsLite.EndSampleByIndex(ref sampleIndex);
 				return LuaAPI.luaL_error(L, "c# exception in <%=OpNameMap[operator.Name]%> 1:" + gen_e);
 			}
+			StatsLite.EndSampleByIndex(ref sampleIndex);
             return LuaAPI.luaL_error(L, "invalid arguments to right hand of <%=OpCallNameMap[operator.Name]%> operator, need <%=CsFullTypeName(type)%>!");
             <%else%>
 			ObjectTranslatorWrap translator = ObjectTranslatorPool.Instance.Find(L) as ObjectTranslatorWrap;
-            try {
+            try 
+            {
                 <%=GetCasterStatement(type, 1, "rightside", true)%>;
                 <%=GetPushStatement(operator.Overloads[0].ReturnType, OpCallNameMap[operator.Name] .. " rightside")%>;
-            } catch(System.Exception gen_e) {
+            } 
+            catch(System.Exception gen_e) 
+            {
+                StatsLite.EndSampleByIndex(ref sampleIndex);
                 return LuaAPI.luaL_error(L, "c# exception in <%=OpNameMap[operator.Name]%> 2:" + gen_e);
             }
+            StatsLite.EndSampleByIndex(ref sampleIndex);
             return 1;
             <%end%>
         }
         <%end)%>
-        
         <%ForEachCsList(methods, function(method)%>
         [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
         static int _m_<%=method.Name%>(RealStatePtr L)
         {
-		    try {
+            int sampleIndex = -1;
+            StatsLite.BeginSample(StatsSampleId.Lua_Method, ref sampleIndex);
+		    try 
+		    {
             <%
             local need_obj = not method.IsStatic
             if MethodCallNeedTranslator(method) then
@@ -463,45 +489,56 @@ namespace XLua.CSObjectWrap
                     <%if NeedUpdate(type) and not method.IsStatic then%>
                         <%=GetUpdateStatement(type, 1, "gen_to_be_invoked")%>;
                     <%end%>
-                    
+                    StatsLite.EndSampleByIndex(ref sampleIndex);        
                     return <%=out_num+(has_return and 1 or 0)%>;
                 }
                 <% end)%>
-            } catch(System.Exception gen_e) {
+            } 
+            catch(System.Exception gen_e) 
+            {
+                StatsLite.EndSampleByIndex(ref sampleIndex);
                 return LuaAPI.luaL_error(L, "c# exception in _m_<%=method.Name%>:" + gen_e);
             }
             <%if method.Overloads.Count > 1 then%>
+            StatsLite.EndSampleByIndex(ref sampleIndex);
             return LuaAPI.luaL_error(L, "invalid arguments to <%=CsFullTypeName(type)%>.<%=method.Overloads[0].Name%>!");
             <%end%>
         }
         <% end)%>
-        
-        
         <%ForEachCsList(getters, function(getter) 
         if getter.IsStatic and getter.ReadOnly then return end --readonly static
         %>
         [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
         static int _g_get_<%=getter.Name%>(RealStatePtr L)
         {
-		    try {
+            int sampleIndex = -1;
+            StatsLite.BeginSample(StatsSampleId.Lua_PropertyGetter, ref sampleIndex);
+		    try 
+		    {
             <%if AccessorNeedTranslator(getter) then %>    ObjectTranslatorWrap translator = ObjectTranslatorPool.Instance.Find(L) as ObjectTranslatorWrap;<%end%>
 			<%if not getter.IsStatic then%>
                 <%=GetSelfStatement(type)%>;
                 <%=GetPushStatement(getter.Type, "gen_to_be_invoked."..UnK(getter.Name))%>;<% else %>    <%=GetPushStatement(getter.Type, CsFullTypeName(type).."."..UnK(getter.Name))%>;<% end%>
-            } catch(System.Exception gen_e) {
+            } 
+            catch(System.Exception gen_e) 
+            {
+                StatsLite.EndSampleByIndex(ref sampleIndex);
                 return LuaAPI.luaL_error(L, "c# exception in _g_get_<%=getter.Name%>:" + gen_e);
             }
+            StatsLite.EndSampleByIndex(ref sampleIndex);
             return 1;
         }
         <%end)%>
-        
         <%ForEachCsList(setters, function(setter)
         local is_struct = IsStruct(setter.Type)
         %>
         [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
         static int _s_set_<%=setter.Name%>(RealStatePtr L)
         {
-		    try {
+            int sampleIndex = -1;
+            StatsLite.BeginSample(StatsSampleId.Lua_PropertySetter, ref sampleIndex);
+		    try 
+		    {
                 <%if AccessorNeedTranslator(setter) then %>ObjectTranslatorWrap translator = ObjectTranslatorPool.Instance.Find(L) as ObjectTranslatorWrap;<%end%>
 			<%if not setter.IsStatic then %>
                 <%=GetSelfStatement(type)%>;
@@ -516,101 +553,137 @@ namespace XLua.CSObjectWrap
             <%if NeedUpdate(type) and not setter.IsStatic then%>
                 <%=GetUpdateStatement(type, 1, "gen_to_be_invoked")%>;
             <%end%>
-            } catch(System.Exception gen_e) {
+            } 
+            catch(System.Exception gen_e) 
+            {
+                StatsLite.EndSampleByIndex(ref sampleIndex);
                 return LuaAPI.luaL_error(L, "c# exception in _s_set_<%=setter.Name%>:" + gen_e);
             }
+            StatsLite.EndSampleByIndex(ref sampleIndex);
             return 0;
         }
         <%end)%>
-		
 		<%ForEachCsList(events, function(event) if not event.IsStatic then %>
         [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
         static int _e_add_<%=event.Name%>(RealStatePtr L)
         {
+            int sampleIndex = -1;
+            StatsLite.BeginSample(StatsSampleId.Lua_AddEvent, ref sampleIndex);
 		    try {
                 ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
 			    int gen_param_count = LuaAPI.lua_gettop(L);
 			<%=GetSelfStatement(type)%>;
                 <%=GetCasterStatement(event.Type, 2, "gen_delegate", true)%>;
-                if (gen_delegate == null) {
+                if (gen_delegate == null) 
+                {
+                    StatsLite.EndSampleByIndex(ref sampleIndex);
                     return LuaAPI.luaL_error(L, "#3 need <%=CsFullTypeName(event.Type)%>!");
                 }
-				
 				if (gen_param_count == 2)
 				{
 					<%if event.CanAdd then%>
 					gen_to_be_invoked.<%=UnK(event.Name)%> += gen_delegate;
+					StatsLite.EndSampleByIndex(ref sampleIndex);
 					return 0;
 					<%end%>
 				}
-			} catch(System.Exception gen_e) {
+			} 
+			catch(System.Exception gen_e) 
+			{
+			    StatsLite.EndSampleByIndex(ref sampleIndex);
                 return LuaAPI.luaL_error(L, "c# exception in _e_<%=event.Name%>:" + gen_e);
             }
+            StatsLite.EndSampleByIndex(ref sampleIndex);
 			LuaAPI.luaL_error(L, "invalid arguments to <%=CsFullTypeName(type)%>.<%=event.Name%>!");
             return 0;
         }
         [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
         static int _e_remove_<%=event.Name%>(RealStatePtr L)
-        {
-		    try {
+        {  
+            int sampleIndex = -1;
+            StatsLite.BeginSample(StatsSampleId.Lua_RemoveEvent, ref sampleIndex);
+		    try 
+		    {
                 ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
 			    int gen_param_count = LuaAPI.lua_gettop(L);
 			<%=GetSelfStatement(type)%>;
                 <%=GetCasterStatement(event.Type, 2, "gen_delegate", true)%>;
-                if (gen_delegate == null) {
+                if (gen_delegate == null) 
+                {
+                    StatsLite.EndSampleByIndex(ref sampleIndex);
                     return LuaAPI.luaL_error(L, "#3 need <%=CsFullTypeName(event.Type)%>!");
                 }
-				
 				if (gen_param_count == 2)
 				{
 					<%if event.CanRemove then%>
 					gen_to_be_invoked.<%=UnK(event.Name)%> -= gen_delegate;
+					StatsLite.EndSampleByIndex(ref sampleIndex);
 					return 0;
 					<%end%>
 				}
-			} catch(System.Exception gen_e) {
+			} 
+			catch(System.Exception gen_e) 
+			{
+			    StatsLite.EndSampleByIndex(ref sampleIndex);
                 return LuaAPI.luaL_error(L, "c# exception in _e_<%=event.Name%>:" + gen_e);
             }
+            StatsLite.EndSampleByIndex(ref sampleIndex);
 			LuaAPI.luaL_error(L, "invalid arguments to <%=CsFullTypeName(type)%>.<%=event.Name%>!");
             return 0;
         }
         <%end end)%>
-		
 		<%ForEachCsList(events, function(event) if event.IsStatic then %>
         [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
         static int _e_add_<%=event.Name%>(RealStatePtr L)
         {
-		    try {
+            int sampleIndex = -1;
+            StatsLite.BeginSample(StatsSampleId.Lua_StaticAddEvent, ref sampleIndex);
+		    try 
+		    {
                 ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
 			    int gen_param_count = LuaAPI.lua_gettop(L);
                 <%=GetCasterStatement(event.Type, 1, "gen_delegate", true)%>;
-                if (gen_delegate == null) {
+                if (gen_delegate == null) 
+                {
                     return LuaAPI.luaL_error(L, "#2 need <%=CsFullTypeName(event.Type)%>!");
                 }
-                
 				<%=CsFullTypeName(type)%>.<%=UnK(event.Name)%> += gen_delegate;
+				StatsLite.EndSampleByIndex(ref sampleIndex);
 				return 0;
-			} catch(System.Exception gen_e) {
+			} 
+			catch(System.Exception gen_e) 
+			{
+			    StatsLite.EndSampleByIndex(ref sampleIndex);
                 return LuaAPI.luaL_error(L, "c# exception in _e_<%=event.Name%>:" + gen_e);
             }
+            StatsLite.EndSampleByIndex(ref sampleIndex);
 			return LuaAPI.luaL_error(L, "invalid arguments to <%=CsFullTypeName(type)%>.<%=event.Name%>!");
         }
         [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
         static int _e_remove_<%=event.Name%>(RealStatePtr L)
         {
-		    try {
+            int sampleIndex = -1;
+            StatsLite.BeginSample(StatsSampleId.Lua_StaticRemoveEvent, ref sampleIndex);
+		    try 
+		    {
                 ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
 			    int gen_param_count = LuaAPI.lua_gettop(L);
                 <%=GetCasterStatement(event.Type, 1, "gen_delegate", true)%>;
-                if (gen_delegate == null) {
+                if (gen_delegate == null) 
+                {
+                    StatsLite.EndSampleByIndex(ref sampleIndex);
                     return LuaAPI.luaL_error(L, "#1 need <%=CsFullTypeName(event.Type)%>!");
                 }
-                
 				<%=CsFullTypeName(type)%>.<%=UnK(event.Name)%> -= gen_delegate;
+				StatsLite.EndSampleByIndex(ref sampleIndex);
 				return 0;
-			} catch(System.Exception gen_e) {
+			} 
+			catch(System.Exception gen_e) 
+			{
+			    StatsLite.EndSampleByIndex(ref sampleIndex);
                 return LuaAPI.luaL_error(L, "c# exception in _e_<%=event.Name%>:" + gen_e);
             }
+            StatsLite.EndSampleByIndex(ref sampleIndex);
 			return LuaAPI.luaL_error(L, "invalid arguments to <%=CsFullTypeName(type)%>.<%=event.Name%>!");
         }
         <%end end)%>

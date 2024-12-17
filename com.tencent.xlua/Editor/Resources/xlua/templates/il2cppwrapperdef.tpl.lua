@@ -13,6 +13,7 @@ function genFuncWrapper(wrapperInfo)
 
 bool w_]], wrapperInfo.Signature, [[(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
     // PLog("Running w_]], wrapperInfo.Signature, [[");
+    AutoValueScope value_scope(apis, env);
     ]], declareTypeInfo(wrapperInfo), [[
 
     int lua_args_len = apis->get_args_len(info);
@@ -24,12 +25,12 @@ bool w_]], wrapperInfo.Signature, [[(struct pesapi_ffi* apis, MethodInfo* method
         if (]], genArgsLenCheck(parameterSignatures), [[) 
             return false;
 ]], FOR(parameterSignatures, function(x, i)
-            return checkLuaArg(x, i-1)
+            return checkLuaArg(x, i - 1)
         end), [[
         
     }
 ]],
-        table.join(table.map(parameterSignatures, function(x, i) return LuaValToCSVal(x, string.format('_sv%d', i-1), string.format('p%d', i-1)) end), '\n'),
+        table.join(table.map(parameterSignatures, function(x, i) return LuaValToCSVal(x, string.format('_sv%d', i-1), string.format('p%d', i-1), i - 1) end), ''),
         [[
 
     typedef ]], SToCPPType(wrapperInfo.ReturnSignature), ' (*FuncToCall)(', needThis(wrapperInfo) and 'void*,' or '', '',
@@ -55,7 +56,11 @@ bool w_]], wrapperInfo.Signature, [[(struct pesapi_ffi* apis, MethodInfo* method
             FOR(parameterSignatures, function(x, i)
                 return refSetReturn(x, i - 1, wrapperInfo)
             end),
-             '\n\treturn true;\n}')
+             [[
+
+    value_scope.reserve = apis->get_return_num(info);
+    return true;
+}]])
 end
 
 function Gen(genInfos)
