@@ -130,14 +130,24 @@ namespace XLua.LuaDLL
 
 		[DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
 		public static extern void lua_createtable(IntPtr L, int narr, int nrec);//[-0, +0, m]
+
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        public delegate Int32 PFRegistCustomName(string name);
+
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        public delegate Int32 PFStatsBeginSample(Int16 sampleId, Int32 customNameId);
+
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        public delegate void PFStatsEndSampleByIndex(Int32 sampleIndex);
         [DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
-        public static extern int luaregist_stats_custom_name(IntPtr L, Assets.Plugins.Perf.StatsLite.PFRegistCustomName pf);
+        public static extern int luaregist_stats_custom_name(IntPtr L, PFRegistCustomName pf);
 
         [DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
-        public static extern int luastats_begin_sample(IntPtr L, Assets.Plugins.Perf.StatsLite.PFStatsBeginSample pf);
+        public static extern int luastats_begin_sample(IntPtr L, PFStatsBeginSample pf);
 
         [DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
-        public static extern int luastats_end_sample_by_index(IntPtr L, Assets.Plugins.Perf.StatsLite.PFStatsEndSampleByIndex pf);
+        public static extern int luastats_end_sample_by_index(IntPtr L, PFStatsEndSampleByIndex pf);
+
         public static void lua_newtable(IntPtr L)//[-0, +0, m]
         {
 			lua_createtable(L, 0, 0);

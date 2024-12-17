@@ -125,7 +125,8 @@ namespace XLua
         public bool TryDelayWrapLoader(RealStatePtr L, Type type)
         {
             LuaAPI.lua_checkstack(L, 1);
-            if (loaded_types.ContainsKey(type)) return true;
+            if (loaded_types.ContainsKey(type)) 
+                return true;
             loaded_types.Add(type, true);
 
             LuaAPI.luaL_newmetatable(L, type.FullName); //先建一个metatable，因为加载过程可能会需要用到
@@ -608,14 +609,13 @@ namespace XLua
             return creator(LuaAPI.luaL_ref(L), luaEnv);
         }
 
-        int common_array_meta = -1;
+        public int common_array_meta = -1;
         public void CreateArrayMetatable(RealStatePtr L)
         {
             Utils.BeginObjectRegister(null, L, this, 0, 0, 1, 0, common_array_meta);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "Length", StaticLuaCallbacks.ArrayLength);
             Utils.RegisterRefFunc(L, Utils.OBJ_META_IDX, "__pairs", enumerable_pairs_func);
-            Utils.EndObjectRegister(null, L, this, null, null,
-                 typeof(System.Array), StaticLuaCallbacks.ArrayIndexer, StaticLuaCallbacks.ArrayNewIndexer);
+            Utils.EndObjectRegister(null, L, this, null, null, typeof(Array), StaticLuaCallbacks.ArrayIndexer, StaticLuaCallbacks.ArrayNewIndexer);
         }
 
         int common_delegate_meta = -1;
@@ -1008,6 +1008,7 @@ namespace XLua
                 if (type.IsArray)
                 {
                     if (common_array_meta == -1) throw new Exception("Fatal Exception! Array Metatable not inited!");
+                    TryDelayWrapLoader(L, type);
                     return common_array_meta;
                 }
                 if (typeof(MulticastDelegate).IsAssignableFrom(type))

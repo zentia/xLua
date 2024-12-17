@@ -312,12 +312,8 @@ namespace XLua
             return ok;
         }
 
-#if GEN_CODE_MINIMIZE
-        public static int ArrayIndexer(RealStatePtr L, int top)
-#else
         [MonoPInvokeCallback(typeof(LuaCSFunction))]
         public static int ArrayIndexer(RealStatePtr L)
-#endif
         {
             try
             {
@@ -453,7 +449,7 @@ namespace XLua
             try
             {
                 ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
-                System.Array array = (System.Array)translator.FastGetCSObj(L, 1);
+                Array array = (System.Array)translator.FastGetCSObj(L, 1);
 
                 if (array == null)
                 {
@@ -488,7 +484,7 @@ namespace XLua
                     }
                 }
 
-                object val = translator.GetObject(L, 3, type.GetElementType());
+                var val = translator.GetObject(L, 3, type.GetElementType());
                 array.SetValue(val, i);
 
                 return 0;

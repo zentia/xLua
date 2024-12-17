@@ -276,10 +276,10 @@ public class LuaCallCs : MonoBehaviour
             --cast
             local calc = testobj:GetCalc()
             print('assess instance of InnerCalc via reflection', calc:add(1, 2))
-            assert(calc.id == 100)
+            assert(calc.i4 == 100)
             cast(calc, typeof(CS.Tutorial.ICalc))
             print('cast to interface ICalc', calc:add(1, 2))
-            assert(calc.id == nil)
+            assert(calc.i4 == nil)
        end
 
        demo()

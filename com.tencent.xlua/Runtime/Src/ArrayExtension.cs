@@ -1,4 +1,4 @@
-#if XLUA_IL2CPP
+using System;
 using XLua;
 
 namespace XLuaIl2cpp
@@ -32,16 +32,70 @@ namespace XLuaIl2cpp
         [UnityEngine.Scripting.Preserve] public static void set_Item(this short[] arr, int idx, short val) { arr[idx] = val; }
         [UnityEngine.Scripting.Preserve] public static void set_Item(this char[] arr, int idx, char val) { arr[idx] = val; }
         [UnityEngine.Scripting.Preserve] public static void set_Item(this uint[] arr, int idx, uint val) { arr[idx] = val; }
-        [UnityEngine.Scripting.Preserve] public static void set_Item(this string[] arr, int idx, string val) { arr[idx] = val; }
-        [UnityEngine.Scripting.Preserve] public static void set_Item(this System.Array arr, int idx, object val) { arr.SetValue(val, idx); }
-    }
-}
-#else 
 
-namespace XLuaIl2cpp
-{
-    public static class ArrayExtension
-    {
+        [UnityEngine.Scripting.Preserve]
+        public static void set_Item(this string[] arr, int idx, string val)
+        {
+            arr[idx] = val;
+        }
+
+        [UnityEngine.Scripting.Preserve]
+        public static void set_Item(this System.Array arr, int idx, object val)
+        {
+#if UNITY_EDITOR || !XLUA_IL2CPP
+            var t = arr.GetType();
+            if (t == typeof(int[]))
+            {
+                ((int[])arr)[idx] = Convert.ToInt32(val);
+            }
+            else if (t == typeof(float[]))
+            {
+                ((float[])arr)[idx] = Convert.ToSingle(val);
+            }
+            else if (t == typeof(double[]))
+            {
+                ((double[])arr)[idx] = Convert.ToDouble(val);
+            }
+            else if (t == typeof(bool[]))
+            {
+                ((bool[])arr)[idx] = Convert.ToBoolean(val);
+            }
+            else if (t == typeof(long[]))
+            {
+                ((long[])arr)[idx] = Convert.ToInt64(val);
+            }
+            else if (t == typeof(ulong[]))
+            {
+                ((ulong[])arr)[idx] = Convert.ToUInt64(val);
+            }
+            else if (t == typeof(bool[]))
+            {
+                ((bool[])arr)[idx] = Convert.ToBoolean(val);
+            }
+            else if (t == typeof(sbyte[]))
+            {
+                ((sbyte[])arr)[idx] = Convert.ToSByte(val);
+            }
+            else if (t == typeof(byte[]))
+            {
+                ((byte[])arr)[idx] = Convert.ToByte(val);
+            }
+            else if (t == typeof(ushort[]))
+            {
+                ((ushort[])arr)[idx] = Convert.ToUInt16(val);
+            }
+            else if (t == typeof(char[]))
+            {
+                ((char[])arr)[idx] = Convert.ToChar(val);
+            }
+            else if (t == typeof(uint[]))
+            {
+                ((uint[])arr)[idx] = Convert.ToUInt32(val);
+            }
+            else
+#endif
+
+            arr.SetValue(val, idx);
+        }
     }
 }
-#endif

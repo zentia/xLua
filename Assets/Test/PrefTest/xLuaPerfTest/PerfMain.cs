@@ -70,16 +70,17 @@ public class PerfMain : MonoBehaviour
 
     string resultPath = "";
 
-    LuaEnv luaenv;
+    public static LuaEnv luaenv;
 
     StreamWriter sw;
 
     System.Diagnostics.Stopwatch stopWatch = new System.Diagnostics.Stopwatch();
+    [LuaEval("StartTest")]
+    private Action StartTest;
 
     // Use this for initialization
     void Start()
     {
-        //UnityEngine.Debug.SetParseFromLocal(true);
 #if UNITY_ANDROID || UNITY_IOS
 #if XLUA_IL2CPP
         resultPath = Application.persistentDataPath + "/il2cpp";
@@ -93,7 +94,6 @@ public class PerfMain : MonoBehaviour
         resultPath = Application.dataPath + "/../../../../noil2cpp";
 #endif
 #endif
-
         var start = Time.realtimeSinceStartup;
         var startMem = System.GC.GetTotalMemory(true);
 #if UNITY_EDITOR || XLUA_IL2CPP
@@ -106,16 +106,16 @@ public class PerfMain : MonoBehaviour
         var endMem = System.GC.GetTotalMemory(true);
         Debug.Log("startMem: " + startMem + ", endMem: " + endMem + ", " + "cost mem: " + (endMem - startMem));
         luaenv.DoString("require 'luaTest'");
+        LuaEvalAttribute.Bind(this, luaenv);
     }
 
     private void OnGUI()
     {
         const float height = 100;
         const float width = 400;
-        if (GUI.Button(new Rect(0, 0, width, height), "GC"))
+        if (GUI.Button(new Rect(0, 0, width, height), "StartTest"))
         {
-            luaenv.FullGc();
-            luaenv.GC();
+            StartTest();
         }
 
         var loopTimes = 1000000;
@@ -536,6 +536,11 @@ public delegate void NullEventHandler();
 [LuaCallCSharp]
 public class ParaClass
 {
+    public virtual int FuncA()
+    {
+        UnityEngine.Debug.Log("Base FunA");
+        return 0;
+    }
     ~ParaClass()
     {
         Debug.Log("~ParaClass()");
@@ -555,9 +560,11 @@ public interface ITableAccess
 }
 
 [LuaCallCSharp]
-public class ClassLuaCallCS
+public class ClassLuaCallCS : ParaClass
 {
-    public int[] array = new int[5];
+    public int[] array;
+    public List<string> list;
+    public Dictionary<string, int> dictionary;
 
     [LuaCallCSharp]
     public enum LuaEnum
@@ -578,13 +585,84 @@ public class ClassLuaCallCS
     public event Vec3ParamEventHandler Vec3ParaEvent;
     public event NullEventHandler NullEvent;
 
-    public int id;
+    public char u1;
+    public ushort u2;
+    public uint u4;
+    public ulong u8;
+
+    public sbyte i1;
+    public short i2;
+    public int i4;
+    public long i8;
+
+    public string s;
+
+    public float f;
+    public double d;
+
+    public static char su1;
+    public static ushort su2;
+    public static uint su4;
+    public static ulong su8;
+
+    public static sbyte si1;
+    public static short si2;
+    public static int si4;
+    public static long si8;
+
+    public static string ss;
+
+    public static float sf;
+    public static double sd;
+
+    public char pu1
+    {
+        get;
+        set;
+    }
+
+    public ushort pu2
+    {
+        get;
+        set;
+    }
+
+    public static char spu1
+    {
+        get;
+        set;
+    }
+
+    public static ushort spu2
+    {
+        get;
+        set;
+    }
+
     public ParaClass paraClass = new ParaClass();
     public ParaStruct paraStruct = new ParaStruct();
     public Vector3 vec3Member;
 
-    public void funcBaseParam(int x)
-    { }
+    public override int FuncA()
+    {
+        UnityEngine.Debug.Log("Driver FuncA");
+        return 1;
+    }
+
+    public int funcBaseParam(int x)
+    {
+        return x;
+    }
+
+    public int funcBaseParam(int x, int y)
+    {
+        return x + y;
+    }
+
+    public int funcBaseParam(int x, int y, int z = 9)
+    {
+        return x + y + z;
+    }
 
     public void funcClassParam(LuaEnum e, ParaClass x)
     { }
@@ -596,7 +674,9 @@ public class ClassLuaCallCS
     { }
 
     public void funcInParam(ref int x)
-    { }
+    {
+        x = 9527;
+    }
 
     public void funcOutParam(out int x)
     {
@@ -605,11 +685,22 @@ public class ClassLuaCallCS
 
     public void funcInOutParam(ref int x, out int y)
     {
-        y = 0;
+        y = 9528;
     }
 
     public void funcTwoParam(int x, int y)
     {
+    }
+
+    public LuaTable GetTable(int[] a)
+    {
+        var env = PerfMain.luaenv;
+        var table = env.NewTable();
+        foreach (var i in a)
+        {
+            table.Set(i, i);
+        }
+        return table;
     }
 
     public static int sId;
@@ -617,8 +708,10 @@ public class ClassLuaCallCS
     public static ParaStruct sParamStruct = new ParaStruct();
     public static Vector3 sParamVec3;
 
-    public static void sFuncBaseParam(int x)
-    { }
+    public static float sFuncBaseParam(float x)
+    {
+        return x;
+    }
 
     public static void sFuncClassParam(ParaClass x)
     { }
@@ -649,10 +742,7 @@ public class ClassLuaCallCS
 
     public void InvokeBaseParaCB()
     {
-        for (int i = 0; i < 1000000; i++)
-        {
-            BaseParaEvent(0);
-        }
+        BaseParaEvent(0);
     }
 
     public void InvokeClassParaCB()

@@ -1,1 +1,54 @@
-{}
+{
+    "ClassLuaCallCS, Assembly-CSharp":{},
+    "UnityEngine.Vector3, UnityEngine.CoreModule": {
+    "Fields": [
+      "one",
+      "zero",
+      "x",
+      "y",
+      "z",
+      "up",
+      "magnitude",
+      "normalized"
+    ],
+    "Methods": {
+      "Distance": {
+        "ReturnType": "System.Single, mscorlib",
+        "ParameterType": [
+          "UnityEngine.Vector3, UnityEngine.CoreModule"
+        ]
+      },
+      "Cross": {
+        "ReturnType": "UnityEngine.Vector3, UnityEngine.CoreModule",
+        "ParameterType": [
+          "UnityEngine.Vector3, UnityEngine.CoreModule"
+        ]
+      },
+      "Normalize": {
+        "ReturnType": "UnityEngine.Vector3, UnityEngine.CoreModule",
+        "ParameterType": [
+          "UnityEngine.Vector3, UnityEngine.CoreModule"
+        ]
+      },
+      "Angle": {
+        "ReturnType": "System.Single, mscorlib",
+        "ParameterType": [
+          "UnityEngine.Vector3, UnityEngine.CoreModule"
+        ]
+      },
+      "Dot": {
+        "ReturnType": "System.Single, mscorlib",
+        "ParameterType": [
+          "UnityEngine.Vector3, UnityEngine.CoreModule"
+        ]
+      },
+      "Lerp": {
+        "ReturnType": "UnityEngine.Vector3, UnityEngine.CoreModule",
+        "ParameterType": [
+          "UnityEngine.Vector3, UnityEngine.CoreModule",
+          "System.Single, mscorlib"
+        ]
+      }
+    }
+  }
+}

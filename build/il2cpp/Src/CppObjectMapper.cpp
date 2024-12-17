@@ -5,7 +5,9 @@
 #include "XLua.h"
 
 #include <chrono>
+#if OSG_PROFILE
 #include <common/cmbase.h>
+#endif
 using namespace std::chrono;
 
 EXTERN_C_START

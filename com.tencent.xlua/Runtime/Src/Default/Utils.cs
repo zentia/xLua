@@ -772,15 +772,17 @@ namespace XLua
 					LuaAPI.xlua_pushasciistring(L, prop_name);
 					translator.PushFixCSFunction(L, translator.methodWrapsCache._GenMethodWrap(method.DeclaringType, prop_name, new MethodBase[] { method }).Call);
 					LuaAPI.lua_rawset(L, method.IsStatic ? cls_getter : obj_getter);
+                    continue;
 				}
-				else if (method_name.StartsWith("set_") && method.IsSpecialName && method.GetParameters().Length != 2) // setter of property
+				if (method_name.StartsWith("set_") && method.IsSpecialName && method.GetParameters().Length != 2) // setter of property
 				{
 					string prop_name = method.Name.Substring(4);
 					LuaAPI.xlua_pushasciistring(L, prop_name);
 					translator.PushFixCSFunction(L, translator.methodWrapsCache._GenMethodWrap(method.DeclaringType, prop_name, new MethodBase[] { method }).Call);
 					LuaAPI.lua_rawset(L, method.IsStatic ? cls_setter : obj_setter);
+                    continue;
 				}
-				else if (method_name == ".ctor" && method.IsConstructor)
+				if (method_name == ".ctor" && method.IsConstructor)
 				{
 					continue;
 				}
@@ -903,7 +905,15 @@ namespace XLua
 			LuaAPI.lua_pushvalue(L, obj_field);
 			LuaAPI.lua_pushvalue(L, obj_getter);
 			translator.PushFixCSFunction(L, item_getter);
-			translator.PushAny(L, type.BaseType());
+            if (type.BaseType() == typeof(Array))
+            {
+                LuaAPI.xlua_rawgeti(L, LuaIndexes.LUA_REGISTRYINDEX, translator.common_array_meta);
+            }
+            else
+            {
+                translator.PushAny(L, type.BaseType());
+            }
+			
 			LuaAPI.xlua_pushasciistring(L, LuaIndexsFieldName);
 			LuaAPI.lua_rawget(L, LuaIndexes.LUA_REGISTRYINDEX);
 			LuaAPI.lua_pushnil(L);
@@ -920,7 +930,15 @@ namespace XLua
 			LuaAPI.xlua_pushasciistring(L, "__newindex");
 			LuaAPI.lua_pushvalue(L, obj_setter);
 			translator.PushFixCSFunction(L, item_setter);
-			translator.Push(L, type.BaseType());
+            if (type.BaseType() == typeof(Array))
+            {
+                LuaAPI.xlua_rawgeti(L, LuaIndexes.LUA_REGISTRYINDEX, translator.common_array_meta);
+            }
+            else
+            {
+                translator.Push(L, type.BaseType());
+            }
+			
 			LuaAPI.xlua_pushasciistring(L, LuaNewIndexsFieldName);
 			LuaAPI.lua_rawget(L, LuaIndexes.LUA_REGISTRYINDEX);
 			LuaAPI.lua_pushnil(L);

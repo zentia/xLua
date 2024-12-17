@@ -21,7 +21,6 @@ using System.Collections.Generic;
 using System;
 using System.IO;
 using System.Reflection;
-using Assets.Plugins.Perf;
 
 namespace XLua
 {
@@ -297,7 +296,8 @@ namespace XLua
         {
             try
             {
-                if (overloads.Count == 1 && !overloads[0].HasDefalutValue && !forceCheck) return overloads[0].Call(L);
+                if (overloads.Count == 1 && !overloads[0].HasDefalutValue && !forceCheck) 
+                    return overloads[0].Call(L);
 
                 for (int i = 0; i < overloads.Count; ++i)
                 {
@@ -309,7 +309,7 @@ namespace XLua
                 }
                 return LuaAPI.luaL_error(L, "invalid arguments to " + methodName);
             }
-            catch (System.Reflection.TargetInvocationException e)
+            catch (TargetInvocationException e)
             {
                 return LuaAPI.luaL_error(L, "c# exception:" + e.InnerException.Message + ",stack:" + e.InnerException.StackTrace);
             }

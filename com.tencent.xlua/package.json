@@ -14,7 +14,6 @@
   "category": "Libraries",
   "unity": "2022.3",
   "dependencies": {
-    "com.unity.nuget.newtonsoft-json": "2.0.0",
-    "com.tencent.osgame.common": "1.0.0"
+    "com.unity.nuget.newtonsoft-json": "2.0.0"
   }
 }

@@ -1,5 +1,4 @@
---package.cpath = package.cpath ..
---';C:/Users/36347/AppData/Roaming/JetBrains/Rider2024.2/plugins/EmmyLua/debugger/emmy/windows/x64/?.dll'
+--package.cpath = package.cpath .. ';C:/Users/Administrator/AppData/Roaming/JetBrains/Rider2024.2/plugins/EmmyLua/debugger/emmy/windows/x64/?.dll'
 --local dbg = require('emmy_core')
 --dbg.tcpConnect('localhost', 9966)
 
@@ -339,4 +338,183 @@ function LuaConstructStruct(num)
     for i = 1, num do
         obj = CS.UnityEngine.Color(1, 1, 1, 1)
     end
+end
+
+function StartTest()
+    local classLuaCallCS = CS.ClassLuaCallCS()
+    -- field set
+    classLuaCallCS.u1 = 1
+    classLuaCallCS.u2 = 2
+    classLuaCallCS.u4 = 4
+    classLuaCallCS.u8 = 8
+    
+    classLuaCallCS.i1 = -1
+    classLuaCallCS.i2 = -2
+    classLuaCallCS.i4 = -4
+    classLuaCallCS.i8 = -8
+    
+    classLuaCallCS.s = 'Hello World!'
+    
+    classLuaCallCS.f = 0.1314526
+    classLuaCallCS.d = 0.1314526659
+    -- field get
+    CS.UnityEngine.Debug.Log(string.format('u1 field get:%d',classLuaCallCS.u1))
+    CS.UnityEngine.Debug.Log(string.format('u1 field get:%d',classLuaCallCS.u2))
+    CS.UnityEngine.Debug.Log(string.format('u1 field get:%d',classLuaCallCS.u4))
+    CS.UnityEngine.Debug.Log(string.format('u1 field get:%d',classLuaCallCS.u8))
+
+    CS.UnityEngine.Debug.Log(string.format('i1 field get:%d',classLuaCallCS.i1))
+    CS.UnityEngine.Debug.Log(string.format('i1 field get:%d',classLuaCallCS.i2))
+    CS.UnityEngine.Debug.Log(string.format('i1 field get:%d',classLuaCallCS.i4))
+    CS.UnityEngine.Debug.Log(string.format('i1 field get:%d',classLuaCallCS.i8))
+
+    CS.UnityEngine.Debug.Log(string.format('s field get:%s',classLuaCallCS.s))
+
+    CS.UnityEngine.Debug.Log(string.format('f field get:%f',classLuaCallCS.f))
+    CS.UnityEngine.Debug.Log(string.format('d field get:%f',classLuaCallCS.d))
+
+    -- property set
+    classLuaCallCS.pu1 = 1
+    classLuaCallCS.pu2 = 2
+
+    -- property get
+    CS.UnityEngine.Debug.Log(string.format('pu1 field get:%d',classLuaCallCS.pu1))
+    CS.UnityEngine.Debug.Log(string.format('pu2 field get:%d',classLuaCallCS.pu2))
+    
+    -- static field set
+    CS.ClassLuaCallCS.su1 = 1
+    CS.ClassLuaCallCS.su2 = 2
+    CS.ClassLuaCallCS.su4 = 4
+    CS.ClassLuaCallCS.su8 = 8
+
+    CS.ClassLuaCallCS.si1 = -1
+    CS.ClassLuaCallCS.si2 = -2
+    CS.ClassLuaCallCS.si4 = -4
+    CS.ClassLuaCallCS.si8 = -8
+
+    CS.ClassLuaCallCS.ss = 'Hello World!'
+
+    CS.ClassLuaCallCS.sf = 0.1314526
+    CS.ClassLuaCallCS.sd = 0.1314526659
+    -- static field get
+    CS.UnityEngine.Debug.Log(string.format('su1 field get:%d',CS.ClassLuaCallCS.su1))
+    CS.UnityEngine.Debug.Log(string.format('su2 field get:%d',CS.ClassLuaCallCS.su2))
+    CS.UnityEngine.Debug.Log(string.format('su1 field get:%d',CS.ClassLuaCallCS.su4))
+    CS.UnityEngine.Debug.Log(string.format('su1 field get:%d',CS.ClassLuaCallCS.su8))
+
+    CS.UnityEngine.Debug.Log(string.format('si1 field get:%d',CS.ClassLuaCallCS.si1))
+    CS.UnityEngine.Debug.Log(string.format('si1 field get:%d',CS.ClassLuaCallCS.si2))
+    CS.UnityEngine.Debug.Log(string.format('si1 field get:%d',CS.ClassLuaCallCS.si4))
+    CS.UnityEngine.Debug.Log(string.format('si1 field get:%d',CS.ClassLuaCallCS.si8))
+
+    CS.UnityEngine.Debug.Log(string.format('ss field get:%s',CS.ClassLuaCallCS.ss))
+
+    CS.UnityEngine.Debug.Log(string.format('sf field get:%f',CS.ClassLuaCallCS.sf))
+    CS.UnityEngine.Debug.Log(string.format('sd field get:%f',CS.ClassLuaCallCS.sd))
+    
+    -- static property set
+    CS.ClassLuaCallCS.spu1 = 1
+    CS.ClassLuaCallCS.spu2 = 2
+    
+    -- static property get
+    CS.UnityEngine.Debug.Log(string.format('spu1 field get:%d',CS.ClassLuaCallCS.spu1))
+    CS.UnityEngine.Debug.Log(string.format('spu2 field get:%d',CS.ClassLuaCallCS.spu2))
+    
+    -- array
+    classLuaCallCS.array = CS.System.Array.CreateInstance(typeof(CS.System.Int32), 5)
+    
+    local array = classLuaCallCS.array
+    for i, v in pairs(array) do
+        CS.UnityEngine.Debug.Log(string.format('array->pair->%d:%d', i, array[i]))
+    end
+
+    for i, v in pairs(array) do
+        array[i] = v + i
+        CS.UnityEngine.Debug.Log(string.format('array->[]->%d:%d', i, array[i]))
+    end
+
+    for i, v in pairs(array) do
+        array:set_Item(i, v + i)
+        CS.UnityEngine.Debug.Log(string.format('array->get_Item/set_Item->%d:%d', i, array:get_Item(i)))
+    end
+    
+    -- list
+    classLuaCallCS.list = CS.System.Collections.Generic.List(CS.System.String)()
+    classLuaCallCS.list:Add(1)
+
+    local list = classLuaCallCS.list
+    for i, v in pairs(list) do
+        CS.UnityEngine.Debug.Log(string.format('list->pair->%d:%d', i, list[i]))
+    end
+
+    list[0] = 0
+    for i, v in pairs(list) do
+        CS.UnityEngine.Debug.Log(string.format('list->[]->%d:%d', i, list[i]))
+    end
+
+    list:set_Item(0, 1)
+    for i, v in pairs(list) do
+        CS.UnityEngine.Debug.Log(string.format('list->get_Item/set_Item->%d:%d', i, list:get_Item(i)))
+    end
+    
+    -- dictionary
+    classLuaCallCS.dictionary = CS.System.Collections.Generic.Dictionary(CS.System.String, CS.System.Int32)()
+    classLuaCallCS.dictionary:Add('a', 1)
+
+    local dictionary = classLuaCallCS.dictionary
+    for i, v in pairs(dictionary) do
+        local ret, val = dictionary:TryGetValue(i)
+        CS.UnityEngine.Debug.Log(string.format('dictionary->pair->%s:%d', i, val))
+    end
+
+    dictionary:set_Item('b', 1)
+    for i, v in pairs(dictionary) do
+        CS.UnityEngine.Debug.Log(string.format('dictionary->get_Item/set_Item->%s:%d', i, dictionary:get_Item(i)))
+    end
+    
+    -- method call
+    CS.UnityEngine.Debug.Log(string.format('funcBaseParam(int x) call: %d', classLuaCallCS:funcBaseParam(1000)))
+
+    CS.UnityEngine.Debug.Log(string.format('funcBaseParam(int x, int y) call: %d', classLuaCallCS:funcBaseParam(1000, 2)))
+    
+    CS.UnityEngine.Debug.Log(string.format('funcBaseParam(int x, int y, int z = 9) call: %d', classLuaCallCS:funcBaseParam(1000, 2, 10)))
+    
+    local x = classLuaCallCS:funcInParam(9)
+
+    CS.UnityEngine.Debug.Log(string.format('funcInParam(ref int x) call: %d', x))
+
+    x, y = classLuaCallCS:funcInOutParam(9, 10)
+    CS.UnityEngine.Debug.Log(string.format('funcInOutParam(ref int x, out int y) call: %d, %d', x, y))
+    
+    -- virtual method call
+    classLuaCallCS:FuncA()
+    -- function call
+    CS.UnityEngine.Debug.Log(string.format('function call: %f', CS.ClassLuaCallCS.sFuncBaseParam(3.1415926)))
+    
+    -- op
+    local v1 = CS.UnityEngine.Vector3(1,1,1)
+    local v2 = CS.UnityEngine.Vector3(2,2,2)
+    local v3 = v1 + v2
+    CS.UnityEngine.Debug.Log(string.format('Vector3+Vector3=(%s)', v3))
+    CS.UnityEngine.Debug.Log(string.format('Vector3-Vector3=(%s)', v3 - v1))
+    CS.UnityEngine.Debug.Log(string.format('-Vector3=(%s)', -v3))
+    CS.UnityEngine.Debug.Log(string.format('Vector3*float=%s', v3 * 1.1))
+    CS.UnityEngine.Debug.Log(string.format('float*Vector3=%s', 1.1 * v3))
+    CS.UnityEngine.Debug.Log(string.format('Vector3/float=%s', v3 / 3))
+    CS.UnityEngine.Debug.Log(('Vector3==Vector3=' .. tostring(v3 == v1)))
+    CS.UnityEngine.Debug.Log(('Vector3~=Vector3=' .. tostring(v3 ~= v1)))
+    
+    -- get cs table
+    local t = classLuaCallCS:GetTable({1,2,3,4,5,6})
+    for i, v in ipairs(t) do
+        CS.UnityEngine.Debug.Log((string.format('GetTable %d %d', i, v)))
+    end
+    
+    local func = function(x)
+        CS.UnityEngine.Debug.Log(x)
+    end
+    -- cs call lua
+    classLuaCallCS:add_BaseParaEvent(func)
+    classLuaCallCS:InvokeBaseParaCB()
+    classLuaCallCS:remove_BaseParaEvent(func)
 end
