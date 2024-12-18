@@ -389,7 +389,7 @@ struct Converter<std::reference_wrapper<T>>
 
     static T toCpp(struct pesapi_ffi* apis, pesapi_env env, pesapi_value value)
     {
-        return Converter<T>::toCpp(apis, env, apis->unboxing(env, value));
+        return Converter<T>::toCpp(apis, env, value);
     }
 
     static bool accept(struct pesapi_ffi* apis, pesapi_env env, pesapi_value value)
