@@ -1315,6 +1315,38 @@ static void b_vO(void* target, Il2CppObject* p0, MethodInfo* method) {
     }
 
 }
+// Void Invoke(System.Object, System.EventArgs) declare in Mono.Security.Cryptography.DSAManaged+KeyGeneratedEventHandler
+static void b_vOo(void* target, Il2CppObject* p0, Il2CppObject* p1, MethodInfo* method) {
+    // PLog("Running b_vOo");
+            
+    auto TIp0 = GetParameterType(method, 0);
+        
+    auto TIp1 = GetParameterType(method, 1);
+
+    PObjectRefInfo* delegateInfo = GetPObjectRefInfo(target);
+    struct pesapi_ffi* apis = delegateInfo->Apis;
+
+    pesapi_env env = apis->get_ref_associated_env(delegateInfo->ValueRef);
+    AutoValueScope valueScope(apis, env);
+    if (!env)
+    {
+        il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException("LuaEnv had been destroy"));
+    }
+    auto func = apis->get_value_from_ref(env, delegateInfo->ValueRef);
+
+    pesapi_value argv[2]{
+    CSRefToLuaValue(apis, env, TIp0, p0),
+            CSRefToLuaValue(apis, env, TIp1, p1)
+    };
+    auto luaret = apis->call_function(env, func, 0, 2, argv);
+
+    if (apis->has_caught(env))
+    {
+        auto msg = apis->get_exception_as_string(env, true);
+        il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException(msg));
+    }
+
+}
 // Void Invoke(ParaStruct) declare in StructParaEventHandler
 static void b_vS__(void* target, struct S__ p0, MethodInfo* method) {
     // PLog("Running b_vS__");
@@ -1520,6 +1552,36 @@ static void b_vp(void* target, void* p0, MethodInfo* method) {
     }
 
 }
+// Void Invoke(IntPtr, Int32) declare in System.Action`2[System.IntPtr,System.Int32]
+static void b_vpi4(void* target, void* p0, int32_t p1, MethodInfo* method) {
+    // PLog("Running b_vpi4");
+            
+    auto TIp0 = GetParameterType(method, 0);
+            
+    PObjectRefInfo* delegateInfo = GetPObjectRefInfo(target);
+    struct pesapi_ffi* apis = delegateInfo->Apis;
+
+    pesapi_env env = apis->get_ref_associated_env(delegateInfo->ValueRef);
+    AutoValueScope valueScope(apis, env);
+    if (!env)
+    {
+        il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException("LuaEnv had been destroy"));
+    }
+    auto func = apis->get_value_from_ref(env, delegateInfo->ValueRef);
+
+    pesapi_value argv[2]{
+    apis->create_binary(env, p0, 0),
+            converter::Converter<int32_t>::toScript(apis, env, p1)
+    };
+    auto luaret = apis->call_function(env, func, 0, 2, argv);
+
+    if (apis->has_caught(env))
+    {
+        auto msg = apis->get_exception_as_string(env, true);
+        il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException(msg));
+    }
+
+}
 // Void Invoke(IntPtr, Int32, T ByRef) declare in XLua.ObjectTranslator+GetFunc`1[T]
 static void b_vpi4Po(void* target, void* p0, int32_t p1, Il2CppObject** p2, MethodInfo* method) {
     // PLog("Running b_vpi4Po");
@@ -1714,6 +1776,7 @@ static BridgeFuncInfo g_bridgeFuncInfos[] = {
     {"u8os", (Il2CppMethodPointer)b_u8os},
     {"v", (Il2CppMethodPointer)b_v},
     {"vO", (Il2CppMethodPointer)b_vO},
+    {"vOo", (Il2CppMethodPointer)b_vOo},
     {"vS__", (Il2CppMethodPointer)b_vS__},
     {"vS_r4r4r4_", (Il2CppMethodPointer)b_vS_r4r4r4_},
     {"vi4", (Il2CppMethodPointer)b_vi4},
@@ -1721,6 +1784,7 @@ static BridgeFuncInfo g_bridgeFuncInfos[] = {
     {"vo", (Il2CppMethodPointer)b_vo},
     {"voO", (Il2CppMethodPointer)b_voO},
     {"vp", (Il2CppMethodPointer)b_vp},
+    {"vpi4", (Il2CppMethodPointer)b_vpi4},
     {"vpi4Po", (Il2CppMethodPointer)b_vpi4Po},
     {"vpi4o", (Il2CppMethodPointer)b_vpi4o},
     {"vpo", (Il2CppMethodPointer)b_vpo},

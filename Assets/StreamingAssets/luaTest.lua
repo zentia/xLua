@@ -341,6 +341,7 @@ function LuaConstructStruct(num)
 end
 
 function StartTest()
+    -- new class
     local classLuaCallCS = CS.ClassLuaCallCS()
     -- field set
     classLuaCallCS.u1 = 1
@@ -439,22 +440,22 @@ function StartTest()
     end
     
     -- list
-    classLuaCallCS.list = CS.System.Collections.Generic.List(CS.System.String)()
-    classLuaCallCS.list:Add(1)
+    --classLuaCallCS.list = CS.System.Collections.Generic.List(CS.System.String)()
+    --classLuaCallCS.list:Add(1)
 
     local list = classLuaCallCS.list
     for i, v in pairs(list) do
-        CS.UnityEngine.Debug.Log(string.format('list->pair->%d:%d', i, list[i]))
+        CS.UnityEngine.Debug.Log(string.format('list->pair->%d:%s', i, list[i]))
     end
 
-    list[0] = 0
+    list[0] = '0'
     for i, v in pairs(list) do
-        CS.UnityEngine.Debug.Log(string.format('list->[]->%d:%d', i, list[i]))
+        CS.UnityEngine.Debug.Log(string.format('list->[]->%d:%s', i, list[i]))
     end
 
     list:set_Item(0, 1)
     for i, v in pairs(list) do
-        CS.UnityEngine.Debug.Log(string.format('list->get_Item/set_Item->%d:%d', i, list:get_Item(i)))
+        CS.UnityEngine.Debug.Log(string.format('list->get_Item/set_Item->%d:%s', i, list:get_Item(i)))
     end
     
     -- dictionary
@@ -474,7 +475,7 @@ function StartTest()
     
     -- method call
     CS.UnityEngine.Debug.Log(string.format('funcBaseParam(int x) call: %d', classLuaCallCS:funcBaseParam(1000)))
-
+    -- overload
     CS.UnityEngine.Debug.Log(string.format('funcBaseParam(int x, int y) call: %d', classLuaCallCS:funcBaseParam(1000, 2)))
     
     CS.UnityEngine.Debug.Log(string.format('funcBaseParam(int x, int y, int z = 9) call: %d', classLuaCallCS:funcBaseParam(1000, 2, 10)))
@@ -495,12 +496,17 @@ function StartTest()
     local v1 = CS.UnityEngine.Vector3(1,1,1)
     local v2 = CS.UnityEngine.Vector3(2,2,2)
     local v3 = v1 + v2
-    CS.UnityEngine.Debug.Log(string.format('Vector3+Vector3=(%s)', v3))
-    CS.UnityEngine.Debug.Log(string.format('Vector3-Vector3=(%s)', v3 - v1))
-    CS.UnityEngine.Debug.Log(string.format('-Vector3=(%s)', -v3))
-    CS.UnityEngine.Debug.Log(string.format('Vector3*float=%s', v3 * 1.1))
-    CS.UnityEngine.Debug.Log(string.format('float*Vector3=%s', 1.1 * v3))
-    CS.UnityEngine.Debug.Log(string.format('Vector3/float=%s', v3 / 3))
+    CS.UnityEngine.Debug.Log(string.format('Vector3+Vector3=(%f,%f,%f)', v3.x,v3.y,v3.z))
+    local v4 = v3 - v1
+    CS.UnityEngine.Debug.Log(string.format('Vector3-Vector3=(%f,%f,%f)', v4.x,v4.y,v4.z))
+    v4 = -v3
+    CS.UnityEngine.Debug.Log(string.format('-Vector3=(%f,%f,%f)', v4.x,v4.y,v4.z))
+    v4 = v3 * 1.1
+    CS.UnityEngine.Debug.Log(string.format('Vector3*float=(%f,%f,%f)', v4.x,v4.y,v4.z))
+    v4 = 1.1 * v3
+    CS.UnityEngine.Debug.Log(string.format('float*Vector3=(%f,%f,%f)', v4.x,v4.y,v4.z))
+    v4 = v3 / 3
+    CS.UnityEngine.Debug.Log(string.format('Vector3/float=(%f,%f,%f)', v4.x,v4.y,v4.z))
     CS.UnityEngine.Debug.Log(('Vector3==Vector3=' .. tostring(v3 == v1)))
     CS.UnityEngine.Debug.Log(('Vector3~=Vector3=' .. tostring(v3 ~= v1)))
     
@@ -510,6 +516,7 @@ function StartTest()
         CS.UnityEngine.Debug.Log((string.format('GetTable %d %d', i, v)))
     end
     
+    -- event
     local func = function(x)
         CS.UnityEngine.Debug.Log(x)
     end
@@ -517,4 +524,10 @@ function StartTest()
     classLuaCallCS:add_BaseParaEvent(func)
     classLuaCallCS:InvokeBaseParaCB()
     classLuaCallCS:remove_BaseParaEvent(func)
+    classLuaCallCS:InvokeBaseParaCB()
+    
+    -- enum
+    CS.UnityEngine.Debug.Log((string.format('LuaEnum.ONE: %d', CS.ClassLuaCallCS.LuaEnum.ONE)))
+    classLuaCallCS.enumParam = CS.ClassLuaCallCS.LuaEnum.TWO
+    CS.UnityEngine.Debug.Log((string.format('classLuaCallCS.enumParam = %d', classLuaCallCS.enumParam)))
 end

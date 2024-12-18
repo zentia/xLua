@@ -698,7 +698,7 @@ namespace XLuaIl2cpp.Editor
                     var assetPath = Path.GetFullPath("Packages/com.tencent.xlua/");
                     assetPath = assetPath.Replace("\\", "/");
                     luaEnv.DoString($"package.path = package.path..';{assetPath + "Editor/Resources/xlua/templates"}/?.lua'");
-                    var path = Path.Combine(assetPath, "Editor/Resources/xlua/templates/linkxmlgen.tpl.lua");
+                    var path = Path.Combine(assetPath, "Editor/Resources/xlua/templates/LinkXmlGen.tpl.lua");
                     var bytes = File.ReadAllBytes(path);
                     luaEnv.DoString<LuaFunction>(bytes, path);
                     var func = luaEnv.Global.Get<LuaFunction>("LinkXMLTemplate");
@@ -725,7 +725,13 @@ namespace XLuaIl2cpp.Editor
                     var bytes = File.ReadAllBytes(path);
                     luaEnv.DoString<LuaFunction>(bytes, path);
                     var func = luaEnv.Global.Get<LuaFunction>("unityenv_for_xlua");
-                    string macroHeaderContent = func.Func<bool, bool, string>(true,
+                    string macroHeaderContent = func.Func<bool, bool, string>(
+#if UNITY_2023_2_OR_NEWER
+                        true,
+#else
+                        false,
+#endif
+
 #if UNITY_IPHONE
                         false
 #else

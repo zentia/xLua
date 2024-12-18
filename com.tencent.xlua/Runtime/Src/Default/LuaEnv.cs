@@ -62,7 +62,7 @@ namespace XLua
 
         const int LIB_VERSION_EXPECT = 105;
 
-        public LuaEnv(Type bridgeType = null)
+        public LuaEnv(Type bridgeType = null, Type objectTranslator = null)
         {
             if (LuaAPI.xlua_get_lib_version() != LIB_VERSION_EXPECT)
             {
@@ -81,8 +81,14 @@ namespace XLua
                 //Init Base Libs
                 LuaAPI.luaopen_xlua(rawL);
                 LuaAPI.luaopen_i64lib(rawL);
-
-                translator = new ObjectTranslator(this, rawL, bridgeType);
+                if (objectTranslator != null)
+                {
+                    translator = Activator.CreateInstance(objectTranslator, this, rawL, bridgeType) as ObjectTranslator;
+                }
+                else
+                {
+                    translator = new ObjectTranslator(this, rawL, bridgeType);
+                }
                 translator.createFunctionMetatable(rawL);
                 translator.OpenLib(rawL);
                 ObjectTranslatorPool.Instance.Add(rawL, translator);

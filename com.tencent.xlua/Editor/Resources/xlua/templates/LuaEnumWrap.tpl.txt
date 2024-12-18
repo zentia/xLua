@@ -4,7 +4,9 @@ using LuaCSFunction = XLua.LuaDLL.lua_CSFunction;
 using Utils = XLua.Utils;
 using XLua;
 using System.Collections.Generic;
+#if OSG_PROFILE
 using Assets.Plugins.Perf;
+#endif
 <%
 require "TemplateCommon"
 %>

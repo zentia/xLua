@@ -3,7 +3,9 @@ using RealStatePtr = System.IntPtr;
 using LuaCSFunction = XLua.LuaDLL.lua_CSFunction;
 using XLua;
 using System.Collections.Generic;
+#if OSG_PROFILE
 using Assets.Plugins.Perf;
+#endif
 <%ForEachCsList(namespaces, function(namespace)%>using <%=namespace%>;<%end)%>
 <%
 require "TemplateCommon"
@@ -162,8 +164,10 @@ namespace XLua.CSObjectWrap
             if constructors.Count == 0 and (not type.IsValueType)  then 
             %>return LuaAPI.luaL_error(L, "<%=CsFullTypeName(type)%> does not have a constructor!");<% 
             else %>
+            #if OSG_PROFILE
             int sampleIndex = -1;
             StatsLite.BeginSample(StatsSampleId.Lua_New, ref sampleIndex);
+            #endif
 			try 
 			{
                 ObjectTranslatorWrap translator = ObjectTranslatorPool.Instance.Find(L) as ObjectTranslatorWrap;
@@ -211,7 +215,9 @@ namespace XLua.CSObjectWrap
                         end
                     end)
                     %>
+                    #if OSG_PROFILE
                     StatsLite.EndSampleByIndex(ref sampleIndex);
+                    #endif
 					return <%=out_num + 1%>;
 				}
 				<%end)
@@ -220,24 +226,32 @@ namespace XLua.CSObjectWrap
 				if (LuaAPI.lua_gettop(L) == 1)
 				{
 				    <%=GetPushStatement(type, "default(" .. CsFullTypeName(type).. ")")%>;
-				    StatsLite.EndSampleByIndex(ref sampleIndex);
+				    #if OSG_PROFILE
+			        StatsLite.EndSampleByIndex(ref sampleIndex);
+                    #endif
 			        return 1;
 				}<%end%>
 			}
 			catch(System.Exception gen_e) 
 			{
+			    #if OSG_PROFILE
 			    StatsLite.EndSampleByIndex(ref sampleIndex);
+                #endif
 				return LuaAPI.luaL_error(L, "c# exception in __CreateInstance:" + gen_e);
 			}
+            #if OSG_PROFILE
 			StatsLite.EndSampleByIndex(ref sampleIndex);
+            #endif
             return LuaAPI.luaL_error(L, "invalid arguments to <%=CsFullTypeName(type)%> constructor!");<% end %>
         }
 		<% if type.IsArray or ((indexers.Count or 0) > 0) then %>
         [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
         public static int __CSIndexer(RealStatePtr L)
         {
+            #if OSG_PROFILE
             int sampleIndex = -1;
             StatsLite.BeginSample(StatsSampleId.Lua_Indexer, ref sampleIndex);
+            #endif
 			<%if type.IsArray then %>
 			try 
 			{
@@ -248,13 +262,17 @@ namespace XLua.CSObjectWrap
 					<%=GetSelfStatement(type)%>;
 					LuaAPI.lua_pushboolean(L, true);
 					<%=GetPushStatement(type:GetElementType(), "gen_to_be_invoked[index]")%>;
+                    #if OSG_PROFILE
 					StatsLite.EndSampleByIndex(ref sampleIndex);
+                    #endif 
 					return 2;
 				}
 			}
 			catch(System.Exception gen_e) 
 			{
+                #if OSG_PROFILE
 			    StatsLite.EndSampleByIndex(ref sampleIndex);
+                #endif
 				return LuaAPI.luaL_error(L, "c# exception in __CSIndexer 1:" + gen_e);
 			}
 			<%elseif indexers.Count > 0 then
@@ -271,18 +289,24 @@ namespace XLua.CSObjectWrap
 					<%=GetCasterStatement(paramter.ParameterType, 2, "index", true)%>;
 					LuaAPI.lua_pushboolean(L, true);
 					<%=GetPushStatement(indexer.ReturnType, "gen_to_be_invoked[index]")%>;
+                    #if OSG_PROFILE
 					StatsLite.EndSampleByIndex(ref sampleIndex);
+                    #endif
 					return 2;
 				}
 				<%end)%>
 			}
 			catch(System.Exception gen_e) 
 			{
+                #if OSG_PROFILE
 			    StatsLite.EndSampleByIndex(ref sampleIndex);
+                #endif
 				return LuaAPI.luaL_error(L, "c# exception in __CSIndexer 2:" + gen_e);
 			}
 			<%end%>
+            #if OSG_PROFILE
 			StatsLite.EndSampleByIndex(ref sampleIndex);
+            #endif
             LuaAPI.lua_pushboolean(L, false);
 			return 1;
         }
@@ -291,8 +315,10 @@ namespace XLua.CSObjectWrap
         [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
         public static int __NewIndexer(RealStatePtr L)
         {
+            #if OSG_PROFILE
             int sampleIndex = -1;
             StatsLite.BeginSample(StatsSampleId.Lua_NewIndexer, ref sampleIndex);
+            #endif
 			<%if type.IsArray or newindexers.Count > 0 then %>ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);<%end%>
 			<%if type.IsArray then 
 				local elementType = type:GetElementType()
@@ -305,13 +331,17 @@ namespace XLua.CSObjectWrap
 					<%=GetSelfStatement(type)%>;
 					<%=GetCasterStatement(elementType, 3, "gen_to_be_invoked[index]")%>;
 					LuaAPI.lua_pushboolean(L, true);
+                    #if OSG_PROFILE
 					StatsLite.EndSampleByIndex(ref sampleIndex);
+                    #endif
 					return 1;
 				}
 			}
 			catch(System.Exception gen_e) 
 			{
+                #if OSG_PROFILE
 			    StatsLite.EndSampleByIndex(ref sampleIndex);
+                #endif
 				return LuaAPI.luaL_error(L, "c# exception in __NewIndexer 1:" + gen_e);
 			}
 			<%elseif newindexers.Count > 0 then%>
@@ -329,19 +359,25 @@ namespace XLua.CSObjectWrap
 					gen_to_be_invoked[key] = gen_value;<%else
                   %><%=GetCasterStatement(valueType, 3, "gen_to_be_invoked[key]")%>;<%end%>
 					LuaAPI.lua_pushboolean(L, true);
+                    #if OSG_PROFILE
 					StatsLite.EndSampleByIndex(ref sampleIndex);
+                    #endif
 					return 1;
 				}
 				<%end)%>
 			}
 			catch(System.Exception gen_e) 
 			{
+                #if OGS_PROFILE
 			    StatsLite.EndSampleByIndex(ref sampleIndex);
+                #endif
 				return LuaAPI.luaL_error(L, "c# exception in __NewIndexer 2:" + gen_e);
 			}
 			<%end%>
 			LuaAPI.lua_pushboolean(L, false);
+            #if OSG_PROFILE
 			StatsLite.EndSampleByIndex(ref sampleIndex);
+            #endif
             return 1;
         }
 		<% end %>
@@ -349,8 +385,10 @@ namespace XLua.CSObjectWrap
         [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
         static int <%=OpNameMap[operator.Name]%>(RealStatePtr L)
         {
+            #if OSG_PROFILE
             int sampleIndex = -1;
             StatsLite.BeginSample(StatsSampleId.Lua_Operator, ref sampleIndex);
+            #endif
             <% if operator.Name ~= "op_UnaryNegation" and operator.Name ~= "op_OnesComplement"  then %>
 			try 
 			{
@@ -364,17 +402,23 @@ namespace XLua.CSObjectWrap
 					<%=GetCasterStatement(left_param.ParameterType, 1, "leftside", true)%>;
 					<%=GetCasterStatement(right_param.ParameterType, 2, "rightside", true)%>;
 					<%=GetPushStatement(overload.ReturnType, "leftside " .. OpCallNameMap[operator.Name] .. " rightside")%>;
+                    #if OSG_PROFILE
 					StatsLite.EndSampleByIndex(ref sampleIndex);
+                    #endif
 					return 1;
 				}
             <%end)%>
 			}
 			catch(System.Exception gen_e) 
 			{
-			    StatsLite.EndSampleByIndex(ref sampleIndex);
+			    #if OSG_PROFILE
+                StatsLite.EndSampleByIndex(ref sampleIndex);
+                #endif
 				return LuaAPI.luaL_error(L, "c# exception in <%=OpNameMap[operator.Name]%> 1:" + gen_e);
 			}
-			StatsLite.EndSampleByIndex(ref sampleIndex);
+			#if OSG_PROFILE
+            StatsLite.EndSampleByIndex(ref sampleIndex);
+            #endif
             return LuaAPI.luaL_error(L, "invalid arguments to right hand of <%=OpCallNameMap[operator.Name]%> operator, need <%=CsFullTypeName(type)%>!");
             <%else%>
 			ObjectTranslatorWrap translator = ObjectTranslatorPool.Instance.Find(L) as ObjectTranslatorWrap;
@@ -385,10 +429,14 @@ namespace XLua.CSObjectWrap
             } 
             catch(System.Exception gen_e) 
             {
+                #if OSG_PROFILE
                 StatsLite.EndSampleByIndex(ref sampleIndex);
+                #endif
                 return LuaAPI.luaL_error(L, "c# exception in <%=OpNameMap[operator.Name]%> 2:" + gen_e);
             }
+            #if OSG_PROFILE
             StatsLite.EndSampleByIndex(ref sampleIndex);
+            #endif
             return 1;
             <%end%>
         }
@@ -397,8 +445,10 @@ namespace XLua.CSObjectWrap
         [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
         static int _m_<%=method.Name%>(RealStatePtr L)
         {
+            #if OSG_PROFILE
             int sampleIndex = -1;
             StatsLite.BeginSample(StatsSampleId.Lua_Method, ref sampleIndex);
+            #endif
 		    try 
 		    {
             <%
@@ -489,18 +539,24 @@ namespace XLua.CSObjectWrap
                     <%if NeedUpdate(type) and not method.IsStatic then%>
                         <%=GetUpdateStatement(type, 1, "gen_to_be_invoked")%>;
                     <%end%>
+                    #if OSG_PROFILE
                     StatsLite.EndSampleByIndex(ref sampleIndex);        
+                    #endif
                     return <%=out_num+(has_return and 1 or 0)%>;
                 }
                 <% end)%>
             } 
             catch(System.Exception gen_e) 
             {
+                #if OSG_PROFILE
                 StatsLite.EndSampleByIndex(ref sampleIndex);
+                #endif
                 return LuaAPI.luaL_error(L, "c# exception in _m_<%=method.Name%>:" + gen_e);
             }
             <%if method.Overloads.Count > 1 then%>
+            #if OSG_PROFILE
             StatsLite.EndSampleByIndex(ref sampleIndex);
+            #endif
             return LuaAPI.luaL_error(L, "invalid arguments to <%=CsFullTypeName(type)%>.<%=method.Overloads[0].Name%>!");
             <%end%>
         }
@@ -511,8 +567,10 @@ namespace XLua.CSObjectWrap
         [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
         static int _g_get_<%=getter.Name%>(RealStatePtr L)
         {
+            #if OSG_PROFILE
             int sampleIndex = -1;
             StatsLite.BeginSample(StatsSampleId.Lua_PropertyGetter, ref sampleIndex);
+            #endif
 		    try 
 		    {
             <%if AccessorNeedTranslator(getter) then %>    ObjectTranslatorWrap translator = ObjectTranslatorPool.Instance.Find(L) as ObjectTranslatorWrap;<%end%>
@@ -522,10 +580,14 @@ namespace XLua.CSObjectWrap
             } 
             catch(System.Exception gen_e) 
             {
+                #if OSG_PROFILE
                 StatsLite.EndSampleByIndex(ref sampleIndex);
+                #endif
                 return LuaAPI.luaL_error(L, "c# exception in _g_get_<%=getter.Name%>:" + gen_e);
             }
+            #if OSG_PROFILE
             StatsLite.EndSampleByIndex(ref sampleIndex);
+            #endif
             return 1;
         }
         <%end)%>
@@ -535,8 +597,10 @@ namespace XLua.CSObjectWrap
         [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
         static int _s_set_<%=setter.Name%>(RealStatePtr L)
         {
+            #if OSG_PROFILE
             int sampleIndex = -1;
             StatsLite.BeginSample(StatsSampleId.Lua_PropertySetter, ref sampleIndex);
+            #endif
 		    try 
 		    {
                 <%if AccessorNeedTranslator(setter) then %>ObjectTranslatorWrap translator = ObjectTranslatorPool.Instance.Find(L) as ObjectTranslatorWrap;<%end%>
@@ -556,10 +620,14 @@ namespace XLua.CSObjectWrap
             } 
             catch(System.Exception gen_e) 
             {
+                #if OSG_PROFILE
                 StatsLite.EndSampleByIndex(ref sampleIndex);
+                #endif
                 return LuaAPI.luaL_error(L, "c# exception in _s_set_<%=setter.Name%>:" + gen_e);
             }
+            #if OSG_PROFILE
             StatsLite.EndSampleByIndex(ref sampleIndex);
+            #endif
             return 0;
         }
         <%end)%>
@@ -567,8 +635,10 @@ namespace XLua.CSObjectWrap
         [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
         static int _e_add_<%=event.Name%>(RealStatePtr L)
         {
+            #if OSG_PROFILE
             int sampleIndex = -1;
             StatsLite.BeginSample(StatsSampleId.Lua_AddEvent, ref sampleIndex);
+            #endif
 		    try {
                 ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
 			    int gen_param_count = LuaAPI.lua_gettop(L);
@@ -576,32 +646,42 @@ namespace XLua.CSObjectWrap
                 <%=GetCasterStatement(event.Type, 2, "gen_delegate", true)%>;
                 if (gen_delegate == null) 
                 {
+                    #if OSG_PROFILE
                     StatsLite.EndSampleByIndex(ref sampleIndex);
+                    #endif
                     return LuaAPI.luaL_error(L, "#3 need <%=CsFullTypeName(event.Type)%>!");
                 }
 				if (gen_param_count == 2)
 				{
 					<%if event.CanAdd then%>
 					gen_to_be_invoked.<%=UnK(event.Name)%> += gen_delegate;
+                    #if OSG_PROFILE
 					StatsLite.EndSampleByIndex(ref sampleIndex);
+                    #endif
 					return 0;
 					<%end%>
 				}
 			} 
 			catch(System.Exception gen_e) 
 			{
+                #if OSG_PROFILE
 			    StatsLite.EndSampleByIndex(ref sampleIndex);
+                #endif
                 return LuaAPI.luaL_error(L, "c# exception in _e_<%=event.Name%>:" + gen_e);
             }
+            #if OSG_PROFILE
             StatsLite.EndSampleByIndex(ref sampleIndex);
+            #endif
 			LuaAPI.luaL_error(L, "invalid arguments to <%=CsFullTypeName(type)%>.<%=event.Name%>!");
             return 0;
         }
         [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
         static int _e_remove_<%=event.Name%>(RealStatePtr L)
         {  
+            #if OSG_PROFILE
             int sampleIndex = -1;
             StatsLite.BeginSample(StatsSampleId.Lua_RemoveEvent, ref sampleIndex);
+            #endif
 		    try 
 		    {
                 ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
@@ -610,24 +690,32 @@ namespace XLua.CSObjectWrap
                 <%=GetCasterStatement(event.Type, 2, "gen_delegate", true)%>;
                 if (gen_delegate == null) 
                 {
+                    #if OSG_PROFILE
                     StatsLite.EndSampleByIndex(ref sampleIndex);
+                    #endif
                     return LuaAPI.luaL_error(L, "#3 need <%=CsFullTypeName(event.Type)%>!");
                 }
 				if (gen_param_count == 2)
 				{
 					<%if event.CanRemove then%>
 					gen_to_be_invoked.<%=UnK(event.Name)%> -= gen_delegate;
+                    #if OSG_PROFILE
 					StatsLite.EndSampleByIndex(ref sampleIndex);
+                    #endif
 					return 0;
 					<%end%>
 				}
 			} 
 			catch(System.Exception gen_e) 
 			{
+                #if OSG_PROFILE
 			    StatsLite.EndSampleByIndex(ref sampleIndex);
+                #endif
                 return LuaAPI.luaL_error(L, "c# exception in _e_<%=event.Name%>:" + gen_e);
             }
+            #if OSG_PROFILE
             StatsLite.EndSampleByIndex(ref sampleIndex);
+            #endif
 			LuaAPI.luaL_error(L, "invalid arguments to <%=CsFullTypeName(type)%>.<%=event.Name%>!");
             return 0;
         }
@@ -636,8 +724,10 @@ namespace XLua.CSObjectWrap
         [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
         static int _e_add_<%=event.Name%>(RealStatePtr L)
         {
+            #if OSG_PROFILE
             int sampleIndex = -1;
             StatsLite.BeginSample(StatsSampleId.Lua_StaticAddEvent, ref sampleIndex);
+            #endif
 		    try 
 		    {
                 ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
@@ -648,22 +738,30 @@ namespace XLua.CSObjectWrap
                     return LuaAPI.luaL_error(L, "#2 need <%=CsFullTypeName(event.Type)%>!");
                 }
 				<%=CsFullTypeName(type)%>.<%=UnK(event.Name)%> += gen_delegate;
+                #if OSG_PROFILE
 				StatsLite.EndSampleByIndex(ref sampleIndex);
+                #endif
 				return 0;
 			} 
 			catch(System.Exception gen_e) 
 			{
+                #if OSG_PROFILE
 			    StatsLite.EndSampleByIndex(ref sampleIndex);
+                #endif
                 return LuaAPI.luaL_error(L, "c# exception in _e_<%=event.Name%>:" + gen_e);
             }
+            #if OSG_PROFILE
             StatsLite.EndSampleByIndex(ref sampleIndex);
+            #endif
 			return LuaAPI.luaL_error(L, "invalid arguments to <%=CsFullTypeName(type)%>.<%=event.Name%>!");
         }
         [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
         static int _e_remove_<%=event.Name%>(RealStatePtr L)
         {
+            #if OSG_PROFILE
             int sampleIndex = -1;
             StatsLite.BeginSample(StatsSampleId.Lua_StaticRemoveEvent, ref sampleIndex);
+            #endif
 		    try 
 		    {
                 ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
@@ -671,19 +769,27 @@ namespace XLua.CSObjectWrap
                 <%=GetCasterStatement(event.Type, 1, "gen_delegate", true)%>;
                 if (gen_delegate == null) 
                 {
+                    #if OSG_PROFILE
                     StatsLite.EndSampleByIndex(ref sampleIndex);
+                    #endif
                     return LuaAPI.luaL_error(L, "#1 need <%=CsFullTypeName(event.Type)%>!");
                 }
 				<%=CsFullTypeName(type)%>.<%=UnK(event.Name)%> -= gen_delegate;
+                #if OSG_PROFILE
 				StatsLite.EndSampleByIndex(ref sampleIndex);
+                #endif
 				return 0;
 			} 
 			catch(System.Exception gen_e) 
 			{
+                #if OSG_PROFILE
 			    StatsLite.EndSampleByIndex(ref sampleIndex);
+                #endif
                 return LuaAPI.luaL_error(L, "c# exception in _e_<%=event.Name%>:" + gen_e);
             }
+            #if OSG_PROFILE
             StatsLite.EndSampleByIndex(ref sampleIndex);
+            #endif
 			return LuaAPI.luaL_error(L, "invalid arguments to <%=CsFullTypeName(type)%>.<%=event.Name%>!");
         }
         <%end end)%>

@@ -614,24 +614,21 @@ namespace XLua
 					Type type = enumerator.Current;
 					if (type.IsDefined(typeof(ExtensionAttribute), false) && (
 							type.IsDefined(typeof(ReflectionUseAttribute), false)
-#if UNITY_EDITOR
 							|| type.IsDefined(typeof(LuaCallCSharpAttribute), false)
-#endif
 						))
 					{
 						type_def_extention_method.Add(type);
 					}
 
-					if (!type.IsAbstract() || !type.IsSealed()) continue;
+					if (!type.IsAbstract() || !type.IsSealed()) 
+                        continue;
 
 					var fields = type.GetFields(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.DeclaredOnly);
 					for (int i = 0; i < fields.Length; i++)
 					{
 						var field = fields[i];
 						if ((field.IsDefined(typeof(ReflectionUseAttribute), false)
-#if UNITY_EDITOR || XLUA_GENERAL
 							|| field.IsDefined(typeof(LuaCallCSharpAttribute), false)
-#endif
 							) && (typeof(IEnumerable<Type>)).IsAssignableFrom(field.FieldType))
 						{
 							type_def_extention_method.AddRange((field.GetValue(null) as IEnumerable<Type>)
@@ -644,9 +641,7 @@ namespace XLua
 					{
 						var prop = props[i];
 						if ((prop.IsDefined(typeof(ReflectionUseAttribute), false)
-#if UNITY_EDITOR || XLUA_GENERAL
 							|| prop.IsDefined(typeof(LuaCallCSharpAttribute), false)
-#endif
 							) && (typeof(IEnumerable<Type>)).IsAssignableFrom(prop.PropertyType))
 						{
 							type_def_extention_method.AddRange((prop.GetValue(null, null) as IEnumerable<Type>)

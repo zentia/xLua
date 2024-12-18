@@ -40,7 +40,7 @@ struct PersistentObjectInfo
 };
 namespace xlua
 {
-typedef void (*LogCallback)(const char* value);
+
 
 static LogCallback GLogCallback = nullptr;
 
@@ -58,26 +58,13 @@ void Log(const std::string Fmt, ...)
     }
 }
 
-struct LuaEnv
+LuaEnv::LuaEnv()
 {
-    LuaEnv()
-    {
-        L = luaL_newstate();
-        luaopen_xlua(L);
-        CppObjectMapper.Initialize(L);
-    }
+    L = luaL_newstate();
+    luaopen_xlua(L);
+    CppObjectMapper.Initialize(L);
+}
 
-    ~LuaEnv()
-    {
-        CppObjectMapper.UnInitialize(L);
-        lua_close(L);
-        L = nullptr;
-    }
-
-    lua_State* L;
-
-    xlua::CppObjectMapper CppObjectMapper;
-};
 }    // namespace xlua
 
 extern pesapi_func_ptr reg_apis[];

@@ -70,6 +70,7 @@ namespace CSObjectWrapEditor
         public XLuaTemplate LuaWrapPusher;
         public XLuaTemplate PackUnpack;
         public XLuaTemplate TemplateCommon;
+        public XLuaTemplate LinkXmlGen;
     }
 
     public static class Generator
@@ -95,6 +96,7 @@ namespace CSObjectWrapEditor
             var LuaWrapPusher = Resources.Load<TextAsset>("xlua/templates/LuaWrapPusher.tpl");
             var PackUnpack = Resources.Load<TextAsset>("xlua/templates/PackUnpack.tpl");
             var TemplateCommon = Resources.Load<TextAsset>("xlua/templates/TemplateCommon");
+            var LinkXmlGen = Resources.Load<TextAsset>("LinkXmlGen.tpl");
             templateRef = new XLuaTemplates()
             {
                 LuaClassWrap = { name = LuaClassWrap.name, text = LuaClassWrap.text },
@@ -106,6 +108,7 @@ namespace CSObjectWrapEditor
                 LuaWrapPusher = { name = LuaWrapPusher.name, text = LuaWrapPusher.text },
                 PackUnpack = { name = PackUnpack.name, text = PackUnpack.text },
                 TemplateCommon = { name = TemplateCommon.name, text = TemplateCommon.text },
+                LinkXmlGen = { name = LinkXmlGen.name, text = LinkXmlGen.text },
             };
             luaenv.AddLoader((ref string filepath) =>
             {
@@ -1594,7 +1597,7 @@ namespace CSObjectWrapEditor
             GenEnumWraps();
             GenCodeForClass();
             GenLuaRegister();
-            CustomGen(templateRef.TemplateCommon.text, GetTasksLinkXml);
+            CustomGen(templateRef.LinkXmlGen.text, GetTasksLinkXml);
 #endif
         }
 
@@ -1611,8 +1614,7 @@ namespace CSObjectWrapEditor
         {
             GetGenConfig(XLua.Utils.GetAllTypes());
 
-            LuaFunction template = XLua.TemplateEngine.LuaTemplate.Compile(luaenv,
-                template_src);
+            LuaFunction template = XLua.TemplateEngine.LuaTemplate.Compile(luaenv, template_src);
             foreach (var gen_task in get_tasks(luaenv, new UserConfig() {
                 LuaCallCSharp = LuaCallCSharp,
                 CSharpCallLua = CSharpCallLua,

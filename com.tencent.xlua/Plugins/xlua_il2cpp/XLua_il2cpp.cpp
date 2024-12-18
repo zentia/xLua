@@ -32,6 +32,13 @@
 // Because we need to hold the C# object pointer, we must ensure that GC does not do memory reorganization
 static_assert(IL2CPP_GC_BOEHM, "Only BOEHM GC supported!");
 
+#ifdef UNITY_2023_2_OR_NEWER
+typedef Il2CppGCHandle XLUA_Il2CppGCHandle;
+#else
+typedef int32_t XLUA_Il2CppGCHandle;
+#endif
+
+
 using namespace il2cpp::vm;
 
 namespace xlua
@@ -534,7 +541,7 @@ static int GetPObjectRefInfoValue(struct pesapi_ffi* apis, pesapi_env env, const
 }
 
     // out_object luaTable
-static int32_t* FindOrCreateHandleStoreOfValue(struct pesapi_ffi* apis, pesapi_env env, int value, pesapi_value_ref* out_value_ref, Il2CppObject** out_object)
+static XLUA_Il2CppGCHandle* FindOrCreateHandleStoreOfValue(struct pesapi_ffi* apis, pesapi_env env, int value, pesapi_value_ref* out_value_ref, Il2CppObject** out_object)
 {
     void* out_ptr;
     if (!apis->get_private(env, value, &out_ptr))
@@ -544,10 +551,10 @@ static int32_t* FindOrCreateHandleStoreOfValue(struct pesapi_ffi* apis, pesapi_e
     }
 
     pesapi_value_ref value_ref = static_cast<pesapi_value_ref>(out_ptr);
-    int32_t* res = nullptr;
+    XLUA_Il2CppGCHandle* res = nullptr;
     if (value_ref)
     {
-        res = reinterpret_cast<int32_t*>(apis->get_ref_internal_fields(value_ref));
+        res = reinterpret_cast<XLUA_Il2CppGCHandle*>(apis->get_ref_internal_fields(value_ref));
         if (!res)
         {
             PLog("invalid internal_fields ptr:%p", res);
@@ -561,12 +568,17 @@ static int32_t* FindOrCreateHandleStoreOfValue(struct pesapi_ffi* apis, pesapi_e
     {
         value_ref = apis->create_value_ref(env, value);
 
-        res = reinterpret_cast<int32_t*>(apis->get_ref_internal_fields(value_ref));
+        res = reinterpret_cast<XLUA_Il2CppGCHandle*>(apis->get_ref_internal_fields(value_ref));
         *out_object = nullptr;
     }
     else
     {
-        *out_object = il2cpp::gc::GCHandle::GetTarget(*res);
+#ifdef UNITY_2023_2_OR_NEWER
+        * out_object = il2cpp::gc::GCHandle::GetTarget(reinterpret_cast<Il2CppGCHandle>(*res));
+#else
+        * out_object = il2cpp::gc::GCHandle::GetTarget(*res);
+#endif
+        
         if (*out_object == nullptr)
         {
             apis->duplicate_value_ref(value_ref);
@@ -583,7 +595,7 @@ static Il2CppObject* FunctionToDelegate(struct pesapi_ffi* apis, pesapi_env env,
 {
     pesapi_value_ref value_ref;
     Il2CppObject* ret = nullptr;
-    int32_t* handle_store = FindOrCreateHandleStoreOfValue(apis, env, luaval, &value_ref, &ret);
+    XLUA_Il2CppGCHandle* handle_store = FindOrCreateHandleStoreOfValue(apis, env, luaval, &value_ref, &ret);
     if (!handle_store)
         return nullptr;
 
@@ -596,7 +608,11 @@ static Il2CppObject* FunctionToDelegate(struct pesapi_ffi* apis, pesapi_env env,
         ret = (Il2CppObject*) DelegateAllocate(classInfo->TypeId, classInfo->DelegateBridge, &delegateInfo);
         auto targetHandle = il2cpp::gc::GCHandle::GetTargetHandle(ret, 0, il2cpp::gc::HANDLE_WEAK);
         il2cpp::vm::Exception::RaiseIfError(targetHandle.GetError());
-        *handle_store = targetHandle.Get();
+#ifdef UNITY_2023_2_OR_NEWER
+        * handle_store = reinterpret_cast<XLUA_Il2CppGCHandle>(targetHandle.Get());
+#else
+        * handle_store = targetHandle.Get();
+#endif
         SetPObjectRefInfoValue(apis, env, delegateInfo, value_ref);
     }
     return ret;
@@ -870,7 +886,7 @@ union PrimitiveValueType
 
                             pesapi_value_ref value_ref;
                             Il2CppObject* ret = nullptr;
-                            int32_t* handle_store = FindOrCreateHandleStoreOfValue(apis, env, -1, &value_ref, &ret);
+                            XLUA_Il2CppGCHandle* handle_store = FindOrCreateHandleStoreOfValue(apis, env, -1, &value_ref, &ret);
                             if (!handle_store)
                                 break;
 
@@ -885,7 +901,7 @@ union PrimitiveValueType
                                 PObjectRefInfo* objectInfo = GetPObjectRefInfo(ret);
                                 auto targetHandle = il2cpp::gc::GCHandle::GetTargetHandle(ret, 0, il2cpp::gc::HANDLE_WEAK);
                                 il2cpp::vm::Exception::RaiseIfError(targetHandle.GetError());
-                                *handle_store = targetHandle.Get();
+                                *handle_store = reinterpret_cast<XLUA_Il2CppGCHandle>(targetHandle.Get());
                                 SetPObjectRefInfoValue(apis, env, objectInfo, value_ref);
                             }
                             memcpy(elementAddress, &ret, elementSize);
@@ -1104,7 +1120,7 @@ handle_underlying:
 
                         pesapi_value_ref value_ref;
                         Il2CppObject* ret = nullptr;
-                        int32_t* handle_store = FindOrCreateHandleStoreOfValue(apis, env, luaval, &value_ref, &ret);
+                        XLUA_Il2CppGCHandle* handle_store = FindOrCreateHandleStoreOfValue(apis, env, luaval, &value_ref, &ret);
                         if (!handle_store)
                             return nullptr;
 
@@ -1119,7 +1135,11 @@ handle_underlying:
                             PObjectRefInfo* objectInfo = GetPObjectRefInfo(ret);
                             auto targetHandle = il2cpp::gc::GCHandle::GetTargetHandle(ret, 0, il2cpp::gc::HANDLE_WEAK);
                             il2cpp::vm::Exception::RaiseIfError(targetHandle.GetError());
-                            *handle_store = targetHandle.Get();
+#ifdef UNITY_2023_2_OR_NEWER
+                            * handle_store = reinterpret_cast<XLUA_Il2CppGCHandle>(targetHandle.Get());
+#else
+                            * handle_store = targetHandle.Get();
+#endif
                             SetPObjectRefInfoValue(apis, env, objectInfo, value_ref);
                         }
                         return ret;
@@ -1636,20 +1656,11 @@ static bool ReflectionWrapper(struct pesapi_ffi* apis, MethodInfo* method, Il2Cp
     }
     void** args = method->parameters_count > 0 ? (void**) alloca(sizeof(void*) * method->parameters_count) : nullptr;
     int luaThis = apis->get_holder(info);
-    if (self)
-    {
-        Il2CppClass* thisType = method->klass;
-
-        if (Class::IsValuetype(thisType))
-        {
-            self = ((uint8_t*) self) - sizeof(Il2CppObject);
-        }
-    }
     if (isExtensionMethod)
     {
         args[0] = apis->get_native_object_ptr(env, luaThis);
     }
-
+    int returnCount = 0;
     for (int i = csArgStart; i < method->parameters_count; ++i)
     {
         auto parameterType = Method::GetParam(method, i);
@@ -1691,6 +1702,7 @@ static bool ReflectionWrapper(struct pesapi_ffi* apis, MethodInfo* method, Il2Cp
         {
             if (Class::IsNullable(parameterKlass))
             {
+                returnCount++;
                 void* storage = alloca(parameterKlass->instance_size - sizeof(Il2CppObject));
                 auto underlyClass = Class::GetNullableArgument(parameterKlass);
                 uint32_t valueSize = underlyClass->instance_size - sizeof(Il2CppObject);
@@ -1700,6 +1712,7 @@ static bool ReflectionWrapper(struct pesapi_ffi* apis, MethodInfo* method, Il2Cp
             }
             else if (passedByReference)
             {
+                returnCount++;
                 auto underlyClass = Class::FromIl2CppType(&parameterKlass->byval_arg);
                 void* storage = alloca(underlyClass->instance_size - sizeof(Il2CppObject));
                 luaValue = LuaObjectUnRef(apis, env, luaValue);
@@ -1731,6 +1744,7 @@ static bool ReflectionWrapper(struct pesapi_ffi* apis, MethodInfo* method, Il2Cp
         }
         else if (passedByReference)
         {
+            returnCount++;
             void** arg = (void**) alloca(sizeof(void*));
             *arg = nullptr;
             auto underlyClass = Class::FromIl2CppType(&parameterKlass->byval_arg);
@@ -1768,7 +1782,8 @@ static bool ReflectionWrapper(struct pesapi_ffi* apis, MethodInfo* method, Il2Cp
     }
 
     Il2CppObject* ret = Runtime::InvokeWithThrow(method, self, args);
-
+    int* returnValueArray = new int[returnCount];
+    int idx = 0;
     for (int i = csArgStart; i < method->parameters_count; ++i)
     {
         auto parameterType = Method::GetParam(method, i);
@@ -1784,34 +1799,41 @@ static bool ReflectionWrapper(struct pesapi_ffi* apis, MethodInfo* method, Il2Cp
                 bool hasValue = !!*(static_cast<uint8_t*>(args[i]) + parameterKlass->instance_size - sizeof(Il2CppObject));
                 if (!hasValue)
                 {
-                    LuaObjectSetRef(apis, env, luaValue, apis->create_null(env));
+                    returnValueArray[idx++] = apis->create_null(env);
                     continue;
                 }
             }
             auto underlyClass = Class::FromIl2CppType(&parameterKlass->byval_arg);
-            LuaObjectSetRef(apis, env, luaValue,
-                CSRefToLuaValue(apis, env, underlyClass, (Il2CppObject*) (((uint8_t*) args[i]) - sizeof(Il2CppObject))));
+            returnValueArray[idx++] = CSRefToLuaValue(apis, env, underlyClass, (Il2CppObject*)(((uint8_t*)args[i]) - sizeof(Il2CppObject)));
         }
         else if (passedByReference)
         {
             Il2CppObject** arg = (Il2CppObject**) args[i];
             auto underlyClass = Class::FromIl2CppType(&parameterKlass->byval_arg);
-            LuaObjectSetRef(apis, env, luaValue, CSRefToLuaValue(apis, env, underlyClass, *arg));
+            returnValueArray[idx++] = CSRefToLuaValue(apis, env, underlyClass, *arg);
         }
         else if (parameterKlass->byval_arg.type == IL2CPP_TYPE_PTR)
         {
             auto underlyClass = Class::FromIl2CppType(&parameterKlass->element_class->byval_arg);
-            LuaObjectSetRef(apis, env, luaValue,
-                CSRefToLuaValue(apis, env, underlyClass, (Il2CppObject*) (((uint8_t*) args[i]) - sizeof(Il2CppObject))));
+            LuaObjectSetRef(apis, env, luaValue, CSRefToLuaValue(apis, env, underlyClass, (Il2CppObject*) (((uint8_t*) args[i]) - sizeof(Il2CppObject))));
         }
     }
 
     auto returnType = Class::FromIl2CppType(method->return_type);
+    int returnValue = 0;
     if (returnType != il2cpp_defaults.void_class)
     {
-        apis->add_return(info, CSRefToLuaValue(apis, env, returnType, ret));
+        returnValue = CSRefToLuaValue(apis, env, returnType, ret);
     }
-
+    if (returnValue != 0)
+    {
+        apis->add_return(info, returnValue);
+    }
+        for (int i = 0; i < returnCount; i++)
+        {
+            apis->add_return(info, returnValueArray[i]);
+        }
+        delete returnValueArray;
     return true;
 }
 
@@ -2032,7 +2054,7 @@ Il2CppObject* NewTable(struct pesapi_ffi* apis, intptr_t ptr)
     pesapi_value_ref value_ref;
     Il2CppObject* ret;
     apis->create_object(env);
-    int32_t* handle_store = FindOrCreateHandleStoreOfValue(apis, env, -1, &value_ref, &ret);
+    XLUA_Il2CppGCHandle* handle_store = FindOrCreateHandleStoreOfValue(apis, env, -1, &value_ref, &ret);
 
     if (ret == nullptr)
     {
@@ -2045,7 +2067,11 @@ Il2CppObject* NewTable(struct pesapi_ffi* apis, intptr_t ptr)
         PObjectRefInfo* objectInfo = GetPObjectRefInfo(ret);
         auto targetHandle = il2cpp::gc::GCHandle::GetTargetHandle(ret, 0, il2cpp::gc::HANDLE_WEAK);
         il2cpp::vm::Exception::RaiseIfError(targetHandle.GetError());
-        *handle_store = targetHandle.Get();
+#ifdef UNITY_2023_2_OR_NEWER
+        * handle_store = reinterpret_cast<XLUA_Il2CppGCHandle>(targetHandle.Get());
+#else
+        * handle_store = targetHandle.Get();
+#endif
         SetPObjectRefInfoValue(apis, env, objectInfo, value_ref);
     }
     
@@ -2063,7 +2089,7 @@ Il2CppObject* GetGlobalTable(struct pesapi_ffi* apis, intptr_t ptr)
     pesapi_value_ref value_ref;
     Il2CppObject* ret;
     apis->global(env);
-    int32_t* handle_store = FindOrCreateHandleStoreOfValue(apis, env, -1, &value_ref, &ret);
+    XLUA_Il2CppGCHandle* handle_store = FindOrCreateHandleStoreOfValue(apis, env, -1, &value_ref, &ret);
 
     if (ret == nullptr)
     {
@@ -2076,7 +2102,11 @@ Il2CppObject* GetGlobalTable(struct pesapi_ffi* apis, intptr_t ptr)
         PObjectRefInfo* objectInfo = GetPObjectRefInfo(ret);
         auto targetHandle = il2cpp::gc::GCHandle::GetTargetHandle(ret, 0, il2cpp::gc::HANDLE_WEAK);
         il2cpp::vm::Exception::RaiseIfError(targetHandle.GetError());
-        *handle_store = targetHandle.Get();
+#ifdef UNITY_2023_2_OR_NEWER
+        * handle_store = reinterpret_cast<XLUA_Il2CppGCHandle>(targetHandle.Get());
+#else
+        * handle_store = targetHandle.Get();
+#endif
         SetPObjectRefInfoValue(apis, env, objectInfo, value_ref);
     }
 
@@ -2180,14 +2210,19 @@ struct LuaEnvPrivate
 
         for (const auto& valueRef : pendingKillRefs)
         {
-            int32_t* store = reinterpret_cast<int32_t*>(apis->get_ref_internal_fields(valueRef));
+            XLUA_Il2CppGCHandle* store = reinterpret_cast<XLUA_Il2CppGCHandle*>(apis->get_ref_internal_fields(valueRef));
             if (store)
             {
+#ifdef UNITY_2023_2_OR_NEWER
+                Il2CppGCHandle handle = *store;
+#else
                 int32_t handle = *store;
+#endif
                 if (nullptr == il2cpp::gc::GCHandle::GetTarget(handle))
                 {
                     il2cpp::gc::GCHandle::Free(handle);
                 }
+
             }
             apis->release_value_ref(valueRef);
         }

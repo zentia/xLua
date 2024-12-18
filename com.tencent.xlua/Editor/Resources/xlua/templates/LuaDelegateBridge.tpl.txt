@@ -2,8 +2,10 @@ using LuaAPI = XLua.LuaDLL.Lua;
 using RealStatePtr = System.IntPtr;
 using LuaCSFunction = XLua.LuaDLL.lua_CSFunction;
 using System;
+#if OSG_PROFILE
 using Assets.Plugins.Common;
 using Assets.Plugins.Perf;
+#endif
 <%
 require "TemplateCommon"
 %>
@@ -38,8 +40,10 @@ namespace XLua
 			%><%=CsFullTypeName(parameter.ParameterType)%> p<%=pi%><% 
 		end) %>)
 		{
+			#if OSG_PROFILE
 		    int sampleIndex = -1;
             StatsLite.BeginSample(StatsSampleId.Lua_Delegate, ref sampleIndex);
+			#endif
 #if THREAD_SAFE || HOTFIX_ENABLE
             lock (luaEnv.luaEnvLock)
             {
@@ -69,17 +73,29 @@ namespace XLua
 					end) %>
 					<%if has_return then %><%=GetCasterStatement(delegate.ReturnType, "errFunc + 1", "__gen_ret", true)%>;<% end%>
 					LuaAPI.lua_settop(L, errFunc - 1);
+					#if OSG_PROFILE
+					StatsLite.EndSampleByIndex(ref sampleIndex);
+					#endif
 					<%if has_return then %>return  __gen_ret;<% end%>
 				}
 				else 
 				{
-					Log.LogF("Xlua", "Calling a disposed Lua function");
+				    <%ForEachCsList(parameters, function(parameter, pi) 
+                    if parameter.IsOut then 
+                    %><%='p' .. pi .. ' = default'%>;
+                    <%
+                        out_idx = out_idx + 1
+                    end
+                    end) %>
+					UnityEngine.Debug.LogError("Calling a disposed Lua function");
+					#if OSG_PROFILE
+					StatsLite.EndSampleByIndex(ref sampleIndex);
+					#endif
 					<%if has_return then %>return default;<% end%>
 				}
 #if THREAD_SAFE || HOTFIX_ENABLE
             }
 #endif
-            StatsLite.EndSampleByIndex(ref sampleIndex);
 		}
         <%end)%>
 		static DelegateBridgeWrap()

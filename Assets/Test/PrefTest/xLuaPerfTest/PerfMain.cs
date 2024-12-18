@@ -81,6 +81,7 @@ public class PerfMain : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        
 #if UNITY_ANDROID || UNITY_IOS
 #if XLUA_IL2CPP
         resultPath = Application.persistentDataPath + "/il2cpp";
@@ -109,13 +110,24 @@ public class PerfMain : MonoBehaviour
         LuaEvalAttribute.Bind(this, luaenv);
     }
 
+    void HandleLog(string logString, string stackTrace, LogType type)
+    {
+        sw.WriteLine(logString);
+        sw.Flush();
+    }
+
     private void OnGUI()
     {
         const float height = 100;
         const float width = 400;
         if (GUI.Button(new Rect(0, 0, width, height), "StartTest"))
         {
+            string path = Path.Combine(Application.persistentDataPath, "log.txt");
+            sw = new StreamWriter(path);
+            Application.logMessageReceived += HandleLog;
             StartTest();
+            Application.logMessageReceived -= HandleLog;
+            sw.Close();
         }
 
         var loopTimes = 1000000;
@@ -563,7 +575,7 @@ public interface ITableAccess
 public class ClassLuaCallCS : ParaClass
 {
     public int[] array;
-    public List<string> list;
+    public List<string> list = new List<string>(){"a","b"};
     public Dictionary<string, int> dictionary;
 
     [LuaCallCSharp]
@@ -742,7 +754,10 @@ public class ClassLuaCallCS : ParaClass
 
     public void InvokeBaseParaCB()
     {
-        BaseParaEvent(0);
+        if (BaseParaEvent != null)
+        {
+            BaseParaEvent(0);
+        }
     }
 
     public void InvokeClassParaCB()

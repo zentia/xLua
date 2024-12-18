@@ -96,6 +96,14 @@ struct v
         uint8_t __padding[1];
     };
 };
+// Enumerator
+struct S_oi4i4s_
+{
+	Il2CppObject* p1;
+	int32_t p2;
+	int32_t p3;
+	Il2CppString* p4;
+};
 // RuntimeTypeHandle
 struct S_p_
 {

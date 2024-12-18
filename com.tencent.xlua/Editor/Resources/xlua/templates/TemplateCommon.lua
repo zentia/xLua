@@ -377,15 +377,15 @@ function GetPushStatement(t, variable, is_v_params)
     if t.IsByRef then t = t:GetElementType() end
     local testname = getSafeFullName(t)
     if fixPush[testname] then
-        return fixPush[testname] .. "(L, ".. variable ..")" 
+        return fixPush[testname] .. "(L, ".. variable ..")"
+    elseif t.IsEnum then
+        return "translator.PushAny(L, System.Convert.ToInt64("..variable.."))"
     elseif genPushAndUpdateTypes[t] then
         return "translator.Push".. CSVariableName(t) .."(L, "..variable..")"
     elseif t.IsGenericParameter and not t.DeclaringMethod then
 	    return "translator.PushByType(L, "..variable..")"
 	elseif t.IsInterface or GetNullableUnderlyingType(t) then
 	    return "translator.PushAny(L, "..variable..")"
-    elseif t.IsEnum then
-        return "translator.PushAny(L, System.Convert.ToInt64("..variable.."))"
     else
         return "translator.Push(L, "..variable..")"
     end

@@ -4,10 +4,10 @@
 
 require("tte")
 
-function unityenv_for_xlua(newerthan2021, shared) 
-    return TaggedTemplateEngine('', IF(newerthan2021), [[
-#ifndef UNITY_2021_1_OR_NEWER
-    #define UNITY_2021_1_OR_NEWER
+function unityenv_for_xlua(newerthan2023, shared) 
+    return TaggedTemplateEngine('', IF(newerthan2023), [[
+#ifndef UNITY_2023_2_OR_NEWER
+    #define UNITY_2023_2_OR_NEWER
 #endif
 ]], ENDIF(), [[
 

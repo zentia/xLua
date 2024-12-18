@@ -409,20 +409,23 @@ static int obj_indexer(lua_State* L)
         return 0;
     }
 }
-// upvalue --- [1]:setters, [2]:base_newindex
-// param   --- [1]: obj, [2]: key, [3]: value
+// upvalue --- [1]:methods, [2]:setters, [3]:base_newindex
+// param   --- [1]: obj, [2]: key, [3]: value [4]: string
 static int obj_internal_newindexer(lua_State* L, bool is_indexer)
 {
     if (is_indexer)
     {
         lua_gettable(L, lua_upvalueindex(1));
+        //[1]: obj, [2]: key, [3]: value [4]: string [5]: set_Item
+        // set_Item(1,2,3)
         if (!lua_isnil(L, -1))
         {
             // has method
             lua_pushvalue(L, 1);
+            lua_pushvalue(L, 2);
             lua_pushvalue(L, 3);
-            lua_call(L, 2, 0);
-            return 1;
+            lua_call(L, 3, 0);
+            return 0;
         }
         lua_pop(L, 1);
     }
