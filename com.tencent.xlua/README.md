@@ -25,7 +25,7 @@
     - `UIHeroDetailInfoShowDataOldXD.lua`
     - 删除UIShopBase.lua中的 private_accessible
     - `UICardHeroItem_Collection.lua`
-7. 增加宏XLUA_IL2CPP,XLUA_FULL
+7. 增加宏XLUA_IL2CPP,XLUA_FULL,OSG_GAME
 8. 执行XLua/Generator Code，刷新一下UNITY
 9. 提交所有变更
 # 差异

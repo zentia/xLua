@@ -139,7 +139,9 @@ namespace XLua.LuaDLL
 
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         public delegate void PFStatsEndSampleByIndex(Int32 sampleIndex);
+        #if OSG_GAME
         [DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
+        
         public static extern int luaregist_stats_custom_name(IntPtr L, PFRegistCustomName pf);
 
         [DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
@@ -147,7 +149,7 @@ namespace XLua.LuaDLL
 
         [DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
         public static extern int luastats_end_sample_by_index(IntPtr L, PFStatsEndSampleByIndex pf);
-
+        #endif
         public static void lua_newtable(IntPtr L)//[-0, +0, m]
         {
 			lua_createtable(L, 0, 0);
