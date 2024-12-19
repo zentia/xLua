@@ -72,6 +72,8 @@ namespace XLua
                     return type.DeclaringType.FullName.Split('`')[0] + "(" + string.Join(", ", genericArgumentNames) +
                            ")" + "." + type.Name;
                 }
+
+                return GetLuaFriendlyName(type.DeclaringType) + '.' + GetNameWithoutNamespace(type);
             }
 
             if (type.IsGenericType)
