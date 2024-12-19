@@ -530,4 +530,18 @@ function StartTest()
     CS.UnityEngine.Debug.Log((string.format('LuaEnum.ONE: %d', CS.ClassLuaCallCS.LuaEnum.ONE)))
     classLuaCallCS.enumParam = CS.ClassLuaCallCS.LuaEnum.TWO
     CS.UnityEngine.Debug.Log((string.format('classLuaCallCS.enumParam = %d', classLuaCallCS.enumParam)))
+    
+    -- table to array
+    classLuaCallCS:CharArray({1,2,3,4,5})
+    classLuaCallCS:BooleanArray({true,false,true,false,true})
+    classLuaCallCS:UInt8Array({1,2,3,4,5})
+    classLuaCallCS:UInt16Array({1,2,3,4,5})
+    classLuaCallCS:UInt32Array({1,2,3,4,5})
+    classLuaCallCS:UInt64Array({1,2,3,4,5})
+    classLuaCallCS:Int16Array({-1,-2,-3,-4,-5})
+    classLuaCallCS:Int32Array({-1,-2,-3,-4,-5})
+    classLuaCallCS:Int64Array({-10000,-200000,-300000,-400000,-5000000})
+    classLuaCallCS:StringArray({'a','b','c','d','f'})
+    classLuaCallCS:StructArray({CS.ParaStruct(),CS.ParaStruct(),CS.ParaStruct(),CS.ParaStruct(),CS.ParaStruct()})
+    classLuaCallCS:ClassArray({CS.ParaClass(),CS.ParaClass(),CS.ParaClass(),CS.ParaClass(),CS.ParaClass()})
 end

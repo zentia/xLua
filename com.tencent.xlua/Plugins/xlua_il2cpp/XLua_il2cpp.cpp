@@ -35,7 +35,7 @@ static_assert(IL2CPP_GC_BOEHM, "Only BOEHM GC supported!");
 #ifdef UNITY_2023_2_OR_NEWER
 typedef Il2CppGCHandle XLUA_Il2CppGCHandle;
 #else
-typedef int32_t XLUA_Il2CppGCHandle;
+typedef unsigned XLUA_Il2CppGCHandle;
 #endif
 
 
@@ -288,24 +288,6 @@ namespace xlua
             Exception::Raise(Exception::GetInvalidOperationException("type of TypedValue is null"));
         }
         g_typeofArray = il2cpp_codegen_class_from_type(type->type);
-    }
-
-    static void SetGlobalType_IList(Il2CppReflectionType* type)
-    {
-	    if (!type)
-	    {
-            Exception::Raise(Exception::GetInvalidOperationException("type of IList is null"));
-	    }
-        g_typeofIList = il2cpp_codegen_class_from_type(type->type);
-    }
-
-    static void SetGlobalType_IDictionary(Il2CppReflectionType* type)
-    {
-	    if (!type)
-	    {
-            Exception::Raise(Exception::GetInvalidOperationException("type of IDictionary is null"));
-	    }
-        g_typeofIDictionary = il2cpp_codegen_class_from_type(type->type);
     }
 
 static void MethodCallback(struct pesapi_ffi* apis, pesapi_callback_info info)
@@ -784,7 +766,7 @@ union PrimitiveValueType
     double r8;
 };
 
-    Il2CppObject* LuaTableToCSArray(struct pesapi_ffi* apis, Il2CppClass* klass, pesapi_env env, int luaval)
+    static Il2CppObject* LuaTableToCSArray(struct pesapi_ffi* apis, Il2CppClass* klass, pesapi_env env, int luaval)
     {
         uint32_t len = apis->get_array_length(env, luaval);
         Il2CppArray* array = Array::NewSpecific(klass, len);
@@ -798,11 +780,29 @@ union PrimitiveValueType
             apis->get_array_element(env, i, luaval);
             switch (t)
             {
+                case IL2CPP_TYPE_BOOLEAN:
+                {
+                    bool v = apis->get_value_bool(env, -1);
+                    memcpy(elementAddress, &v, elementSize);
+                }
+                break;
+                case IL2CPP_TYPE_CHAR:
+                {
+                    Il2CppChar v = static_cast<Il2CppChar>(apis->get_value_uint32(env, -1));
+                    memcpy(elementAddress, &v, elementSize);
+                }
+                break;
             case IL2CPP_TYPE_I1:
 	            {
 					int8_t v = static_cast<int8_t>(apis->get_value_int32(env, -1));
             		memcpy(elementAddress, &v, elementSize);
 	            }
+                break;
+                case IL2CPP_TYPE_I2:
+                {
+                    int16_t v = static_cast<int16_t>(apis->get_value_int32(env, -1));
+                    memcpy(elementAddress, &v, elementSize);
+                }
                 break;
 #if IL2CPP_SIZEOF_VOID_P == 4
             case IL2CPP_TYPE_I:
@@ -812,6 +812,36 @@ union PrimitiveValueType
 					int32_t v = apis->get_value_int32(env, -1);
                     memcpy(elementAddress, &v, elementSize);
 	            }
+                break;
+#if IL2CPP_SIZEOF_VOID_P == 8
+                case IL2CPP_TYPE_I:
+#endif
+                case IL2CPP_TYPE_I8:
+                {
+                    int64_t v = apis->get_value_int64(env, -1);
+                    memcpy(elementAddress, &v, elementSize);
+                }
+                break;
+                case IL2CPP_TYPE_U1:
+                {
+                    uint8_t v = static_cast<uint8_t>(apis->get_value_uint32(env, -1));
+                    memcpy(elementAddress, &v, elementSize);
+                }
+                break;
+                case IL2CPP_TYPE_U2:
+                {
+                    uint16_t v = static_cast<uint16_t>(apis->get_value_uint32(env, -1));
+                    memcpy(elementAddress, &v, elementSize);
+                }
+                break;
+#if IL2CPP_SIZEOF_VOID_P == 4
+                case IL2CPP_TYPE_U:
+#endif
+                case IL2CPP_TYPE_U4:
+                {
+                    uint32_t v = apis->get_value_uint32(env, -1);
+                    memcpy(elementAddress, &v, elementSize);
+                }
                 break;
 #if IL2CPP_SIZEOF_VOID_P == 8
             case IL2CPP_TYPE_U:
@@ -846,7 +876,14 @@ union PrimitiveValueType
 	                }
 	            }
                 break;
+            case IL2CPP_TYPE_ARRAY:
+            case IL2CPP_TYPE_SZARRAY:
             case IL2CPP_TYPE_CLASS:
+            case IL2CPP_TYPE_OBJECT:
+            case IL2CPP_TYPE_FNPTR:
+            case IL2CPP_TYPE_PTR:
+                case IL2CPP_TYPE_VALUETYPE:
+                case IL2CPP_TYPE_GENERICINST:
 	            {
                 if (apis->is_function(env, -1))
                 {
@@ -901,7 +938,7 @@ union PrimitiveValueType
                                 PObjectRefInfo* objectInfo = GetPObjectRefInfo(ret);
                                 auto targetHandle = il2cpp::gc::GCHandle::GetTargetHandle(ret, 0, il2cpp::gc::HANDLE_WEAK);
                                 il2cpp::vm::Exception::RaiseIfError(targetHandle.GetError());
-                                *handle_store = reinterpret_cast<XLUA_Il2CppGCHandle>(targetHandle.Get());
+                                *handle_store = targetHandle.Get();
                                 SetPObjectRefInfoValue(apis, env, objectInfo, value_ref);
                             }
                             memcpy(elementAddress, &ret, elementSize);
@@ -925,47 +962,6 @@ union PrimitiveValueType
         }
         return array;
     }
-
-    Il2CppObject* LuaTableToIList(struct pesapi_ffi* apis, Il2CppClass* klass, pesapi_env env, int luaval)
-    {
-        il2cpp::vm::Class::Init(klass);
-        Il2CppObject* list = il2cpp_object_new(klass);
-        return list;
-    }
-
-    Il2CppObject* LuaTableToIDictionary(struct pesapi_ffi* apis, Il2CppClass* klass, pesapi_env env, int luaval)
-    {
-        il2cpp::vm::Class::Init(klass);
-        Il2CppObject* dictionary = il2cpp_object_new(klass);
-
-        apis->create_null(env);
-        Il2CppReflectionType* type = TypeIdToType(klass);
-        Il2CppArray* array = il2cpp::vm::Type::GetGenericArgumentsInternal(type, true);
-        Il2CppReflectionType* keyType = il2cpp_array_get(array, Il2CppReflectionType*, 0);
-        int keyEnum = keyType->type->type;
-        Il2CppReflectionType* valueType = il2cpp_array_get(array, Il2CppReflectionType*, 1);
-        int valueEnum = valueType->type->type;
-        while (apis->next(env, luaval) != 0)
-        {
-	        switch (keyEnum)
-	        {
-#if IL2CPP_SIZEOF_VOID_P == 4
-	        case IL2CPP_TYPE_U:
-#endif
-	        case IL2CPP_TYPE_U4:
-		        {
-			        
-		        }
-                break;
-	        }
-	        switch (valueEnum)
-	        {
-		        
-	        }
-        }
-        return dictionary;
-    }
-
 
 Il2CppObject* LuaValueToCSRef(struct pesapi_ffi* apis, Il2CppClass* klass, pesapi_env env, int luaval)
 {
@@ -1147,14 +1143,6 @@ handle_underlying:
                     if (t == IL2CPP_TYPE_SZARRAY)
                     {
                         return LuaTableToCSArray(apis, klass, env, luaval);
-                    }
-                    if (Class::IsAssignableFrom(g_typeofIList, klass))
-                    {
-                        return LuaTableToIList(apis, klass, env, luaval);
-                    }
-                    if (Class::IsAssignableFrom(g_typeofIDictionary, klass))
-                    {
-                        return LuaTableToIDictionary(apis, klass, env, luaval);
                     }
                 }
                 if (klass == il2cpp_defaults.object_class)
@@ -2318,8 +2306,6 @@ extern "C"
         InternalCalls::Add("XLuaIl2cpp.NativeAPI::SetGlobalType_LuaTable(System.Type)", (Il2CppMethodPointer) xlua::SetGlobalType_LuaTable);
         InternalCalls::Add("XLuaIl2cpp.NativeAPI::SetGlobalType_ArrayBuffer(System.Type)", (Il2CppMethodPointer)xlua::SetGlobalType_ArrayBuffer);
         InternalCalls::Add("XLuaIl2cpp.NativeAPI::SetGlobalType_Array(System.Type)", (Il2CppMethodPointer) xlua::SetGlobalType_Array);
-        InternalCalls::Add("XLuaIl2cpp.NativeAPI::SetGlobalType_IList(System.Type)", (Il2CppMethodPointer)xlua::SetGlobalType_IList);
-        InternalCalls::Add("XLuaIl2cpp.NativeAPI::SetGlobalType_IDictionary(System.Type)", (Il2CppMethodPointer)xlua::SetGlobalType_IDictionary);
         InternalCalls::Add("XLuaIl2cpp.NativeAPI::DoString(System.IntPtr,System.IntPtr,System.Byte[],System.String,XLua.LuaTable,System.Type)", (Il2CppMethodPointer) xlua::DoString);
         InternalCalls::Add("XLuaIl2cpp.NativeAPI::LoadString(System.IntPtr,System.IntPtr,System.Byte[],System.String,XLua.LuaTable,System.Type)", (Il2CppMethodPointer) xlua::LoadString);
         InternalCalls::Add("XLuaIl2cpp.NativeAPI::SetObjectToGlobal(System.IntPtr,System.IntPtr,System.String,System.Object)",(Il2CppMethodPointer) xlua::SetObjectToGlobal);

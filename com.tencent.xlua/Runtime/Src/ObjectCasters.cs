@@ -541,11 +541,19 @@ namespace XLua
                 var t = LuaAPI.lua_type(L, idx);
                 if (t == LuaTypes.LUA_TUSERDATA)
                 {
-                    object obj = translator.SafeGetCSObj(L, idx);
-                    return (obj != null && type.IsAssignableFrom(obj.GetType())) ? obj : null;
+                    var obj = translator.SafeGetCSObj(L, idx);
+                    if (obj != null)
+                    {
+                        if (!type.IsAssignableFrom(obj.GetType()))
+                        {
+                            throw new Exception($"#{idx} not support cast! source type is {obj.GetType().Name}, target type is {type.Name}");
+                        }
+                        return obj;
+                    }
+                    return null;
                 }
                 if (t == LuaTypes.LUA_TTABLE)
-                    LuaAPI.luaL_error(L, $"#{idx} not support cast!");
+                    throw new Exception($"#{idx} not support cast! source type is table, target type is {type.Name}");
 
                 return null;
             }; 

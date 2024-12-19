@@ -12,8 +12,6 @@ typedef void (*FieldWrapFuncPtr)(struct pesapi_ffi* apis, pesapi_callback_info i
 typedef bool (*WrapFuncPtr)(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env,    void* self, bool checkArgument, struct WrapData* wrapData);
 extern Il2CppClass* g_typeofArray;
 extern Il2CppClass* g_typeofArrayBuffer;
-extern Il2CppClass* g_typeofIList;
-extern Il2CppClass* g_typeofIDictionary;
 
 struct FieldWrapData
 {

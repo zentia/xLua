@@ -786,4 +786,136 @@ public class ClassLuaCallCS : ParaClass
             Vec3ParaEvent(paraVec3);
         }
     }
+
+    public void CharArray(char[] param)
+    {
+        if (param != null)
+        {
+            foreach (var c in param)
+            {
+                Debug.Log(c);
+            }
+        }
+    }
+
+    public void BooleanArray(bool[] param)
+    {
+        if (param != null)
+        {
+            foreach (var b in param)
+            {
+                Debug.Log(b);
+            }
+        }
+    }
+
+    public void UInt8Array(byte[] param)
+    {
+        if (param != null)
+        {
+            foreach (var b in param)
+            {
+                Debug.Log(b);
+            }
+        }
+    }
+
+    public void UInt16Array(ushort[] param)
+    {
+        if (param != null)
+        {
+            foreach (var v in param)
+            {
+                Debug.Log(v);
+            }
+        }
+    }
+
+    public void UInt32Array(uint[] param)
+    {
+        if (param != null)
+        {
+            foreach (var v in param)
+            {
+                Debug.Log(v);
+            }
+        }
+    }
+
+    public void UInt64Array(ulong[] param)
+    {
+        if (param != null)
+        {
+            foreach (var v in param)
+            {
+                Debug.LogFormat("UInt64:{0}", v);
+            }
+        }
+    }
+
+    public void Int16Array(short[] param)
+    {
+        if (param != null)
+        {
+            foreach (var v in param)
+            {
+                Debug.LogFormat("Int16:{0}",v);
+            }
+        }
+    }
+
+    public void Int32Array(int[] param)
+    {
+        if (param != null)
+        {
+            foreach (var v in param)
+            {
+                Debug.LogFormat("Int32:{0}",v);
+            }
+        }
+    }
+
+    public void Int64Array(long[] param)
+    {
+        if (param != null)
+        {
+            foreach (var v in param)
+            {
+                Debug.Log(v);
+            }
+        }
+    }
+
+    public void StringArray(string[] param)
+    {
+        if (param != null)
+        {
+            foreach (var v in param)
+            {
+                Debug.Log(v);
+            }
+        }
+    }
+
+    public void StructArray(ParaStruct[] param)
+    {
+        if (param != null)
+        {
+            foreach (var v in param)
+            {
+                Debug.Log(v);
+            }
+        }
+    }
+
+    public void ClassArray(ParaClass[] param)
+    {
+        if (param != null)
+        {
+            foreach (var v in param)
+            {
+                Debug.Log(v);
+            }
+        }
+    }
 }

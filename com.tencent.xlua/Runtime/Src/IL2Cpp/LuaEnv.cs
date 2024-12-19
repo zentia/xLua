@@ -72,8 +72,6 @@ namespace XLua
             XLuaIl2cpp.NativeAPI.SetGlobalType_LuaTable(typeof(LuaTable));
             XLuaIl2cpp.NativeAPI.SetGlobalType_Array(typeof(Array));
             XLuaIl2cpp.NativeAPI.SetGlobalType_ArrayBuffer(typeof(byte[]));
-            XLuaIl2cpp.NativeAPI.SetGlobalType_IList(typeof(IList));
-            XLuaIl2cpp.NativeAPI.SetGlobalType_IDictionary(typeof(IDictionary));
 
             nativeLuaEnv = XLuaIl2cpp.NativeAPI.CreateNativeLuaEnv();
             nativePesapiEnv = XLuaIl2cpp.NativeAPI.GetPapiEnvRef(nativeLuaEnv);
