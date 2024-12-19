@@ -6,6 +6,7 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Test/PrefTest/xLuaPerfTest/Main.unity
+    path: Assets/xLuaPerfTest/Main.unity
     guid: 1dd456d13ecffe440b0f1e3187d1d3d3
   m_configObjects: {}
+  m_UseUCBPForAssetBundles: 0

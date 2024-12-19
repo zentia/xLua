@@ -764,7 +764,7 @@ PlayerSettings:
   scriptingDefineSymbols:
     Android: 
     Standalone: XLUA_FULL;XLUA_IL2CPP
-    iPhone: XLUA_FULL
+    iPhone: XLUA_FULL;XLUA_IL2CPP
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend:
