@@ -234,7 +234,7 @@ function createTypeProxy(namespace)
                 return
             end
             local fullName = namespace and (namespace .. '.' .. name) or name
-            local cls, csType = csTypeToClass(fullName)
+            local cls = csTypeToClass(fullName)
             if cls then
                 rawset(cls, '.fqn', fullName)
                 tbl[name] = cls

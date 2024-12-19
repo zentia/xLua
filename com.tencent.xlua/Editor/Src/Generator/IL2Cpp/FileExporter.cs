@@ -747,7 +747,7 @@ namespace XLuaIl2cpp.Editor
                 }
             }
 
-            public static void GenRegisterInfo(string outDir, Dictionary<Type, XLuaIl2cpp.Editor.Generator.FileExporter.Script> types)
+            public static void GenRegisterInfo(string outDir, Dictionary<Type, Script> types)
             {
 #if XLUA_FULL
                 var registerInfos = RegisterInfoGenerator.GetRegisterInfos(types, true);
@@ -765,6 +765,34 @@ namespace XLuaIl2cpp.Editor
                     var func = luaEnv.Global.Get<LuaFunction>("RegisterInfoTemplate");
                     var registerInfoContent = func.Func<List<RegisterInfoForGenerate>, string>(registerInfos);
                     var registerInfoPath = outDir + "RegisterInfo_Gen.cs";
+                    using (var textWriter = new StreamWriter(registerInfoPath, false, Encoding.UTF8))
+                    {
+                        textWriter.Write(registerInfoContent);
+                        textWriter.Flush();
+                    }
+                }
+
+                GenPreLoadInfo(registerInfos);
+            }
+
+            private static void GenPreLoadInfo(List<RegisterInfoForGenerate> registerInfos)
+            {
+                using (var luaEnv = new LuaEnv())
+                {
+                    var assetPath = Path.GetFullPath("Packages/com.tencent.xlua/");
+                    assetPath = assetPath.Replace("\\", "/");
+                    luaEnv.DoString($"package.path = package.path..';{assetPath + "Editor/Resources/xlua/templates"}/?.lua'");
+                    const string name = "preloadinfo.tpl.lua";
+                    var path = Path.Combine(assetPath, $"Editor/Resources/xlua/templates/{name}");
+                    var bytes = File.ReadAllBytes(path);
+                    luaEnv.DoString<LuaFunction>(bytes, name);
+                    var func = luaEnv.Global.Get<LuaFunction>("PreLoadInfoTemplate");
+                    var registerInfoContent = func.Func<List<RegisterInfoForGenerate>, string>(registerInfos);
+#if OS_GAME
+                    var registerInfoPath = "RawAssets/LuaScripts/TypePreLoad.lua";
+#else
+                    var registerInfoPath = Application.streamingAssetsPath +  "/TypePreLoad.lua";
+#endif
                     using (var textWriter = new StreamWriter(registerInfoPath, false, Encoding.UTF8))
                     {
                         textWriter.Write(registerInfoContent);

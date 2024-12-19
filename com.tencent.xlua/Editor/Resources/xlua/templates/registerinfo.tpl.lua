@@ -58,23 +58,3 @@ namespace XLuaStaticWrap
 #endif
 ]], arg1, arg2)
 end
-
-function referWrapperMember(wrapperName, constructorName, methodName, propertyGetterName, propertySetterName)
-    local ret = ''
-    if constructorName then
-        ret = ', ' .. string.format('Constructor = %s.%s', wrapperName, constructorName)
-    end
-    if methodName then
-        ret = ret .. ', '
-        string.format('Method = %s.%s', wrapperName, methodName)
-    end
-    if propertyGetterName then
-        ret = ret .. ', '
-        string.format('PropertyGetter = %s.%s', wrapperName, propertyGetterName)
-    end
-    if propertySetterName then
-        ret = ret .. ', '
-        string.format('PropertySetter = %s.%s', wrapperName, propertySetterName)
-    end
-    return ret
-end
