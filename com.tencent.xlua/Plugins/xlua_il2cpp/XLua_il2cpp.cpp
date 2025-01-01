@@ -1654,7 +1654,7 @@ static bool ReflectionWrapper(struct pesapi_ffi* apis, MethodInfo* method, Il2Cp
         auto parameterType = Method::GetParam(method, i);
         bool passedByReference = parameterType->byref;
         bool hasDefault = parameterType->attrs & PARAM_ATTRIBUTE_HAS_DEFAULT;
-        bool isLastArgument = i == (method->parameters_count - i);
+        bool isLastArgument = i == (method->parameters_count - 1);
         Il2CppClass* parameterKlass = Class::FromIl2CppType(parameterType);
         Class::Init(parameterKlass);
 
@@ -1677,7 +1677,7 @@ static bool ReflectionWrapper(struct pesapi_ffi* apis, MethodInfo* method, Il2Cp
             {
                 for (int j = luaParamStart; j < lua_args_len; j++)
                 {
-                    il2cpp_array_setref(array, j - 1 + csArgStart, LuaValueToCSRef(apis, elementType, env, apis->get_arg(info, j)));
+                    il2cpp_array_setref(array, j - i + csArgStart, LuaValueToCSRef(apis, elementType, env, apis->get_arg(info, j)));
                 }
             }
             args[i] = array;
