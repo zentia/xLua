@@ -3,12 +3,12 @@
         <type fullname="System.Collections.Generic.List`1" preserve="all"/>
 
     </assembly>
-    <assembly fullname="Assembly-CSharp">
-        <type fullname="ClassLuaCallCS" preserve="all"/>
-
-    </assembly>
     <assembly fullname="UnityEngine.CoreModule">
         <type fullname="UnityEngine.Vector3" preserve="all"/>
+
+    </assembly>
+    <assembly fullname="Assembly-CSharp">
+        <type fullname="ClassLuaCallCS" preserve="all"/>
 
     </assembly>
 

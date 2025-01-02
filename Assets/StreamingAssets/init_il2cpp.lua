@@ -85,8 +85,9 @@ function xlua.getNestedTypes(nameOrCSType)
     end
 end
 
-local ARG_FLAG_OUT = 0x01
-local ARG_FLAG_REF = 0x02
+xlua.createFunction = createFunction
+createFunction = nil
+
 function xlua.get_generic_method(csType, methodName, ...)
     if not csType then
         return
@@ -120,77 +121,7 @@ function xlua.get_generic_method(csType, methodName, ...)
         error(string.format('xlua get_generic_method not found, %s, %s', csType.Name, methodName))
         return
     end
-    local createOverloadFunctionWrap = function(method)
-        local typeof_System_Object = typeof(CS.System.Object)
-        ---@suppress NOT_A_MEMBER
-        local paramDefs = method:GetParameters()
-        local needArgCount = paramDefs.Length
-        local argFlags = needArgCount > 0 and {} or nil
-        local needArgTypeCode = needArgCount > 0 and {} or nil
-        for i = 1, needArgCount do
-            ---@suppress NOT_A_MEMBER
-            local paramDef = paramDefs:GetValue(i - 1)
-            local paramType = paramDef.ParameterType
-            if paramDef.IsOut then
-                argFlags[i] = ARG_FLAG_OUT
-            end
-            if paramDef.IsByRef then
-                argFlags[i] = ARG_FLAG_REF
-                ---@suppress NOT_A_MEMBER
-                needArgTypeCode[i] = CS.System.Type.GetTypeCode(paramType:GetElementType())
-            else
-                argFlags[i] = 0
-                needArgTypeCode[i] = CS.System.Type.GetTypeCode(paramType)
-            end
-        end
-        local argsCsArr
-        local checkArgs = function(...)
-            local args = { ... }
-            if needArgCount == 0 then
-                return
-            end
-            argsCsArr = argsCsArr or CS.System.Array.CreateInstance(typeof_System_Object, needArgCount)
-            for i = 1, needArgCount do
-                ---@suppress NOT_A_MEMBER
-                argsCsArr:set_Item(i - 1, args[i])
-            end
-            return argsCsArr
-        end
-        local invoke = function(...)
-            local args = { ... }
-            local argscs = checkArgs(...)
-            if not argscs then
-                error('param error.')
-                return
-            end
-            ---@suppress NOT_A_MEMBER
-            local ret = method(xlua, 0, nil, argscs, nil)
-            if argFlags then
-                for i = 1, #argFlags do
-                    if argFlags[i] & ARG_FLAG_REF > 0 then
-                        ---@suppress NOT_A_MEMBER
-                        args[i][1] = argscs:GetValue(i - 1)
-                    end
-                end
-            end
-            return ret
-        end
-        return invoke
-    end
-    local invoke = map(overloadFunctions, function(x)
-        return createOverloadFunctionWrap(x)
-    end)
-    if overloadCount == 1 then
-        return invoke[1]
-    else
-        return function(...)
-            for index, value in ipairs(invoke) do
-                ---@suppress NOT_A_MEMBER
-                return value.call(xlua, ...)
-            end
-            error('xlua.get_generic_method.overloadfunctions.invoke no match overload')
-        end
-    end
+    return xlua.createFunction(table.unpack(overloadFunctions))
 end
 
 function xlua.ref(x)
@@ -234,7 +165,7 @@ function createTypeProxy(namespace)
                 return
             end
             local fullName = namespace and (namespace .. '.' .. name) or name
-            local cls = csTypeToClass(fullName)
+            local cls, csType = csTypeToClass(fullName)
             if cls then
                 rawset(cls, '.fqn', fullName)
                 tbl[name] = cls

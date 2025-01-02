@@ -10,7 +10,8 @@
 ## C# 下 Lua 编程支持
 
 xLua 为 Unity增加 Lua 脚本编程的能力，借助 xLua，这些 Lua 代码可以方便的和 C# 相互调用。
-Unity只支持Android、iOS、WinPC、WinEditor，其他平台不在支持！
+Lua版本仅支持5.4.7，其他版本包括LuaJit均未作适配！
+Unity只支持Android、iOS、PC、Editor，其他平台不在支持！
 
 <br/>
 

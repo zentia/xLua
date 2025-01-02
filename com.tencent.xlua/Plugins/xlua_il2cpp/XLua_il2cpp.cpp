@@ -344,90 +344,7 @@ static void MethodCallback(struct pesapi_ffi* apis, pesapi_callback_info info)
     }
 }
 
-    static void FreeCSharpMethodInfo(CSharpMethodInfo* csharpMethodInfo)
-    {
-	    if (csharpMethodInfo)
-	    {
-		    for (int i = 0; i < csharpMethodInfo->OverloadDatas.size(); ++i)
-		    {
-                free(csharpMethodInfo->OverloadDatas[i]);
-		    }
-            delete csharpMethodInfo;
-	    }
-    }
-
-    static void FunctionFinalize(struct pesapi_ffi* apis, void* data, void* env_private)
-    {
-        FreeCSharpMethodInfo((CSharpMethodInfo*)data);
-    }
-
-    static bool IsPrimitive(Il2CppTypeEnum type)
-    {
-        return (type >= IL2CPP_TYPE_BOOLEAN && type <= IL2CPP_TYPE_R8) || type == IL2CPP_TYPE_I || type == IL2CPP_TYPE_U;
-    }
-
-    static bool TypeInfoPassToLuaFilter(const Il2CppType* type, const Il2CppClass* klass)
-    {
-        return klass != il2cpp_defaults.void_class && !IsPrimitive(type->type) && IL2CPP_TYPE_ENUM != type->type;
-    }
-
-    static void createFunctionWrapper(struct pesapi_ffi* apis, pesapi_callback_info info)
-    {
-        pesapi_env env = apis->get_env(info);
-        int argc = apis->get_args_len(info);
-        CSharpMethodInfo* csharpMethodInfo = nullptr;
-        for (int i = 0; i < argc; ++i)
-        {
-            Il2CppReflectionMethod* reflectionMethod = (Il2CppReflectionMethod*)apis->get_native_object_ptr(env, apis->get_arg(info, i));
-            if (!reflectionMethod || !Class::IsAssignableFrom(il2cpp_defaults.method_info_class, reflectionMethod->object.klass))
-            {
-                apis->throw_by_string(info, "expect a MethodInfo");
-                FreeCSharpMethodInfo(csharpMethodInfo);
-                return;
-            }
-            else
-            {
-                bool isStatic = !il2cpp::vm::Method::IsInstance(reflectionMethod->method);
-                bool needBoxing = reflectionMethod->method->klass == il2cpp_defaults.object_class;
-                if (csharpMethodInfo == nullptr)
-                {
-                    csharpMethodInfo = new CSharpMethodInfo{ std::string(reflectionMethod->method->name), isStatic, false, false, needBoxing };
-                }
-                std::vector<Il2CppClass*> usedTypes;
-                const Il2CppType* type = Method::GetReturnType(reflectionMethod->method);
-                Il2CppClass* klass = il2cpp_codegen_class_from_type(type);
-                if (TypeInfoPassToLuaFilter(type, klass))
-                {
-                    usedTypes.push_back(klass);
-                }
-                size_t paramCount = Method::GetParamCount(reflectionMethod->method);
-                for (size_t index = 0; index < paramCount; ++index)
-                {
-                    type = Method::GetParam(reflectionMethod->method, index);
-                    klass = il2cpp_codegen_class_from_type(type);
-                    if (TypeInfoPassToLuaFilter(type, klass))
-                    {
-                        usedTypes.push_back(klass);
-                    }
-                }
-                int allocSize = sizeof(xlua::WrapData) + sizeof(void*) * usedTypes.size();
-                xlua::WrapData* overloadData = (xlua::WrapData*)malloc(allocSize);
-                memset(overloadData, 0, allocSize);
-                overloadData->Method = const_cast<MethodInfo*>(reflectionMethod->method);
-                overloadData->MethodPointer = GetMethodPointer(reflectionMethod);
-                overloadData->Wrap = &ReflectionWrapper; // TODO: find wrapper by signature
-                overloadData->IsStatic = isStatic;
-                overloadData->IsExtensionMethod = false;
-                csharpMethodInfo->OverloadDatas.push_back(overloadData);
-            }
-        }
-        if (csharpMethodInfo)
-        {
-            csharpMethodInfo->OverloadDatas.push_back(nullptr);
-            auto func = apis->create_function(env, MethodCallback, csharpMethodInfo, FunctionFinalize);
-            apis->add_return(info, func);
-        }
-    }
+    
 
 static void GetterCallback(struct pesapi_ffi* apis, pesapi_callback_info info)
 {
@@ -2420,6 +2337,90 @@ static void OnCsObjectExit(void* ptr, void* class_data, LuaEnvPrivate* luaEnvPri
 {
     intptr_t idx = reinterpret_cast<intptr_t>(userdata);
     luaEnvPrivate->UnRefCSObject(idx);
+}
+static void FreeCSharpMethodInfo(CSharpMethodInfo* csharpMethodInfo)
+{
+    if (csharpMethodInfo)
+    {
+        for (int i = 0; i < csharpMethodInfo->OverloadDatas.size(); ++i)
+        {
+            free(csharpMethodInfo->OverloadDatas[i]);
+        }
+        delete csharpMethodInfo;
+    }
+}
+
+static void FunctionFinalize(struct pesapi_ffi* apis, void* data, void* env_private)
+{
+    FreeCSharpMethodInfo((CSharpMethodInfo*)data);
+}
+
+static bool IsPrimitive(Il2CppTypeEnum type)
+{
+    return (type >= IL2CPP_TYPE_BOOLEAN && type <= IL2CPP_TYPE_R8) || type == IL2CPP_TYPE_I || type == IL2CPP_TYPE_U;
+}
+
+static bool TypeInfoPassToLuaFilter(const Il2CppType* type, const Il2CppClass* klass)
+{
+    return klass != il2cpp_defaults.void_class && !IsPrimitive(type->type) && IL2CPP_TYPE_ENUM != type->type;
+}
+
+static void createFunctionWrapper(struct pesapi_ffi* apis, pesapi_callback_info info)
+{
+    pesapi_env env = apis->get_env(info);
+    int argc = apis->get_args_len(info);
+    CSharpMethodInfo* csharpMethodInfo = nullptr;
+    for (int i = 0; i < argc; ++i)
+    {
+        Il2CppReflectionMethod* reflectionMethod = (Il2CppReflectionMethod*)apis->get_native_object_ptr(env, apis->get_arg(info, i));
+        if (!reflectionMethod || !Class::IsAssignableFrom(il2cpp_defaults.method_info_class, reflectionMethod->object.klass))
+        {
+            apis->throw_by_string(info, "expect a MethodInfo");
+            FreeCSharpMethodInfo(csharpMethodInfo);
+            return;
+        }
+        else
+        {
+            bool isStatic = !il2cpp::vm::Method::IsInstance(reflectionMethod->method);
+            bool needBoxing = reflectionMethod->method->klass == il2cpp_defaults.object_class;
+            if (csharpMethodInfo == nullptr)
+            {
+                csharpMethodInfo = new CSharpMethodInfo{ std::string(reflectionMethod->method->name), isStatic, false, false, needBoxing };
+            }
+            std::vector<Il2CppClass*> usedTypes;
+            const Il2CppType* type = Method::GetReturnType(reflectionMethod->method);
+            Il2CppClass* klass = il2cpp_codegen_class_from_type(type);
+            if (TypeInfoPassToLuaFilter(type, klass))
+            {
+                usedTypes.push_back(klass);
+            }
+            size_t paramCount = Method::GetParamCount(reflectionMethod->method);
+            for (size_t index = 0; index < paramCount; ++index)
+            {
+                type = Method::GetParam(reflectionMethod->method, index);
+                klass = il2cpp_codegen_class_from_type(type);
+                if (TypeInfoPassToLuaFilter(type, klass))
+                {
+                    usedTypes.push_back(klass);
+                }
+            }
+            int allocSize = sizeof(xlua::WrapData) + sizeof(void*) * usedTypes.size();
+            xlua::WrapData* overloadData = (xlua::WrapData*)malloc(allocSize);
+            memset(overloadData, 0, allocSize);
+            overloadData->Method = const_cast<MethodInfo*>(reflectionMethod->method);
+            overloadData->MethodPointer = GetMethodPointer(reflectionMethod);
+            overloadData->Wrap = &ReflectionWrapper; // TODO: find wrapper by signature
+            overloadData->IsStatic = isStatic;
+            overloadData->IsExtensionMethod = false;
+            csharpMethodInfo->OverloadDatas.push_back(overloadData);
+        }
+    }
+    if (csharpMethodInfo)
+    {
+        csharpMethodInfo->OverloadDatas.push_back(nullptr);
+        auto func = apis->create_function(env, MethodCallback, csharpMethodInfo, FunctionFinalize);
+        apis->add_return(info, func);
+    }
 }
 
 static void LoadTypeWrapper(struct pesapi_ffi* apis, pesapi_callback_info info)

@@ -42,8 +42,6 @@ struct PesapiCallbackData
 {
     pesapi_callback Callback;
     void* Data;
-    class CppObjectMapper* CppObjectMapper;
-    int luaFunction;
     pesapi_function_finalize Finalize = nullptr;
 };
 
@@ -80,7 +78,7 @@ public:
     void UnInitialize(lua_State* L);
 
     static CppObjectMapper* Get();
-
+    static void CallbackDataGarbageCollected(PesapiCallbackData* Data);
 #if OSG_PROFILE
     static int PrefPropertyGetterIndex;
     static int PrefPropertySetterIndex;
@@ -112,8 +110,6 @@ private:
 
     std::vector<PesapiCallbackData*> FunctionDatas;
     static CppObjectMapper* ms_Instance;
-
-    static void CallbackDataGarbageCollected(const PesapiCallbackData* Data);
 };
 
 }    // namespace xlua

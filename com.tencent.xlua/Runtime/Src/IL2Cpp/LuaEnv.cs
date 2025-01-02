@@ -62,8 +62,9 @@ namespace XLua
         public LuaEnv()
         {
             UnityEngine.Debug.Log("Native XLua Env");
+
             Instance = this;
-            LuaDLL.Lua.SetLogCallback(LogCallback, LogWarningCallback, LogErrorCallback);
+            XLua.NativeAPI.SetLogCallback(LogCallback, LogWarningCallback, LogErrorCallback);
             XLua.NativeAPI.InitialXLua(XLua.NativeAPI.GetRegisterApi());
             apis = XLua.NativeAPI.GetFFIApi();
             tryLoadTypeMethodInfo = typeof(TypeRegister).GetMethod("RegisterNoThrow");
@@ -97,7 +98,7 @@ namespace XLua
                 methodInfoOfRegister.Invoke(null, new object[] { this });
             }
 
-            XLua.ExtensionMethodInfo.LoadExtensionMethodInfo();
+            XLuaIl2cpp.ExtensionMethodInfo.LoadExtensionMethodInfo();
             rawL = XLua.NativeAPI.GetLuaState(nativeLuaEnv);
             AddSearcher(StaticLuaCallbacks.LoadBuiltinLib, 2);
             AddSearcher(StaticLuaCallbacks.LoadFromCustomLoaders, 3);
@@ -112,19 +113,19 @@ namespace XLua
             _G = (LuaTable)XLua.NativeAPI.GetGlobalTable(apis, nativePesapiEnv);
         }
 
-        [XLua.MonoPInovokeCallback(typeof(XLua.NativeAPI.LogCallback))]
+        [MonoPInvokeCallback(typeof(XLua.NativeAPI.LogCallback))]
         private static void LogCallback(string msg)
         {
             UnityEngine.Debug.Log(msg);
         }
 
-        [XLua.MonoPInovokeCallback(typeof(XLua.NativeAPI.LogCallback))]
+        [MonoPInvokeCallback(typeof(XLua.NativeAPI.LogCallback))]
         private static void LogWarningCallback(string msg)
         {
             UnityEngine.Debug.Log(msg);
         }
 
-        [XLua.MonoPInovokeCallback(typeof(XLua.NativeAPI.LogCallback))]
+        [MonoPInvokeCallback(typeof(XLua.NativeAPI.LogCallback))]
         private static void LogErrorCallback(string msg)
         {
             UnityEngine.Debug.Log(msg);
@@ -226,7 +227,7 @@ namespace XLua
 
         public T LoadString<T>(byte[] chunk, string chunkName = "chunk", LuaTable env = null)
         {
-            return (T)XLuaIl2cpp.NativeAPI.LoadString(apis, nativePesapiEnv, chunk, chunkName, env, typeof(T));
+            return (T)XLua.NativeAPI.LoadString(apis, nativePesapiEnv, chunk, chunkName, env, typeof(T));
         }
 
         public T LoadString<T>(string chunk, string chunkName = "chunk", LuaTable env = null)
@@ -237,7 +238,7 @@ namespace XLua
 
         public T DoString<T>(byte[] chunk, string chunkName = "chunk", LuaTable env = null)
         {
-            return (T)XLuaIl2cpp.NativeAPI.DoString(apis, nativePesapiEnv, chunk, chunkName, env, typeof(T));
+            return (T)XLua.NativeAPI.DoString(apis, nativePesapiEnv, chunk, chunkName, env, typeof(T));
         }
 
         public T DoString<T>(string chunk, string chunkName = "chunk", LuaTable env = null)
@@ -249,13 +250,13 @@ namespace XLua
         public void DoString(string chunk, string chunkName = "chunk", LuaTable env = null)
         {
             byte[] bytes = System.Text.Encoding.UTF8.GetBytes(chunk);
-            XLuaIl2cpp.NativeAPI.DoString(apis, nativePesapiEnv, bytes, chunkName, env, null);
+            XLua.NativeAPI.DoString(apis, nativePesapiEnv, bytes, chunkName, env, null);
         }
 
         public object DoString(string chunk, Type t, string chunkName = "chunk", LuaTable env = null)
         {
             byte[] bytes = System.Text.Encoding.UTF8.GetBytes(chunk);
-            return XLuaIl2cpp.NativeAPI.DoString(apis, nativePesapiEnv, bytes, chunkName, env, t);
+            return XLua.NativeAPI.DoString(apis, nativePesapiEnv, bytes, chunkName, env, t);
         }
 
         int last_check_point = 0;
@@ -287,7 +288,7 @@ namespace XLua
 
         public LuaTable NewTable()
         {
-            return (LuaTable)XLuaIl2cpp.NativeAPI.NewTable(apis, nativePesapiEnv);
+            return (LuaTable)XLua.NativeAPI.NewTable(apis, nativePesapiEnv);
         }
 
         private bool disposed = false;
@@ -302,9 +303,9 @@ namespace XLua
             lock (this)
             {
                 if (disposed) return;
-                XLuaIl2cpp.NativeAPI.CleanupPapiEnvRef(apis, nativePesapiEnv);
-                XLuaIl2cpp.NativeAPI.DestroyNativeLuaEnv(nativeLuaEnv);
-                XLuaIl2cpp.NativeAPI.DestroyLuaEnvPrivate(nativeScriptObjectsRefsMgr);
+                XLua.NativeAPI.CleanupPapiEnvRef(apis, nativePesapiEnv);
+                XLua.NativeAPI.DestroyNativeLuaEnv(nativeLuaEnv);
+                XLua.NativeAPI.DestroyLuaEnvPrivate(nativeScriptObjectsRefsMgr);
                 nativeScriptObjectsRefsMgr = IntPtr.Zero;
                 rawL = IntPtr.Zero;
                 Instance = null;

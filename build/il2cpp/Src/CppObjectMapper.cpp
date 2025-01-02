@@ -163,34 +163,58 @@ int CppObjectMapper::FindOrAddCppObject(lua_State* L, const void* TypeId, void* 
     return lua_gettop(L);
 }
 
-static int PesapiFunctionCallback(lua_State* L)
-{
-    PesapiCallbackData* FunctionInfo = reinterpret_cast<PesapiCallbackData*>(lua_touserdata(L, lua_upvalueindex(1)));
-    pesapi_callback_info__ info{L, 0, 0};
-    FunctionInfo->Callback(GetFFIApi(), &info);
-    return 1;
-}
-
-void CppObjectMapper::CallbackDataGarbageCollected(const PesapiCallbackData* CallbackData)
-{
-    if (CallbackData->Finalize)
+    static int PesapiFunctionCallback(lua_State* L)
     {
-        CallbackData->Finalize(GetFFIApi(), CallbackData->Data, DataTransfer::GetLuaEnvPrivate());
+        PesapiCallbackData* FunctionInfo = reinterpret_cast<PesapiCallbackData*>(lua_touserdata(L, lua_upvalueindex(1)));
+        pesapi_callback_info__ info{L, 0, 0};
+        FunctionInfo->Callback(GetFFIApi(), &info);
+        return 1;
     }
-    CallbackData->CppObjectMapper->FunctionDatas.erase(std::remove(CallbackData->CppObjectMapper->FunctionDatas.begin(), CallbackData->CppObjectMapper->FunctionDatas.end(), CallbackData), CallbackData->CppObjectMapper->FunctionDatas.end());
-    delete CallbackData;
-}
 
-int CppObjectMapper::CreateFunction(lua_State* L, pesapi_callback Callback, void* Data, pesapi_function_finalize Finalize)
-{
-    auto CallbackData = new PesapiCallbackData{Callback, Data, this};
-    CallbackData->Finalize = Finalize;
-    FunctionDatas.push_back(CallbackData);
-    lua_pushlightuserdata(L, CallbackData);
-    lua_pushlightuserdata(L, Data);
-    lua_pushcclosure(L, (lua_CFunction) PesapiFunctionCallback, 2);
-    return lua_gettop(L);
-}
+    static int PesapiFunctionGC(lua_State* L)
+    {
+        PesapiCallbackData* FunctionInfo = reinterpret_cast<PesapiCallbackData*>(lua_touserdata(L, lua_upvalueindex(1)));
+        CppObjectMapper::CallbackDataGarbageCollected(FunctionInfo);
+        return 0;
+    }
+
+    void CppObjectMapper::CallbackDataGarbageCollected(PesapiCallbackData* CallbackData)
+    {
+        if (CallbackData->Finalize)
+        {
+            CallbackData->Finalize(GetFFIApi(), CallbackData->Data, DataTransfer::GetLuaEnvPrivate());
+        }
+        for (auto it = ms_Instance->FunctionDatas.begin(); it != ms_Instance->FunctionDatas.end();)
+        {
+            if (*it == CallbackData)
+            {
+                it = ms_Instance->FunctionDatas.erase(it);
+            }
+            else
+            {
+                ++it;
+            }
+        }
+        delete CallbackData;
+    }
+
+    int CppObjectMapper::CreateFunction(lua_State* L, pesapi_callback Callback, void* Data, pesapi_function_finalize Finalize)
+    {
+        auto CallbackData = (PesapiCallbackData*)lua_newuserdata(L, sizeof(PesapiCallbackData));
+        lua_pushstring(L, "__gc");
+        lua_pushlightuserdata(L, CallbackData);
+        lua_pushcclosure(L, PesapiFunctionGC, 1);
+        lua_rawset(L, lua_gettop(L));
+        CallbackData->Callback = Callback;
+        CallbackData->Data = Data;
+        CallbackData->Finalize = Finalize;
+        FunctionDatas.push_back(CallbackData);
+
+        lua_pushlightuserdata(L, CallbackData);
+        lua_pushlightuserdata(L, Data);
+        lua_pushcclosure(L, (lua_CFunction) PesapiFunctionCallback, 1);
+        return lua_gettop(L);
+    }
 
 bool CppObjectMapper::IsInstanceOfCppObject(lua_State* L, const void* TypeId, int ObjectIndex)
 {
@@ -225,7 +249,6 @@ void CppObjectMapper::BindCppObject(lua_State* L, LuaClassDefinition* ClassDefin
         if (Iter != CDataCache.end())
         {
             CacheNodePtr = Iter->second->Add(ClassDefinition->TypeId);
-            
         }
         else
         {
@@ -504,8 +527,7 @@ static int object_new(lua_State* L)
     // auto starttime = system_clock::now();
     LuaClassDefinition* class_definition = (LuaClassDefinition*) lua_touserdata(L, lua_upvalueindex(1));
     pesapi_callback_info__ callback_info{L, 1, 0};
-    xlua::CppObjectMapper::Get()->BindCppObject(
-        L, class_definition, class_definition->Initialize(GetFFIApi(), &callback_info), false, true);
+    xlua::CppObjectMapper::Get()->BindCppObject(L, class_definition, class_definition->Initialize(GetFFIApi(), &callback_info), false, true);
     /*auto diff = std::chrono::duration_cast<std::chrono::microseconds>(system_clock::now() - starttime).count();
     xlua::Log("%I64d", diff);*/
 #if OSG_PROFILE
