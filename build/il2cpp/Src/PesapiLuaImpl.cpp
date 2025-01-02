@@ -97,10 +97,10 @@ int pesapi_create_object(pesapi_env env)
     return lua_gettop(L);
 }
 
-int pesapi_create_function(pesapi_env env, pesapi_callback native_impl, void* data)
+int pesapi_create_function(pesapi_env env, pesapi_callback native_impl, void* data, pesapi_function_finalize finalize)
 {
     lua_State* L = reinterpret_cast<lua_State*>(env);
-    return xlua::CppObjectMapper::Get()->CreateFunction(L, native_impl, data);
+    return xlua::CppObjectMapper::Get()->CreateFunction(L, native_impl, data, finalize);
 }
 
 int pesapi_create_class(pesapi_env env, const void* type_id)

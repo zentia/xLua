@@ -23,7 +23,18 @@ namespace XLua
             return type.Name;
         }
 
-        public static string GetLuaFriendlyName(Type type, Type[] genericArguments = null)
+        private static string GetLuaNameWithoutNamespace(Type type)
+        {
+            if (type.IsGenericType)
+            {
+                var genericArgumentNames = type.GetGenericArguments()
+                    .Select(x => GetFriendlyName(x)).ToArray();
+                return type.Name.Split('`')[0] + "(" + string.Join(", ", genericArgumentNames) + ")";
+            }
+            return type.Name;
+        }
+
+        public static string GetLuaFriendlyName(Type type, Type[] genericArguments, bool includeGeneric)
         {
             if (type == typeof(void))
                 return "";// error type?
@@ -52,35 +63,51 @@ namespace XLua
             if (type == typeof(string))
                 return "CS.System.String";
             if (type.IsArray)
-                return "";
+                return includeGeneric ? $"CS.{type.Namespace}['{GetLuaNameWithoutNamespace(type)}']" : "";
             if (type.IsGenericParameter)
-                return type.Name;
+                return "";
             if (type.IsNested)
             {
                 if (type.DeclaringType.IsNested)
                 {
                     if (type.DeclaringType.IsGenericTypeDefinition)
-                        return GetLuaFriendlyName(type.DeclaringType, type.GetGenericArguments()) + '.' + type.Name;
-                    return GetLuaFriendlyName(type.DeclaringType) + '.' + type.Name;
+                    {
+                        var b = GetLuaFriendlyName(type.DeclaringType, type.GetGenericArguments(), includeGeneric);
+                        if (b == "")
+                            return "";
+                        return b + '.' + type.Name;
+                    }
+
+                    var r = GetLuaFriendlyName(type.DeclaringType, null, includeGeneric);
+                    if (r == "")
+                        return "";
+                    return r + '.' + type.Name;
                 }
 
                 if (type.DeclaringType.IsGenericTypeDefinition)
                 {
                     var genericArgumentNames =
                         (genericArguments == null ? type.GetGenericArguments() : genericArguments)
-                        .Select(x => GetLuaFriendlyName(x)).ToArray();
+                        .Select(x => GetLuaFriendlyName(x, null, includeGeneric)).ToArray();
                     return type.DeclaringType.FullName.Split('`')[0] + "(" + string.Join(", ", genericArgumentNames) +
                            ")" + "." + type.Name;
                 }
 
-                return GetLuaFriendlyName(type.DeclaringType) + '.' + GetNameWithoutNamespace(type);
+                if (type.IsGenericType && !includeGeneric)
+                    return "";
+                return GetLuaFriendlyName(type.DeclaringType, null, includeGeneric) + '.' + GetLuaNameWithoutNamespace(type);
             }
 
             if (type.IsGenericType)
             {
-                var genericArgumentNames = type.GetGenericArguments().Select(x => GetLuaFriendlyName(x)).ToArray();
-                return "CS." + (type.FullName == null ? type.Namespace + "." + type.Name : type.FullName).Split('`')[0] + "(" +
-                       string.Join(", ", genericArgumentNames) + ")";
+                if (includeGeneric)
+                {
+                    var genericArgumentNames = type.GetGenericArguments().Select(x => GetLuaFriendlyName(x, null, includeGeneric)).ToArray();
+                    return "CS." + (type.FullName == null ? type.Namespace + "." + type.Name : type.FullName).Split('`')[0] + "(" +
+                           string.Join(", ", genericArgumentNames) + ")";
+                }
+
+                return "";
             }
             return $"CS.{type.FullName}";
         }

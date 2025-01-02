@@ -55,30 +55,31 @@ namespace XLua
         public int errorFuncRef = -1;
 
         const int LIB_VERSION_EXPECT = 105;
-        public XLuaIl2cpp.pesapi_ffi ffi;
+        public XLua.pesapi_ffi ffi;
 
         public static LuaEnv Instance;
 
         public LuaEnv()
         {
+            UnityEngine.Debug.Log("Native XLua Env");
             Instance = this;
-            LuaDLL.Lua.SetLogCallback(LuaDLL.Lua.Log);
-            XLuaIl2cpp.NativeAPI.InitialXLua(XLuaIl2cpp.NativeAPI.GetRegisterApi());
-            apis = XLuaIl2cpp.NativeAPI.GetFFIApi();
+            LuaDLL.Lua.SetLogCallback(LogCallback, LogWarningCallback, LogErrorCallback);
+            XLua.NativeAPI.InitialXLua(XLua.NativeAPI.GetRegisterApi());
+            apis = XLua.NativeAPI.GetFFIApi();
             tryLoadTypeMethodInfo = typeof(TypeRegister).GetMethod("RegisterNoThrow");
-            XLuaIl2cpp.NativeAPI.SetRegisterNoThrow(tryLoadTypeMethodInfo);
+            XLua.NativeAPI.SetRegisterNoThrow(tryLoadTypeMethodInfo);
 
             persistentObjectInfoType = typeof(XLua.LuaTable);
-            XLuaIl2cpp.NativeAPI.SetGlobalType_LuaTable(typeof(LuaTable));
-            XLuaIl2cpp.NativeAPI.SetGlobalType_Array(typeof(Array));
-            XLuaIl2cpp.NativeAPI.SetGlobalType_ArrayBuffer(typeof(byte[]));
+            XLua.NativeAPI.SetGlobalType_LuaTable(typeof(LuaTable));
+            XLua.NativeAPI.SetGlobalType_Array(typeof(Array));
+            XLua.NativeAPI.SetGlobalType_ArrayBuffer(typeof(byte[]));
 
-            nativeLuaEnv = XLuaIl2cpp.NativeAPI.CreateNativeLuaEnv();
-            nativePesapiEnv = XLuaIl2cpp.NativeAPI.GetPapiEnvRef(nativeLuaEnv);
-            var objectPoolType = typeof(XLuaIl2cpp.ObjectPool);
-            nativeScriptObjectsRefsMgr = XLuaIl2cpp.NativeAPI.InitialPapiEnvRef(apis, nativePesapiEnv, objectPool, objectPoolType.GetMethod("Add"), objectPoolType.GetMethod("Remove"));
+            nativeLuaEnv = XLua.NativeAPI.CreateNativeLuaEnv();
+            nativePesapiEnv = XLua.NativeAPI.GetPapiEnvRef(nativeLuaEnv);
+            var objectPoolType = typeof(XLua.ObjectPool);
+            nativeScriptObjectsRefsMgr = XLua.NativeAPI.InitialPapiEnvRef(apis, nativePesapiEnv, objectPool, objectPoolType.GetMethod("Add"), objectPoolType.GetMethod("Remove"));
 
-            XLuaIl2cpp.NativeAPI.SetObjectToGlobal(apis, nativePesapiEnv, "luaEnv", this);
+            XLua.NativeAPI.SetObjectToGlobal(apis, nativePesapiEnv, "luaEnv", this);
 
             const string AutoStaticCodeRegisterClassName = "XLuaStaticWrap.XLuaRegisterInfo_Gen";
             var autoRegister = Type.GetType(AutoStaticCodeRegisterClassName, false);
@@ -96,27 +97,45 @@ namespace XLua
                 methodInfoOfRegister.Invoke(null, new object[] { this });
             }
 
-            XLuaIl2cpp.ExtensionMethodInfo.LoadExtensionMethodInfo();
-            rawL = XLuaIl2cpp.NativeAPI.GetLuaState(nativeLuaEnv);
+            XLua.ExtensionMethodInfo.LoadExtensionMethodInfo();
+            rawL = XLua.NativeAPI.GetLuaState(nativeLuaEnv);
             AddSearcher(StaticLuaCallbacks.LoadBuiltinLib, 2);
             AddSearcher(StaticLuaCallbacks.LoadFromCustomLoaders, 3);
 
-            ffi = Marshal.PtrToStructure<XLuaIl2cpp.pesapi_ffi>(apis);
+            ffi = Marshal.PtrToStructure<XLua.pesapi_ffi>(apis);
             var scope = ffi.open_scope(rawL);
             var env = ffi.get_env_from_ref(nativePesapiEnv);
-            var func = ffi.create_function(env, FooImpl, IntPtr.Zero);
+            var func = ffi.create_function(env, FooImpl, IntPtr.Zero, null);
             var global = ffi.global(env);
             ffi.set_property(env, global, "CSharpFoo", func);
             ffi.close_scope(rawL, scope, 0);
-            _G = (LuaTable)XLuaIl2cpp.NativeAPI.GetGlobalTable(apis, nativePesapiEnv);
+            _G = (LuaTable)XLua.NativeAPI.GetGlobalTable(apis, nativePesapiEnv);
+        }
+
+        [XLua.MonoPInovokeCallback(typeof(XLua.NativeAPI.LogCallback))]
+        private static void LogCallback(string msg)
+        {
+            UnityEngine.Debug.Log(msg);
+        }
+
+        [XLua.MonoPInovokeCallback(typeof(XLua.NativeAPI.LogCallback))]
+        private static void LogWarningCallback(string msg)
+        {
+            UnityEngine.Debug.Log(msg);
+        }
+
+        [XLua.MonoPInovokeCallback(typeof(XLua.NativeAPI.LogCallback))]
+        private static void LogErrorCallback(string msg)
+        {
+            UnityEngine.Debug.Log(msg);
         }
         
         static IntPtr storeCallback = IntPtr.Zero;
 
-        [XLuaIl2cpp.MonoPInvokeCallback(typeof(XLuaIl2cpp.pesapi_callback))]
+        [MonoPInvokeCallback(typeof(XLua.pesapi_callback))]
         static void FooImpl(IntPtr apis, IntPtr info)
         {
-            XLuaIl2cpp.pesapi_ffi ffi = Marshal.PtrToStructure<XLuaIl2cpp.pesapi_ffi>(apis);
+            XLua.pesapi_ffi ffi = Marshal.PtrToStructure<XLua.pesapi_ffi>(apis);
             var env = ffi.get_env(info);
 
             int p0 = ffi.get_arg(info, 0);
@@ -253,7 +272,7 @@ namespace XLua
 
         public void Tick()
         {
-            XLuaIl2cpp.NativeAPI.CleanupPendingKillScriptObjects(nativeScriptObjectsRefsMgr);
+            XLua.NativeAPI.CleanupPendingKillScriptObjects(nativeScriptObjectsRefsMgr);
         }
 
         public void GC()

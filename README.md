@@ -9,7 +9,8 @@
 
 ## C# 下 Lua 编程支持
 
-xLua 为 Unity、.Net、Mono 等 C# 环境增加 Lua 脚本编程的能力，借助 xLua，这些 Lua 代码可以方便的和 C# 相互调用。
+xLua 为 Unity增加 Lua 脚本编程的能力，借助 xLua，这些 Lua 代码可以方便的和 C# 相互调用。
+Unity只支持Android、iOS、WinPC、WinEditor，其他平台不在支持！
 
 <br/>
 
@@ -110,7 +111,6 @@ C#主动调用 Lua 也很简单，比如要调用 Lua 的系统函数，推荐�
 * [04_LuaObjectOrented](Assets/XLua/Examples/04_LuaObjectOrented/): 展示 Lua 面向对象和 C# 的配合。
 * [05_NoGc](Assets/XLua/Examples/05_NoGc/): 展示怎么去避免值类型的GC。
 * [06_Coroutine](Assets/XLua/Examples/06_Coroutine/): 展示 Lua 协程怎么和 Unity 协程相配合。
-* [07_AsyncTest](Assets/XLua/Examples/07_AsyncTest/): 展示怎么用 Lua 协程来把异步逻辑同步化。
 * [08_Hotfix](Assets/XLua/Examples/08_Hotfix/): 热补丁的示例（需要开启热补丁特性，如何开启请参考 [xLua 文档: 热补丁](Assets/XLua/Doc/hotfix.md)）。
 * [09_GenericMethod](Assets/XLua/Examples/09_GenericMethod/): 泛化函数支持的演示。
 * [10_SignatureLoader](Assets/XLua/Examples/10_SignatureLoader/): 展示如何读取经数字签名的lua脚本，参见[数字签名](Assets/XLua/Doc/signature.md)的文档介绍。

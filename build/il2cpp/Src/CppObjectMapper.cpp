@@ -171,9 +171,20 @@ static int PesapiFunctionCallback(lua_State* L)
     return 1;
 }
 
-int CppObjectMapper::CreateFunction(lua_State* L, pesapi_callback Callback, void* Data)
+void CppObjectMapper::CallbackDataGarbageCollected(const PesapiCallbackData* CallbackData)
 {
-    auto CallbackData = new PesapiCallbackData{Callback, Data};
+    if (CallbackData->Finalize)
+    {
+        CallbackData->Finalize(GetFFIApi(), CallbackData->Data, DataTransfer::GetLuaEnvPrivate());
+    }
+    CallbackData->CppObjectMapper->FunctionDatas.erase(std::remove(CallbackData->CppObjectMapper->FunctionDatas.begin(), CallbackData->CppObjectMapper->FunctionDatas.end(), CallbackData), CallbackData->CppObjectMapper->FunctionDatas.end());
+    delete CallbackData;
+}
+
+int CppObjectMapper::CreateFunction(lua_State* L, pesapi_callback Callback, void* Data, pesapi_function_finalize Finalize)
+{
+    auto CallbackData = new PesapiCallbackData{Callback, Data, this};
+    CallbackData->Finalize = Finalize;
     FunctionDatas.push_back(CallbackData);
     lua_pushlightuserdata(L, CallbackData);
     lua_pushlightuserdata(L, Data);

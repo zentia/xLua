@@ -558,13 +558,13 @@ struct MethodInfoHelper
 {
 };
 
-intptr_t GetMethodPointer(Il2CppReflectionMethod* method);
+Il2CppMethodPointer GetMethodPointer(Il2CppReflectionMethod* method);
 intptr_t GetMethodInfoPointer(Il2CppReflectionMethod* method);
 
 template <class _Ret, class... _Args>
 struct MethodInfoHelper<_Ret (_Args...)>
 {
-    intptr_t func;
+    Il2CppMethodPointer func;
     intptr_t methodInfo;
     Il2CppObject* instance;
 

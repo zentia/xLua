@@ -103,7 +103,7 @@ namespace XLua
         ~LuaTable()
         {
             if (LuaEnv.Instance != null)
-                XLuaIl2cpp.NativeAPI.AddPendingKillScriptObjects(apis, nativeLuaEnv, valueRef);
+                XLua.NativeAPI.AddPendingKillScriptObjects(apis, nativeLuaEnv, valueRef);
             else
                 UnityEngine.Debug.LogError("LuaEnv is Destroy!");
         }

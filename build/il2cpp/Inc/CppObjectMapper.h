@@ -42,6 +42,9 @@ struct PesapiCallbackData
 {
     pesapi_callback Callback;
     void* Data;
+    class CppObjectMapper* CppObjectMapper;
+    int luaFunction;
+    pesapi_function_finalize Finalize = nullptr;
 };
 
     struct MetaInfo
@@ -62,7 +65,7 @@ public:
 
     int FindOrAddCppObject(lua_State* L, const void* TypeId, void* Ptr, bool PassByPointer);
 
-    int CreateFunction(lua_State* L, pesapi_callback Callback, void* Data);
+    int CreateFunction(lua_State* L, pesapi_callback Callback, void* Data, pesapi_function_finalize Finalize);
 
     void UnBindCppObject(lua_State* L, LuaClassDefinition* ClassDefinition, void* Ptr, int UserData);
 
@@ -109,6 +112,8 @@ private:
 
     std::vector<PesapiCallbackData*> FunctionDatas;
     static CppObjectMapper* ms_Instance;
+
+    static void CallbackDataGarbageCollected(const PesapiCallbackData* Data);
 };
 
 }    // namespace xlua

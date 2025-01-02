@@ -112,6 +112,7 @@ typedef struct pesapi_property_descriptor__* pesapi_property_descriptor;
 typedef void (*pesapi_callback)(struct pesapi_ffi* apis, pesapi_callback_info info);
 typedef void* (*pesapi_constructor)(struct pesapi_ffi* apis, pesapi_callback_info info);
 typedef void (*pesapi_finalize)(struct pesapi_ffi* apis, void* Ptr, void* class_data, void* env_private);
+typedef void (*pesapi_function_finalize)(struct pesapi_ffi* apis, void* data, void* env_private);
 typedef int (*pesapi_on_native_object_enter)(void* ptr, void* class_data, void* env_private);
 typedef void (*pesapi_on_native_object_exit)(void* ptr, void* class_data, void* env_private, int userdata);
 typedef bool (*pesapi_class_not_found_callback)(const void* type_id);
@@ -136,7 +137,7 @@ typedef int (*pesapi_create_string_utf8_func)(pesapi_env env, const char* str, s
 typedef int (*pesapi_create_binary_func)(pesapi_env env, void* str, size_t length);
 typedef int (*pesapi_create_array_func)(pesapi_env env);
 typedef int (*pesapi_create_object_func)(pesapi_env env);
-typedef int (*pesapi_create_function_func)(pesapi_env env, pesapi_callback native_impl, void* data);
+typedef int (*pesapi_create_function_func)(pesapi_env env, pesapi_callback native_impl, void* data, pesapi_function_finalize finalize);
 typedef int (*pesapi_create_class_func)(pesapi_env env, const void* type_id);
 
 typedef bool (*pesapi_get_value_bool_func)(pesapi_env env, int value);
@@ -164,8 +165,7 @@ typedef bool (*pesapi_is_function_func)(pesapi_env env, int value);
 typedef bool (*pesapi_is_binary_func)(pesapi_env env, int value);
 typedef bool (*pesapi_is_array_func)(pesapi_env env, int value);
 
-typedef pesapi_value(*pesapi_native_object_to_value_func)(
-    pesapi_env env, const void* type_id, void* object_ptr, bool call_finalize);
+typedef pesapi_value(*pesapi_native_object_to_value_func)(pesapi_env env, const void* type_id, void* object_ptr, bool call_finalize);
 typedef void* (*pesapi_get_native_object_ptr_func)(pesapi_env env, pesapi_value value);
 typedef int (*pesapi_get_native_object_index_func)(pesapi_env env, pesapi_value value);
 typedef const void* (*pesapi_get_native_object_typeid_func)(pesapi_env env, pesapi_value value);

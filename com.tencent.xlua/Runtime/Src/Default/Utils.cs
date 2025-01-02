@@ -263,8 +263,6 @@ namespace XLua
             return firstParameterConstraint;
         }
         
-        public delegate object GetValueForCheck();
-
 #if (UNITY_WSA && !ENABLE_IL2CPP) && !UNITY_EDITOR
         public static List<Assembly> _assemblies;
         public static List<Assembly> GetAssemblies()
@@ -612,10 +610,7 @@ namespace XLua
 				while (enumerator.MoveNext())
 				{
 					Type type = enumerator.Current;
-					if (type.IsDefined(typeof(ExtensionAttribute), false) && (
-							type.IsDefined(typeof(ReflectionUseAttribute), false)
-							|| type.IsDefined(typeof(LuaCallCSharpAttribute), false)
-						))
+					if (type.IsDefined(typeof(ExtensionAttribute), false) && (type.IsDefined(typeof(ReflectionUseAttribute), false) || type.IsDefined(typeof(LuaCallCSharpAttribute), false)))
 					{
 						type_def_extention_method.Add(type);
 					}
@@ -623,7 +618,7 @@ namespace XLua
 					if (!type.IsAbstract() || !type.IsSealed()) 
                         continue;
 
-					var fields = type.GetFields(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.DeclaredOnly);
+					var fields = type.GetFields(BindingFlags.Static | BindingFlags.Public | BindingFlags.DeclaredOnly);
 					for (int i = 0; i < fields.Length; i++)
 					{
 						var field = fields[i];
@@ -636,7 +631,7 @@ namespace XLua
 						}
 					}
 
-					var props = type.GetProperties(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.DeclaredOnly);
+					var props = type.GetProperties(BindingFlags.Static | BindingFlags.Public | BindingFlags.DeclaredOnly);
 					for (int i = 0; i < props.Length; i++)
 					{
 						var prop = props[i];

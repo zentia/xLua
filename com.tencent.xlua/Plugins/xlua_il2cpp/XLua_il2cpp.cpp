@@ -81,7 +81,7 @@ namespace xlua
         std::vector<CSharpFieldInfo> Fields;
     };
 
-    intptr_t GetMethodPointer(Il2CppReflectionMethod* method)
+    Il2CppMethodPointer GetMethodPointer(Il2CppReflectionMethod* method)
     {
         auto methodInfo = method->method;
         auto ret = MetadataCache::GetMethodPointer(methodInfo->klass->image, methodInfo->token);
@@ -89,7 +89,7 @@ namespace xlua
         {
             ret = methodInfo->methodPointer;
         }
-        return (intptr_t)ret;
+        return ret;
     }
 
     intptr_t GetMethodInfoPointer(Il2CppReflectionMethod* method)
@@ -320,7 +320,7 @@ static void MethodCallback(struct pesapi_ffi* apis, pesapi_callback_info info)
             }
             ++wrapDatas;
         }
-        std::string err_info = "invalid arguments for " + csharpMethodInfo->Name;
+        std::string err_info = "invalid arguments to " + csharpMethodInfo->Name;
         apis->throw_by_string(info, err_info.c_str());
     }
     catch (Il2CppExceptionWrapper& exception)
@@ -343,6 +343,91 @@ static void MethodCallback(struct pesapi_ffi* apis, pesapi_callback_info info)
         }
     }
 }
+
+    static void FreeCSharpMethodInfo(CSharpMethodInfo* csharpMethodInfo)
+    {
+	    if (csharpMethodInfo)
+	    {
+		    for (int i = 0; i < csharpMethodInfo->OverloadDatas.size(); ++i)
+		    {
+                free(csharpMethodInfo->OverloadDatas[i]);
+		    }
+            delete csharpMethodInfo;
+	    }
+    }
+
+    static void FunctionFinalize(struct pesapi_ffi* apis, void* data, void* env_private)
+    {
+        FreeCSharpMethodInfo((CSharpMethodInfo*)data);
+    }
+
+    static bool IsPrimitive(Il2CppTypeEnum type)
+    {
+        return (type >= IL2CPP_TYPE_BOOLEAN && type <= IL2CPP_TYPE_R8) || type == IL2CPP_TYPE_I || type == IL2CPP_TYPE_U;
+    }
+
+    static bool TypeInfoPassToLuaFilter(const Il2CppType* type, const Il2CppClass* klass)
+    {
+        return klass != il2cpp_defaults.void_class && !IsPrimitive(type->type) && IL2CPP_TYPE_ENUM != type->type;
+    }
+
+    static void createFunctionWrapper(struct pesapi_ffi* apis, pesapi_callback_info info)
+    {
+        pesapi_env env = apis->get_env(info);
+        int argc = apis->get_args_len(info);
+        CSharpMethodInfo* csharpMethodInfo = nullptr;
+        for (int i = 0; i < argc; ++i)
+        {
+            Il2CppReflectionMethod* reflectionMethod = (Il2CppReflectionMethod*)apis->get_native_object_ptr(env, apis->get_arg(info, i));
+            if (!reflectionMethod || !Class::IsAssignableFrom(il2cpp_defaults.method_info_class, reflectionMethod->object.klass))
+            {
+                apis->throw_by_string(info, "expect a MethodInfo");
+                FreeCSharpMethodInfo(csharpMethodInfo);
+                return;
+            }
+            else
+            {
+                bool isStatic = !il2cpp::vm::Method::IsInstance(reflectionMethod->method);
+                bool needBoxing = reflectionMethod->method->klass == il2cpp_defaults.object_class;
+                if (csharpMethodInfo == nullptr)
+                {
+                    csharpMethodInfo = new CSharpMethodInfo{ std::string(reflectionMethod->method->name), isStatic, false, false, needBoxing };
+                }
+                std::vector<Il2CppClass*> usedTypes;
+                const Il2CppType* type = Method::GetReturnType(reflectionMethod->method);
+                Il2CppClass* klass = il2cpp_codegen_class_from_type(type);
+                if (TypeInfoPassToLuaFilter(type, klass))
+                {
+                    usedTypes.push_back(klass);
+                }
+                size_t paramCount = Method::GetParamCount(reflectionMethod->method);
+                for (size_t index = 0; index < paramCount; ++index)
+                {
+                    type = Method::GetParam(reflectionMethod->method, index);
+                    klass = il2cpp_codegen_class_from_type(type);
+                    if (TypeInfoPassToLuaFilter(type, klass))
+                    {
+                        usedTypes.push_back(klass);
+                    }
+                }
+                int allocSize = sizeof(xlua::WrapData) + sizeof(void*) * usedTypes.size();
+                xlua::WrapData* overloadData = (xlua::WrapData*)malloc(allocSize);
+                memset(overloadData, 0, allocSize);
+                overloadData->Method = const_cast<MethodInfo*>(reflectionMethod->method);
+                overloadData->MethodPointer = GetMethodPointer(reflectionMethod);
+                overloadData->Wrap = &ReflectionWrapper; // TODO: find wrapper by signature
+                overloadData->IsStatic = isStatic;
+                overloadData->IsExtensionMethod = false;
+                csharpMethodInfo->OverloadDatas.push_back(overloadData);
+            }
+        }
+        if (csharpMethodInfo)
+        {
+            csharpMethodInfo->OverloadDatas.push_back(nullptr);
+            auto func = apis->create_function(env, MethodCallback, csharpMethodInfo, FunctionFinalize);
+            apis->add_return(info, func);
+        }
+    }
 
 static void GetterCallback(struct pesapi_ffi* apis, pesapi_callback_info info)
 {
@@ -2342,6 +2427,11 @@ static void LoadTypeWrapper(struct pesapi_ffi* apis, pesapi_callback_info info)
     pesapi_env env = apis->get_env(info);
     Il2CppObject* type = (Il2CppObject*) apis->get_native_object_ptr(env, apis->get_arg(info, 0));
     auto type_id = CSharpTypeToTypeId(type);
+    if (!type_id)
+    {
+        apis->throw_by_string(info, "expect a Type");
+        return;
+    }
     auto ret = apis->create_class(env, type_id);
     apis->add_return(info, ret);
 }
@@ -2354,17 +2444,19 @@ xlua::LuaEnvPrivate* InitialPapiEnvRef(struct pesapi_ffi* apis, pesapi_env_ref e
     
     auto luaEnvPrivate = new xlua::LuaEnvPrivate(apis, envRef, objPool, objPoolAddMethodInfo, objPoolRemoveMethodInfo);
     apis->set_env_private(env, luaEnvPrivate);
-    auto func = apis->create_function(env, LoadTypeWrapper, nullptr);
-    if (func)
+    auto loadType = apis->create_function(env, LoadTypeWrapper, nullptr, nullptr);
+    auto createFunction = apis->create_function(env, createFunctionWrapper, nullptr, nullptr);
+    if (loadType && createFunction)
     {
         int global = apis->global(env);
         if (global)
         {
-            apis->set_property(env, global, "loadType", func);
+            apis->set_property(env, global, "loadType", createFunction);
+            apis->set_property(env, global, "createFunction", createFunction);
             return luaEnvPrivate;
         }
     }
-    Exception::Raise(Exception::GetInvalidOperationException("can not init global.loadType"));
+    Exception::Raise(Exception::GetInvalidOperationException("can not init global.loadType or global.createFunction"));
     return nullptr;
 }
 
@@ -2395,30 +2487,30 @@ extern "C"
 
     void InitialXLua(pesapi_func_ptr* func_array)
     {
-        InternalCalls::Add("XLuaIl2cpp.NativeAPI::GetMethodPointer(System.Reflection.MethodBase)", (Il2CppMethodPointer) xlua::GetMethodPointer);
-        InternalCalls::Add("XLuaIl2cpp.NativeAPI::GetMethodInfoPointer(System.Reflection.MethodBase)",(Il2CppMethodPointer) xlua::GetMethodInfoPointer);
-        InternalCalls::Add("XLuaIl2cpp.NativeAPI::GetTypeId(System.Type)", (Il2CppMethodPointer) xlua::GetTypeId);
-        InternalCalls::Add("XLuaIl2cpp.NativeAPI::GetFieldOffset(System.Reflection.FieldInfo,System.Boolean)",(Il2CppMethodPointer) xlua::GetFieldOffset);
-        InternalCalls::Add("XLuaIl2cpp.NativeAPI::GetFieldInfoPointer(System.Reflection.FieldInfo)",(Il2CppMethodPointer) xlua::GetFieldInfoPointer);
-        InternalCalls::Add("XLuaIl2cpp.NativeAPI::SetGlobalType_LuaTable(System.Type)", (Il2CppMethodPointer) xlua::SetGlobalType_LuaTable);
-        InternalCalls::Add("XLuaIl2cpp.NativeAPI::SetGlobalType_ArrayBuffer(System.Type)", (Il2CppMethodPointer)xlua::SetGlobalType_ArrayBuffer);
-        InternalCalls::Add("XLuaIl2cpp.NativeAPI::SetGlobalType_Array(System.Type)", (Il2CppMethodPointer) xlua::SetGlobalType_Array);
-        InternalCalls::Add("XLuaIl2cpp.NativeAPI::DoString(System.IntPtr,System.IntPtr,System.Byte[],System.String,XLua.LuaTable,System.Type)", (Il2CppMethodPointer) xlua::DoString);
-        InternalCalls::Add("XLuaIl2cpp.NativeAPI::LoadString(System.IntPtr,System.IntPtr,System.Byte[],System.String,XLua.LuaTable,System.Type)", (Il2CppMethodPointer) xlua::LoadString);
-        InternalCalls::Add("XLuaIl2cpp.NativeAPI::SetObjectToGlobal(System.IntPtr,System.IntPtr,System.String,System.Object)",(Il2CppMethodPointer) xlua::SetObjectToGlobal);
-        InternalCalls::Add("XLuaIl2cpp.NativeAPI::TypeIdToType(System.IntPtr)", (Il2CppMethodPointer) xlua::TypeIdToType);
-        InternalCalls::Add("XLuaIl2cpp.NativeAPI::InitialPapiEnvRef(System.IntPtr,System.IntPtr,System.Object,System.Reflection.MethodBase,System.Reflection.MethodBase)",(Il2CppMethodPointer) xlua::InitialPapiEnvRef);
-        InternalCalls::Add("XLuaIl2cpp.NativeAPI::CleanupPapiEnvRef(System.IntPtr,System.IntPtr)", (Il2CppMethodPointer) xlua::CleanupPapiEnvRef);
-        InternalCalls::Add("XLuaIl2cpp.NativeAPI::DestroyLuaEnvPrivate(System.IntPtr)", (Il2CppMethodPointer) xlua::DestroyLuaEnvPrivate);
+        InternalCalls::Add("XLua.NativeAPI::GetMethodPointer(System.Reflection.MethodBase)", (Il2CppMethodPointer) xlua::GetMethodPointer);
+        InternalCalls::Add("XLua.NativeAPI::GetMethodInfoPointer(System.Reflection.MethodBase)",(Il2CppMethodPointer) xlua::GetMethodInfoPointer);
+        InternalCalls::Add("XLua.NativeAPI::GetTypeId(System.Type)", (Il2CppMethodPointer) xlua::GetTypeId);
+        InternalCalls::Add("XLua.NativeAPI::GetFieldOffset(System.Reflection.FieldInfo,System.Boolean)",(Il2CppMethodPointer) xlua::GetFieldOffset);
+        InternalCalls::Add("XLua.NativeAPI::GetFieldInfoPointer(System.Reflection.FieldInfo)",(Il2CppMethodPointer) xlua::GetFieldInfoPointer);
+        InternalCalls::Add("XLua.NativeAPI::SetGlobalType_LuaTable(System.Type)", (Il2CppMethodPointer) xlua::SetGlobalType_LuaTable);
+        InternalCalls::Add("XLua.NativeAPI::SetGlobalType_ArrayBuffer(System.Type)", (Il2CppMethodPointer)xlua::SetGlobalType_ArrayBuffer);
+        InternalCalls::Add("XLua.NativeAPI::SetGlobalType_Array(System.Type)", (Il2CppMethodPointer) xlua::SetGlobalType_Array);
+        InternalCalls::Add("XLua.NativeAPI::DoString(System.IntPtr,System.IntPtr,System.Byte[],System.String,XLua.LuaTable,System.Type)", (Il2CppMethodPointer) xlua::DoString);
+        InternalCalls::Add("XLua.NativeAPI::LoadString(System.IntPtr,System.IntPtr,System.Byte[],System.String,XLua.LuaTable,System.Type)", (Il2CppMethodPointer) xlua::LoadString);
+        InternalCalls::Add("XLua.NativeAPI::SetObjectToGlobal(System.IntPtr,System.IntPtr,System.String,System.Object)",(Il2CppMethodPointer) xlua::SetObjectToGlobal);
+        InternalCalls::Add("XLua.NativeAPI::TypeIdToType(System.IntPtr)", (Il2CppMethodPointer) xlua::TypeIdToType);
+        InternalCalls::Add("XLua.NativeAPI::InitialPapiEnvRef(System.IntPtr,System.IntPtr,System.Object,System.Reflection.MethodBase,System.Reflection.MethodBase)",(Il2CppMethodPointer) xlua::InitialPapiEnvRef);
+        InternalCalls::Add("XLua.NativeAPI::CleanupPapiEnvRef(System.IntPtr,System.IntPtr)", (Il2CppMethodPointer) xlua::CleanupPapiEnvRef);
+        InternalCalls::Add("XLua.NativeAPI::DestroyLuaEnvPrivate(System.IntPtr)", (Il2CppMethodPointer) xlua::DestroyLuaEnvPrivate);
         InternalCalls::Add("XLua.LuaTable::GetLuaTableValueByUInt64(System.IntPtr,System.UInt64,System.Type)",(Il2CppMethodPointer) xlua::GetLuaTableValueByUInt64);
         InternalCalls::Add("XLua.LuaTable::GetLuaTableValueByString(System.IntPtr,System.String,System.Type)", (Il2CppMethodPointer) xlua::GetLuaTableValueByString);
         InternalCalls::Add("XLua.LuaTable::SetLuaTableValueByUInt64(System.IntPtr,System.UInt64,System.Object)",(Il2CppMethodPointer) xlua::SetLuaTableValueByUInt64);
         InternalCalls::Add("XLua.LuaTable::SetLuaTableValueByString(System.IntPtr,System.String,System.Object)",(Il2CppMethodPointer) xlua::SetLuaTableValueByString);
         InternalCalls::Add("XLua.LuaTable::GetLuaTableLength(System.IntPtr)", (Il2CppMethodPointer) xlua::GetLuaTableLength);
-        InternalCalls::Add("XLuaIl2cpp.NativeAPI::SetRegisterNoThrow(System.Reflection.MethodBase)",(Il2CppMethodPointer) xlua::SetRegisterNoThrow);
-        InternalCalls::Add("XLuaIl2cpp.NativeAPI::CSRefToLuaValue(System.IntPtr,System.IntPtr,System.Type,System.Object)", (Il2CppMethodPointer)xlua::CSRefToLuaValue);
-        InternalCalls::Add("XLuaIl2cpp.NativeAPI::NewTable(System.IntPtr,System.IntPtr)",(Il2CppMethodPointer)xlua::NewTable);
-        InternalCalls::Add("XLuaIl2cpp.NativeAPI::GetGlobalTable(System.IntPtr,System.IntPtr)", (Il2CppMethodPointer) xlua::GetGlobalTable);
+        InternalCalls::Add("XLua.NativeAPI::SetRegisterNoThrow(System.Reflection.MethodBase)",(Il2CppMethodPointer) xlua::SetRegisterNoThrow);
+        InternalCalls::Add("XLua.NativeAPI::CSRefToLuaValue(System.IntPtr,System.IntPtr,System.Type,System.Object)", (Il2CppMethodPointer)xlua::CSRefToLuaValue);
+        InternalCalls::Add("XLua.NativeAPI::NewTable(System.IntPtr,System.IntPtr)",(Il2CppMethodPointer)xlua::NewTable);
+        InternalCalls::Add("XLua.NativeAPI::GetGlobalTable(System.IntPtr,System.IntPtr)", (Il2CppMethodPointer) xlua::GetGlobalTable);
         pesapi_init(func_array);
     }
 

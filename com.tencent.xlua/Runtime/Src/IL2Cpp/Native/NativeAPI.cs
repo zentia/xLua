@@ -1,24 +1,11 @@
-#if ENABLE_IL2CPP && XLUA_IL2CPP
 using System;
 using System.Runtime.InteropServices;
 using System.Runtime.CompilerServices;
 using System.Reflection;
 using System.Collections.Generic;
-using XLua;
 
-namespace XLuaIl2cpp
+namespace XLua
 {
-#pragma warning disable 414
-    public class MonoPInvokeCallbackAttribute : System.Attribute
-    {
-        private Type type;
-        public MonoPInvokeCallbackAttribute(Type t)
-        {
-            type = t;
-        }
-    }
-#pragma warning restore 414
-
     public class NativeAPI
     {
 #if (UNITY_IPHONE || UNITY_TVOS || UNITY_WEBGL || UNITY_SWITCH) && !UNITY_EDITOR
@@ -48,24 +35,6 @@ namespace XLuaIl2cpp
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr GetPapiEnvRef(IntPtr luaEnv);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static IntPtr InitialPapiEnvRef(IntPtr api, IntPtr envRef, Object obj, MethodBase addMethodBase, MethodBase removeMethodBase)
-        {
-            throw new NotImplementedException();
-        }
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static void CleanupPapiEnvRef(IntPtr api, IntPtr envRef)
-        {
-            throw new NotImplementedException();
-        }
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static void DestroyLuaEnvPrivate(IntPtr luaEnvPrivate)
-        {
-            throw new NotImplementedException();
-        }
-
         [DllImport("__Internal", CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr CreateCSharpTypeInfo(string name, IntPtr type_id, IntPtr super_type_id, bool isValueType, bool isDelegate, string delegateSignature);
 
@@ -93,6 +62,31 @@ namespace XLuaIl2cpp
         [DllImport("__Internal", CallingConvention = CallingConvention.Cdecl)]
         public static extern bool RegisterCSharpType(IntPtr classInfo);
 
+        [DllImport("__Internal", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AddPendingKillScriptObjects(IntPtr ffiApi, IntPtr luaEnv, IntPtr valueRef);
+
+        [DllImport("__Internal", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void CleanupPendingKillScriptObjects(IntPtr luaEnv);
+#if XLUA_IL2CPP && ENABLE_IL2CPP
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static IntPtr InitialPapiEnvRef(IntPtr api, IntPtr envRef, Object obj, MethodBase addMethodBase, MethodBase removeMethodBase)
+        {
+            throw new NotImplementedException();
+        }
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static void CleanupPapiEnvRef(IntPtr api, IntPtr envRef)
+        {
+            throw new NotImplementedException();
+        }
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static void DestroyLuaEnvPrivate(IntPtr luaEnvPrivate)
+        {
+            throw new NotImplementedException();
+        }
+
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static void SetRegisterNoThrow(MethodBase methodInfo)
         {
@@ -104,13 +98,7 @@ namespace XLuaIl2cpp
         {
             throw new NotImplementedException();
         }
-
-        [DllImport("__Internal", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void AddPendingKillScriptObjects(IntPtr ffiApi, IntPtr luaEnv, IntPtr valueRef);
-
-        [DllImport("__Internal", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void CleanupPendingKillScriptObjects(IntPtr luaEnv);
-
+#endif
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static object GetModuleExecutor(IntPtr NativeLuaEnvPtr, Type type)
         {
@@ -200,9 +188,52 @@ namespace XLuaIl2cpp
         {
             throw new NotImplementedException();
         }
+
+#if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN || (UNITY_WSA && !UNITY_EDITOR)
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+#endif
+        public delegate void LogCallback(string content);
+
+        [MonoPInvokeCallback(typeof(LogCallback))]
+        public static void LogImpl(string msg)
+        {
+            UnityEngine.Debug.Log("debug msg: " + msg);
+        }
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public static extern void SetLogCallback(IntPtr log, IntPtr logWarning, IntPtr logError);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public static extern void SetLogCallbackInternal(IntPtr log);
+
+        //[UnityEngine.Scripting.RequiredByNativeCodeAttribute()]
+        public static void SetLogCallback(LogCallback log, LogCallback logWarning, LogCallback logError)
+        {
+#if !UNITY_EDITOR || UNITY_STANDALONE_WIN
+            GCHandle.Alloc(log);
+            GCHandle.Alloc(logWarning);
+            GCHandle.Alloc(logError);
+#endif
+            IntPtr fn1 = log == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(log);
+            IntPtr fn2 = logWarning == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(logWarning);
+            IntPtr fn3 = logError == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(logError);
+
+            try
+            {
+                //SetLogCallback(fn1);
+                SetLogCallbackInternal(fn1);
+                SetLogCallback(fn1, fn2, fn3);
+            }
+            catch (DllNotFoundException)
+            {
+                UnityEngine.Debug.LogError("[XLua001] XLua Native Plugin(s) is missing. You can solve this problem following the FAQ.");
+                throw;
+            }
+        }
     }
 
     public delegate void pesapi_callback(IntPtr apis, IntPtr info);
+    public delegate void pesapi_function_finalize(IntPtr apis, IntPtr data, IntPtr env_private);
 
     public delegate IntPtr pesapi_create_null_func(IntPtr env);
     public delegate IntPtr pesapi_create_undefined_func(IntPtr env);
@@ -216,7 +247,7 @@ namespace XLuaIl2cpp
     public delegate IntPtr pesapi_create_binary_func(IntPtr env, IntPtr str, UIntPtr length);
     public delegate IntPtr pesapi_create_array_func(IntPtr env);
     public delegate IntPtr pesapi_create_object_func(IntPtr env);
-    public delegate IntPtr pesapi_create_function_func(IntPtr env, pesapi_callback native_impl, IntPtr data);
+    public delegate IntPtr pesapi_create_function_func(IntPtr env, pesapi_callback native_impl, IntPtr data, pesapi_function_finalize finalize);
     public delegate IntPtr pesapi_create_class_func(IntPtr env, IntPtr type_id);
 
     public delegate bool pesapi_get_value_bool_func(IntPtr env, IntPtr value);
@@ -393,5 +424,3 @@ namespace XLuaIl2cpp
         public pesapi_next_func next;
     }
 }
-
-#endif
