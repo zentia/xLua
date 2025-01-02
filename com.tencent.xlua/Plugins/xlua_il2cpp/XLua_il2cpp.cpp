@@ -620,7 +620,6 @@ bool IsDelegate(Il2CppClass* klass)
            klass != il2cpp_defaults.multicastdelegate_class;
 }
 
-static FieldInfo* ArrayBufferLengthField = nullptr;
 int TryTranslateBuiltin(struct pesapi_ffi* apis, pesapi_env env, Il2CppObject* obj)
 {
     if (obj)
@@ -640,8 +639,77 @@ int TryTranslateBuiltin(struct pesapi_ffi* apis, pesapi_env env, Il2CppObject* o
     return 0;
 }
 
-static int TryTranslatePrimitiveWithClass(
-    struct pesapi_ffi* apis, pesapi_env env, Il2CppObject* obj, Il2CppClass* klass = nullptr)
+static pesapi_value TryTranslatePrimitivePtr(struct pesapi_ffi* apis, pesapi_env env, Il2CppTypeEnum type, void* ptr)
+{
+    switch (type)
+    {
+    case IL2CPP_TYPE_I1:
+    {
+        return apis->create_int32(env, (int32_t)(*((uint8_t*)ptr)));
+    }
+    case IL2CPP_TYPE_BOOLEAN:
+    {
+        return apis->create_boolean(env, (bool)(*((uint8_t*)ptr)));
+    }
+    case IL2CPP_TYPE_U1:
+    {
+        return apis->create_uint32(env, (uint32_t)(*((uint32_t*)ptr)));
+    }
+    case IL2CPP_TYPE_I2:
+    {
+        return apis->create_int32(env, (int32_t)(*((uint16_t*)ptr)));
+    }
+    case IL2CPP_TYPE_U2:
+    {
+        return apis->create_uint32(env, (uint32_t)(*((uint32_t*)ptr)));
+    }
+    case IL2CPP_TYPE_CHAR:
+    {
+        return apis->create_int32(env, (int32_t)(*((Il2CppChar*)ptr)));
+    }
+#if IL2CPP_SIZEOF_VOID_P == 4
+    case IL2CPP_TYPE_I:
+#endif
+    case IL2CPP_TYPE_I4:
+    {
+        return apis->create_int32(env, (int32_t)(*((int32_t*)ptr)));
+    }
+#if IL2CPP_SIZEOF_VOID_P == 4
+    case IL2CPP_TYPE_U:
+#endif
+    case IL2CPP_TYPE_U4:
+    {
+        return apis->create_uint32(env, (uint32_t)(*((uint32_t*)ptr)));
+    }
+#if IL2CPP_SIZEOF_VOID_P == 8
+    case IL2CPP_TYPE_I:
+#endif
+    case IL2CPP_TYPE_I8:
+    {
+        return apis->create_int64(env, *((int64_t*)ptr));
+    }
+#if IL2CPP_SIZEOF_VOID_P == 8
+    case IL2CPP_TYPE_U:
+#endif
+    case IL2CPP_TYPE_U8:
+    {
+        return apis->create_uint64(env, *((uint64_t*)ptr));
+    }
+    case IL2CPP_TYPE_R4:
+    {
+        return apis->create_double(env, (double)(*((float*)ptr)));
+    }
+    case IL2CPP_TYPE_R8:
+    {
+        return apis->create_double(env, *((double*)ptr));
+    }
+
+    default:
+        return 0;
+}
+}
+
+static int TryTranslatePrimitiveWithClass(struct pesapi_ffi* apis, pesapi_env env, Il2CppObject* obj, Il2CppClass* klass = nullptr)
 {
     if (obj)
     {
@@ -649,79 +717,13 @@ static int TryTranslatePrimitiveWithClass(
         int t = type->type;
         if (t == IL2CPP_TYPE_STRING)
         {
-            const Il2CppChar* utf16 = il2cpp::utils::StringUtils::GetChars((Il2CppString*) obj);
+            const Il2CppChar* utf16 = il2cpp::utils::StringUtils::GetChars((Il2CppString*)obj);
             std::string str = il2cpp::utils::StringUtils::Utf16ToUtf8(utf16);
             return apis->create_string_utf8(env, str.c_str(), str.size());
         }
         void* ptr = Object::Unbox(obj);
-        switch (t)
-        {
-            case IL2CPP_TYPE_I1:
-            {
-                return apis->create_int32(env, (int32_t) (*((uint8_t*) ptr)));
-            }
-            case IL2CPP_TYPE_BOOLEAN:
-            {
-                return apis->create_boolean(env, (bool) (*((uint8_t*) ptr)));
-            }
-            case IL2CPP_TYPE_U1:
-            {
-                return apis->create_uint32(env, (uint32_t) (*((uint32_t*) ptr)));
-            }
-            case IL2CPP_TYPE_I2:
-            {
-                return apis->create_int32(env, (int32_t) (*((uint16_t*) ptr)));
-            }
-            case IL2CPP_TYPE_U2:
-            {
-                return apis->create_uint32(env, (uint32_t) (*((uint32_t*) ptr)));
-            }
-            case IL2CPP_TYPE_CHAR:
-            {
-                return apis->create_int32(env, (int32_t) (*((Il2CppChar*) ptr)));
-            }
-#if IL2CPP_SIZEOF_VOID_P == 4
-            case IL2CPP_TYPE_I:
-#endif
-            case IL2CPP_TYPE_I4:
-            {
-                return apis->create_int32(env, (int32_t) (*((int32_t*) ptr)));
-            }
-#if IL2CPP_SIZEOF_VOID_P == 4
-            case IL2CPP_TYPE_U:
-#endif
-            case IL2CPP_TYPE_U4:
-            {
-                return apis->create_uint32(env, (uint32_t) (*((uint32_t*) ptr)));
-            }
-#if IL2CPP_SIZEOF_VOID_P == 8
-            case IL2CPP_TYPE_I:
-#endif
-            case IL2CPP_TYPE_I8:
-            {
-                return apis->create_int64(env, *((int64_t*) ptr));
-            }
-#if IL2CPP_SIZEOF_VOID_P == 8
-            case IL2CPP_TYPE_U:
-#endif
-            case IL2CPP_TYPE_U8:
-            {
-                return apis->create_uint64(env, *((uint64_t*) ptr));
-            }
-            case IL2CPP_TYPE_R4:
-            {
-                return apis->create_double(env, (double) (*((float*) ptr)));
-            }
-            case IL2CPP_TYPE_R8:
-            {
-                return apis->create_double(env, *((double*) ptr));
-            }
-
-            default:
-                return 0;
-        }
+        return TryTranslatePrimitivePtr(apis, env, type->type, ptr);
     }
-
     return 0;
 }
 
@@ -1285,6 +1287,60 @@ int CSRefToLuaValue(struct pesapi_ffi* apis, pesapi_env env, Il2CppClass* target
     return apis->native_object_to_value(env, objClass, obj, false);
 }
 
+    static bool NullableHasValue(Il2CppClass* klass, void* data)
+    {
+        uint8_t* hasValueByte = static_cast<uint8_t*>(data);
+        return *hasValueByte != 0;
+    }
+
+    pesapi_value CSValueTypePtrToLuaValue(struct pesapi_ffi* apis, pesapi_env env, Il2CppClass* targetClass, void* ptr)
+    {
+        if (targetClass == il2cpp_defaults.void_class) return apis->create_undefined(env);
+        if (!ptr) return apis->create_null(env);
+
+        if (!targetClass)
+        {
+            targetClass = il2cpp_defaults.object_class;
+        }
+
+        bool isNullable = Class::IsNullable(targetClass);
+
+        if (isNullable)
+        {
+	        if (!NullableHasValue(targetClass, ptr))
+	        {
+                return apis->create_null(env);
+	        }
+            uint8_t* valueStart = static_cast<uint8_t*>(ptr);
+            int32_t nullableShift = targetClass->fields[1].offset - sizeof(Il2CppObject);
+            valueStart += nullableShift;
+            ptr = valueStart;
+        }
+
+        if (Class::IsEnum(targetClass))
+        {
+            targetClass = Class::GetElementClass(targetClass);
+        }
+        const Il2CppType* type = Class::GetType(targetClass);
+
+        pesapi_value luaVal = TryTranslatePrimitivePtr(apis, env, type->type, ptr);
+
+        if (luaVal)
+        {
+            return luaVal;
+        }
+
+        auto len = targetClass->native_size;
+        if (len < 0)
+        {
+            len = targetClass->instance_size - sizeof(Il2CppObject);
+        }
+
+        auto buff = new uint8_t[len];
+        memcpy(buff, ptr, len);
+        return apis->native_object_to_value(env, targetClass, buff, true);
+    }
+
 static bool GetValueTypeFromLua(struct pesapi_ffi* apis, pesapi_env env, int luaValue, Il2CppClass* klass, void* storage)
 {
     bool hasValue = false;
@@ -1769,7 +1825,40 @@ static bool ReflectionWrapper(struct pesapi_ffi* apis, MethodInfo* method, Il2Cp
         }
     }
 
-    Il2CppObject* ret = Runtime::InvokeWithThrow(method, self, args);
+    //Il2CppObject* ret = Runtime::InvokeWithThrow(method, self, args); //返回ValueType有boxing
+    void* returnValue = NULL;
+    bool returnIsValueType = false;
+    Il2CppClass* returnType = Class::FromIl2CppType(method->return_type);
+    if (method->return_type->type == IL2CPP_TYPE_VOID)
+    {
+        method->invoker_method(method->methodPointer, method, self, args, NULL);
+    }
+    else
+    {
+	    if (method->return_type->valuetype)
+	    {
+            Class::Init(returnType);
+            returnValue = alloca(returnType->instance_size - sizeof(Il2CppObject));
+            method->invoker_method(method->methodPointer, method, self, args, returnValue);
+            returnIsValueType = true;
+	    }
+        else
+        {
+            method->invoker_method(method->methodPointer, method, self, args, &returnValue);
+            if (method->return_type->byref)
+            {
+	            if (Class::IsValuetype(returnType))
+	            {
+                    returnIsValueType = true;
+	            }
+                else
+                {
+                    returnValue = *(Il2CppObject**)returnValue;
+                }
+            }
+        }
+    }
+
     int* returnValueArray = new int[returnCount];
     int idx = 0;
     for (int i = csArgStart; i < method->parameters_count; ++i)
@@ -1807,15 +1896,23 @@ static bool ReflectionWrapper(struct pesapi_ffi* apis, MethodInfo* method, Il2Cp
         }
     }
 
-    auto returnType = Class::FromIl2CppType(method->return_type);
-    int returnValue = 0;
-    if (returnType != il2cpp_defaults.void_class)
+    //auto returnType = Class::FromIl2CppType(method->return_type);
+    int retValue = 0;
+        if (method->return_type->type != IL2CPP_TYPE_VOID)
+        {
+	        if (returnIsValueType)
+	        {
+                retValue = CSValueTypePtrToLuaValue(apis, env, returnType, returnValue);
+	        }
+	        else
+	        {
+                retValue = CSRefToLuaValue(apis, env, returnType, (Il2CppObject*)returnValue);
+	        }
+        }
+    
+    if (retValue != 0)
     {
-        returnValue = CSRefToLuaValue(apis, env, returnType, ret);
-    }
-    if (returnValue != 0)
-    {
-        apis->add_return(info, returnValue);
+        apis->add_return(info, retValue);
     }
         for (int i = 0; i < returnCount; i++)
         {
