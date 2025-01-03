@@ -75,7 +75,7 @@ namespace XLua
 
                 //Init Base Libs
                 LuaAPI.luaopen_xlua(rawL);
-#if !OSG_GAME
+#if !OS_GAME
                 LuaAPI.luaopen_i64lib(rawL);
 #endif
                 if (objectTranslator != null)

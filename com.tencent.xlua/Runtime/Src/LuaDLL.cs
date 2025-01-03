@@ -110,7 +110,7 @@ namespace XLua.LuaDLL
 
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         public delegate void PFStatsEndSampleByIndex(Int32 sampleIndex);
-        #if OSG_GAME
+        #if OS_GAME
         [DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
         
         public static extern int luaregist_stats_custom_name(IntPtr L, PFRegistCustomName pf);
@@ -446,7 +446,7 @@ namespace XLua.LuaDLL
 
         [DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]//[,,m]
         public static extern int load_error_func(IntPtr L, int Ref);
-#if !OSG_GAME
+#if !OS_GAME
         [DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
         public static extern int luaopen_i64lib(IntPtr L);//[,,m]
 #endif
