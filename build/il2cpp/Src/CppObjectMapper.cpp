@@ -12,7 +12,7 @@ using namespace std::chrono;
 
 EXTERN_C_START
 int pesapi_dostring(pesapi_env env, const uint8_t* code, size_t code_size, const char* path, pesapi_value_ref value_ref);
-int pesapi_create_function(pesapi_env env, pesapi_callback native_impl, void* data);
+int pesapi_create_function(pesapi_env env, pesapi_callback native_impl, void* data, pesapi_function_finalize finalize);
 EXTERN_C_END
 
 namespace xlua

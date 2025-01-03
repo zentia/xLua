@@ -3,7 +3,9 @@
 #include "functional"
 
 #define LUAENV_API
+#ifndef FORCEINLINE
 #define FORCEINLINE inline
+#endif
 #define UPTRINT uintptr_t
 
 #include <string>
