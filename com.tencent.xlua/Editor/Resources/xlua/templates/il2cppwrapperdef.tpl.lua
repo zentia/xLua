@@ -7,14 +7,23 @@ require("il2cpp_snippets")
 
 function genFuncWrapper(wrapperInfo)
     local parameterSignatures = listToLuaArray(wrapperInfo.ParameterSignatures)
-
+    local hasValueScope = wrapperInfo.ReturnSignature ~= 'v'
+    for i, v in ipairs(parameterSignatures) do
+        if needReturnValue(v) then
+            hasValueScope = true
+            break
+        end
+    end
     return TaggedTemplateEngine([[
 // ]], wrapperInfo.CsName, [[
 
 bool w_]], wrapperInfo.Signature, [[(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_]], wrapperInfo.Signature, [[");
-    AutoValueScope value_scope(apis, env);
-    ]], declareTypeInfo(wrapperInfo), [[
+    // PLog("Running w_]], wrapperInfo.Signature, '");',
+            IF(hasValueScope),
+            '\n    AutoValueScope value_scope(apis, env);',
+            ENDIF(),
+            '',
+            declareTypeInfo(wrapperInfo), [[
 
     int lua_args_len = apis->get_args_len(info);
 ]],
@@ -56,9 +65,12 @@ bool w_]], wrapperInfo.Signature, [[(struct pesapi_ffi* apis, MethodInfo* method
             FOR(parameterSignatures, function(x, i)
                 return refSetReturn(x, i - 1, wrapperInfo)
             end),
-             [[
+            '',
+            IF(hasValueScope),
+            '\n    value_scope.reserve = apis->get_return_num(info);',
+            ENDIF(),
+            [[
 
-    value_scope.reserve = apis->get_return_num(info);
     return true;
 }]])
 end

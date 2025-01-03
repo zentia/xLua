@@ -446,10 +446,10 @@ namespace XLua.LuaDLL
 
         [DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]//[,,m]
         public static extern int load_error_func(IntPtr L, int Ref);
-
+#if !OSG_GAME
         [DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
         public static extern int luaopen_i64lib(IntPtr L);//[,,m]
-
+#endif
         [DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void lua_pushint64(IntPtr L, long n);//[,,m]
 

@@ -7,15 +7,9 @@
 */
 
 #if !ENABLE_IL2CPP || !XLUA_IL2CPP
-#if USE_UNI_LUA
-using LuaAPI = UniLua.Lua;
-using RealStatePtr = UniLua.ILuaState;
-using LuaCSFunction = UniLua.CSharpFunctionDelegate;
-#else
 using LuaAPI = XLua.LuaDLL.Lua;
 using RealStatePtr = System.IntPtr;
 using LuaCSFunction = XLua.LuaDLL.lua_CSFunction;
-#endif
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -81,7 +75,9 @@ namespace XLua
 
                 //Init Base Libs
                 LuaAPI.luaopen_xlua(rawL);
+#if !OSG_GAME
                 LuaAPI.luaopen_i64lib(rawL);
+#endif
                 if (objectTranslator != null)
                 {
                     translator = Activator.CreateInstance(objectTranslator, this, rawL, bridgeType) as ObjectTranslator;

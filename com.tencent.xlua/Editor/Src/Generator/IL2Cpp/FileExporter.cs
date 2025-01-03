@@ -95,7 +95,8 @@ namespace XLuaIl2cpp.Editor
 
             private static bool IterateAllValueType(Type type, List<ValueTypeInfo> list)
             {
-                if (Utils.isDisallowedType(type)) return false;
+                if (Utils.isDisallowedType(type))
+                    return false;
                 if (type.IsPrimitive)
                 {
                     return true;
@@ -105,7 +106,8 @@ namespace XLuaIl2cpp.Editor
                 {
                     if (baseType.IsValueType)
                     {
-                        if (!IterateAllValueType(baseType, list)) return false;
+                        if (!IterateAllValueType(baseType, list))
+                            return false;
                     }
                     baseType = baseType.BaseType;
                 }
@@ -113,7 +115,8 @@ namespace XLuaIl2cpp.Editor
                 foreach (var field in type.GetFields(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic))
                 {
                     if (field.FieldType.IsValueType && !field.FieldType.IsPrimitive)
-                        if (!IterateAllValueType(field.FieldType, list)) return false;
+                        if (!IterateAllValueType(field.FieldType, list))
+                            return false;
                 }
 
                 int value = -1;
@@ -132,7 +135,7 @@ namespace XLuaIl2cpp.Editor
 
                 list.Add(new ValueTypeInfo
                 {
-                    Signature = XLuaIl2cpp.TypeUtils.GetTypeSignature(type),
+                    Signature = TypeUtils.GetTypeSignature(type),
                     CsName = type.Name,
                     FieldSignatures = GetValueTypeFieldSignatures(type),
                     NullableHasValuePosition = value
@@ -140,13 +143,68 @@ namespace XLuaIl2cpp.Editor
                 return true;
             }
 
-            private static void IterateAllType(Type type, HashSet<Type> allTypes, HashSet<MethodInfo> delegateTypes)
+            private static string[] BlackList =
+            {
+                "UnityEditor",
+                "Mono",
+                "CriWare",
+                "XLua",
+                "DG",
+                "PixPuerts",
+                "System.AsyncCallback",
+                "System.Action",
+                "System.Reflection",
+                "System.DateTimeParse",
+                "System.UnhandledExceptionEventHandler",
+                "com.pixui",
+                "com.vasd",
+            };
+
+            private static bool IsInvalidType(Type type)
+            {
+                var ns = type.FullName;
+                if (ns == null)
+                    return true;
+                if (BlackList.Any(item => ns.Contains(item)))
+                    return true;
+                if (type.IsGenericParameter)
+                    return true;
+                if (type.IsGenericTypeDefinition)
+                    return true;
+                if (type.Assembly.FullName.Contains("mscorlib"))
+                    if (!typeof(MulticastDelegate).IsAssignableFrom(type))
+                        return true;
+
+                return false;
+            }
+
+            private static void AddDelegateType(MethodInfo methodInfo)
+            {
+                if (methodInfo.Name != "Invoke")
+                    return;
+                var returnType = methodInfo.ReturnType;
+                if (returnType.IsGenericParameter)
+                    return;
+                if (!returnType.IsGenericType && returnType.IsGenericTypeDefinition)
+                    return;
+                foreach (var parameterInfo in methodInfo.GetParameters())
+                {
+                    var parameterType = parameterInfo.ParameterType;
+                    if (parameterType.IsGenericParameter)
+                        return;
+                    if (!parameterType.IsGenericType && parameterType.IsGenericTypeDefinition)
+                        return;
+                }
+                delegateInvokes.Add(methodInfo);
+            }
+
+            private static void IterateAllType(Type type, HashSet<Type> allTypes)
             {
                 while (type != null)
                 {
                     if (!allTypes.Add(type))
                         return;
-                    if (type.IsPrimitive || typeof(string) == type || type == typeof(Type) || type.IsArray || type == typeof(void) || type.IsEnum)
+                    if (type.IsPrimitive || typeof(string) == type || type == typeof(Type) || type.IsArray || type == typeof(void) || type.IsEnum || IsInvalidType(type))
                         return;
                     
                     var fields = type.GetFields(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public);
@@ -154,19 +212,18 @@ namespace XLuaIl2cpp.Editor
                     {
                         if (type == field.FieldType)
                             continue;
-                        IterateAllType(field.FieldType, allTypes, delegateTypes);
+                        IterateAllType(field.FieldType, allTypes);
                     }
 
                     var methods = type.GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public);
                     foreach (var method in methods)
                     {
-                        if (method.Name == "Invoke")
-                            delegateTypes.Add(method);
+                        AddDelegateType(method);
                         if (method.ReturnType == type)
                         {
                             continue;
                         }
-                        IterateAllType(method.ReturnType, allTypes, delegateTypes);
+                        IterateAllType(method.ReturnType, allTypes);
                     }
                     var methodBases = methods.Cast<MethodBase>().Concat(type.GetConstructors(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public));
                     foreach (var methodBase in methodBases)
@@ -177,7 +234,12 @@ namespace XLuaIl2cpp.Editor
                             {
                                 continue;
                             }
-                            IterateAllType(parameter.ParameterType, allTypes, delegateTypes);
+
+                            if (IsInvalidType(parameter.ParameterType))
+                            {
+                                return;
+                            }
+                            IterateAllType(parameter.ParameterType, allTypes);
                         }
                     }
                     type = type.BaseType;
@@ -195,21 +257,8 @@ namespace XLuaIl2cpp.Editor
                 
             };
 
-            private static readonly Type[] XLuaDelegates =
-            {
-                typeof(Func<float>), // luaboot使用
-                typeof(Func<string, XLua.LuaTable>),
-                typeof(Func<XLua.LuaTable, string, string>),
-                typeof(Func<XLua.LuaTable, string, int>),
-                typeof(Func<XLua.LuaTable, string, uint>),
-                typeof(Func<XLua.LuaTable, string, long>),
-                typeof(Func<XLua.LuaTable, string, ulong>),
-                typeof(Func<XLua.LuaTable, string, short>),
-                typeof(Func<XLua.LuaTable, string, ushort>),
-                typeof(Func<XLua.LuaTable, string, float>),
-                typeof(Func<XLua.LuaTable, string, double>),
-                typeof(Func<XLua.LuaTable, string, XLua.LuaTable>)
-            };
+            private static HashSet<Type> evalTypes = new ();
+            private static HashSet<MethodInfo> delegateInvokes = new ();
 
             public class Method
             {
@@ -320,7 +369,6 @@ namespace XLuaIl2cpp.Editor
                 var propertyToWrapper = new List<PropertyInfo>();
                 var eventToWrapper = new List<EventInfo>();
                 var nestedToWrapper = new List<Type>();
-                var evalTypes = new HashSet<Type>();
                 const BindingFlags flag = BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public;
                 foreach (var type in types)
                 {
@@ -423,6 +471,8 @@ namespace XLuaIl2cpp.Editor
 
                 
                 var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+                evalTypes.Clear();
+                evalTypes.Add(typeof(Func<float>));
                 foreach (var assembly in assemblies)
                 {
                     var item = assembly.GetTypes();
@@ -469,10 +519,10 @@ namespace XLuaIl2cpp.Editor
                     });
                 }
                 HashSet<Type> allTypes = new HashSet<Type>();
-                HashSet<MethodInfo> delegateInvokes = new HashSet<MethodInfo>();
-                foreach (var type in wrapperUsedTypes.Concat(XLuaDelegates).Concat(typeInGenericArgument).Concat(evalTypes).Concat(nestedToWrapper))
+                delegateInvokes.Clear();
+                foreach (var type in wrapperUsedTypes.Concat(typeInGenericArgument).Concat(evalTypes).Concat(nestedToWrapper))
                 {
-                    IterateAllType(type, allTypes, delegateInvokes);
+                    IterateAllType(type, allTypes);
                 }
 
                 var delegateUsedTypes = delegateInvokes.SelectMany(m => m.GetParameters()).Select(pi => GetUnrefParameterType(pi))
@@ -627,7 +677,7 @@ namespace XLuaIl2cpp.Editor
                                 }
                                 catch (Exception e)
                                 {
-                                    Console.WriteLine($"Error deleting file {fileName}: {e.Message}");
+                                    Debug.LogException(e);
                                 }
                             }
                         }
@@ -687,12 +737,14 @@ namespace XLuaIl2cpp.Editor
                 }
             }
 
-            public static void GenLinkXml(string outDir, Dictionary<Type, FileExporter.Script> types)
+            public static void GenLinkXml(string outDir, Dictionary<Type, Script> types)
             {
                 var genTypes = types.Keys
                     .Where(t => !t.IsGenericTypeDefinition && !t.Name.StartsWith("<"))
                     .Distinct()
                     .ToList();
+                var comparer = Comparer<Type>.Create((x, y) => string.Compare(x.FullName, y.FullName));
+                genTypes.Sort(comparer);
                 using (var luaEnv = new LuaEnv())
                 {
                     var assetPath = Path.GetFullPath("Packages/com.tencent.xlua/");
@@ -777,6 +829,7 @@ namespace XLuaIl2cpp.Editor
 
             private static void GenPreLoadInfo(List<RegisterInfoForGenerate> registerInfos)
             {
+                var types = registerInfos.Select(item => item.Type).ToList();
                 using (var luaEnv = new LuaEnv())
                 {
                     var assetPath = Path.GetFullPath("Packages/com.tencent.xlua/");
@@ -787,13 +840,13 @@ namespace XLuaIl2cpp.Editor
                     var bytes = File.ReadAllBytes(path);
                     luaEnv.DoString<LuaFunction>(bytes, name);
                     var func = luaEnv.Global.Get<LuaFunction>("PreLoadInfoTemplate");
-                    var registerInfoContent = func.Func<List<RegisterInfoForGenerate>, string>(registerInfos);
+                    var registerInfoContent = func.Func<List<Type>, List<Type>, string>(types, delegateInvokes.Select(item=>item.DeclaringType).ToList());
 #if OS_GAME
                     var registerInfoPath = "RawAssets/LuaScripts/TypePreLoad.lua";
 #else
                     var registerInfoPath = Application.streamingAssetsPath +  "/TypePreLoad.lua";
 #endif
-                    using (var textWriter = new StreamWriter(registerInfoPath, false, Encoding.UTF8))
+                    using (var textWriter = new StreamWriter(registerInfoPath, false, new UTF8Encoding(false)))
                     {
                         textWriter.Write(registerInfoContent);
                         textWriter.Flush();

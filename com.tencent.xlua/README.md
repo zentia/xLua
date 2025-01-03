@@ -1,16 +1,19 @@
 # Install
 ## Escher
 1. 替换Tools/Escher所有文件和目录
-2. 替换Escher/Action.cs文件
-3. `ModifyXcodeProj.cs`
+2. 替换`GameScripts/Assets/Editor/Escher/Action.cs`
+3. 替换`GameScripts/Assets/Editor/Escher/ModifyXcodeProj.cs`
 ## XLua
-1. 删除GameScritps/Xlua里面的文件
-2. 删除Assets/XLua里面的文件
+1. 删除GameScritps/Assets/Xlua里面的文件
+2. 删除Project/Assets/XLua里面的文件
 3. 复制com.tencent.xlua目录到同级目录
-4.  - 删除`GameScripts/Assets/Scripts/Framework/Lua/Interaction/LuaEval.cs`
+4.  - 删除`GameScripts/Assets/Scripts/Framework/Lua/Interaction/LuaEvalAttribute.cs`
     - 替换`GameScripts/Assets/Scripts/Framework/Lua/Interaction/LuaSession.cs`
     - `GameScripts/Assets/Scripts/Framework/Lua/LuaService.cs`
     - TimiDropDown.cs
+    - TimiNestedPrefabData.cs
+    - UIOSOTimesControl.cs
+    - UIReplayControl.cs
     - DataSampleManager.cs
     - PrefUtils.cs
 5. 替换Package/manifest.json ProjectCache ProjectCache.md5
@@ -23,9 +26,9 @@
     - UILuaPrefabService.lua
     - `UIHeroDetailInfoShowData.lua`
     - `UIHeroDetailInfoShowDataOldXD.lua`
-    - 删除UIShopBase.lua中的 private_accessible
+    - 删除`UIShopBase.lua`中的 private_accessible
     - `UICardHeroItem_Collection.lua`
-7. 增加宏XLUA_IL2CPP,XLUA_FULL,OSG_GAME
+7. 增加宏`XLUA_FULL`,`OSG_GAME`
 8. 执行XLua/Generator Code，刷新一下UNITY
 9. 提交所有变更
 # 差异

@@ -4,6 +4,10 @@
 
 require('tte')
 
+local function compare(a,b)
+    return a.name < b.name
+end
+
 function getAssemblyInfo(genTypes)
     if not genTypes then
         return {}
@@ -29,6 +33,7 @@ function getAssemblyInfo(genTypes)
     for i, v in pairs(assemblyInfo) do
         table.insert(ret, {name = i, types = v})
     end
+    table.sort(ret, compare)
     return ret
 end
 

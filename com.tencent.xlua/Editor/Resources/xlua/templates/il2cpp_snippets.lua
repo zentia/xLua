@@ -174,6 +174,14 @@ function checkLuaArg(signature, index)
     return ret
 end
 
+function needReturnValue(signature)
+    local first = string.sub(signature, 1, 1)
+    if first == 'P' and signature ~= 'Pv' then
+        return true
+    end
+    return false
+end
+
 function refSetback(signature, index)
     local first = string.sub(signature, 1, 1)
     if first == 'P' and signature ~= 'Pv' then
@@ -421,5 +429,5 @@ function declareTypeInfo(wrapperInfo)
             i = i + 1
         end
     end
-    return table.concat(ret, '\n    ')
+    return string.format('\n    %s', table.concat(ret, '\n    ')) 
 end
