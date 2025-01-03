@@ -130,38 +130,38 @@ void CppObjectMapper::Initialize(lua_State* L)
     lua_settop(L, oldTop);
 }
 
-int CppObjectMapper::FindOrAddCppObject(lua_State* L, const void* TypeId, void* Ptr, bool PassByPointer)
-{
-    if (Ptr == nullptr)
+    int CppObjectMapper::FindOrAddCppObject(lua_State* L, const void* TypeId, void* Ptr, bool PassByPointer)
     {
-        lua_pushnil(L);
-        return lua_gettop(L);
-    }
-
-    if (PassByPointer)
-    {
-        auto Iter = CDataCache.find(Ptr);
-        if (Iter != CDataCache.end())
+        if (Ptr == nullptr)
         {
-            auto CacheNodePtr = Iter->second->Find(TypeId);
-            if (CacheNodePtr)
+            lua_pushnil(L);
+            return lua_gettop(L);
+        }
+
+        if (PassByPointer)
+        {
+            auto Iter = CDataCache.find(Ptr);
+            if (Iter != CDataCache.end())
             {
-                // printf("find in cache:%p\n", Ptr);
-                lua_rawgeti(L, LUA_REGISTRYINDEX, CacheRef);
-                int i = CacheNodePtr->Value;
-                lua_rawgeti(L, -1, i);
-                lua_remove(L, -2);
-                lua_assert(lua_isuserdata(L, -1));
-                return lua_gettop(L);
+                auto CacheNodePtr = Iter->second->Find(TypeId);
+                if (CacheNodePtr)
+                {
+                    // printf("find in cache:%p\n", Ptr);
+                    lua_rawgeti(L, LUA_REGISTRYINDEX, CacheRef);
+                    int i = CacheNodePtr->Value;
+                    lua_rawgeti(L, -1, i);
+                    lua_remove(L, -2);
+                    lua_assert(lua_isuserdata(L, -1));
+                    return lua_gettop(L);
+                }
             }
         }
-    }
 
-    auto ClassDefinition = LoadClassByID(TypeId);
-    lua_assert(ClassDefinition);
-    BindCppObject(L, const_cast<LuaClassDefinition*>(ClassDefinition), Ptr, PassByPointer, false);
-    return lua_gettop(L);
-}
+        auto ClassDefinition = LoadClassByID(TypeId);
+        lua_assert(ClassDefinition);
+        BindCppObject(L, const_cast<LuaClassDefinition*>(ClassDefinition), Ptr, PassByPointer, false);
+        return lua_gettop(L);
+    }
 
     static int PesapiFunctionCallback(lua_State* L)
     {
@@ -195,78 +195,77 @@ int CppObjectMapper::FindOrAddCppObject(lua_State* L, const void* TypeId, void* 
                 ++it;
             }
         }
-        delete CallbackData;
     }
 
     int CppObjectMapper::CreateFunction(lua_State* L, pesapi_callback Callback, void* Data, pesapi_function_finalize Finalize)
     {
         auto CallbackData = (PesapiCallbackData*)lua_newuserdata(L, sizeof(PesapiCallbackData));
-        lua_pushstring(L, "__gc");
+        luaL_newmetatable(L, "pesapi_gc_table");
         lua_pushlightuserdata(L, CallbackData);
         lua_pushcclosure(L, PesapiFunctionGC, 1);
-        lua_rawset(L, lua_gettop(L));
+        lua_setfield(L, -2, "__gc");
+        lua_setmetatable(L, -2);
         CallbackData->Callback = Callback;
         CallbackData->Data = Data;
         CallbackData->Finalize = Finalize;
         FunctionDatas.push_back(CallbackData);
 
-        lua_pushlightuserdata(L, CallbackData);
         lua_pushlightuserdata(L, Data);
-        lua_pushcclosure(L, (lua_CFunction) PesapiFunctionCallback, 1);
+        lua_pushcclosure(L, (lua_CFunction) PesapiFunctionCallback, 2);
         return lua_gettop(L);
     }
 
-bool CppObjectMapper::IsInstanceOfCppObject(lua_State* L, const void* TypeId, int ObjectIndex)
-{
-    CppObject* cppObject = (CppObject*) lua_touserdata(L, ObjectIndex);
-    return cppObject && cppObject->TypeId == TypeId;
-}
-
-std::weak_ptr<int> CppObjectMapper::GetLuaEnvLifeCycleTracker()
-{
-    return std::weak_ptr<int>(Ref);
-}
-
-void CppObjectMapper::BindCppObject(lua_State* L, LuaClassDefinition* ClassDefinition, void* Ptr, bool PassByPointer, bool create)
-{
-    CppObject* obj = (CppObject*) lua_newuserdata(L, sizeof(CppObject));
-    obj->Ptr = Ptr;
-    obj->TypeId = ClassDefinition->TypeId;
-    obj->NeedDelete = !PassByPointer;
-    bool pairs = false;
-    int meta_ref = GetMetaRefOfClass(L, ClassDefinition, pairs);
-    lua_rawgeti(L, LUA_REGISTRYINDEX, meta_ref);
-    lua_setmetatable(L, -2);
-
-    if (!create)
+    bool CppObjectMapper::IsInstanceOfCppObject(lua_State* L, const void* TypeId, int ObjectIndex)
     {
-        lua_rawgeti(L, LUA_REGISTRYINDEX, CacheRef);
-        lua_pushvalue(L, -2);
-        int ref = luaL_ref(L, -2);
-        lua_pop(L, 1);
-        auto Iter = CDataCache.find(Ptr);
-        ObjectCacheNode* CacheNodePtr;
-        if (Iter != CDataCache.end())
+        CppObject* cppObject = (CppObject*) lua_touserdata(L, ObjectIndex);
+        return cppObject && cppObject->TypeId == TypeId;
+    }
+
+    std::weak_ptr<int> CppObjectMapper::GetLuaEnvLifeCycleTracker()
+    {
+        return std::weak_ptr<int>(Ref);
+    }
+
+    void CppObjectMapper::BindCppObject(lua_State* L, LuaClassDefinition* ClassDefinition, void* Ptr, bool PassByPointer, bool create)
+    {
+        CppObject* obj = (CppObject*) lua_newuserdata(L, sizeof(CppObject));
+        obj->Ptr = Ptr;
+        obj->TypeId = ClassDefinition->TypeId;
+        obj->NeedDelete = !PassByPointer;
+        bool pairs = false;
+        int meta_ref = GetMetaRefOfClass(L, ClassDefinition, pairs);
+        lua_rawgeti(L, LUA_REGISTRYINDEX, meta_ref);
+        lua_setmetatable(L, -2);
+
+        if (!create)
         {
-            CacheNodePtr = Iter->second->Add(ClassDefinition->TypeId);
+            lua_rawgeti(L, LUA_REGISTRYINDEX, CacheRef);
+            lua_pushvalue(L, -2);
+            int ref = luaL_ref(L, -2);
+            lua_pop(L, 1);
+            auto Iter = CDataCache.find(Ptr);
+            ObjectCacheNode* CacheNodePtr;
+            if (Iter != CDataCache.end())
+            {
+                CacheNodePtr = Iter->second->Add(ClassDefinition->TypeId);
+            }
+            else
+            {
+                auto Ret = CDataCache.insert({ Ptr, new ObjectCacheNode(ClassDefinition->TypeId) });
+                CacheNodePtr = Ret.first->second;
+            }
+            CacheNodePtr->Value = ref;
+        }
+        
+        if (ClassDefinition->OnEnter)
+        {
+            obj->index = ClassDefinition->OnEnter(Ptr, ClassDefinition->Data, DataTransfer::GetLuaEnvPrivate());
         }
         else
         {
-            auto Ret = CDataCache.insert({ Ptr, new ObjectCacheNode(ClassDefinition->TypeId) });
-            CacheNodePtr = Ret.first->second;
+            obj->index = -1;
         }
-        CacheNodePtr->Value = ref;
     }
-    
-    if (ClassDefinition->OnEnter)
-    {
-        obj->index = ClassDefinition->OnEnter(Ptr, ClassDefinition->Data, DataTransfer::GetLuaEnvPrivate());
-    }
-    else
-    {
-        obj->index = -1;
-    }
-}
 
 void* CppObjectMapper::GetPrivateData(lua_State* L, int index)
 {

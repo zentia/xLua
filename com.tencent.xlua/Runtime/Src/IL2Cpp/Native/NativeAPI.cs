@@ -13,7 +13,7 @@ namespace XLua
 #else
         const string DLLNAME = "GameCore";
 #endif
-
+#if XLUA_IL2CPP && ENABLE_IL2CPP
         [DllImport("__Internal", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitialXLua(IntPtr PesapiImpl);
 
@@ -67,7 +67,6 @@ namespace XLua
 
         [DllImport("__Internal", CallingConvention = CallingConvention.Cdecl)]
         public static extern void CleanupPendingKillScriptObjects(IntPtr luaEnv);
-#if XLUA_IL2CPP && ENABLE_IL2CPP
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static IntPtr InitialPapiEnvRef(IntPtr api, IntPtr envRef, Object obj, MethodBase addMethodBase, MethodBase removeMethodBase)
@@ -98,7 +97,7 @@ namespace XLua
         {
             throw new NotImplementedException();
         }
-#endif
+
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static object GetModuleExecutor(IntPtr NativeLuaEnvPtr, Type type)
         {
@@ -200,10 +199,9 @@ namespace XLua
             UnityEngine.Debug.Log("debug msg: " + msg);
         }
 
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public static extern void SetLogCallback(IntPtr log, IntPtr logWarning, IntPtr logError);
+        public static LogCallback Log = LogImpl;
 
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport("__Internal", CallingConvention = CallingConvention.Cdecl)]
         public static extern void SetLogCallbackInternal(IntPtr log);
 
         //[UnityEngine.Scripting.RequiredByNativeCodeAttribute()]
@@ -222,7 +220,7 @@ namespace XLua
             {
                 //SetLogCallback(fn1);
                 SetLogCallbackInternal(fn1);
-                SetLogCallback(fn1, fn2, fn3);
+                LuaDLL.Lua.SetLogCallback(fn1, fn2, fn3);
             }
             catch (DllNotFoundException)
             {
@@ -230,6 +228,7 @@ namespace XLua
                 throw;
             }
         }
+#endif
     }
 
     public delegate void pesapi_callback(IntPtr apis, IntPtr info);

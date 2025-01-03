@@ -545,7 +545,7 @@ int pesapi_get_property(pesapi_env env, pesapi_value pobject, const char* key)
     lua_getfield(L, pobject, key);
     if (lua_isnil(L, -1))
     {
-        xlua::Log("no such field %s", key);
+        xlua::PLog(xlua::Error, "no such field %s", key);
         return 0;
     }
     return lua_gettop(L);
@@ -661,6 +661,10 @@ int pesapi_dostring(pesapi_env env, const uint8_t* code, size_t code_size, const
         if (ret == 0)
         {
             lua_remove(L, errfunc);
+        }
+        else
+        {
+            lua_pushinteger(L, ret);
         }
     }
     return oldTop + 1;

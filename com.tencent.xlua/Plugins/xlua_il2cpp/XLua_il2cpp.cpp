@@ -2452,7 +2452,7 @@ xlua::LuaEnvPrivate* InitialPapiEnvRef(struct pesapi_ffi* apis, pesapi_env_ref e
         int global = apis->global(env);
         if (global)
         {
-            apis->set_property(env, global, "loadType", createFunction);
+            apis->set_property(env, global, "loadType", loadType);
             apis->set_property(env, global, "createFunction", createFunction);
             return luaEnvPrivate;
         }

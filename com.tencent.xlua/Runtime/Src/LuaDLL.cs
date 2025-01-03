@@ -1,28 +1,11 @@
-using UnityEngine;
+using System;
+using System.Runtime.InteropServices;
+using System.Text;
 
 namespace XLua.LuaDLL
 {
-
-    using System;
-    using System.Runtime.InteropServices;
-    using System.Text;
-    using XLua;
-
-#if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN || XLUA_GENERAL || (UNITY_WSA && !UNITY_EDITOR)
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate int lua_CSFunction(IntPtr L);
-
-#if GEN_CODE_MINIMIZE
-    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate int CSharpWrapperCaller(IntPtr L, int funcidx, int top);
-#endif
-#else
-    public delegate int lua_CSFunction(IntPtr L);
-
-#if GEN_CODE_MINIMIZE
-    public delegate int CSharpWrapperCaller(IntPtr L, int funcidx, int top);
-#endif
-#endif
 
     public partial class Lua
 	{
@@ -32,38 +15,26 @@ namespace XLua.LuaDLL
         const string LUADLL = "GameCore";
 #endif
         [DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
-        public static extern void SetLogCallback(IntPtr log);
+        public static extern void SetLogCallback(IntPtr log, IntPtr logWarning, IntPtr logError);
 
 #if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN || PUERTS_GENERAL || (UNITY_WSA && !UNITY_EDITOR)
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 #endif
         public delegate void LogCallback(string content);
 
-        [MonoPInvokeCallback(typeof(LogCallback))]
-        public static void LogImpl(string msg)
-        {
-            UnityEngine.Debug.Log(msg);
-        }
-
-        public static LogCallback Log = LogImpl;
-
         //[UnityEngine.Scripting.RequiredByNativeCodeAttribute()]
-        public static void SetLogCallback(LogCallback log)
+        public static void SetLogCallback(LogCallback log, LogCallback logWarning, LogCallback logError)
         {
-#if (UNITY_WSA && !UNITY_EDITOR) || UNITY_STANDALONE_WIN
+#if !UNITY_EDITOR
             GCHandle.Alloc(log);
+            GCHandle.Alloc(logWarning);
+            GCHandle.Alloc(logError);
 #endif
             IntPtr fn1 = log == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(log);
+            IntPtr fn2 = logWarning == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(logWarning);
+            IntPtr fn3 = logError == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(logError);
 
-            try
-            {
-                SetLogCallback(fn1);
-            }
-            catch (DllNotFoundException)
-            {
-                UnityEngine.Debug.LogError("[XLua] XLua's Native Plugin(s) is missing. You can solve this problem following the FAQ.");
-                throw;
-            }
+            SetLogCallback(fn1, fn2, fn3);
         }
 
         [DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
@@ -252,7 +223,7 @@ namespace XLua.LuaDLL
 
 		public static void lua_pushstdcallcfunction(IntPtr L, lua_CSFunction function, int n = 0)//[-0, +1, m]
         {
-#if XLUA_GENERAL || (UNITY_WSA && !UNITY_EDITOR)
+#if !UNITY_EDITOR
             GCHandle.Alloc(function);
 #endif
             IntPtr fn = Marshal.GetFunctionPointerForDelegate(function);

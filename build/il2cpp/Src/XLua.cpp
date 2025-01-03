@@ -41,10 +41,11 @@ struct PersistentObjectInfo
 namespace xlua
 {
 
+LogCallback GLogCallback = nullptr;
+LogCallback GLogWarningCallback = nullptr;
+LogCallback GLogErrorCallback = nullptr;
 
-static LogCallback GLogCallback = nullptr;
-
-void Log(const std::string Fmt, ...)
+void PLog(LogLevel Level, const std::string Fmt, ...)
 {
     static char SLogBuffer[1024];
     va_list list;
@@ -52,9 +53,17 @@ void Log(const std::string Fmt, ...)
     vsnprintf(SLogBuffer, sizeof(SLogBuffer), Fmt.c_str(), list);
     va_end(list);
 
-    if (GLogCallback)
+    if (Level == Log && GLogCallback)
     {
         GLogCallback(SLogBuffer);
+    }
+    else if (Level == Warning && GLogWarningCallback)
+    {
+        GLogWarningCallback(SLogBuffer);
+    }
+    else if (Level == Error && GLogErrorCallback)
+    {
+        GLogErrorCallback(SLogBuffer);
     }
 }
 
@@ -89,9 +98,11 @@ extern "C"
         delete luaEnv;
     }
 
-    void SetLogCallback(xlua::LogCallback Log)
+    void SetLogCallback(xlua::LogCallback Log, LogCallback LogWarning, LogCallback LogError)
     {
         xlua::GLogCallback = Log;
+        xlua::GLogWarningCallback = LogWarning;
+        xlua::GLogErrorCallback = LogError;
     }
 
     pesapi_env_ref GetPapiEnvRef(xlua::LuaEnv* luaEnv)
