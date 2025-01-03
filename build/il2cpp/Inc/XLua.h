@@ -40,7 +40,6 @@ struct LuaEnv
 
 EXTERN_C_START
 PESAPI_MODULE_EXPORT int lua_setfenv(lua_State* L, int idx);
-PESAPI_MODULE_EXPORT void luaopen_xlua(lua_State* L);
 PESAPI_MODULE_EXPORT pesapi_ffi* GetFFIApi();
 PESAPI_MODULE_EXPORT xlua::LuaEnv* CreateNativeLuaEnv();
 PESAPI_MODULE_EXPORT lua_State* GetLuaState(xlua::LuaEnv* luaEnv);

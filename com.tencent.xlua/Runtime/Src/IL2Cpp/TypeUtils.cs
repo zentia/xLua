@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
-namespace XLuaIl2cpp
+namespace XLua
 {
     public static class ExtensionMethodInfo
     {

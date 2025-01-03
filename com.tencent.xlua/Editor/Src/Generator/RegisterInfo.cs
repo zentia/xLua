@@ -8,7 +8,7 @@ namespace XLua.Editor
 {
     namespace Generator
     {
-        internal class MemberRegisterInfoForGenerate : MemberRegisterInfo
+        public class MemberRegisterInfoForGenerate : MemberRegisterInfo
         {
             new public string MemberType;
 
@@ -23,7 +23,7 @@ namespace XLua.Editor
             public string PropertySetter;
 
         }
-        internal class RegisterInfoForGenerate : RegisterInfo
+        public class RegisterInfoForGenerate : RegisterInfo
         {
             public Type Type;
 
@@ -60,7 +60,7 @@ namespace XLua.Editor
                 }
             }
 
-            public static List<RegisterInfoForGenerate> GetRegisterInfos(Dictionary<Type, XLuaIl2cpp.Editor.Generator.FileExporter.Script> genTypes, bool isFull)
+            public static List<RegisterInfoForGenerate> GetRegisterInfos(Dictionary<Type, XLua.Editor.Generator.FileExporter.Script> genTypes, bool isFull)
             {
                 BindingFlags flag = BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public;
 

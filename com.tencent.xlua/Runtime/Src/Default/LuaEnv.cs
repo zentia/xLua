@@ -58,7 +58,7 @@ namespace XLua
 
         public LuaEnv(Type bridgeType = null, Type objectTranslator = null)
         {
-            UnityEngine.Debug.Log("Normal XLua Env");
+            UnityEngine.Debug.Log("CSharp XLua Env");
             if (LuaAPI.xlua_get_lib_version() != LIB_VERSION_EXPECT)
             {
                 throw new InvalidProgramException("wrong lib version expect:"

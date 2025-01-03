@@ -113,7 +113,7 @@ namespace XLua
 		%><%if pi ~= 0 then%>, <%end%><%if parameter.IsOut then %>out <% elseif parameter.ParameterType.IsByRef then %>ref <% end %> <%=CsFullTypeName(parameter.ParameterType)%> <%=parameter.Name%><%
 		end)%>);
 		<%end)%>
-	    public static Init()
+	    public static void Init()
 		{
 		    extensionMethodMap = new Dictionary<Type, IEnumerable<MethodInfo>>()
 			{

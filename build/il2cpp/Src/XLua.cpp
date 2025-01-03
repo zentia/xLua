@@ -1,36 +1,17 @@
-#ifdef __cplusplus
-extern "C"
-{
-#endif
-#include "lua.h"
-#include "lualib.h"
-#include "lauxlib.h"
-#ifdef __cplusplus
-}
-#endif
-#include <string.h>
 #include <stdint.h>
-#include "i64lib.h"
+#include "lua.hpp"
 
-#if USING_LUAJIT
-#include "lj_obj.h"
-#else
 #include "lstate.h"
-#endif
 
 #include <string>
-#include <vector>
-#include <thread>
-#include <mutex>
 
-#include "XLua.h"
-#include "LuaClassRegister.h"
 #include <CppObjectMapper.h>
+#include "LuaClassRegister.h"
+#include "XLua.h"
 
-#include <chrono>
-using namespace std::chrono;
+#define GetObjectData(Value, Type) ((Type*)(((uint8_t*)Value) + GUnityExports.SizeOfRuntimeObject))
 
-#define GetObjectData(Value, Type) ((Type*) (((uint8_t*) Value) + GUnityExports.SizeOfRuntimeObject))
+extern "C" int luaopen_xlua(lua_State* L);
 
 struct PersistentObjectInfo
 {
@@ -41,87 +22,79 @@ struct PersistentObjectInfo
 namespace xlua
 {
 
-LogCallback GLogCallback = nullptr;
-LogCallback GLogWarningCallback = nullptr;
-LogCallback GLogErrorCallback = nullptr;
+    LogCallback GLogCallback        = nullptr;
+    LogCallback GLogWarningCallback = nullptr;
+    LogCallback GLogErrorCallback   = nullptr;
 
-void PLog(LogLevel Level, const std::string Fmt, ...)
-{
-    static char SLogBuffer[1024];
-    va_list list;
-    va_start(list, Fmt);
-    vsnprintf(SLogBuffer, sizeof(SLogBuffer), Fmt.c_str(), list);
-    va_end(list);
-
-    if (Level == Log && GLogCallback)
+    void PLog(LogLevel Level, const std::string Fmt, ...)
     {
-        GLogCallback(SLogBuffer);
-    }
-    else if (Level == Warning && GLogWarningCallback)
-    {
-        GLogWarningCallback(SLogBuffer);
-    }
-    else if (Level == Error && GLogErrorCallback)
-    {
-        GLogErrorCallback(SLogBuffer);
-    }
-}
+        static char SLogBuffer[1024];
+        va_list list;
+        va_start(list, Fmt);
+        vsnprintf(SLogBuffer, sizeof(SLogBuffer), Fmt.c_str(), list);
+        va_end(list);
 
-LuaEnv::LuaEnv()
-{
-    L = luaL_newstate();
-    luaopen_xlua(L);
-    CppObjectMapper.Initialize(L);
-}
+        if (Level == Log && GLogCallback)
+        {
+            GLogCallback(SLogBuffer);
+        }
+        else if (Level == Warning && GLogWarningCallback)
+        {
+            GLogWarningCallback(SLogBuffer);
+        }
+        else if (Level == Error && GLogErrorCallback)
+        {
+            GLogErrorCallback(SLogBuffer);
+        }
+    }
 
-}    // namespace xlua
+    LuaEnv::LuaEnv()
+    {
+        L = luaL_newstate();
+        luaopen_xlua(L);
+        CppObjectMapper.Initialize(L);
+    }
+
+} // namespace xlua
 
 extern pesapi_func_ptr reg_apis[];
 
-#ifdef __cplusplus
-extern "C"
+xlua::LuaEnv* CreateNativeLuaEnv()
 {
-#endif
-
-    xlua::LuaEnv* CreateNativeLuaEnv()
-    {
-        return new xlua::LuaEnv();
-    }
-
-    lua_State* GetLuaState(xlua::LuaEnv* luaEnv)
-    {
-        return luaEnv->L;
-    }
-
-    void DestroyNativeLuaEnv(xlua::LuaEnv* luaEnv)
-    {
-        delete luaEnv;
-    }
-
-    void SetLogCallback(xlua::LogCallback Log, LogCallback LogWarning, LogCallback LogError)
-    {
-        xlua::GLogCallback = Log;
-        xlua::GLogWarningCallback = LogWarning;
-        xlua::GLogErrorCallback = LogError;
-    }
-
-    pesapi_env_ref GetPapiEnvRef(xlua::LuaEnv* luaEnv)
-    {
-        lua_State* L = luaEnv->L;
-
-        auto env = reinterpret_cast<pesapi_env>(L);
-        return g_pesapi_ffi.create_env_ref(env);
-    }
-
-    pesapi_ffi* GetFFIApi()
-    {
-        return &g_pesapi_ffi;
-    }
-
-    pesapi_func_ptr* GetRegisterApi()
-    {
-        return reg_apis;
-    }
-#ifdef __cplusplus
+    return new xlua::LuaEnv();
 }
-#endif
+
+lua_State* GetLuaState(xlua::LuaEnv* luaEnv)
+{
+    return luaEnv->L;
+}
+
+void DestroyNativeLuaEnv(xlua::LuaEnv* luaEnv)
+{
+    delete luaEnv;
+}
+
+void SetLogCallback(xlua::LogCallback Log, LogCallback LogWarning, LogCallback LogError)
+{
+    xlua::GLogCallback        = Log;
+    xlua::GLogWarningCallback = LogWarning;
+    xlua::GLogErrorCallback   = LogError;
+}
+
+pesapi_env_ref GetPapiEnvRef(xlua::LuaEnv* luaEnv)
+{
+    lua_State* L = luaEnv->L;
+
+    auto env = reinterpret_cast<pesapi_env>(L);
+    return g_pesapi_ffi.create_env_ref(env);
+}
+
+pesapi_ffi* GetFFIApi()
+{
+    return &g_pesapi_ffi;
+}
+
+pesapi_func_ptr* GetRegisterApi()
+{
+    return reg_apis;
+}

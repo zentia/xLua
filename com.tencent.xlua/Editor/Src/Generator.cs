@@ -8,6 +8,8 @@ using System.Reflection;
 using System.Text;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using XLua.Editor.Generator;
+using Utils = XLua.Utils;
 
 namespace CSObjectWrapEditor
 {
@@ -1584,7 +1586,7 @@ namespace CSObjectWrapEditor
         {
             Directory.CreateDirectory(GeneratorConfig.common_path);
 #if XLUA_IL2CPP
-            XLuaIl2cpp.Editor.Generator.FileExporter.Gen(GeneratorConfig.common_path);
+            XLua.Editor.Generator.FileExporter.Gen(GeneratorConfig.common_path);
 #else
             Init();
             GetGenConfig(Utils.GetAllTypes());
@@ -1598,6 +1600,7 @@ namespace CSObjectWrapEditor
             GenCodeForClass();
             GenLuaRegister();
             CustomGen(templateRef.LinkXmlGen.text, GetTasksLinkXml);
+            FileExporter.GenPreLoadInfo(new List<RegisterInfoForGenerate>());
 #endif
         }
 

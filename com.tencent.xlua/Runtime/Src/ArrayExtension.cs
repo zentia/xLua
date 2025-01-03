@@ -1,7 +1,7 @@
 using System;
 using XLua;
 
-namespace XLuaIl2cpp
+namespace XLua
 {
     [LuaCallCSharp]
     public static class ArrayExtension

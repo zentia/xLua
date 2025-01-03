@@ -1,6 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
 using System.Text;
+using Assets.Plugins.Perf;
 
 namespace XLua.LuaDLL
 {
@@ -9,11 +10,12 @@ namespace XLua.LuaDLL
 
     public partial class Lua
 	{
-#if (UNITY_IPHONE || UNITY_TVOS || UNITY_WEBGL || UNITY_SWITCH) && !UNITY_EDITOR
+#if UNITY_IPHONE && !UNITY_EDITOR
         const string LUADLL = "__Internal";
 #else
         const string LUADLL = "GameCore";
 #endif
+
         [DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void SetLogCallback(IntPtr log, IntPtr logWarning, IntPtr logError);
 
@@ -102,24 +104,16 @@ namespace XLua.LuaDLL
 		[DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
 		public static extern void lua_createtable(IntPtr L, int narr, int nrec);//[-0, +0, m]
 
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        public delegate Int32 PFRegistCustomName(string name);
-
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        public delegate Int32 PFStatsBeginSample(Int16 sampleId, Int32 customNameId);
-
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        public delegate void PFStatsEndSampleByIndex(Int32 sampleIndex);
         #if OS_GAME
         [DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
         
-        public static extern int luaregist_stats_custom_name(IntPtr L, PFRegistCustomName pf);
+        public static extern int luaregist_stats_custom_name(IntPtr L, StatsLite.PFRegistCustomName pf);
 
         [DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
-        public static extern int luastats_begin_sample(IntPtr L, PFStatsBeginSample pf);
+        public static extern int luastats_begin_sample(IntPtr L, StatsLite.PFStatsBeginSample pf);
 
         [DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
-        public static extern int luastats_end_sample_by_index(IntPtr L, PFStatsEndSampleByIndex pf);
+        public static extern int luastats_end_sample_by_index(IntPtr L, StatsLite.PFStatsEndSampleByIndex pf);
         #endif
         public static void lua_newtable(IntPtr L)//[-0, +0, m]
         {

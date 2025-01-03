@@ -1,4 +1,4 @@
-sigs = CS.XLuaIl2cpp.TypeUtils.TypeSignatures
+sigs = CS.XLua.TypeUtils.TypeSignatures
 
 local TTFor = {}
 TTFor.__index = TTFor

@@ -91,7 +91,7 @@
 // #define JUMP_(key, num_probes)    ( 1 )
 // Quadratic-ish probing
 #define JUMP_(key, num_probes)    ( num_probes )
-#define Assert lua_assert
+#define DenseTableAssert lua_assert
 
 // Hashtable class, used to implement the hashed associative containers
 // hash_set and hash_map.
@@ -154,7 +154,7 @@ struct dense_hashtable_iterator {
       ++pos;
   }
   iterator& operator++()   {
-    Assert(pos != end); ++pos; advance_past_empty_and_deleted(); return *this;
+    DenseTableAssert(pos != end); ++pos; advance_past_empty_and_deleted(); return *this;
   }
   iterator operator++(int) { iterator tmp(*this); ++*this; return tmp; }
 
@@ -207,7 +207,7 @@ struct dense_hashtable_const_iterator {
       ++pos;
   }
   const_iterator& operator++()   {
-    Assert(pos != end); ++pos; advance_past_empty_and_deleted(); return *this;
+    DenseTableAssert(pos != end); ++pos; advance_past_empty_and_deleted(); return *this;
   }
   const_iterator operator++(int) { const_iterator tmp(*this); ++*this; return tmp; }
 
@@ -301,14 +301,14 @@ class dense_hashtable {
       dense_hashtable tmp(*this);   // copying will get rid of deleted
       swap(tmp);                    // now we are tmp
     }
-    Assert(num_deleted == 0);
+    DenseTableAssert(num_deleted == 0);
   }
 
  public:
   void set_deleted_key(const value_type &val) {
     // the empty indicator (if specified) and the deleted indicator
     // must be different
-    Assert(!use_empty || !equals(get_key(val), get_key(emptyval)));
+    DenseTableAssert(!use_empty || !equals(get_key(val), get_key(emptyval)));
     // It's only safe to change what "deleted" means if we purge deleted guys
     squash_deleted();
     use_deleted = true;
@@ -338,7 +338,7 @@ class dense_hashtable {
   // Set it so test_deleted is true.  true if object didn't used to be deleted
   // See below (at erase()) to explain why we allow const_iterators
   bool set_deleted(const_iterator &it) {
-    Assert(use_deleted);             // bad if set_deleted_key() wasn't called
+    DenseTableAssert(use_deleted);             // bad if set_deleted_key() wasn't called
     bool retval = !test_deleted(it);
     // &* converts from iterator to value-type
     set_value(const_cast<value_type*>(&(*it)), delval);
@@ -346,7 +346,7 @@ class dense_hashtable {
   }
   // Set it so test_deleted is false.  true if object used to be deleted
   bool clear_deleted(const_iterator &it) {
-    Assert(use_deleted);             // bad if set_deleted_key() wasn't called
+    DenseTableAssert(use_deleted);             // bad if set_deleted_key() wasn't called
     // happens automatically when we assign something else in its place
     return test_deleted(it);
   }
@@ -361,22 +361,22 @@ class dense_hashtable {
   // These are public so the iterators can use them
   // True if the item at position bucknum is "empty" marker
   bool test_empty(size_type bucknum) const {
-    Assert(use_empty);              // we always need to know what's empty!
+    DenseTableAssert(use_empty);              // we always need to know what's empty!
     return equals(get_key(emptyval), get_key(table[bucknum]));
   }
   bool test_empty(const iterator &it) const {
-    Assert(use_empty);              // we always need to know what's empty!
+    DenseTableAssert(use_empty);              // we always need to know what's empty!
     return equals(get_key(emptyval), get_key(*it));
   }
   bool test_empty(const const_iterator &it) const {
-    Assert(use_empty);              // we always need to know what's empty!
+    DenseTableAssert(use_empty);              // we always need to know what's empty!
     return equals(get_key(emptyval), get_key(*it));
   }
 
  private:
   // You can either set a range empty or an individual element
   void set_empty(size_type bucknum) {
-    Assert(use_empty);
+    DenseTableAssert(use_empty);
     set_value(&table[bucknum], emptyval);
   }
   void fill_range_with_empty(value_type* table_start, value_type* table_end) {
@@ -384,7 +384,7 @@ class dense_hashtable {
     std::uninitialized_fill(table_start, table_end, emptyval);
   }
   void set_empty(size_type buckstart, size_type buckend) {
-    Assert(use_empty);
+    DenseTableAssert(use_empty);
     destroy_buckets(buckstart, buckend);
     fill_range_with_empty(table + buckstart, table + buckend);
   }
@@ -491,7 +491,7 @@ class dense_hashtable {
   // correct, if a bit conservative.)
 	void expand_array(size_t resize_to, dense_hash_map_traits::true_type) {
 		value_type* new_table = _Alval.allocate(resize_to);
-		Assert(new_table);
+		DenseTableAssert(new_table);
 		if(table)
 		{
 			std::uninitialized_copy(table, table + num_buckets, new_table);
@@ -499,7 +499,7 @@ class dense_hashtable {
 		}
 		fill_range_with_empty(new_table + num_buckets, new_table + resize_to);
 		table = new_table;
-		Assert(table);
+		DenseTableAssert(table);
   }
 
   // Increase number of buckets, without special assumptions about value_type.
@@ -507,7 +507,7 @@ class dense_hashtable {
   // value_type's copy constructor.
   void expand_array(size_t resize_to, dense_hash_map_traits::false_type) {
     value_type* new_table = _Alval.allocate(resize_to);
-    Assert(new_table);
+    DenseTableAssert(new_table);
     std::uninitialized_copy(table, table + std::min(num_buckets,resize_to), new_table);
     fill_range_with_empty(new_table + num_buckets, new_table + resize_to);
     destroy_buckets(0, num_buckets);
@@ -534,7 +534,7 @@ class dense_hashtable {
     // We use a normal iterator to get non-deleted bcks from ht
     // We could use insert() here, but since we know there are
     // no duplicates and no deleted items, we can be more efficient
-    Assert((bucket_count() & (bucket_count()-1)) == 0);      // a power of two
+    DenseTableAssert((bucket_count() & (bucket_count()-1)) == 0);      // a power of two
     for ( const_iterator it = ht.begin(); it != ht.end(); ++it ) {
       size_type num_probes = 0;              // how many times we've probed
       size_type bucknum;
@@ -543,7 +543,7 @@ class dense_hashtable {
            !test_empty(bucknum);                               // not empty
            bucknum = (bucknum + JUMP_(key, num_probes)) & bucket_count_minus_one) {
         ++num_probes;
-        Assert(num_probes < bucket_count()); // or else the hashtable is full
+        DenseTableAssert(num_probes < bucket_count()); // or else the hashtable is full
       }
       set_value(&table[bucknum], *it);       // copies the value to here
       num_elements++;
@@ -834,7 +834,7 @@ class dense_hashtable {
 			  const_iterator delpos(this, table + pos.second,              // shrug:
 				  table + num_buckets, false);// shouldn't need const
 			  clear_deleted(delpos);
-			  Assert(num_deleted > 0);
+			  DenseTableAssert(num_deleted > 0);
 			  --num_deleted;                       // used to be, now it isn't
 		  }
 		  else {
@@ -869,7 +869,7 @@ class dense_hashtable {
 			  const_iterator delpos(this, table + pos.second,              // shrug:
 				  table + num_buckets, false);// shouldn't need const
 			  clear_deleted(delpos);
-			  Assert(num_deleted > 0);
+			  DenseTableAssert(num_deleted > 0);
 			  --num_deleted;                       // used to be, now it isn't
 		  }
 		  else {
@@ -914,7 +914,7 @@ class dense_hashtable {
   size_type erase(const key_type& key) {
     const_iterator pos = find(key);   // shrug: shouldn't need to be const
     if ( pos != end() ) {
-      Assert(!test_deleted(pos));  // or find() shouldn't have returned it
+      DenseTableAssert(!test_deleted(pos));  // or find() shouldn't have returned it
       set_deleted(pos);
       ++num_deleted;
       consider_shrink = true;      // will think about shrink after next insert
