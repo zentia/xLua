@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using XLua.LuaDLL;
-using XLuaIl2cpp;
 
 [LuaCallCSharp]
 public static class TestUtils
