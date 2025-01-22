@@ -1,25 +1,9 @@
-/*
- * Tencent is pleased to support the open source community by making xLua available.
- * Copyright (C) 2016 THL A29 Limited, a Tencent company. All rights reserved.
- * Licensed under the MIT License (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
- * http://opensource.org/licenses/MIT
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
-*/
-
 #if !ENABLE_IL2CPP || !XLUA_IL2CPP
-#if USE_UNI_LUA
-using LuaAPI = UniLua.Lua;
-using RealStatePtr = UniLua.ILuaState;
-using LuaCSFunction = UniLua.CSharpFunctionDelegate;
-#else
 using LuaAPI = XLua.LuaDLL.Lua;
 using RealStatePtr = System.IntPtr;
 using LuaCSFunction = XLua.LuaDLL.lua_CSFunction;
-#endif
-
 using System.Collections.Generic;
 using System;
-using System.IO;
 using System.Reflection;
 
 namespace XLua
@@ -28,7 +12,7 @@ namespace XLua
     {
         ObjectTranslator translator;
         Type targetType;
-        MethodBase method;
+        readonly MethodBase m_Method;
 
         ObjectCheck[] checkArray;
         ObjectCast[] castArray;
@@ -58,23 +42,23 @@ namespace XLua
         {
             this.translator = translator;
             this.targetType = targetType;
-            this.method = method;
+            m_Method = method;
             HasDefalutValue = false;
         }
 
-        public void Init(ObjectCheckers objCheckers, ObjectCasters objCasters)
+        public void Init(ObjectCheckers objCheckers, ObjectCasters objCasters, Type type, string methodName)
         {
             if ((typeof(Delegate) != targetType && typeof(Delegate).IsAssignableFrom(targetType)) ||
-                !method.IsStatic || method.IsConstructor)
+                !m_Method.IsStatic || m_Method.IsConstructor)
             {
                 luaStackPosStart = 2;
-                if (!method.IsConstructor)
+                if (!m_Method.IsConstructor)
                 {
                     targetNeeded = true;
                 }
             }
 
-            var paramInfos = method.GetParameters();
+            var paramInfos = m_Method.GetParameters();
             refPos = new int[paramInfos.Length];
 
             List<int> inPosList = new List<int>();
@@ -108,7 +92,7 @@ namespace XLua
                     var paramType = paramInfos[i].IsDefined(typeof(ParamArrayAttribute), false) || (!paramInfos[i].ParameterType.IsArray && paramInfos[i].ParameterType.IsByRef ) ? 
                         paramInfos[i].ParameterType.GetElementType() : paramInfos[i].ParameterType;
                     paramsChecks.Add (objCheckers.GetChecker(paramType));
-                    paramsCasts.Add (objCasters.GetCaster(paramType));
+                    paramsCasts.Add (objCasters.GetCaster(paramType, type, methodName));
                     isOptionalList.Add(paramInfos[i].IsOptional);
                     var defalutValue = paramInfos[i].DefaultValue;
                     if (paramInfos[i].IsOptional)
@@ -137,11 +121,11 @@ namespace XLua
 
             args = new object[paramInfos.Length];
 
-            if (method is MethodInfo) //constructor is not MethodInfo?
+            if (m_Method is MethodInfo) //constructor is not MethodInfo?
             {
-                isVoid = (method as MethodInfo).ReturnType == typeof(void);
+                isVoid = (m_Method as MethodInfo).ReturnType == typeof(void);
             }
-            else if(method is ConstructorInfo)
+            else if(m_Method is ConstructorInfo)
             {
                 isVoid = false;
             }
@@ -182,14 +166,14 @@ namespace XLua
             try
             {
 #if UNITY_EDITOR && !DISABLE_OBSOLETE_WARNING
-                if (method.IsDefined(typeof(ObsoleteAttribute), true))
+                if (m_Method.IsDefined(typeof(ObsoleteAttribute), true))
                 {
-                    ObsoleteAttribute info = Attribute.GetCustomAttribute(method, typeof(ObsoleteAttribute)) as ObsoleteAttribute;
-                    UnityEngine.Debug.LogWarning("Obsolete Method [" + method.DeclaringType.ToString() + "." + method.Name + "]: " + info.Message);
+                    ObsoleteAttribute info = Attribute.GetCustomAttribute(m_Method, typeof(ObsoleteAttribute)) as ObsoleteAttribute;
+                    UnityEngine.Debug.LogWarning("Obsolete Method [" + m_Method.DeclaringType.ToString() + "." + m_Method.Name + "]: " + info.Message);
                 } 
 #endif
                 object target = null;
-                MethodBase toInvoke = method;
+                MethodBase toInvoke = m_Method;
 
                 if (luaStackPosStart > 1)
                 {
@@ -197,7 +181,7 @@ namespace XLua
                     if (target is Delegate)
                     {
                         Delegate delegateInvoke = (Delegate)target;
-#if UNITY_WSA && !UNITY_EDITOR
+#if !UNITY_EDITOR
                         toInvoke = delegateInvoke.GetMethodInfo();
 #else
                         toInvoke = delegateInvoke.Method;
@@ -208,7 +192,6 @@ namespace XLua
 
                 int luaTop = LuaAPI.lua_gettop(L);
                 int luaStackPos = luaStackPosStart;
-
                 for (int i = 0; i < castArray.Length; i++)
                 {
                     //UnityEngine.Debug.Log("inPos:" + inPosArray[i]);
@@ -231,7 +214,14 @@ namespace XLua
                         }
                         else
                         {
-                            args[inPosArray[i]] = castArray[i](L, luaStackPos, null);
+                            try
+                            {
+                                args[inPosArray[i]] = castArray[i](L, luaStackPos, null);
+                            }
+                            catch (Exception e)
+                            {
+                                throw new Exception("Method [" + m_Method.DeclaringType.ToString() + "." + m_Method.Name + "]: " + e.Message);
+                            }
                         }
                         luaStackPos++;
                     }
@@ -241,7 +231,7 @@ namespace XLua
                 object ret = null;
 
 
-                ret = toInvoke.IsConstructor ? ((ConstructorInfo)method).Invoke(args) : method.Invoke(targetNeeded ? target : null, args);
+                ret = toInvoke.IsConstructor ? ((ConstructorInfo)m_Method).Invoke(args) : m_Method.Invoke(targetNeeded ? target : null, args);
 
                 if (targetNeeded && targetType.IsValueType())
                 {
@@ -337,7 +327,7 @@ namespace XLua
             this.objCasters = objCasters;
         }
 
-        public LuaCSFunction GetConstructorWrap(Type type)
+        public LuaCSFunction GetConstructorWrap(Type type, IntPtr L)
         {
             //UnityEngine.Debug.LogWarning("GetConstructor:" + type);
             if (!constructorCache.ContainsKey(type))
@@ -360,7 +350,7 @@ namespace XLua
                 }
                 else
                 {
-                    LuaCSFunction ctor = _GenMethodWrap(type, ".ctor", constructors, true).Call;
+                    LuaCSFunction ctor = _GenMethodWrap(type, ".ctor", constructors, true, L).Call;
                     
                     if (type.IsValueType())
                     {
@@ -402,32 +392,6 @@ namespace XLua
             return constructorCache[type];
         }
 
-        public LuaCSFunction GetMethodWrap(Type type, string methodName)
-        {
-            //UnityEngine.Debug.LogWarning("GetMethodWrap:" + type + " " + methodName);
-            if (!methodsCache.ContainsKey(type))
-            {
-                methodsCache[type] = new Dictionary<string, LuaCSFunction>();
-            }
-            var methodsOfType = methodsCache[type];
-            if (!methodsOfType.ContainsKey(methodName))
-            {
-                MemberInfo[] methods = type.GetMember(methodName, BindingFlags.Static | BindingFlags.Instance | BindingFlags.Public | BindingFlags.IgnoreCase);
-                if (methods == null || methods.Length == 0 ||
-#if UNITY_WSA && !UNITY_EDITOR
-                    methods[0] is MethodBase
-#else
-                    methods[0].MemberType != MemberTypes.Method
-#endif
-                    )
-                {
-                    return null;
-                }
-                methodsOfType[methodName] = _GenMethodWrap(type, methodName, methods).Call;
-            }
-            return methodsOfType[methodName];
-        }
-
         public LuaCSFunction GetMethodWrapInCache(Type type, string methodName)
         {
             //string retriKey = type.ToString() + "." + methodName;
@@ -440,16 +404,15 @@ namespace XLua
             return methodsOfType.ContainsKey(methodName) ? methodsOfType[methodName] : null;
         }
 
-        public LuaCSFunction GetDelegateWrap(Type type)
+        public LuaCSFunction GetDelegateWrap(Type type, IntPtr L)
         {
-            //UnityEngine.Debug.LogWarning("GetDelegateWrap:" + type );
             if (!typeof(Delegate).IsAssignableFrom(type))
             {
                 return null;
             }
             if (!delegateCache.ContainsKey(type))
             {
-                delegateCache[type] = _GenMethodWrap(type, type.ToString(), new MethodBase[] { type.GetMethod("Invoke") }).Call;
+                delegateCache[type] = _GenMethodWrap(type, type.ToString(), new MethodBase[] { type.GetMethod("Invoke") }, false, L).Call;
             }
             return delegateCache[type];
         }
@@ -580,7 +543,7 @@ namespace XLua
             return methodsOfType[removeEventName];
         }
 
-        public MethodWrap _GenMethodWrap(Type type, string methodName, IEnumerable<MemberInfo> methodBases, bool forceCheck = false)
+        public MethodWrap _GenMethodWrap(Type type, string methodName, IEnumerable<MemberInfo> methodBases, bool forceCheck, IntPtr L)
         { 
             List<OverloadMethodWrap> overloads = new List<OverloadMethodWrap>();
             foreach(var methodBase in methodBases)
@@ -597,7 +560,7 @@ namespace XLua
                     continue;
 
                 var overload = new OverloadMethodWrap(translator, type, mb);
-                overload.Init(objCheckers, objCasters);
+                overload.Init(objCheckers, objCasters, type, methodName);
                 overloads.Add(overload);
             }
             return new MethodWrap(methodName, overloads, forceCheck);

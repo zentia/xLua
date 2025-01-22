@@ -56,10 +56,10 @@ namespace XLua
         public static bool LoadExtensionMethodInfo()
         {
             var ExtensionMethodInfos_Gen = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
-                                            select assembly.GetType("XLuaIl2cpp.ExtensionMethodInfos_Gen")).FirstOrDefault(x => x != null);
+                                            select assembly.GetType("XLua.ExtensionMethodInfos_Gen")).FirstOrDefault(x => x != null);
             if (ExtensionMethodInfos_Gen == null)
                 ExtensionMethodInfos_Gen = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
-                                            select assembly.GetType("XLuaIl2cpp.ExtensionMethodInfos_Gen_Internal")).FirstOrDefault(x => x != null);
+                                            select assembly.GetType("XLua.ExtensionMethodInfos_Gen_Internal")).FirstOrDefault(x => x != null);
             var TryLoadExtensionMethod = ExtensionMethodInfos_Gen.GetMethod("TryLoadExtensionMethod");
             if (TryLoadExtensionMethod == null) return false;
             LoadExtensionMethod = (Func<Type, IEnumerable<MethodInfo>>)Delegate.CreateDelegate(
@@ -90,6 +90,7 @@ namespace XLua
             public static string String = "s";
             public static string SystemObject = "O";
             public static string RefOrPointerPrefix = "P";
+            public static string OutPrefix = "T";
             public static string Object = "o";
             public static string StructPrefix = "S_";
             public static string NullableStructPrefix = "N_";
@@ -166,7 +167,7 @@ namespace XLua
             return sb.ToString();
         }
 
-        public static string GetTypeSignature(Type type)
+        public static string GetTypeSignature(Type type, bool isOut = false)
         {
             if (type == typeof(void))
             {
@@ -224,10 +225,6 @@ namespace XLua
             {
                 return TypeSignatures.IntPtr;
             }
-            //else if (type == typeof(DateTime)) //是否要支持？
-            //{
-            //    return "d";
-            //}
             else if (type == typeof(string))
             {
                 return TypeSignatures.String;
@@ -236,9 +233,9 @@ namespace XLua
             {
                 return TypeSignatures.SystemObject;
             }
-            else if (type.IsByRef || type.IsPointer)
+            if (type.IsByRef || type.IsPointer)
             {
-                return TypeSignatures.RefOrPointerPrefix + GetTypeSignature(type.GetElementType());
+                return (isOut ? TypeSignatures.OutPrefix : TypeSignatures.RefOrPointerPrefix) + GetTypeSignature(type.GetElementType());
             }
             else if (type.IsEnum)
             {
@@ -275,7 +272,7 @@ namespace XLua
                 return "D" + GetTypeSignature(parameterInfo.ParameterType);
             }
 
-            return GetTypeSignature(parameterInfo.ParameterType);
+            return GetTypeSignature(parameterInfo.ParameterType, parameterInfo.IsOut);
         }
 
         public static string GetThisSignature(MethodBase methodBase, bool isExtensionMethod = false)

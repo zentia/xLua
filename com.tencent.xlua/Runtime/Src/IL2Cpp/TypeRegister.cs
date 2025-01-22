@@ -1,10 +1,8 @@
-#if ENABLE_IL2CPP && XLUA_IL2CPP
-
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Linq;
-using XLuaIl2cpp;
+using XLua;
 
 namespace XLua.TypeMapping
 {
@@ -28,6 +26,7 @@ namespace XLua.TypeMapping
             if (info == null || !info.Members.ContainsKey(_name)) return RegisterInfoManager.DefaultBindingMode;
             return info.Members[_name].UseBindingMode;
         }
+#if ENABLE_IL2CPP && XLUA_IL2CPP
         private static IntPtr GetWrapperFunc(RegisterInfo registerInfo, MemberInfo member, string signature)
         {
             string name = member.Name;
@@ -363,6 +362,7 @@ namespace XLua.TypeMapping
                 throw e;
             }
         }
+#endif
     }
 }
-#endif
+

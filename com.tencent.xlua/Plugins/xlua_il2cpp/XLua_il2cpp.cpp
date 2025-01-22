@@ -1350,7 +1350,7 @@ static bool GetValueTypeFromLua(struct pesapi_ffi* apis, pesapi_env env, int lua
     if (!luaValue)
         return false;
     void* ptr;
-    if (apis->is_object(env, luaValue) && (ptr = apis->get_native_object_ptr(env, luaValue)))
+    if (apis->is_userdata(env, luaValue) && (ptr = apis->get_native_object_ptr(env, luaValue)))
     {
         auto objClass = (Il2CppClass*) apis->get_native_object_typeid(env, luaValue);
         if (Class::IsAssignableFrom(klass, objClass))
@@ -1544,7 +1544,6 @@ static bool ReflectionWrapper(struct pesapi_ffi* apis, MethodInfo* method, Il2Cp
         for (int i = csArgStart; i < method->parameters_count; ++i)
         {
             auto parameterType = Method::GetParam(method, i);
-            bool passedByReference = parameterType->byref;
             bool hasDefault = parameterType->attrs && PARAM_ATTRIBUTE_HAS_DEFAULT;
             bool isLastArgument = i == (method->parameters_count - 1);
             Il2CppClass* parameterKlass = Class::FromIl2CppType(parameterType);
@@ -1554,17 +1553,6 @@ static bool ReflectionWrapper(struct pesapi_ffi* apis, MethodInfo* method, Il2Cp
             if ((hasDefault || (isLastArgument && hasParamArray)) && apis->is_undefined(env, luaValue))
             {
                 continue;
-            }
-            if (passedByReference)
-            {
-                if (apis->is_object(env, luaValue))
-                {
-                    continue;
-                }
-                else
-                {
-                    return false;
-                }
             }
             int t;
             if (isLastArgument && hasParamArray)
@@ -1748,7 +1736,6 @@ static bool ReflectionWrapper(struct pesapi_ffi* apis, MethodInfo* method, Il2Cp
         {
             if (Class::IsNullable(parameterKlass))
             {
-                returnCount++;
                 void* storage = alloca(parameterKlass->instance_size - sizeof(Il2CppObject));
                 auto underlyClass = Class::GetNullableArgument(parameterKlass);
                 uint32_t valueSize = underlyClass->instance_size - sizeof(Il2CppObject);
@@ -2263,80 +2250,77 @@ void SetObjectToGlobal(struct pesapi_ffi* apis, pesapi_env_ref envRef, Il2CppStr
     }
 }
 
-struct LuaEnvPrivate
-{
-    struct pesapi_ffi* apis;
-    pesapi_env_ref envRef;
-    std::mutex pendingKillRefsMutex;
-    std::unordered_set<pesapi_value_ref> pendingKillRefs;
-    
-    MethodInfoHelper<int32_t(Il2CppObject* obj)> objPoolAdd;
-    MethodInfoHelper<Il2CppObject*(int32_t index)> objPoolRemove;
+	struct LuaEnvPrivate
+	{
+	    struct pesapi_ffi* apis;
+	    pesapi_env_ref envRef;
+	    std::mutex pendingKillRefsMutex;
+	    std::unordered_set<pesapi_value_ref> pendingKillRefs;
+        std::unordered_set<Il2CppObject*, std::hash<void*>, std::equal_to<void>, il2cpp::gc::Allocator<Il2CppObject*>> objectPool;
+	    
+	    LuaEnvPrivate(struct pesapi_ffi* inApis, pesapi_env_ref inEnvRef)
+	        : apis(inApis), envRef(inEnvRef)
+	    {
+	    }
 
-    LuaEnvPrivate(struct pesapi_ffi* inApis, pesapi_env_ref inEnvRef, Il2CppObject* objPool,
-        Il2CppReflectionMethod* objPoolAddMethodInfo, Il2CppReflectionMethod* objPoolRemoveMethodInfo)
-        : apis(inApis), envRef(inEnvRef), objPoolAdd(objPoolAddMethodInfo, objPool), objPoolRemove(objPoolRemoveMethodInfo, objPool)
-    {
-    }
+	    void AddPendingKillScriptObjects(pesapi_value_ref valueRef)
+	    {
+	        std::lock_guard<std::mutex> guard(pendingKillRefsMutex);
+	        pendingKillRefs.insert(valueRef);
+	        
+	    }
 
-    void AddPendingKillScriptObjects(pesapi_value_ref valueRef)
-    {
-        std::lock_guard<std::mutex> guard(pendingKillRefsMutex);
-        pendingKillRefs.insert(valueRef);
-        
-    }
+	    void CleanupPendingKillScriptObjects()
+	    {
+	        std::lock_guard<std::mutex> guard(pendingKillRefsMutex);
+	        auto size = pendingKillRefs.size();
+	        if (size == 0)
+	        {
+	            return;
+	        }
 
-    void CleanupPendingKillScriptObjects()
-    {
-        std::lock_guard<std::mutex> guard(pendingKillRefsMutex);
-        auto size = pendingKillRefs.size();
-        if (size == 0)
-        {
-            return;
-        }
+	        for (const auto& valueRef : pendingKillRefs)
+	        {
+	            XLUA_Il2CppGCHandle* store = reinterpret_cast<XLUA_Il2CppGCHandle*>(apis->get_ref_internal_fields(valueRef));
+	            if (store)
+	            {
+	#ifdef UNITY_2023_2_OR_NEWER
+	                Il2CppGCHandle handle = *store;
+	#else
+	                int32_t handle = *store;
+	#endif
+	                if (nullptr == il2cpp::gc::GCHandle::GetTarget(handle))
+	                {
+	                    il2cpp::gc::GCHandle::Free(handle);
+	                }
 
-        for (const auto& valueRef : pendingKillRefs)
-        {
-            XLUA_Il2CppGCHandle* store = reinterpret_cast<XLUA_Il2CppGCHandle*>(apis->get_ref_internal_fields(valueRef));
-            if (store)
-            {
-#ifdef UNITY_2023_2_OR_NEWER
-                Il2CppGCHandle handle = *store;
-#else
-                int32_t handle = *store;
-#endif
-                if (nullptr == il2cpp::gc::GCHandle::GetTarget(handle))
-                {
-                    il2cpp::gc::GCHandle::Free(handle);
-                }
+	            }
+	            apis->release_value_ref(valueRef);
+	        }
 
-            }
-            apis->release_value_ref(valueRef);
-        }
+	        pendingKillRefs.clear();
+	    }
 
-        pendingKillRefs.clear();
-    }
+	    Il2CppObject* RefCSObject(Il2CppObject* obj)
+	    {
+            objectPool.insert(obj);
+	        return obj;
+	    }
 
-    int32_t RefCSObject(Il2CppObject* obj)
-    {
-        return objPoolAdd.CallWithInstance(obj);
-    }
-
-    void UnRefCSObject(int32_t idx)
-    {
-        objPoolRemove.CallWithInstance(idx);
-    }
-};
+	    void UnRefCSObject(Il2CppObject* obj)
+	    {
+            objectPool.erase(obj);
+	    }
+	};
 
 static void* OnCsObjectEnter(Il2CppObject* obj, void* class_data, LuaEnvPrivate* luaEnvPrivate)
 {
-    return reinterpret_cast<void*>(luaEnvPrivate->RefCSObject(obj));
+    return luaEnvPrivate->RefCSObject(obj);
 }
 
 static void OnCsObjectExit(void* ptr, void* class_data, LuaEnvPrivate* luaEnvPrivate, void* userdata)
 {
-    intptr_t idx = reinterpret_cast<intptr_t>(userdata);
-    luaEnvPrivate->UnRefCSObject(idx);
+    luaEnvPrivate->UnRefCSObject(static_cast<Il2CppObject*>(userdata));
 }
 static void FreeCSharpMethodInfo(CSharpMethodInfo* csharpMethodInfo)
 {
@@ -2437,13 +2421,12 @@ static void LoadTypeWrapper(struct pesapi_ffi* apis, pesapi_callback_info info)
     apis->add_return(info, ret);
 }
 
-xlua::LuaEnvPrivate* InitialPapiEnvRef(struct pesapi_ffi* apis, pesapi_env_ref envRef, Il2CppObject* objPool,
-    Il2CppReflectionMethod* objPoolAddMethodInfo, Il2CppReflectionMethod* objPoolRemoveMethodInfo)
+xlua::LuaEnvPrivate* InitialPapiEnvRef(struct pesapi_ffi* apis, pesapi_env_ref envRef)
 {
     auto env = apis->get_env_from_ref(envRef);
     xlua::AutoValueScope ValueScope(apis, env);
     
-    auto luaEnvPrivate = new xlua::LuaEnvPrivate(apis, envRef, objPool, objPoolAddMethodInfo, objPoolRemoveMethodInfo);
+    auto luaEnvPrivate = new xlua::LuaEnvPrivate(apis, envRef);
     apis->set_env_private(env, luaEnvPrivate);
     auto loadType = apis->create_function(env, LoadTypeWrapper, nullptr, nullptr);
     auto createFunction = apis->create_function(env, createFunctionWrapper, nullptr, nullptr);
@@ -2500,7 +2483,7 @@ extern "C"
         InternalCalls::Add("XLua.NativeAPI::LoadString(System.IntPtr,System.IntPtr,System.Byte[],System.String,XLua.LuaTable,System.Type)", (Il2CppMethodPointer) xlua::LoadString);
         InternalCalls::Add("XLua.NativeAPI::SetObjectToGlobal(System.IntPtr,System.IntPtr,System.String,System.Object)",(Il2CppMethodPointer) xlua::SetObjectToGlobal);
         InternalCalls::Add("XLua.NativeAPI::TypeIdToType(System.IntPtr)", (Il2CppMethodPointer) xlua::TypeIdToType);
-        InternalCalls::Add("XLua.NativeAPI::InitialPapiEnvRef(System.IntPtr,System.IntPtr,System.Object,System.Reflection.MethodBase,System.Reflection.MethodBase)",(Il2CppMethodPointer) xlua::InitialPapiEnvRef);
+        InternalCalls::Add("XLua.NativeAPI::InitialPapiEnvRef(System.IntPtr,System.IntPtr)",(Il2CppMethodPointer) xlua::InitialPapiEnvRef);
         InternalCalls::Add("XLua.NativeAPI::CleanupPapiEnvRef(System.IntPtr,System.IntPtr)", (Il2CppMethodPointer) xlua::CleanupPapiEnvRef);
         InternalCalls::Add("XLua.NativeAPI::DestroyLuaEnvPrivate(System.IntPtr)", (Il2CppMethodPointer) xlua::DestroyLuaEnvPrivate);
         InternalCalls::Add("XLua.LuaTable::GetLuaTableValueByUInt64(System.IntPtr,System.UInt64,System.Type)",(Il2CppMethodPointer) xlua::GetLuaTableValueByUInt64);

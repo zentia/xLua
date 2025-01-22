@@ -1,28 +1,9 @@
-/*
- * Tencent is pleased to support the open source community by making xLua available.
- * Copyright (C) 2016 THL A29 Limited, a Tencent company. All rights reserved.
- * Licensed under the MIT License (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
- * http://opensource.org/licenses/MIT
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
-*/
-
 #if !ENABLE_IL2CPP || !XLUA_IL2CPP
-#if USE_UNI_LUA
-using LuaAPI = UniLua.Lua;
-using RealStatePtr = UniLua.ILuaState;
-using LuaCSFunction = UniLua.CSharpFunctionDelegate;
-#else
 using LuaAPI = XLua.LuaDLL.Lua;
 using RealStatePtr = System.IntPtr;
-using LuaCSFunction = XLua.LuaDLL.lua_CSFunction;
-#endif
-
-using System.Collections;
 using System.Collections.Generic;
 using System;
-using System.Reflection;
-using UnityEngine;
-using XLua.LuaDLL;
+using static alglib;
 
 namespace XLua
 {
@@ -328,27 +309,16 @@ namespace XLua
             switch (type)
             {
                 case LuaTypes.LUA_TNUMBER:
-                    {
-                        if (LuaAPI.lua_isint64(L, idx))
-                        {
-                            return LuaAPI.lua_toint64(L, idx);
-                        }
-                        else if(LuaAPI.lua_isinteger(L, idx))
-                        {
-                            return LuaAPI.xlua_tointeger(L, idx);
-                        }
-                        else
-                        {
-                            return LuaAPI.lua_tonumber(L, idx);
-                        }
+                {
+                    throw new Exception("Conversion from number to object is not supported.");
                     }
                 case LuaTypes.LUA_TSTRING:
                     {
                         return LuaAPI.lua_tostring(L, idx);
                     }
                 case LuaTypes.LUA_TBOOLEAN:
-                    {
-                        return LuaAPI.lua_toboolean(L, idx);
+                {
+                    throw new Exception("Conversion from boolean to object is not supported.");
                     }
                 case LuaTypes.LUA_TTABLE:
                     {
@@ -506,7 +476,7 @@ namespace XLua
                     int n = LuaAPI.lua_gettop(L);
                     idx = idx > 0 ? idx : LuaAPI.lua_gettop(L) + idx + 1;// abs of index
                     Type et = type.GetElementType();
-                    ObjectCast elementCaster = GetCaster(et);
+                    ObjectCast elementCaster = GetCaster(et, null, null);
                     Array ary = target == null ? Array.CreateInstance(et, (int)len) : target as Array;
                     if (!LuaAPI.lua_checkstack(L, 1))
                     {
@@ -559,29 +529,19 @@ namespace XLua
             }; 
         }
 
-        ObjectCast genNullableCaster(ObjectCast oc)
+        public ObjectCast GetCaster(Type type, Type classType = null, string methodName = null)
         {
-            return (RealStatePtr L, int idx, object target) =>
-            {
-                if (LuaAPI.lua_isnil(L, idx))
-                {
-                    return null;
-                }
-                else
-                {
-                    return oc(L, idx, target);
-                }
-            };
-        }
-
-        public ObjectCast GetCaster(Type type)
-        {
-            if (type.IsByRef) type = type.GetElementType();
+            if (type.IsByRef)
+                type = type.GetElementType();
 
             Type underlyingType = Nullable.GetUnderlyingType(type);
             if (underlyingType != null)
             {
-                return genNullableCaster(GetCaster(underlyingType)); 
+                if (classType == null)
+                {
+                    throw new Exception($"nullable not support");
+                }
+                throw new Exception($"nullable not support, target type is {classType.Name} method is {methodName}.");
             }
             ObjectCast oc;
             if (!castersMap.TryGetValue(type, out oc))

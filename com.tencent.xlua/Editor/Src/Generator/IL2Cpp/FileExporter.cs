@@ -6,15 +6,8 @@ using System.Text;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using Newtonsoft.Json;
-using XLua.TypeMapping;
-using XLua;
-using Utils = XLua.Editor.Generator.Utils;
-using XLua.Editor.Generator;
-using Object = System.Object;
-
 using Mono.Reflection;
 using UnityEngine;
-using XLua.LuaDLL;
 
 namespace XLua.Editor.Generator
 {
@@ -143,12 +136,9 @@ namespace XLua.Editor.Generator
         {
             "UnityEditor",
             "Mono",
-            "CriWare",
-            "XLua",
             "DG",
             "PixPuerts",
             "System.AsyncCallback",
-            "System.Action",
             "System.Reflection",
             "System.DateTimeParse",
             "System.UnhandledExceptionEventHandler",
@@ -534,8 +524,7 @@ namespace XLua.Editor.Generator
                 .GroupBy(s => s.Signature)
                 .Select(s => s.FirstOrDefault())
                 .ToList();
-
-            var bridgeInfos = delegateInvokes
+            var delegateInvokeSignature = delegateInvokes
                 .Select(m => new SignatureInfo
                 {
                     Signature = TypeUtils.GetMethodSignature(m, true),
@@ -543,7 +532,8 @@ namespace XLua.Editor.Generator
                     ReturnSignature = TypeUtils.GetTypeSignature(m.ReturnType),
                     ThisSignature = null,
                     ParameterSignatures = m.GetParameters().Select(p => TypeUtils.GetParameterSignature(p)).ToList()
-                })
+                }).ToList();
+            var bridgeInfos = delegateInvokeSignature
                 .GroupBy(s => s.Signature)
                 .Select(s => s.FirstOrDefault())
                 .ToList();
@@ -701,7 +691,7 @@ namespace XLua.Editor.Generator
             return types;
         }
 
-        public static void GenExtensionMethodInfos(string outDir, Dictionary<Type, FileExporter.Script> types)
+        public static void GenExtensionMethodInfos(string outDir, Dictionary<Type, Script> types)
         {
             var genTypes = types.Keys
                 .Where(t => !t.IsGenericTypeDefinition && !t.Name.StartsWith("<"))
@@ -823,9 +813,17 @@ namespace XLua.Editor.Generator
             GenPreLoadInfo(registerInfos);
         }
 
+        private static Type[] PreLoadTypeBlackList =
+        {
+            // typeof(System.Action),
+            // typeof(XLua.ObjectCast),
+            // typeof(XLua.LuaDLL.lua_CSFunction),
+        };
+
         public static void GenPreLoadInfo(List<RegisterInfoForGenerate> registerInfos)
         {
-            var types = registerInfos.Select(item => item.Type).ToList();
+            var types = registerInfos.Select(item => item.Type).Where(item => !PreLoadTypeBlackList.Contains(item)).ToList();
+            // var delegateTypes = delegateInvokes.Select(item => item.DeclaringType).Where(item => !PreLoadTypeBlackList.Contains(item)).ToList();
             using (var luaEnv = new LuaEnv())
             {
                 var assetPath = Path.GetFullPath("Packages/com.tencent.xlua/");
@@ -836,7 +834,7 @@ namespace XLua.Editor.Generator
                 var bytes = File.ReadAllBytes(path);
                 luaEnv.DoString<LuaFunction>(bytes, name);
                 var func = luaEnv.Global.Get<LuaFunction>("PreLoadInfoTemplate");
-                var registerInfoContent = func.Func<List<Type>, List<Type>, string>(types, delegateInvokes.Select(item => item.DeclaringType).ToList());
+                var registerInfoContent = func.Func<List<Type>, string>(types);
 #if OS_GAME
                 var registerInfoPath = "RawAssets/LuaScripts/TypePreLoad.lua";
 #else

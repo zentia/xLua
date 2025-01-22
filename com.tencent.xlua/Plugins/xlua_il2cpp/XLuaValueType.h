@@ -99,11 +99,6 @@ struct S_i4i4i4i4_
 	int32_t p3;
 	int32_t p4;
 };
-// DrivenRectTransformTracker
-struct S_o_
-{
-	Il2CppObject* p1;
-};
 // Project8FreeCameraCenterParam
 struct S_S_r4r4r4_S_r4r4r4_S_r4r4r4__
 {
@@ -124,6 +119,11 @@ struct S_S_S_r4r4r4_S_r4r4r4_S_r4r4r4__S_r4r4r4i4__
 {
 	struct S_S_r4r4r4_S_r4r4r4_S_r4r4r4__ p1;
 	struct S_r4r4r4i4_ p2;
+};
+// DrivenRectTransformTracker
+struct S_o_
+{
+	Il2CppObject* p1;
 };
 // Vector2Int
 struct S_i4i4_
@@ -227,6 +227,12 @@ struct S_S_u4u4i4S_u4u4u4i4_oS_bb__S_u4u4_S_S_bbbbi4i4i4___
 	struct S_u4u4_ p2;
 	struct S_S_bbbbi4i4i4__ p3;
 };
+// PoolObjHandle`1
+struct S_u4o_
+{
+	uint32_t p1;
+	Il2CppObject* p2;
+};
 // stPlayerExtraPublicInfo
 struct S_u4u4u1_
 {
@@ -239,6 +245,13 @@ struct s
 {
 	int32_t p1;
 	Il2CppChar p2;
+};
+// Nullable`1
+struct N_bi4_
+{
+	bool hasValue;
+	bool p1;
+	int32_t p2;
 };
 // CaptureSettings
 struct S_bbi4bo_
@@ -272,6 +285,15 @@ struct S__
         uint8_t __padding[1];
     };
 };
+// LastRoundHighestHeroInfo
+struct S_u4u4ou1i4_
+{
+	uint32_t p1;
+	uint32_t p2;
+	Il2CppObject* p3;
+	uint8_t p4;
+	int32_t p5;
+};
 // Project8RoundStatisticInfo
 struct S_oi4i4i4u4u4o_
 {
@@ -283,15 +305,6 @@ struct S_oi4i4i4u4u4o_
 	uint32_t p6;
 	Il2CppObject* p7;
 };
-// LastRoundHighestHeroInfo
-struct S_u4u4ou1i4_
-{
-	uint32_t p1;
-	uint32_t p2;
-	Il2CppObject* p3;
-	uint8_t p4;
-	int32_t p5;
-};
 // TMP_LinkInfo
 struct S_oi4i4i4i4i4o_
 {
@@ -302,12 +315,6 @@ struct S_oi4i4i4i4i4o_
 	int32_t p5;
 	int32_t p6;
 	Il2CppObject* p7;
-};
-// PoolObjHandle`1
-struct S_u4o_
-{
-	uint32_t p1;
-	Il2CppObject* p2;
 };
 // ActorMeta
 struct S_u4u4i4u4i4u4u1i4i4u1i4_
@@ -422,7 +429,7 @@ struct S_S_u4o_i4S_u4o__
 	struct S_u4o_ p3;
 };
 // TipExtraParam
-struct S_bbbbbbb_
+struct S_bbbbbbbi4i4_
 {
 	bool p1;
 	bool p2;
@@ -431,6 +438,8 @@ struct S_bbbbbbb_
 	bool p5;
 	bool p6;
 	bool p7;
+	int32_t p8;
+	int32_t p9;
 };
 // TimeSpan
 struct S_i8_
@@ -476,103 +485,6 @@ struct S_ssso_
 struct S_u8_
 {
 	uint64_t p1;
-};
-// LODParameters
-struct S_i4S_r4r4r4_r4r4i4_
-{
-	int32_t p1;
-	struct S_r4r4r4_ p2;
-	float p3;
-	float p4;
-	int32_t p5;
-};
-// <m_CullingPlanes>e__FixedBuffer
-struct S_u1_
-{
-	uint8_t p1;
-};
-// <m_LayerFarCullDistances>e__FixedBuffer
-struct S_r4_
-{
-	float p1;
-};
-// CoreCameraValues
-struct S_i4u4i4_
-{
-	int32_t p1;
-	uint32_t p2;
-	int32_t p3;
-};
-// CameraProperties
-struct S_S_r4r4r4r4_S_r4r4r4_r4r4r4r4r4S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_r4u4S_u1_S_u1_r4S_r4r4r4_S_r4_i4S_i4u4i4_u4i4i4_
-{
-	struct S_r4r4r4r4_ p1;
-	struct S_r4r4r4_ p2;
-	float p3;
-	float p4;
-	float p5;
-	float p6;
-	float p7;
-	struct S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_ p8;
-	struct S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_ p9;
-	struct S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_ p10;
-	struct S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_ p11;
-	struct S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_ p12;
-	struct S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_ p13;
-	struct S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_ p14;
-	struct S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_ p15;
-	struct S_r4r4r4_ p16;
-	struct S_r4r4r4_ p17;
-	struct S_r4r4r4_ p18;
-	struct S_r4r4r4_ p19;
-	struct S_r4r4r4_ p20;
-	float p21;
-	uint32_t p22;
-	struct S_u1_ p23;
-	struct S_u1_ p24;
-	float p25;
-	struct S_r4r4r4_ p26;
-	struct S_r4_ p27;
-	int32_t p28;
-	struct S_i4u4i4_ p29;
-	uint32_t p30;
-	int32_t p31;
-	int32_t p32;
-};
-// ScriptableCullingParameters
-struct S_i4i4i4S_i4S_r4r4r4_r4r4i4_S_u1_i4u4u8u8S_r4_i4S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4_r4r4i4i4S_S_r4r4r4r4_S_r4r4r4_r4r4r4r4r4S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_r4u4S_u1_S_u1_r4S_r4r4r4_S_r4_i4S_i4u4i4_u4i4i4_r4i4S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_r4i4bi4_
-{
-	int32_t p1;
-	int32_t p2;
-	int32_t p3;
-	struct S_i4S_r4r4r4_r4r4i4_ p4;
-	struct S_u1_ p5;
-	int32_t p6;
-	uint32_t p7;
-	uint64_t p8;
-	uint64_t p9;
-	struct S_r4_ p10;
-	int32_t p11;
-	struct S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_ p12;
-	struct S_r4r4r4_ p13;
-	float p14;
-	float p15;
-	int32_t p16;
-	int32_t p17;
-	struct S_S_r4r4r4r4_S_r4r4r4_r4r4r4r4r4S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_r4u4S_u1_S_u1_r4S_r4r4r4_S_r4_i4S_i4u4i4_u4i4i4_ p18;
-	float p19;
-	int32_t p20;
-	struct S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_ p21;
-	struct S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_ p22;
-	float p23;
-	int32_t p24;
-	bool p25;
-	int32_t p26;
-};
-// GfxCullingParameters
-struct S_S_i4i4i4S_i4S_r4r4r4_r4r4i4_S_u1_i4u4u8u8S_r4_i4S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4_r4r4i4i4S_S_r4r4r4r4_S_r4r4r4_r4r4r4r4r4S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_r4u4S_u1_S_u1_r4S_r4r4r4_S_r4_i4S_i4u4i4_u4i4i4_r4i4S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_r4i4bi4__
-{
-	struct S_i4i4i4S_i4S_r4r4r4_r4r4i4_S_u1_i4u4u8u8S_r4_i4S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4_r4r4i4i4S_S_r4r4r4r4_S_r4r4r4_r4r4r4r4r4S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_r4u4S_u1_S_u1_r4S_r4r4r4_S_r4_i4S_i4u4i4_u4i4i4_r4i4S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_r4i4bi4_ p1;
 };
 // StartClientParam
 struct S_i4u4u4i4i4o_
@@ -745,25 +657,97 @@ struct S_i4r4_
 	int32_t p1;
 	float p2;
 };
-// Nullable`1
-struct N_bS_r4r4r4__
-{
-	bool hasValue;
-	bool p1;
-	struct S_r4r4r4_ p2;
-};
-// AnimatorStateInfo
-struct S_i4i4i4r4r4r4r4i4i4_
+// LODParameters
+struct S_i4S_r4r4r4_r4r4i4_
 {
 	int32_t p1;
-	int32_t p2;
+	struct S_r4r4r4_ p2;
+	float p3;
+	float p4;
+	int32_t p5;
+};
+// <m_CullingPlanes>e__FixedBuffer
+struct S_u1_
+{
+	uint8_t p1;
+};
+// <m_LayerFarCullDistances>e__FixedBuffer
+struct S_r4_
+{
+	float p1;
+};
+// CoreCameraValues
+struct S_i4u4i4_
+{
+	int32_t p1;
+	uint32_t p2;
 	int32_t p3;
+};
+// CameraProperties
+struct S_S_r4r4r4r4_S_r4r4r4_r4r4r4r4r4S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_r4u4S_u1_S_u1_r4S_r4r4r4_S_r4_i4S_i4u4i4_u4i4i4_
+{
+	struct S_r4r4r4r4_ p1;
+	struct S_r4r4r4_ p2;
+	float p3;
 	float p4;
 	float p5;
 	float p6;
 	float p7;
-	int32_t p8;
-	int32_t p9;
+	struct S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_ p8;
+	struct S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_ p9;
+	struct S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_ p10;
+	struct S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_ p11;
+	struct S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_ p12;
+	struct S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_ p13;
+	struct S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_ p14;
+	struct S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_ p15;
+	struct S_r4r4r4_ p16;
+	struct S_r4r4r4_ p17;
+	struct S_r4r4r4_ p18;
+	struct S_r4r4r4_ p19;
+	struct S_r4r4r4_ p20;
+	float p21;
+	uint32_t p22;
+	struct S_u1_ p23;
+	struct S_u1_ p24;
+	float p25;
+	struct S_r4r4r4_ p26;
+	struct S_r4_ p27;
+	int32_t p28;
+	struct S_i4u4i4_ p29;
+	uint32_t p30;
+	int32_t p31;
+	int32_t p32;
+};
+// ScriptableCullingParameters
+struct S_i4i4i4S_i4S_r4r4r4_r4r4i4_S_u1_i4u4u8u8S_r4_i4S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4_r4r4i4i4S_S_r4r4r4r4_S_r4r4r4_r4r4r4r4r4S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_r4u4S_u1_S_u1_r4S_r4r4r4_S_r4_i4S_i4u4i4_u4i4i4_r4i4S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_r4i4bi4_
+{
+	int32_t p1;
+	int32_t p2;
+	int32_t p3;
+	struct S_i4S_r4r4r4_r4r4i4_ p4;
+	struct S_u1_ p5;
+	int32_t p6;
+	uint32_t p7;
+	uint64_t p8;
+	uint64_t p9;
+	struct S_r4_ p10;
+	int32_t p11;
+	struct S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_ p12;
+	struct S_r4r4r4_ p13;
+	float p14;
+	float p15;
+	int32_t p16;
+	int32_t p17;
+	struct S_S_r4r4r4r4_S_r4r4r4_r4r4r4r4r4S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_r4u4S_u1_S_u1_r4S_r4r4r4_S_r4_i4S_i4u4i4_u4i4i4_ p18;
+	float p19;
+	int32_t p20;
+	struct S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_ p21;
+	struct S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_ p22;
+	float p23;
+	int32_t p24;
+	bool p25;
+	int32_t p26;
 };
 // PlayerInstanceInfo
 struct S_u4i4u4u4_
@@ -868,13 +852,6 @@ struct Pu1
         };
         uint8_t __padding[1];
     };
-};
-// CustomCoinChangeParam
-struct S_u1i4i4_
-{
-	uint8_t p1;
-	int32_t p2;
-	int32_t p3;
 };
 // MinMaxCurve
 struct S_i4r4oor4r4_
@@ -1009,6 +986,13 @@ struct S_u1u2u1u1S_S_u4u4u4u4u4u4u4u4_u4u4u1u4u4__
 	uint8_t p4;
 	struct S_S_u4u4u4u4u4u4u4u4_u4u4u1u4u4_ p5;
 };
+// CustomCoinChangeParam
+struct S_u1i4i4_
+{
+	uint8_t p1;
+	int32_t p2;
+	int32_t p3;
+};
 // stGoldDetailInfo
 struct S_u1u1u1u1u1u1ooo_
 {
@@ -1021,39 +1005,6 @@ struct S_u1u1u1u1u1u1ooo_
 	Il2CppObject* p7;
 	Il2CppObject* p8;
 	Il2CppObject* p9;
-};
-// Project8LordSkillCounterData
-struct S_u1u4u4_
-{
-	uint8_t p1;
-	uint32_t p2;
-	uint32_t p3;
-};
-// Project8CastLordSkillContext
-struct S_u4u4u4u4u4u4u4u4u4S_u1u4u4_ou4u4u4u4si4i4i4su4o_
-{
-	uint32_t p1;
-	uint32_t p2;
-	uint32_t p3;
-	uint32_t p4;
-	uint32_t p5;
-	uint32_t p6;
-	uint32_t p7;
-	uint32_t p8;
-	uint32_t p9;
-	struct S_u1u4u4_ p10;
-	Il2CppObject* p11;
-	uint32_t p12;
-	uint32_t p13;
-	uint32_t p14;
-	uint32_t p15;
-	Il2CppString* p16;
-	int32_t p17;
-	int32_t p18;
-	int32_t p19;
-	Il2CppString* p20;
-	uint32_t p21;
-	Il2CppObject* p22;
 };
 // FormationScheme
 struct S_i4u1o_
@@ -1109,47 +1060,6 @@ struct S_u1u8i4su1_
 	int32_t p3;
 	Il2CppString* p4;
 	uint8_t p5;
-};
-// RenderTargetIdentifier
-struct S_i4i4i4pi4i4i4_
-{
-	int32_t p1;
-	int32_t p2;
-	int32_t p3;
-	void* p4;
-	int32_t p5;
-	int32_t p6;
-	int32_t p7;
-};
-// GlobalKeyword
-struct S_su4_
-{
-	Il2CppString* p1;
-	uint32_t p2;
-};
-// RenderTargetBinding
-struct S_oS_i4i4i4pi4i4i4_ooi4i4i4_
-{
-	Il2CppObject* p1;
-	struct S_i4i4i4pi4i4i4_ p2;
-	Il2CppObject* p3;
-	Il2CppObject* p4;
-	int32_t p5;
-	int32_t p6;
-	int32_t p7;
-};
-// GraphicsBufferHandle
-struct S_u4_
-{
-	uint32_t p1;
-};
-// RendererList
-struct S_pu4u4u4_
-{
-	void* p1;
-	uint32_t p2;
-	uint32_t p3;
-	uint32_t p4;
 };
 // stShowActorShieldData
 struct S_u4u4i4i4_
@@ -1271,7 +1181,7 @@ struct S_u1S_u8_u1i4_
 	uint8_t p3;
 	int32_t p4;
 };
-// MaterialChangeData
+// ModelParamChangeData
 struct S_i4u4u4S_oS_u8_oor4_S_S_u8_ou1_S_u1S_r4r4r4_u1r4u1_S_S_u8_i4_S_u1S_u8_u1i4_S_i4i4i4i4__
 {
 	int32_t p1;
@@ -1656,6 +1566,11 @@ struct S_i4i4i4i4i4_
 	int32_t p4;
 	int32_t p5;
 };
+// PlayerOverheadUseEnergyInfo
+struct S_u4_
+{
+	uint32_t p1;
+};
 // OSHPlayerEnergyChangeInfo
 struct S_u4i4u1u4_
 {
@@ -1709,6 +1624,12 @@ struct S_u8u8_
 	uint64_t p1;
 	uint64_t p2;
 };
+// GlobalKeyword
+struct S_su4_
+{
+	Il2CppString* p1;
+	uint32_t p2;
+};
 // SkillTimerEvtParam
 struct S_S_u4o_u4i4u8i4i4i4_
 {
@@ -1742,13 +1663,6 @@ struct S_i4i4i4i4b_
 	int32_t p3;
 	int32_t p4;
 	bool p5;
-};
-// Nullable`1
-struct N_bi4_
-{
-	bool hasValue;
-	bool p1;
-	int32_t p2;
 };
 // CommonMemoryStat
 struct S_u4u4u4u4u4u4u4u4u4u4_
@@ -1913,6 +1827,53 @@ struct S_oi4i4s_
 	int32_t p3;
 	Il2CppString* p4;
 };
+// RenderTargetIdentifier
+struct S_i4i4i4pi4i4i4_
+{
+	int32_t p1;
+	int32_t p2;
+	int32_t p3;
+	void* p4;
+	int32_t p5;
+	int32_t p6;
+	int32_t p7;
+};
+// EventPoint
+struct S_pu4u8u8i4pu4u4_
+{
+	void* p1;
+	uint32_t p2;
+	uint64_t p3;
+	uint64_t p4;
+	int32_t p5;
+	void* p6;
+	uint32_t p7;
+	uint32_t p8;
+};
+// Info
+struct S_pu4u4u4r4r4i4u4p_
+{
+	void* p1;
+	uint32_t p2;
+	uint32_t p3;
+	uint32_t p4;
+	float p5;
+	float p6;
+	int32_t p7;
+	uint32_t p8;
+	void* p9;
+};
+// CriAtomExSequenceEventInfo
+struct S_u8psu4i4u4u4_
+{
+	uint64_t p1;
+	void* p2;
+	Il2CppString* p3;
+	uint32_t p4;
+	int32_t p5;
+	uint32_t p6;
+	uint32_t p7;
+};
 // ActorSpawnDetail
 struct S_i4u1_
 {
@@ -1929,32 +1890,21 @@ struct S_u4u4oooo_
 	Il2CppObject* p5;
 	Il2CppObject* p6;
 };
-// AllPlayerStaticInfo
+// PlayerGlobalInfo
+struct S_u4i4ooo_
+{
+	uint32_t p1;
+	int32_t p2;
+	Il2CppObject* p3;
+	Il2CppObject* p4;
+	Il2CppObject* p5;
+};
+// PlayerRealTimeInfo
 struct S_ooo_
 {
 	Il2CppObject* p1;
 	Il2CppObject* p2;
 	Il2CppObject* p3;
-};
-// PlayerStaticInfo
-struct S_u4oooi4i4_
-{
-	uint32_t p1;
-	Il2CppObject* p2;
-	Il2CppObject* p3;
-	Il2CppObject* p4;
-	int32_t p5;
-	int32_t p6;
-};
-// PlayerStaticDataInfo
-struct S_u4oi4i4i4i4_
-{
-	uint32_t p1;
-	Il2CppObject* p2;
-	int32_t p3;
-	int32_t p4;
-	int32_t p5;
-	int32_t p6;
 };
 // CardFilterChessInfo
 struct S_u4u4oo_
@@ -2181,6 +2131,14 @@ struct S_Oi4i4_
 	Il2CppObject* p1;
 	int32_t p2;
 	int32_t p3;
+};
+// DebugScreenCapture
+struct S_S_Pvi4i4i4S_pi4i4_i4_i4i4i4_
+{
+	struct S_Pvi4i4i4S_pi4i4_i4_ p1;
+	int32_t p2;
+	int32_t p3;
+	int32_t p4;
 };
 }
 

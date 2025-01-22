@@ -11,6 +11,48 @@ namespace XLua
 
     public partial class StaticLuaCallbacks
     {
+        [MonoPInvokeCallback(typeof(LuaCSFunction))]
+        internal static int Print(RealStatePtr L)
+        {
+            try
+            {
+                int n = LuaAPI.lua_gettop(L);
+                string s = String.Empty;
+
+                if (0 != LuaAPI.xlua_getglobal(L, "tostring"))
+                {
+                    return LuaAPI.luaL_error(L, "can not get tostring in print:");
+                }
+
+                for (int i = 1; i <= n; i++)
+                {
+                    LuaAPI.lua_pushvalue(L, -1);  /* function to be called */
+                    LuaAPI.lua_pushvalue(L, i);   /* value to print */
+                    if (0 != LuaAPI.lua_pcall(L, 1, 1, 0))
+                    {
+                        return LuaAPI.lua_error(L);
+                    }
+                    s += LuaAPI.lua_tostring(L, -1);
+
+                    if (i != n) s += "\t";
+
+                    LuaAPI.lua_pop(L, 1);  /* pop result */
+                }
+                UnityEngine.Debug.Log("LUA: " + s);
+                return 0;
+            }
+            catch (System.Exception e)
+            {
+                return LuaAPI.luaL_error(L, "c# exception in print:" + e);
+            }
+        }
+
+        [MonoPInvokeCallback(typeof(LuaCSFunction))]
+        internal static int Panic(RealStatePtr L)
+        {
+            string reason = String.Format("unprotected error in call to Lua API ({0})", LuaAPI.lua_tostring(L, -1));
+            throw new LuaException(reason);
+        }
 #if !XLUA_IL2CPP || !ENABLE_IL2CPP
         internal LuaCSFunction GcMeta, ToStringMeta, EnumAndMeta, EnumOrMeta;
 
@@ -104,28 +146,8 @@ namespace XLua
             }
         }
 
-#if GEN_CODE_MINIMIZE
-        [MonoPInvokeCallback(typeof(LuaDLL.CSharpWrapperCaller))]
-        internal static int CSharpWrapperCallerImpl(RealStatePtr L, int funcidx, int top)
-        {
-            try
-            {
-                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
-                return translator.CallCSharpWrapper(L, funcidx, top);
-            }
-            catch (Exception e)
-            {
-                return LuaAPI.luaL_error(L, "c# exception:" + e);
-            }
-        }
-#endif
-
-#if GEN_CODE_MINIMIZE
-        public static int DelegateCall(RealStatePtr L, int top)
-#else
         [MonoPInvokeCallback(typeof(LuaCSFunction))]
         public static int DelegateCall(RealStatePtr L)
-#endif
         {
             try
             {
@@ -135,7 +157,7 @@ namespace XLua
                 {
                     return LuaAPI.luaL_error(L, "trying to invoke a value that is not delegate nor callable");
                 }
-                return translator.methodWrapsCache.GetDelegateWrap(objDelegate.GetType())(L);
+                return translator.methodWrapsCache.GetDelegateWrap(objDelegate.GetType(), L)(L);
             }
             catch (Exception e)
             {
@@ -540,51 +562,8 @@ namespace XLua
         }
 
 
-        [MonoPInvokeCallback(typeof(LuaCSFunction))]
-        internal static int Panic(RealStatePtr L)
-        {
-            string reason = String.Format("unprotected error in call to Lua API ({0})", LuaAPI.lua_tostring(L, -1));
-            throw new LuaException(reason);
-        }
 
-#if !XLUA_GENERAL
-        [MonoPInvokeCallback(typeof(LuaCSFunction))]
-        internal static int Print(RealStatePtr L)
-        {
-            try
-            {
-                int n = LuaAPI.lua_gettop(L);
-                string s = String.Empty;
-
-                if (0 != LuaAPI.xlua_getglobal(L, "tostring"))
-                {
-                    return LuaAPI.luaL_error(L, "can not get tostring in print:");
-                }
-
-                for (int i = 1; i <= n; i++)
-                {
-                    LuaAPI.lua_pushvalue(L, -1);  /* function to be called */
-                    LuaAPI.lua_pushvalue(L, i);   /* value to print */
-                    if (0 != LuaAPI.lua_pcall(L, 1, 1, 0))
-                    {
-                        return LuaAPI.lua_error(L);
-                    }
-                    s += LuaAPI.lua_tostring(L, -1);
-
-                    if (i != n) s += "\t";
-
-                    LuaAPI.lua_pop(L, 1);  /* pop result */
-                }
-                UnityEngine.Debug.Log("LUA: " + s);
-                return 0;
-            }
-            catch (System.Exception e)
-            {
-                return LuaAPI.luaL_error(L, "c# exception in print:" + e);
-            }
-        }
-#endif
-
+        
 
         [MonoPInvokeCallback(typeof(LuaCSFunction))]
         internal static int LoadCS(RealStatePtr L)
@@ -998,7 +977,7 @@ namespace XLua
                     return LuaAPI.luaL_error(L, "ToFunction: #1 argument must be a MethodBase");
                 }
                 translator.PushFixCSFunction(L,
-                        new LuaCSFunction(translator.methodWrapsCache._GenMethodWrap(m.DeclaringType, m.Name, new MethodBase[] { m }).Call));
+                        new LuaCSFunction(translator.methodWrapsCache._GenMethodWrap(m.DeclaringType, m.Name, new MethodBase[] { m }, false, L).Call));
                 return 1;
             }
             catch (Exception e)
@@ -1041,7 +1020,7 @@ namespace XLua
                             typeArguments[j - 2] = type;
                         }
                         var genericMethod = method.MakeGenericMethod(typeArguments);
-                        translator.PushFixCSFunction(L, new LuaCSFunction(translator.methodWrapsCache._GenMethodWrap(genericMethod.DeclaringType, genericMethod.Name, new MethodBase[] { genericMethod }).Call));
+                        translator.PushFixCSFunction(L, new LuaCSFunction(translator.methodWrapsCache._GenMethodWrap(genericMethod.DeclaringType, genericMethod.Name, new MethodBase[] { genericMethod }, false, L).Call));
                         return 1;
                     }
                 }

@@ -13,10 +13,9 @@ using UnityEngine;
 namespace XLua
 {
     [UnityEngine.Scripting.Preserve]
-    public class LuaEnv : IDisposable
+    public class LuaEnv : LuaEnvBase
     {
         IntPtr apis;
-        IntPtr nativeLuaEnv;
         IntPtr nativePesapiEnv;
         IntPtr nativeScriptObjectsRefsMgr;
 
@@ -31,26 +30,8 @@ namespace XLua
             var p1 = typeof(Type).GetNestedTypes();
         }
 
-        XLuaIl2cpp.ObjectPool objectPool = new XLuaIl2cpp.ObjectPool();
-
         public const string CSHARP_NAMESPACE = "xlua_csharp_namespace";
         public const string MAIN_SHREAD = "xlua_main_thread";
-
-        public RealStatePtr rawL;
-
-        public RealStatePtr L
-        {
-            get
-            {
-                if (rawL == RealStatePtr.Zero)
-                {
-                    throw new InvalidOperationException("this lua env had disposed!");
-                }
-                return rawL;
-            }
-        }
-
-        private LuaTable _G;
 
         public int errorFuncRef = -1;
 
@@ -75,10 +56,9 @@ namespace XLua
             XLua.NativeAPI.SetGlobalType_Array(typeof(Array));
             XLua.NativeAPI.SetGlobalType_ArrayBuffer(typeof(byte[]));
 
-            nativeLuaEnv = XLua.NativeAPI.CreateNativeLuaEnv();
+            Init();
             nativePesapiEnv = XLua.NativeAPI.GetPapiEnvRef(nativeLuaEnv);
-            var objectPoolType = typeof(XLua.ObjectPool);
-            nativeScriptObjectsRefsMgr = XLua.NativeAPI.InitialPapiEnvRef(apis, nativePesapiEnv, objectPool, objectPoolType.GetMethod("Add"), objectPoolType.GetMethod("Remove"));
+            nativeScriptObjectsRefsMgr = XLua.NativeAPI.InitialPapiEnvRef(apis, nativePesapiEnv);
 
             XLua.NativeAPI.SetObjectToGlobal(apis, nativePesapiEnv, "luaEnv", this);
 
@@ -98,10 +78,7 @@ namespace XLua
                 methodInfoOfRegister.Invoke(null, new object[] { this });
             }
 
-            XLuaIl2cpp.ExtensionMethodInfo.LoadExtensionMethodInfo();
-            rawL = XLua.NativeAPI.GetLuaState(nativeLuaEnv);
-            AddSearcher(StaticLuaCallbacks.LoadBuiltinLib, 2);
-            AddSearcher(StaticLuaCallbacks.LoadFromCustomLoaders, 3);
+            XLua.ExtensionMethodInfo.LoadExtensionMethodInfo();
 
             ffi = Marshal.PtrToStructure<XLua.pesapi_ffi>(apis);
             var scope = ffi.open_scope(rawL);
@@ -196,35 +173,6 @@ namespace XLua
             }
         }
 
-        private void AddSearcher(LuaCSFunction searcher, int index)
-        {
-            var _L = L;
-            //insert the loader
-            LuaAPI.xlua_getloaders(_L);
-            if (!LuaAPI.lua_istable(_L, -1))
-            {
-                throw new Exception("Can not set searcher!");
-            }
-            uint len = LuaAPI.xlua_objlen(_L, -1);
-            index = index < 0 ? (int)(len + index + 2) : index;
-            for (int e = (int)len + 1; e > index; e--)
-            {
-                LuaAPI.xlua_rawgeti(_L, -1, e - 1);
-                LuaAPI.xlua_rawseti(_L, -2, e);
-            }
-            LuaAPI.lua_pushstdcallcfunction(_L, searcher);
-            LuaAPI.xlua_rawseti(_L, -2, index);
-            LuaAPI.lua_pop(_L, 1);
-        }
-
-        public LuaTable Global
-        {
-            get
-            {
-                return _G;
-            }
-        }
-
         public T LoadString<T>(byte[] chunk, string chunkName = "chunk", LuaTable env = null)
         {
             return (T)XLua.NativeAPI.LoadString(apis, nativePesapiEnv, chunk, chunkName, env, typeof(T));
@@ -293,9 +241,10 @@ namespace XLua
 
         private bool disposed = false;
 
-        public void Dispose()
+        public override void Dispose()
         {
             Dispose(true);
+            base.Dispose();
         }
 
         public virtual void Dispose(bool dispose)
@@ -304,10 +253,10 @@ namespace XLua
             {
                 if (disposed) return;
                 XLua.NativeAPI.CleanupPapiEnvRef(apis, nativePesapiEnv);
-                XLua.NativeAPI.DestroyNativeLuaEnv(nativeLuaEnv);
+                
                 XLua.NativeAPI.DestroyLuaEnvPrivate(nativeScriptObjectsRefsMgr);
                 nativeScriptObjectsRefsMgr = IntPtr.Zero;
-                rawL = IntPtr.Zero;
+                
                 Instance = null;
                 disposed = true;
             }
@@ -341,7 +290,7 @@ namespace XLua
         [UnityEngine.Scripting.Preserve]
         public Type GetTypeByString(string className)
         {
-            return XLuaIl2cpp.TypeUtils.GetType(className);
+            return XLua.TypeUtils.GetType(className);
         }
 
         public void AddRegisterInfoGetter(Type type, Func<RegisterInfo> getter)

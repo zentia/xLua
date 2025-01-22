@@ -1,192 +1,119 @@
-/*
- * Tencent is pleased to support the open source community by making xLua available.
- * Copyright (C) 2016 THL A29 Limited, a Tencent company. All rights reserved.
- * Licensed under the MIT License (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
- * http://opensource.org/licenses/MIT
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
-*/
-
 #if !ENABLE_IL2CPP || !XLUA_IL2CPP
 using LuaAPI = XLua.LuaDLL.Lua;
-using RealStatePtr = System.IntPtr;
 using LuaCSFunction = XLua.LuaDLL.lua_CSFunction;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using XLua.LuaDLL;
 
 namespace XLua
 {
-    public class LuaEnv : IDisposable
+    public class LuaEnv : LuaEnvBase
     {
         public const string CSHARP_NAMESPACE = "xlua_csharp_namespace";
         public const string MAIN_SHREAD = "xlua_main_thread";
-
-        public RealStatePtr rawL;
-
-        public RealStatePtr L
-        {
-            get
-            {
-                if (rawL == RealStatePtr.Zero)
-                {
-                    throw new InvalidOperationException("this lua env had disposed!");
-                }
-                return rawL;
-            }
-        }
-
-        private LuaTable _G;
 
         public ObjectTranslator translator;
 
         public int errorFuncRef = -1;
 
-#if THREAD_SAFE || HOTFIX_ENABLE
-        internal /*static*/ object luaLock = new object();
-
-        internal object luaEnvLock
-        {
-            get
-            {
-                return luaLock;
-            }
-        }
-#endif
-
         const int LIB_VERSION_EXPECT = 105;
 
         public LuaEnv(Type bridgeType = null, Type objectTranslator = null)
         {
-            UnityEngine.Debug.Log("CSharp XLua Env");
+            UnityEngine.Debug.Log("Default XLua Env");
             if (LuaAPI.xlua_get_lib_version() != LIB_VERSION_EXPECT)
             {
                 throw new InvalidProgramException("wrong lib version expect:"
                     + LIB_VERSION_EXPECT + " but got:" + LuaAPI.xlua_get_lib_version());
             }
+            LuaIndexes.LUA_REGISTRYINDEX = LuaAPI.xlua_get_registry_index();
+            Init();
 
-#if THREAD_SAFE || HOTFIX_ENABLE
-            lock(luaEnvLock)
-#endif
+            if (objectTranslator != null)
             {
-                LuaIndexes.LUA_REGISTRYINDEX = LuaAPI.xlua_get_registry_index();
-                // Create State
-                rawL = LuaAPI.luaL_newstate();
-
-                //Init Base Libs
-                LuaAPI.luaopen_xlua(rawL);
-#if !OS_GAME
-                LuaAPI.luaopen_i64lib(rawL);
-#endif
-                if (objectTranslator != null)
-                {
-                    translator = Activator.CreateInstance(objectTranslator, this, rawL, bridgeType) as ObjectTranslator;
-                }
-                else
-                {
-                    translator = new ObjectTranslator(this, rawL, bridgeType);
-                }
-                translator.createFunctionMetatable(rawL);
-                translator.OpenLib(rawL);
-                ObjectTranslatorPool.Instance.Add(rawL, translator);
-
-                LuaAPI.lua_atpanic(rawL, StaticLuaCallbacks.Panic);
-
-#if !XLUA_GENERAL
-                LuaAPI.lua_pushstdcallcfunction(rawL, StaticLuaCallbacks.Print);
-                if (0 != LuaAPI.xlua_setglobal(rawL, "print"))
-                {
-                    throw new Exception("call xlua_setglobal fail!");
-                }
-#endif
-
-                //template engine lib register
-                TemplateEngine.LuaTemplate.OpenLib(rawL);
-
-                AddSearcher(StaticLuaCallbacks.LoadBuiltinLib, 2); // just after the preload searcher
-                AddSearcher(StaticLuaCallbacks.LoadFromCustomLoaders, 3);
-                //#if !XLUA_GENERAL
-                //                AddSearcher(StaticLuaCallbacks.LoadFromResource, 4);
-                //                AddSearcher(StaticLuaCallbacks.LoadFromStreamingAssetsPath, -1);
-                //#endif
-
-                errorFuncRef = LuaAPI.get_error_func_ref(rawL);
-
-                DoStringWithoutReturnValue(init_xlua, "Init");
-                init_xlua = null;
-
-                //#if (!UNITY_SWITCH && !UNITY_WEBGL) || UNITY_EDITOR
-                //                AddBuildin("socket.core", StaticLuaCallbacks.LoadSocketCore);
-                //                AddBuildin("socket", StaticLuaCallbacks.LoadSocketCore);
-                //#endif
-
-                AddBuildin("CS", StaticLuaCallbacks.LoadCS);
-
-                LuaAPI.lua_newtable(rawL); //metatable of indexs and newindexs functions
-                LuaAPI.xlua_pushasciistring(rawL, "__index");
-                LuaAPI.lua_pushstdcallcfunction(rawL, StaticLuaCallbacks.MetaFuncIndex);
-                LuaAPI.lua_rawset(rawL, -3);
-
-                LuaAPI.xlua_pushasciistring(rawL, Utils.LuaIndexsFieldName);
-                LuaAPI.lua_newtable(rawL);
-                LuaAPI.lua_pushvalue(rawL, -3);
-                LuaAPI.lua_setmetatable(rawL, -2);
-                LuaAPI.lua_rawset(rawL, LuaIndexes.LUA_REGISTRYINDEX);
-
-                LuaAPI.xlua_pushasciistring(rawL, Utils.LuaNewIndexsFieldName);
-                LuaAPI.lua_newtable(rawL);
-                LuaAPI.lua_pushvalue(rawL, -3);
-                LuaAPI.lua_setmetatable(rawL, -2);
-                LuaAPI.lua_rawset(rawL, LuaIndexes.LUA_REGISTRYINDEX);
-
-                LuaAPI.xlua_pushasciistring(rawL, Utils.LuaClassIndexsFieldName);
-                LuaAPI.lua_newtable(rawL);
-                LuaAPI.lua_pushvalue(rawL, -3);
-                LuaAPI.lua_setmetatable(rawL, -2);
-                LuaAPI.lua_rawset(rawL, LuaIndexes.LUA_REGISTRYINDEX);
-
-                LuaAPI.xlua_pushasciistring(rawL, Utils.LuaClassNewIndexsFieldName);
-                LuaAPI.lua_newtable(rawL);
-                LuaAPI.lua_pushvalue(rawL, -3);
-                LuaAPI.lua_setmetatable(rawL, -2);
-                LuaAPI.lua_rawset(rawL, LuaIndexes.LUA_REGISTRYINDEX);
-
-                LuaAPI.lua_pop(rawL, 1); // pop metatable of indexs and newindexs functions
-
-                LuaAPI.xlua_pushasciistring(rawL, MAIN_SHREAD);
-                LuaAPI.lua_pushthread(rawL);
-                LuaAPI.lua_rawset(rawL, LuaIndexes.LUA_REGISTRYINDEX);
-
-                LuaAPI.xlua_pushasciistring(rawL, CSHARP_NAMESPACE);
-                if (0 != LuaAPI.xlua_getglobal(rawL, "CS"))
-                {
-                    throw new Exception("get CS fail!");
-                }
-                LuaAPI.lua_rawset(rawL, LuaIndexes.LUA_REGISTRYINDEX);
-
-#if !XLUA_GENERAL && (!UNITY_WSA || UNITY_EDITOR)
-                translator.Alias(typeof(Type), "System.MonoType");
-#endif
-
-                if (0 != LuaAPI.xlua_getglobal(rawL, "_G"))
-                {
-                    throw new Exception("get _G fail!");
-                }
-                translator.Get(rawL, -1, out _G);
-                LuaAPI.lua_pop(rawL, 1);
-
-                if (initers != null)
-                {
-                    for (int i = 0; i < initers.Count; i++)
-                    {
-                        initers[i](this, translator);
-                    }
-                }
-
-                translator.CreateEnumerablePairs(rawL);
-                translator.CreateArrayMetatable(rawL);
-                translator.CreateDelegateMetatable(rawL);
+                translator = Activator.CreateInstance(objectTranslator, this, rawL, bridgeType) as ObjectTranslator;
             }
+            else
+            {
+                translator = new ObjectTranslator(this, rawL, bridgeType);
+            }
+            translator.createFunctionMetatable(rawL);
+            translator.OpenLib(rawL);
+            ObjectTranslatorPool.Instance.Add(rawL, translator);
+
+            //template engine lib register
+            TemplateEngine.LuaTemplate.OpenLib(rawL);
+
+            errorFuncRef = LuaAPI.get_error_func_ref(rawL);
+
+            DoStringWithoutReturnValue(init_xlua, "Init");
+            init_xlua = null;
+
+            AddBuildin("CS", StaticLuaCallbacks.LoadCS);
+
+            LuaAPI.lua_newtable(rawL); //metatable of indexs and newindexs functions
+            LuaAPI.xlua_pushasciistring(rawL, "__index");
+            LuaAPI.lua_pushstdcallcfunction(rawL, StaticLuaCallbacks.MetaFuncIndex);
+            LuaAPI.lua_rawset(rawL, -3);
+
+            LuaAPI.xlua_pushasciistring(rawL, Utils.LuaIndexsFieldName);
+            LuaAPI.lua_newtable(rawL);
+            LuaAPI.lua_pushvalue(rawL, -3);
+            LuaAPI.lua_setmetatable(rawL, -2);
+            LuaAPI.lua_rawset(rawL, LuaIndexes.LUA_REGISTRYINDEX);
+
+            LuaAPI.xlua_pushasciistring(rawL, Utils.LuaNewIndexsFieldName);
+            LuaAPI.lua_newtable(rawL);
+            LuaAPI.lua_pushvalue(rawL, -3);
+            LuaAPI.lua_setmetatable(rawL, -2);
+            LuaAPI.lua_rawset(rawL, LuaIndexes.LUA_REGISTRYINDEX);
+
+            LuaAPI.xlua_pushasciistring(rawL, Utils.LuaClassIndexsFieldName);
+            LuaAPI.lua_newtable(rawL);
+            LuaAPI.lua_pushvalue(rawL, -3);
+            LuaAPI.lua_setmetatable(rawL, -2);
+            LuaAPI.lua_rawset(rawL, LuaIndexes.LUA_REGISTRYINDEX);
+
+            LuaAPI.xlua_pushasciistring(rawL, Utils.LuaClassNewIndexsFieldName);
+            LuaAPI.lua_newtable(rawL);
+            LuaAPI.lua_pushvalue(rawL, -3);
+            LuaAPI.lua_setmetatable(rawL, -2);
+            LuaAPI.lua_rawset(rawL, LuaIndexes.LUA_REGISTRYINDEX);
+
+            LuaAPI.lua_pop(rawL, 1); // pop metatable of indexs and newindexs functions
+
+            LuaAPI.xlua_pushasciistring(rawL, MAIN_SHREAD);
+            LuaAPI.lua_pushthread(rawL);
+            LuaAPI.lua_rawset(rawL, LuaIndexes.LUA_REGISTRYINDEX);
+
+            LuaAPI.xlua_pushasciistring(rawL, CSHARP_NAMESPACE);
+            if (0 != LuaAPI.xlua_getglobal(rawL, "CS"))
+            {
+                throw new Exception("get CS fail!");
+            }
+            LuaAPI.lua_rawset(rawL, LuaIndexes.LUA_REGISTRYINDEX);
+
+#if (!UNITY_WSA || UNITY_EDITOR)
+            translator.Alias(typeof(Type), "System.MonoType");
+#endif
+
+            if (0 != LuaAPI.xlua_getglobal(rawL, "_G"))
+            {
+                throw new Exception("get _G fail!");
+            }
+            translator.Get(rawL, -1, out _G);
+            LuaAPI.lua_pop(rawL, 1);
+
+            if (initers != null)
+            {
+                for (int i = 0; i < initers.Count; i++)
+                {
+                    initers[i](this, translator);
+                }
+            }
+
+            translator.CreateEnumerablePairs(rawL);
+            translator.CreateArrayMetatable(rawL);
+            translator.CreateDelegateMetatable(rawL);
         }
 
         private static List<Action<LuaEnv, ObjectTranslator>> initers = null;
@@ -198,14 +125,6 @@ namespace XLua
                 initers = new List<Action<LuaEnv, ObjectTranslator>>();
             }
             initers.Add(initer);
-        }
-
-        public LuaTable Global
-        {
-            get
-            {
-                return _G;
-            }
         }
 
         public T LoadString<T>(byte[] chunk, string chunkName = "chunk", LuaTable env = null)
@@ -374,34 +293,6 @@ namespace XLua
             DoStringWithoutReturnValue(bytes, chunkName, env);
         }
 
-        private void AddSearcher(LuaCSFunction searcher, int index)
-        {
-#if THREAD_SAFE || HOTFIX_ENABLE
-            lock (luaEnvLock)
-            {
-#endif
-            var _L = L;
-            //insert the loader
-            LuaAPI.xlua_getloaders(_L);
-            if (!LuaAPI.lua_istable(_L, -1))
-            {
-                throw new Exception("Can not set searcher!");
-            }
-            uint len = LuaAPI.xlua_objlen(_L, -1);
-            index = index < 0 ? (int)(len + index + 2) : index;
-            for (int e = (int)len + 1; e > index; e--)
-            {
-                LuaAPI.xlua_rawgeti(_L, -1, e - 1);
-                LuaAPI.xlua_rawseti(_L, -2, e);
-            }
-            LuaAPI.lua_pushstdcallcfunction(_L, searcher);
-            LuaAPI.xlua_rawseti(_L, -2, index);
-            LuaAPI.lua_pop(_L, 1);
-#if THREAD_SAFE || HOTFIX_ENABLE
-            }
-#endif
-        }
-
         public void Alias(Type type, string alias)
         {
             translator.Alias(type, alias);
@@ -472,19 +363,19 @@ namespace XLua
 
         public bool Disposed => disposed;
 
-        public void Dispose()
+        public override void Dispose()
         {
             FullGc();
             System.GC.Collect();
             System.GC.WaitForPendingFinalizers();
 
             Dispose(true);
-
+            base.Dispose();
             System.GC.Collect();
             System.GC.WaitForPendingFinalizers();
         }
 
-        public virtual void Dispose(bool dispose)
+        public void Dispose(bool dispose)
         {
 #if THREAD_SAFE || HOTFIX_ENABLE
             lock (luaEnvLock)
@@ -515,11 +406,8 @@ namespace XLua
 
             ObjectTranslatorPool.Instance.Remove(L);
 
-            LuaAPI.lua_close(L);
             translator = null;
-
-            rawL = IntPtr.Zero;
-
+            
             disposed = true;
 #if THREAD_SAFE || HOTFIX_ENABLE
             }

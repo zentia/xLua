@@ -47,7 +47,6 @@ bool w_PS_u4S_i4i4i4_S_r4r4r4_i4S_r4r4r4r4_u4u1_(struct pesapi_ffi* apis, Method
 bool w_Pu1i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_Pu1i4u2u2(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_S_S_S_r4r4r4_S_r4r4r4_u4r4S_r4r4_i4_b_oS_S_r4r4r4_S_r4r4r4__r4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_S_S_i4i4i4S_i4S_r4r4r4_r4r4i4_S_u1_i4u4u8u8S_r4_i4S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4_r4r4i4i4S_S_r4r4r4r4_S_r4r4r4_r4r4r4r4r4S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_r4u4S_u1_S_u1_r4S_r4r4r4_S_r4_i4S_i4u4i4_u4i4i4_r4i4S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_r4i4bi4__oo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_S_S_p_i4_S_S_p_i4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_S_S_p_i4_s(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_S_S_r4r4_S_r4r4_i4r4r4i4S_r4r4__(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
@@ -63,8 +62,6 @@ bool w_S_S_r4r4r4_S_r4r4r4__tS_r4r4r4_(struct pesapi_ffi* apis, MethodInfo* meth
 bool w_S_S_r4r4r4_S_r4r4r4__tS_r4r4r4_i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_S_S_u4u1u1i4i4i4o_oS_S_S_u4u4u4u4u4u4u1u1u4u4S_r4r4r4_u4u2i2u1_S_S_i4i4i4_S_r4r4r4_S_i4i4i4_u1u1u1_S_i4i4i4i4i4i4i4i4i4i4_S_oo_S_i4i4__S_u4S_S_u8_u4u4u4u4u4u1u1u1u1_u1u1u1_S_u4S_S_u8_u4u4u4u4u4u1u1u1u1_u1u1u1__u1u1_tu4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_S_S_u4u4u4u4u4u4u4u4_u4u4u1u4u4_tu4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_S__t(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_S__ti4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_S_bbbi4_ti4u4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_S_i4S_r4r4_S_r4r4_S_r4r4_r4i4i4i4r4r4r4r4r4r4_i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_S_i4_i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
@@ -127,9 +124,6 @@ bool w_S_oi4i4s_t(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPoint
 bool w_S_oooo_to(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_S_p_O(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_S_p_t(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_S_pi4i4_t(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_S_pi4i4_ti4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_S_pi4i4_ti4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_S_r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_S_r4r4_S_i4i4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_S_r4r4_S_r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
@@ -250,7 +244,6 @@ bool w_S_u4u1o_t(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointe
 bool w_S_u4u4i4_t(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_S_u4u4u1_t(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_S_u4u4u4u4u4u4u4u4_tu4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_S_u4u4u4u4u4u4u4u4u4S_u1u4u4_ou4u4u4u4si4i4i4su4o_ti4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_S_u8_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_S_u8_O(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_S_u8_Oo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
@@ -294,14 +287,14 @@ bool w_bPS_su4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer
 bool w_bPS_u4o_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_bPi1i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_bS_S_p_i4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_bS_S_p_i4_PS_u8_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_bS_S_p_i4_S_S_p_i4_Pi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_bS_S_p_i4_S_S_p_i4_Pi4Di4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_bS_S_p_i4_S_S_p_i4_S_S_p_i4_Pi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_bS_S_p_i4_S_S_p_i4_S_S_p_i4_S_S_p_i4_Pi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_bS_S_p_i4_S_S_p_i4_oi4PS_u8_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_bS_S_p_i4_oi4PS_u8_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_bS_S_p_i4_ooi4PS_u8_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_bS_S_p_i4_S_S_p_i4_S_S_p_i4_S_S_p_i4_Ti4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_bS_S_p_i4_S_S_p_i4_S_S_p_i4_Ti4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_bS_S_p_i4_S_S_p_i4_Ti4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_bS_S_p_i4_S_S_p_i4_Ti4Di4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_bS_S_p_i4_S_S_p_i4_oi4TS_u8_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_bS_S_p_i4_TS_u8_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_bS_S_p_i4_oi4TS_u8_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_bS_S_p_i4_ooi4TS_u8_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_bS_S_r4r4r4_S_r4r4r4__S_S_r4r4r4_S_r4r4r4__(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_bS_i4i4_S_i4i4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_bS_i4i4i4i4u8_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
@@ -329,6 +322,7 @@ bool w_bi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer meth
 bool w_bi4Pi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_bi4PpPp(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_bi4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_bi4i4b(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_bi4i4i4s(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_bi4o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_bi4p(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
@@ -341,22 +335,22 @@ bool w_bo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer metho
 bool w_boO(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_boS_r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_boS_r4r4_o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_boS_r4r4_oPS_r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_boS_r4r4_oPS_r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_boS_r4r4_oS_r4r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_boS_r4r4_oTS_r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_boS_r4r4_oTS_r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_boi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_boi4o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_boo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_booPo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_booTo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_boob(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_boor4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_boou4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_bor4r4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_bor4r4r4S_r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_bos(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_bosPO(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_bosPo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_bosbPO(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_bosTO(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_bosTo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_bosbTO(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_bpu4po(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_br4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_br4r4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
@@ -364,35 +358,34 @@ bool w_br4r4r4r4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointe
 bool w_br8(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_bs(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_bsDi1(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_bsPS_r4r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_bsPS_u8_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_bsPs(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_bsS_S_p_i4_Pi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_bsS_S_p_i4_Ti4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_bsS_r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_bsS_r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_bsS_r4r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_bsTS_r4r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_bsTS_u8_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_bsTs(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_bsb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_bsi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_bsi4Pb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_bsi4Po(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_bsi4To(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_bso(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_bsoi4PS_u8_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_bsoi4TS_u8_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_bsoi4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_bsoo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_bsooi4PS_u8_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_bsooi4TS_u8_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_bss(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_bssDoDb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_bssi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_bssi4S_i8_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_bssi4bb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_bssoi4PS_u8_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_bssoi4TS_u8_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_bt(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_btDb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_btDi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_btDr4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_btDr4Db(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_btO(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_btPS_S_p_su4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_btPS_i4i4i4S_i4S_r4r4r4_r4r4i4_S_u1_i4u4u8u8S_r4_i4S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4_r4r4i4i4S_S_r4r4r4r4_S_r4r4r4_r4r4r4r4r4S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_r4u4S_u1_S_u1_r4S_r4r4r4_S_r4_i4S_i4u4i4_u4i4i4_r4i4S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_r4i4bi4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_btPS_o_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_btPS_oooi4i4_u4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_btPS_r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
@@ -400,10 +393,10 @@ bool w_btPS_u4u4u4i4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodP
 bool w_btPi4Pi4Pi4Pi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_btPoPo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_btS_S_p_i4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_btS_S_p_i4_Pi4DS_S_p_i4_Do(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_btS_S_p_i4_Ti4DS_S_p_i4_Do(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_btS_S_r4r4r4_S_r4r4r4__(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_btS_S_r4r4r4_S_r4r4r4__Pr4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_btS_i4i4_S_i4i4_bbbbPu4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_btS_S_r4r4r4_S_r4r4r4__Tr4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_btS_i4i4_S_i4i4_bbbbTu4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_btS_i8_ss(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_btS_r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_btS_r4r4_o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
@@ -415,9 +408,10 @@ bool w_btS_u4bbbi4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPoi
 bool w_btS_u4o_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_btS_u4o_u4u4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_btS_u8_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_btTS_i4i4i4S_i4S_r4r4r4_r4r4i4_S_u1_i4u4u8u8S_r4_i4S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4_r4r4i4i4S_S_r4r4r4r4_S_r4r4r4_r4r4r4r4r4S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_r4u4S_u1_S_u1_r4S_r4r4r4_S_r4_i4S_i4u4i4_u4i4i4_r4i4S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_r4i4bi4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_btb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_btbDi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_btbPS_i4i4i4S_i4S_r4r4r4_r4r4i4_S_u1_i4u4u8u8S_r4_i4S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4_r4r4i4i4S_S_r4r4r4r4_S_r4r4r4_r4r4r4r4r4S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_r4u4S_u1_S_u1_r4S_r4r4r4_S_r4_i4S_i4u4i4_u4i4i4_r4i4S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_r4i4bi4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_btbTS_i4i4i4S_i4S_r4r4r4_r4r4i4_S_u1_i4u4u8u8S_r4_i4S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4_r4r4i4i4S_S_r4r4r4r4_S_r4r4r4_r4r4r4r4r4S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_r4u4S_u1_S_u1_r4S_r4r4r4_S_r4_i4S_i4u4i4_u4i4i4_r4i4S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_r4i4bi4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_btbVO(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_btbi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_btc(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
@@ -425,36 +419,39 @@ bool w_btci4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
 bool w_bti4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_bti4Db(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_bti4Di4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_bti4Dr4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_bti4Dr4Dr4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_bti4PS_i4i4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_bti4PS_r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_bti4PS_u4u4u4u4u4u4u4u4u4S_u1u4u4_ou4u4u4u4si4i4i4su4o_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_bti4Pi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_bti4Po(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_bti4PsPi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_bti4Pu4Ps(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_bti4S_i4i4_bbi4Pu4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_bti4Dr4Db(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_bti4Dr4Dr4Db(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_bti4S_i4i4_bbi4Tu4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_bti4TS_i4i4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_bti4TS_r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_bti4Ti4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_bti4To(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_bti4TsTi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_bti4Tu4Ts(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_bti4b(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_bti4bi4b(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_bti4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_bti4o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_bti4u4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_bti4u4u4u4bPu4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_bti4u4u4u4bTu4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_bti8(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_bto(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_btoO(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_btoPo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_btoPs(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_btoS_r4r4_i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_btoTo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_btoTs(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_btob(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_btobbO(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_btoi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_btoi4Di4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_btoi4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_btoi8Di4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_btoo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_btoou4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_btosDi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_btou4Du4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_btou4Ps(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_btou4Ts(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_btpi8Di4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_btr4Dr4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_btr4r4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_bts(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
@@ -462,29 +459,32 @@ bool w_btsDb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
 bool w_btsDi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_btsDi4Db(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_btsDoDs(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_btsPS_r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_btsPo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_btsPs(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_btsTS_r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_btsTo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_btsTs(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_btsbDoDs(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_btsbo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_btsi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_btso(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_btss(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_btssboDi4Di4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_btssss(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_btsu4Po(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_btsu4To(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_btsu8i8Di4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_btu1(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_btu2(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_btu2Di4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_btu2PS_u4u4u4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_btu4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_btu4DbDu4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_btu4PS_r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_btu4Po(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_btu4Ps(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_btu4Pu4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_btu4TS_r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_btu4To(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_btu4Ts(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_btu4Tu4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_btu4b(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_btu4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_btu4i4u4Ps(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_btu4i4u4Ts(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_btu4oi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_btu4oo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_btu4u4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
@@ -499,7 +499,7 @@ bool w_bu4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
 bool w_bu4i4Do(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_bu4u4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_bu4u4Db(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_bu4u4Ps(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_bu4u4Ts(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_bu8(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_cO(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_cOo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
@@ -564,8 +564,6 @@ bool w_i2u8(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
 bool w_i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_i4O(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_i4Oo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_i4Pi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_i4Pi4u8(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_i4Pu1i4u8(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_i4S_i4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_i4S_i4i4_S_i4i4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
@@ -575,6 +573,8 @@ bool w_i4S_r4r4r4_r4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPo
 bool w_i4S_u4o_S_u4o_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_i4S_u8_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_i4S_u8_S_u8_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_i4Ti4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_i4Ti4u8(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_i4Vi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_i4Vs(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_i4b(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
@@ -611,14 +611,14 @@ bool w_i4oO(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
 bool w_i4oOi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_i4oOi4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_i4oOo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_i4oPS_r4r4r4_PS_r4r4r4_oPu4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_i4oPu4Pr4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_i4oPu4Pr4u8(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_i4oPS_r4r4r4_PS_r4r4r4_oTu4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_i4oPu4Tr4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_i4oPu4Tr4u8(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_i4oPu4o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_i4oPu8(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_i4oPu8o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_i4oPu8ou4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_i4oS_r4r4r4_S_r4r4r4_S_r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_i4oTu8(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_i4oTu8o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_i4oTu8ou4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_i4obo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_i4oboo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_i4oi4i4O(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
@@ -626,9 +626,9 @@ bool w_i4oi4i4Oo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointe
 bool w_i4oi4i4oi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_i4oi4i4oi4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_i4oo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_i4ooPr4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_i4ooPr4Pr4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_i4ooPu4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_i4ooTr4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_i4ooTr4Tr4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_i4ooi4i4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_i4ooou4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_i4oor4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
@@ -639,27 +639,27 @@ bool w_i4oou4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer m
 bool w_i4or4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_i4or4r4r4r4r4r4r4r4r4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_i4os(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_i4osPr4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_i4osTr4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_i4ou4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_i4ou4b(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_i4ou4r4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_i4ou4r4u8(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_i4ou8(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_i4ou8Pu8(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_i4ou8Tu8(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_i4pi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_i4pu4Pu4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_i4pu4bsbPu4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_i4pu4oOPu4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_i4pu4Tu4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_i4pu4bsbTu4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_i4pu4oOTu4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_i4r4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_i4r4c(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_i4r8(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_i4s(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_i4sPr4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_i4sPr4Pi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_i4sPu4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_i4sPu4o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_i4sTr4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_i4sTr4Ti4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_i4sTu4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_i4sbDi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_i4sbPu4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_i4sbTu4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_i4scc(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_i4si4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_i4si4o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
@@ -676,8 +676,8 @@ bool w_i4si4u4o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer
 bool w_i4si4u4ou4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_i4si4u4ou4b(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_i4so(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_i4soOPu4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_i4soPu4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_i4soOTu4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_i4soTu4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_i4soi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_i4soi4b(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_i4soi4bu4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
@@ -686,7 +686,7 @@ bool w_i4soi4i4b(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointe
 bool w_i4sor4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_i4sor4b(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_i4sor4bu4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_i4sou4Pr4Pi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_i4sou4Tr4Pi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_i4sp(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_i4spoO(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_i4sr4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
@@ -720,10 +720,10 @@ bool w_i4tci4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer m
 bool w_i4tci4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_i4ti1sO(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_i4ti4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_i4ti4Pi8(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_i4ti4Po(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_i4ti4Pr8(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_i4ti4Ps(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_i4ti4Ti8(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_i4ti4To(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_i4ti4Tr8(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_i4ti4Ts(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_i4ti4b(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_i4ti4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_i4ti4i4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
@@ -748,7 +748,7 @@ bool w_i4tsi4Du4DoDb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPo
 bool w_i4tsi4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_i4tsi4i4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_i4tso(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_i4tsu4PS_si4_PS_sb_Pi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_i4tsu4TS_si4_TS_sb_Ti4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_i4tu4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_i4tu4PS_u4u4u4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_i4tu4u4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
@@ -756,13 +756,14 @@ bool w_i4tu4u4i4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPoin
 bool w_i4u1(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_i4u2(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_i4u4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_i4u4Pi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_i4u4Pi4Pi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_i4u4Pi4b(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_i4u4Pr4Pi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_i4u4Pu4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_i4u4Pu4Pu4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_i4u4Pu4o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_i4u4Ti4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_i4u4Ti4Ti4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_i4u4Ti4b(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_i4u4Tr4Ti4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_i4u4Tu4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_i4u4Tu4Tu4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_i4u4Tu4o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_i4u4b(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_i4u4cc(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_i4u4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
@@ -774,7 +775,7 @@ bool w_i4u4i4oi4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPoin
 bool w_i4u4i4oi4i4u4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_i4u4o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_i4u4oO(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_i4u4oPu4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_i4u4oTu4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_i4u4ob(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_i4u4oi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_i4u4oi4b(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
@@ -788,7 +789,7 @@ bool w_i4u4oou2(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer
 bool w_i4u4or4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_i4u4or4b(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_i4u4or4bu4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_i4u4ou4Pr4Pi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_i4u4ou4Tr4Pi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_i4u4ou4u8o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_i4u4p(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_i4u4poO(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
@@ -803,15 +804,15 @@ bool w_i4u4r4u4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPoint
 bool w_i4u4r4u4i4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_i4u4r4u4i4i4b(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_i4u4u4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_i4u4u4Pi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_i4u4u4Pr4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_i4u4u4Pu4o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_i4u4u4Ti4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_i4u4u4Tr4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_i4u4u4Tu4o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_i4u4u4o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_i4u4u4u4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_i4u4u4u4PobDb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_i4u4u4u4oPoDb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_i4u4u4u4TobDb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_i4u4u4u4oToDb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_i4u8(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_i4u8Pr4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_i4u8Tr4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_i4u8oS_r4r4r4_bu8u8(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_i4u8os(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_i4u8ou4ou4ou4u8bb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
@@ -882,7 +883,6 @@ bool w_oo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer metho
 bool w_ooDO(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_ooDo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_ooPS_u4o_bb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_ooPo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_ooS_r4r4_S_r4r4_r4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_ooS_r4r4_r4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_ooS_r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
@@ -894,6 +894,7 @@ bool w_ooS_r4r4r4_r4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethod
 bool w_ooS_r4r4r4_r4r4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_ooS_r4r4r4r4_S_r4r4r4r4_r4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_ooS_r4r4r4r4_r4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_ooTo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_ooVi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_ooVi8(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_ooVo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
@@ -963,7 +964,7 @@ bool w_osso(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
 bool w_ossoDS_o_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_ot(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_otDb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_otDi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_otDo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_otO(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_otPS_u4S_S_u8_u4u4u4u4u4u1u1u1u1_u1u1u1_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_otPS_u4u4u4u4u4u4u1u1u4u4S_r4r4r4_u4u2i2u1_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
@@ -1088,10 +1089,12 @@ bool w_otsi4oo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer 
 bool w_otsi4ooo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_otsi4oooo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_otso(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_otsoDODbDN_bS_r4r4r4__(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_otsoDODbDoDN_bS_r4r4r4__(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_otsoDODb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_otsoDODbDo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_otsoDo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_otsoDoDo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_otsoObS_r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_otsoOboS_r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_otsoo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_otsooi4bbDi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_otsooo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
@@ -1165,7 +1168,6 @@ bool w_r4sor4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer m
 bool w_r4sr4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_r4t(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_r4tS_r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_r4tbDi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_r4ti4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_r4ti4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_r4ti4sb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
@@ -1234,8 +1236,8 @@ bool w_si2i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
 bool w_si2o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_si4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_si4Di4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_si4Pu4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_si4Pu4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_si4Tu4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_si4Tu4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_si4b(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_si4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_si4i4b(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
@@ -1310,8 +1312,8 @@ bool w_sti4u4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer m
 bool w_sto(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_sts(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_stsDs(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_stsPi4Po(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_stsPs(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_stsTi4To(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_stsTs(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_stsb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_stsbDs(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_stsbs(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
@@ -1449,6 +1451,7 @@ bool w_u4u4ou4oO(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointe
 bool w_u4u4ou4oOu4o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_u4u4ou4oOu4ou4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_u4u4ou4u4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_u4u4u4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_u4u4u8(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_u4u4u8u4oO(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_u4u4u8u4oOu4o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
@@ -1495,7 +1498,7 @@ bool w_vO(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer metho
 bool w_vPS_S_u4u4u4u4u4u4u1u1u4u4S_r4r4r4_u4u2i2u1_S_S_i4i4i4_S_r4r4r4_S_i4i4i4_u1u1u1_S_i4i4i4i4i4i4i4i4i4i4_S_oo_S_i4i4__(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vPS_S_u8_u4u4u4u1u1u1u1u1S_u8_i4u4i4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vPS_i4S_u8_r4S_r4r4r4_r4u4S_u8__(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vPS_i4u4u4S_oS_u8_oor4_S_S_u8_ou1_S_u1S_r4r4r4_u1r4u1_S_S_u8_i4_S_u1S_u8_u1i4_S_i4i4i4i4__(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_vPS_i4u4u4S_oS_u8_oor4_S_S_u8_ou1_S_u1S_r4r4r4_u1r4u1_S_S_u8_i4_S_u1S_u8_u1i4_S_i4i4i4i4__b(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vPS_i4u4u4i4i4o_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vPS_oS_u8_u1_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vPS_o_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
@@ -1504,7 +1507,6 @@ bool w_vPS_oooo_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointe
 bool w_vPS_oou1_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vPS_r4r4r4_PS_r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vPS_r4r4r4_PS_r4r4r4_PS_r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vPS_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_r4S_r4r4_S_r4r4_r4r4DS_i4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vPS_si8ou1oss_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vPS_so_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vPS_su4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
@@ -1543,7 +1545,6 @@ bool w_vPS_u4u4u4o_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPoi
 bool w_vPS_u4u4u4u1_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vPS_u4u4u4u4u1i4u1_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vPS_u4u4u4u4u4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vPi4Pi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vPi4o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vPo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vPu1(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
@@ -1554,11 +1555,13 @@ bool w_vS_i4i4i4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPoint
 bool w_vS_r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vS_r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vS_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_Dr4Do(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vS_r4r4r4r4_Pr4Pr4Pr4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_vS_r4r4r4r4_Tr4Tr4Tr4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vS_u4bbbi4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vS_u8_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vS_u8_PS_o_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vS_u8_u4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_vTS_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_r4S_r4r4_S_r4r4_r4r4DS_i4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_vTi4Ti4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vbS_u8_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vbbb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
@@ -1571,9 +1574,9 @@ bool w_vi4Di4Ds(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer
 bool w_vi4DsDs(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vi4O(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vi4PS_oo_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vi4Pi4Pi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vi4S_r4r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vi4S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_vi4Ti4Ti4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vi4b(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vi4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vi4i4b(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
@@ -1584,6 +1587,7 @@ bool w_vi4i4i4S_u4u4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodP
 bool w_vi4i4i4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vi4i4i4i4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vi4i4i4i4i4b(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_vi4i4i8i8i4bs(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vi4i4o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vi4i4oooo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vi4i8(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
@@ -1598,8 +1602,7 @@ bool w_vi4si4PS_pi4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPo
 bool w_vi4si4u4o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vi4ss(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vi4sss(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vi4ssso(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vi4sssoi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_vi4sssoDi4Ds(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vi4u1i4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vi4u4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vi4u4b(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
@@ -1629,7 +1632,6 @@ bool w_vob(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer meth
 bool w_vobb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_voi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_voi4Db(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_voi4Pi4Pb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_voi4bb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_voi4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_voi4i4b(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
@@ -1652,7 +1654,7 @@ bool w_voor4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
 bool w_voos(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vor4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vor4PS_r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vor4Pr4Pr4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_vor4Tr4Tr4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vor4r4r4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vos(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vosr4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
@@ -1663,6 +1665,7 @@ bool w_vr4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer meth
 bool w_vr4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vr4r4r4r4r4r4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vs(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_vsDb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vsDi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vsDo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vsDsDi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
@@ -1720,7 +1723,7 @@ bool w_vsu4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
 bool w_vsu4u4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vt(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtDO(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtDODoDoDODbDN_bS_r4r4r4__(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_vtDODoDoDODb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtDb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtDbDb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtDi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
@@ -1748,9 +1751,11 @@ bool w_vtOi8i8(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer 
 bool w_vtOi8i8i8(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtOo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtOoo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtOooOboDN_bS_r4r4r4__(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_vtOooObS_r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_vtOooObo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_vtOooOboS_r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtPPu1(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtPS_S_S_r4r4r4_S_r4r4r4_S_r4r4r4__S_r4r4r4i4__PS_r4r4r4_PS_r4r4r4r4_PS_r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_vtPS_S_S_r4r4r4_S_r4r4r4_S_r4r4r4__S_r4r4r4i4__TS_r4r4r4_TS_r4r4r4r4_TS_r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtPS_S_p_su4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtPS_S_p_su4_b(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtPS_S_r4r4r4_S_r4r4r4_S_r4r4r4_r4_DoDr4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
@@ -1769,10 +1774,6 @@ bool w_vtPS_oo_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer
 bool w_vtPS_r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtPS_r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtPS_r4r4r4_PS_i4i4i4_PS_r4r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtPS_r4r4r4_PS_r4r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtPS_r4r4r4_Pr4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtPS_su4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtPS_su4_b(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtPS_u1u1u1u1u1u1ooo_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtPS_u1u2u1u1S_S_u4u4u4u4u4u4u4u4_u4u4u1u4u4__(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtPS_u1u4u4i4i4i4u4u4u1u4i4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
@@ -1790,7 +1791,6 @@ bool w_vtPS_u4u4u1u4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodP
 bool w_vtPS_u4u4u4o_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtPS_u4u4u4u4u4u4u1u1u4u4S_r4r4r4_u4u2i2u1_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtPS_u4u4u4u4u4u4u4u4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtPS_u4u4u4u4u4u4u4u4u4S_u1u4u4_ou4u4u4u4si4i4i4su4o_u4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtPS_u4u4u4u4u4u4u4u4u4u4_u4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtPc(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtPci4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
@@ -1799,7 +1799,6 @@ bool w_vtPi1i4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointe
 bool w_vtPi1i4i4o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtPi4Pi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtPo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtPr4PS_r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtPr4r4PS_S_S_r4r4r4_S_r4r4r4_S_r4r4r4__S_r4r4r4i4__PS_S_S_r4r4r4_S_r4r4r4_S_r4r4r4__S_r4r4r4i4__PS_S_S_r4r4r4_S_r4r4r4_S_r4r4r4__S_r4r4r4i4__(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtS_Pu1i4i4i4i4S_pi4i4__(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtS_Pvi4i4i4S_pi4i4_i4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
@@ -1808,8 +1807,6 @@ bool w_vtS_S_p_i4_S_S_p_i4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppM
 bool w_vtS_S_p_pp_O(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtS_S_r4r4_r4S_r4r4__(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtS_S_r4r4r4_S_r4r4r4__(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtS__(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtS__i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtS_i4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtS_i4i4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtS_i4i4_S_i4i4_bb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
@@ -1817,40 +1814,15 @@ bool w_vtS_i4i4_b(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPoint
 bool w_vtS_i4i4_bb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtS_i4i4_o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtS_i4i4i4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtS_i4i4i4i4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtS_i4i4i4i4b_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtS_i4i4i4i4i4i4i4i4i4i4i4i4i4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtS_i4i4i4pi4i4i4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtS_i4i4i4pi4i4i4_S_i4i4i4pi4i4i4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtS_i4i4i4pi4i4i4_S_i4i4i4pi4i4i4_S_r4r4_S_r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtS_i4i4i4pi4i4i4_S_i4i4i4pi4i4i4_S_r4r4_S_r4r4_i4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtS_i4i4i4pi4i4i4_S_i4i4i4pi4i4i4_i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtS_i4i4i4pi4i4i4_S_i4i4i4pi4i4i4_i4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtS_i4i4i4pi4i4i4_S_i4i4i4pi4i4i4_i4i4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtS_i4i4i4pi4i4i4_S_i4i4i4pi4i4i4_o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtS_i4i4i4pi4i4i4_S_i4i4i4pi4i4i4_oi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtS_i4i4i4pi4i4i4_S_i4i4i4pi4i4i4_oi4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtS_i4i4i4pi4i4i4_i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtS_i4i4i4pi4i4i4_i4S_i4i4i4pi4i4i4_i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtS_i4i4i4pi4i4i4_i4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtS_i4i4i4pi4i4i4_i4i4S_i4i4i4pi4i4i4_i4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtS_i4i4i4pi4i4i4_i4i4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtS_i4i4i4pi4i4i4_i4i4i4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtS_i4i4i4pi4i4i4_i4i4i4i4i4i4S_i4i4i4pi4i4i4_i4i4i4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtS_i4i4i4pi4i4i4_pi4i4i4i4i4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtS_i4ooS_r4r4r4r4_S_r4r4r4r4__(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtS_i4p_S_i4p_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtS_i4r4oor4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtS_i4u8r4b_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtS_oS_i4i4i4pi4i4i4_ooi4i4i4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtS_oS_i4i4i4pi4i4i4_ooi4i4i4_i4i4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtS_o_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtS_oo_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtS_oou1_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtS_p_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtS_pi4i4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtS_pi4i4_i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtS_pu4u4u4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtS_r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtS_r4r4_Db(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtS_r4r4_Dr4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
@@ -1884,12 +1856,6 @@ bool w_vtS_r4r4r4r4_u8(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethod
 bool w_vtS_r4r4r4r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtS_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtS_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtS_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_oi4i4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtS_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_oi4i4i4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtS_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_oi4i4i4i4o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtS_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_oi4i4o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtS_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_oi4i4oi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtS_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_oi4i4oi4o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtS_ssso_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtS_u1i4i4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtS_u4o_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
@@ -1904,7 +1870,10 @@ bool w_vtS_u4u4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointe
 bool w_vtS_u4u4u1_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtS_u4u4u4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtS_u4u4u4i4u4o_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtS_u4u4u4u4u4u4u4u4u4S_u1u4u4_ou4u4u4u4si4i4i4su4o_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_vtTS_r4r4r4_TS_r4r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_vtTS_r4r4r4_Tr4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_vtTi4Ti4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_vtTr4TS_r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtVO(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtbDb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
@@ -1912,8 +1881,6 @@ bool w_vtbDbDo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer 
 bool w_vtbDi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtbVi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtbb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtbbS_r4r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtbbS_r4r4r4r4_r4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtbbb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtbbo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtbbu4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
@@ -1936,20 +1903,15 @@ bool w_vti4Dr4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer 
 bool w_vti4Ds(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vti4Du4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vti4OVi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vti4Pi4Pi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vti4S_S_p_i4_i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vti4S_i4i4i4i4i4i4i4i4i4i4i4i4i4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vti4S_i4i4i4i4i4i4i4i4i4i4i4i4i4_i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vti4S_i4i4i4pi4i4i4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vti4S_i4i4i4pi4i4i4_i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vti4S_r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vti4S_r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vti4S_r4r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vti4S_r4r4r4r4_r4r4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vti4S_r4r4r4r4_r4u4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vti4S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vti4S_u4o_b(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vti4S_u4u4u4i4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_vti4Ti4Ti4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vti4Vi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vti4b(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vti4bo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
@@ -1958,6 +1920,7 @@ bool w_vti4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer m
 bool w_vti4i4Db(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vti4i4S_i4i4i4i4_i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vti4i4S_r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_vti4i4b(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vti4i4bOVi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vti4i4bObVi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vti4i4bo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
@@ -1968,16 +1931,7 @@ bool w_vti4i4i4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPoint
 bool w_vti4i4i4i4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vti4i4i4i4i4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vti4i4i4i4i4i4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vti4i4i4i4i4i4i4b(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vti4i4i4i4i4i4i4bi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vti4i4i4i4i4i4i4bi4b(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vti4i4i4i4i4i4i4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vti4i4i4i4i4i4i4i4b(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vti4i4i4i4i4i4i4i4bb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vti4i4i4i4i4i4i4i4bi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vti4i4i4i4i4i4i4i4bi4b(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vti4i4i4i4i4i4i4i4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vti4i4i4i4i4i4i4i4i4b(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vti4i4i4i4i4i4i4o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vti4i4i4i4i4i4i4oi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vti4i4i4i4i4i4o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
@@ -1989,7 +1943,6 @@ bool w_vti4i4r4r4r4r4r4r4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMet
 bool w_vti4i4s(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vti4i4u4S_r4r4r4_DbDu4Di4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vti4o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vti4ob(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vti4oi1si1DsDi4Di4Di4DODO(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vti4oi1si1si4i4Di4DODO(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vti4oi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
@@ -2011,7 +1964,7 @@ bool w_vti8i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer m
 bool w_vti8s(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vti8u8(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vto(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtoDS_r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_vtoDS_r4r4r4_Di4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtoDb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtoDbDb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtoDi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
@@ -2022,14 +1975,8 @@ bool w_vtoDoDb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer 
 bool w_vtoDs(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtoDsDS_bbi4bo_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtoO(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtoPS_S_p_su4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtoPS_S_p_su4_b(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_vtoPS_S_r4r4r4_S_r4r4r4_S_r4r4r4_r4_o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtoS_Oi4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtoS_i4i4i4pi4i4i4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtoS_i4i4i4pi4i4i4_S_r4r4_S_r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtoS_i4i4i4pi4i4i4_i4i4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtoS_i4i4i4pi4i4i4_o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtoS_i4i4i4pi4i4i4_oi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtoS_i4p_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtoS_r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtoS_r4r4_S_r4r4_S_r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
@@ -2038,15 +1985,6 @@ bool w_vtoS_r4r4r4_S_r4r4r4_o(struct pesapi_ffi* apis, MethodInfo* method, Il2Cp
 bool w_vtoS_r4r4r4_b(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtoS_r4r4r4_o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtoS_r4r4r4r4_DsDS_bbi4bo_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtoS_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtoS_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_oi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtoS_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_oi4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtoS_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_oi4i4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtoS_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_oi4i4i4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtoS_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_oi4i4i4i4o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtoS_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_oi4i4o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtoS_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_oi4i4oi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtoS_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_oi4i4oi4o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtoS_u4o_O(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtoVO(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtoVi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
@@ -2058,48 +1996,20 @@ bool w_vtoi4Db(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer 
 bool w_vtoi4Di1(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtoi4Di4Db(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtoi4DoDoDo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtoi4S_i4i4i4pi4i4i4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtoi4S_r4r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtoi4S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtoi4VS_r4r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtoi4VS_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtoi4Vi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtoi4Vr4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtoi4b(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtoi4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtoi4i4S_i4i4i4pi4i4i4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtoi4i4S_i4i4i4pi4i4i4_i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtoi4i4S_i4i4i4pi4i4i4_i4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtoi4i4S_u4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtoi4i4b(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtoi4i4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtoi4i4i4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtoi4i4i4i4i4i4i4i4o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtoi4i4i4i4i4i4i4o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtoi4i4o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtoi4o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtoi4oDo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtoi4oi4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtoi4oi4i4Do(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtoi4oi4o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtoi4oi4oi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtoi4oi4oi4o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtoi4ou4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtoi4r4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtoi4sS_i4i4i4pi4i4i4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtoi4sS_i4i4i4pi4i4i4_i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtoi4sS_i4i4i4pi4i4i4_i4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtoi4sS_u4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtoi4so(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtoi8(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtoo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtooDb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtooPbPr4r4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtoob(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtooi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtooi4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtooi4i4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtooi4o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_vtooi4r4DoDS_bbbbbbbi4i4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtooo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtoooDoDoDo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtoooDr4Db(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
@@ -2120,30 +2030,13 @@ bool w_vtor4i4sooi4DoDs(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMetho
 bool w_vtor4i4soor4r4i4DoDs(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtos(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtosDb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtosS_i4i4i4pi4i4i4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtosS_r4r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtosS_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtosVS_r4r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtosVS_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtosVi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtosVr4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtosb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtosi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtosi4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtosi4i4b(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtoso(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtosoi4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtosr4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtosu4u4u4Do(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtou4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtou4o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtou4u4bb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtp(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtpi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtpi4i4p(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtpi4p(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtpou4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtpu4S_i4i4i4pi4i4i4_S_i4i4i4pi4i4i4_u4u4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtr4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtr4DbDr4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtr4S_S_S_r4r4r4_S_r4r4r4_S_r4r4r4__S_r4r4r4i4__(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
@@ -2165,18 +2058,16 @@ bool w_vtsDbDoDbDbDb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPo
 bool w_vtsDbDoDbDbDbDb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtsDi4DbDbDbDs(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtsDo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtsDoDoDODbDN_bS_r4r4r4__(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtsDoDoDODbDoDN_bS_r4r4r4__(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_vtsDoDoDODb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_vtsDoDoDODbDo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtsDoDoDi4Dr4Db(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtsDr4Dr4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtsO(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtsOi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtsPi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtsS_i4i4i4pi4i4i4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtsS_i4i4i4pi4i4i4_i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtsS_r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtsS_r4r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtsS_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_vtsTi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtsVo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtsVs(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtsb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
@@ -2197,7 +2088,8 @@ bool w_vtsoDb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer m
 bool w_vtsoDi1(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtsoi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtsoi4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtsoso(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_vtsooObS_r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_vtsooOboS_r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtsr4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtsr4Db(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtsr4DoDbDbDb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
@@ -2210,7 +2102,6 @@ bool w_vtsr4r4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer 
 bool w_vtsr4r4DoDbDbDb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtsr4r4DoDbDbDbDb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtss(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtssDO(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtssDo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtssb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtssi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
@@ -2225,7 +2116,6 @@ bool w_vtu4Di4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer 
 bool w_vtu4Di4Db(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtu4Do(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtu4PS_u1u1u1u1u1u1ooo_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtu4PoPo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtu4S_i4i4_bb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtu4S_r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtu4S_r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
@@ -2233,8 +2123,9 @@ bool w_vtu4S_r4r4r4_S_r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2Cp
 bool w_vtu4S_r4r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtu4S_u4bbbi4_Db(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtu4S_u8_b(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_vtu4ToTo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtu4b(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vtu4bN_bi4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_vtu4bi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtu4bsi4S_r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtu4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtu4i4DoDo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
@@ -2260,6 +2151,7 @@ bool w_vtu4u4u4u4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPoint
 bool w_vtu4u4u4u4u4u4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtu8(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtu8o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_vtu8u8(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vu1(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vu2Pv(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vu2o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
@@ -2281,14 +2173,13 @@ bool w_vu4PS_u4u4i4i4i4i4S_r4r4r4_S_r4r4r4_r4u1_(struct pesapi_ffi* apis, Method
 bool w_vu4PS_u4u4oS_u8_o_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vu4PS_u4u4u4u4u4u4S_u8_u1i4i4u1S_S_u8_u4u4u4u4u4u1u1u1u1_S_i4i4i4_S_r4r4r4_S_r4r4r4r4_S_r4r4r4_r4r4r4u1u1u1u1u1u1u1u4u4u1u1u1u1S_r4r4r4_i4u4u4u4u4u1u1u1i4u1u1u4u4r4u4u1u1u1r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vu4PS_u4u4u4u4u4u4u4u4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vu4PS_u4u4u4u4u4u4u4u4u4S_u1u4u4_ou4u4u4u4si4i4i4su4o_i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
-bool w_vu4Pi4Pi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vu4S_i4u1o_o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vu4S_r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vu4S_r4r4r4_bS_r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vu4S_r4r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vu4S_u8_b(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vu4S_u8_i4b(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_vu4Ti4Ti4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vu4b(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vu4bb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vu4bu4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
@@ -2301,6 +2192,7 @@ bool w_vu4i4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer 
 bool w_vu4i4i4i4i4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vu4i4o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vu4i4u4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_vu4i4u4b(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vu4i4u4u4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vu4o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vu4oi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
@@ -2337,6 +2229,7 @@ bool w_vu4u4u4o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer
 bool w_vu4u4u4u4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vu4u4u4u4i4b(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vu4u8(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_vu8(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 
 static WrapFuncInfo g_wrapFuncInfos[] = {
     {"OOi4", w_OOi4},
@@ -2376,7 +2269,6 @@ static WrapFuncInfo g_wrapFuncInfos[] = {
     {"Pu1i4", w_Pu1i4},
     {"Pu1i4u2u2", w_Pu1i4u2u2},
     {"S_S_S_r4r4r4_S_r4r4r4_u4r4S_r4r4_i4_b_oS_S_r4r4r4_S_r4r4r4__r4", w_S_S_S_r4r4r4_S_r4r4r4_u4r4S_r4r4_i4_b_oS_S_r4r4r4_S_r4r4r4__r4},
-    {"S_S_i4i4i4S_i4S_r4r4r4_r4r4i4_S_u1_i4u4u8u8S_r4_i4S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4_r4r4i4i4S_S_r4r4r4r4_S_r4r4r4_r4r4r4r4r4S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_r4u4S_u1_S_u1_r4S_r4r4r4_S_r4_i4S_i4u4i4_u4i4i4_r4i4S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_r4i4bi4__oo", w_S_S_i4i4i4S_i4S_r4r4r4_r4r4i4_S_u1_i4u4u8u8S_r4_i4S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4_r4r4i4i4S_S_r4r4r4r4_S_r4r4r4_r4r4r4r4r4S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_r4u4S_u1_S_u1_r4S_r4r4r4_S_r4_i4S_i4u4i4_u4i4i4_r4i4S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_r4i4bi4__oo},
     {"S_S_p_i4_S_S_p_i4_", w_S_S_p_i4_S_S_p_i4_},
     {"S_S_p_i4_s", w_S_S_p_i4_s},
     {"S_S_r4r4_S_r4r4_i4r4r4i4S_r4r4__", w_S_S_r4r4_S_r4r4_i4r4r4i4S_r4r4__},
@@ -2392,8 +2284,6 @@ static WrapFuncInfo g_wrapFuncInfos[] = {
     {"S_S_r4r4r4_S_r4r4r4__tS_r4r4r4_i4", w_S_S_r4r4r4_S_r4r4r4__tS_r4r4r4_i4},
     {"S_S_u4u1u1i4i4i4o_oS_S_S_u4u4u4u4u4u4u1u1u4u4S_r4r4r4_u4u2i2u1_S_S_i4i4i4_S_r4r4r4_S_i4i4i4_u1u1u1_S_i4i4i4i4i4i4i4i4i4i4_S_oo_S_i4i4__S_u4S_S_u8_u4u4u4u4u4u1u1u1u1_u1u1u1_S_u4S_S_u8_u4u4u4u4u4u1u1u1u1_u1u1u1__u1u1_tu4", w_S_S_u4u1u1i4i4i4o_oS_S_S_u4u4u4u4u4u4u1u1u4u4S_r4r4r4_u4u2i2u1_S_S_i4i4i4_S_r4r4r4_S_i4i4i4_u1u1u1_S_i4i4i4i4i4i4i4i4i4i4_S_oo_S_i4i4__S_u4S_S_u8_u4u4u4u4u4u1u1u1u1_u1u1u1_S_u4S_S_u8_u4u4u4u4u4u1u1u1u1_u1u1u1__u1u1_tu4},
     {"S_S_u4u4u4u4u4u4u4u4_u4u4u1u4u4_tu4", w_S_S_u4u4u4u4u4u4u4u4_u4u4u1u4u4_tu4},
-    {"S__t", w_S__t},
-    {"S__ti4", w_S__ti4},
     {"S_bbbi4_ti4u4", w_S_bbbi4_ti4u4},
     {"S_i4S_r4r4_S_r4r4_S_r4r4_r4i4i4i4r4r4r4r4r4r4_i4", w_S_i4S_r4r4_S_r4r4_S_r4r4_r4i4i4i4r4r4r4r4r4r4_i4},
     {"S_i4_i4", w_S_i4_i4},
@@ -2456,9 +2346,6 @@ static WrapFuncInfo g_wrapFuncInfos[] = {
     {"S_oooo_to", w_S_oooo_to},
     {"S_p_O", w_S_p_O},
     {"S_p_t", w_S_p_t},
-    {"S_pi4i4_t", w_S_pi4i4_t},
-    {"S_pi4i4_ti4", w_S_pi4i4_ti4},
-    {"S_pi4i4_ti4i4", w_S_pi4i4_ti4i4},
     {"S_r4r4_", w_S_r4r4_},
     {"S_r4r4_S_i4i4_", w_S_r4r4_S_i4i4_},
     {"S_r4r4_S_r4r4_", w_S_r4r4_S_r4r4_},
@@ -2579,7 +2466,6 @@ static WrapFuncInfo g_wrapFuncInfos[] = {
     {"S_u4u4i4_t", w_S_u4u4i4_t},
     {"S_u4u4u1_t", w_S_u4u4u1_t},
     {"S_u4u4u4u4u4u4u4u4_tu4", w_S_u4u4u4u4u4u4u4u4_tu4},
-    {"S_u4u4u4u4u4u4u4u4u4S_u1u4u4_ou4u4u4u4si4i4i4su4o_ti4", w_S_u4u4u4u4u4u4u4u4u4S_u1u4u4_ou4u4u4u4si4i4i4su4o_ti4},
     {"S_u8_", w_S_u8_},
     {"S_u8_O", w_S_u8_O},
     {"S_u8_Oo", w_S_u8_Oo},
@@ -2623,14 +2509,14 @@ static WrapFuncInfo g_wrapFuncInfos[] = {
     {"bPS_u4o_", w_bPS_u4o_},
     {"bPi1i4", w_bPi1i4},
     {"bS_S_p_i4_", w_bS_S_p_i4_},
-    {"bS_S_p_i4_PS_u8_", w_bS_S_p_i4_PS_u8_},
-    {"bS_S_p_i4_S_S_p_i4_Pi4", w_bS_S_p_i4_S_S_p_i4_Pi4},
-    {"bS_S_p_i4_S_S_p_i4_Pi4Di4", w_bS_S_p_i4_S_S_p_i4_Pi4Di4},
-    {"bS_S_p_i4_S_S_p_i4_S_S_p_i4_Pi4", w_bS_S_p_i4_S_S_p_i4_S_S_p_i4_Pi4},
-    {"bS_S_p_i4_S_S_p_i4_S_S_p_i4_S_S_p_i4_Pi4", w_bS_S_p_i4_S_S_p_i4_S_S_p_i4_S_S_p_i4_Pi4},
-    {"bS_S_p_i4_S_S_p_i4_oi4PS_u8_", w_bS_S_p_i4_S_S_p_i4_oi4PS_u8_},
-    {"bS_S_p_i4_oi4PS_u8_", w_bS_S_p_i4_oi4PS_u8_},
-    {"bS_S_p_i4_ooi4PS_u8_", w_bS_S_p_i4_ooi4PS_u8_},
+    {"bS_S_p_i4_S_S_p_i4_S_S_p_i4_S_S_p_i4_Ti4", w_bS_S_p_i4_S_S_p_i4_S_S_p_i4_S_S_p_i4_Ti4},
+    {"bS_S_p_i4_S_S_p_i4_S_S_p_i4_Ti4", w_bS_S_p_i4_S_S_p_i4_S_S_p_i4_Ti4},
+    {"bS_S_p_i4_S_S_p_i4_Ti4", w_bS_S_p_i4_S_S_p_i4_Ti4},
+    {"bS_S_p_i4_S_S_p_i4_Ti4Di4", w_bS_S_p_i4_S_S_p_i4_Ti4Di4},
+    {"bS_S_p_i4_S_S_p_i4_oi4TS_u8_", w_bS_S_p_i4_S_S_p_i4_oi4TS_u8_},
+    {"bS_S_p_i4_TS_u8_", w_bS_S_p_i4_TS_u8_},
+    {"bS_S_p_i4_oi4TS_u8_", w_bS_S_p_i4_oi4TS_u8_},
+    {"bS_S_p_i4_ooi4TS_u8_", w_bS_S_p_i4_ooi4TS_u8_},
     {"bS_S_r4r4r4_S_r4r4r4__S_S_r4r4r4_S_r4r4r4__", w_bS_S_r4r4r4_S_r4r4r4__S_S_r4r4r4_S_r4r4r4__},
     {"bS_i4i4_S_i4i4_", w_bS_i4i4_S_i4i4_},
     {"bS_i4i4i4i4u8_", w_bS_i4i4i4i4u8_},
@@ -2658,6 +2544,7 @@ static WrapFuncInfo g_wrapFuncInfos[] = {
     {"bi4Pi4", w_bi4Pi4},
     {"bi4PpPp", w_bi4PpPp},
     {"bi4i4", w_bi4i4},
+    {"bi4i4b", w_bi4i4b},
     {"bi4i4i4s", w_bi4i4i4s},
     {"bi4o", w_bi4o},
     {"bi4p", w_bi4p},
@@ -2670,22 +2557,22 @@ static WrapFuncInfo g_wrapFuncInfos[] = {
     {"boO", w_boO},
     {"boS_r4r4_", w_boS_r4r4_},
     {"boS_r4r4_o", w_boS_r4r4_o},
-    {"boS_r4r4_oPS_r4r4_", w_boS_r4r4_oPS_r4r4_},
-    {"boS_r4r4_oPS_r4r4r4_", w_boS_r4r4_oPS_r4r4r4_},
     {"boS_r4r4_oS_r4r4r4r4_", w_boS_r4r4_oS_r4r4r4r4_},
+    {"boS_r4r4_oTS_r4r4_", w_boS_r4r4_oTS_r4r4_},
+    {"boS_r4r4_oTS_r4r4r4_", w_boS_r4r4_oTS_r4r4r4_},
     {"boi4", w_boi4},
     {"boi4o", w_boi4o},
     {"boo", w_boo},
-    {"booPo", w_booPo},
+    {"booTo", w_booTo},
     {"boob", w_boob},
     {"boor4", w_boor4},
     {"boou4", w_boou4},
     {"bor4r4", w_bor4r4},
     {"bor4r4r4S_r4r4_", w_bor4r4r4S_r4r4_},
     {"bos", w_bos},
-    {"bosPO", w_bosPO},
-    {"bosPo", w_bosPo},
-    {"bosbPO", w_bosbPO},
+    {"bosTO", w_bosTO},
+    {"bosTo", w_bosTo},
+    {"bosbTO", w_bosbTO},
     {"bpu4po", w_bpu4po},
     {"br4", w_br4},
     {"br4r4", w_br4r4},
@@ -2693,35 +2580,34 @@ static WrapFuncInfo g_wrapFuncInfos[] = {
     {"br8", w_br8},
     {"bs", w_bs},
     {"bsDi1", w_bsDi1},
-    {"bsPS_r4r4r4r4_", w_bsPS_r4r4r4r4_},
-    {"bsPS_u8_", w_bsPS_u8_},
-    {"bsPs", w_bsPs},
-    {"bsS_S_p_i4_Pi4", w_bsS_S_p_i4_Pi4},
+    {"bsS_S_p_i4_Ti4", w_bsS_S_p_i4_Ti4},
     {"bsS_r4r4_", w_bsS_r4r4_},
     {"bsS_r4r4r4_", w_bsS_r4r4r4_},
     {"bsS_r4r4r4r4_", w_bsS_r4r4r4r4_},
+    {"bsTS_r4r4r4r4_", w_bsTS_r4r4r4r4_},
+    {"bsTS_u8_", w_bsTS_u8_},
+    {"bsTs", w_bsTs},
     {"bsb", w_bsb},
     {"bsi4", w_bsi4},
     {"bsi4Pb", w_bsi4Pb},
-    {"bsi4Po", w_bsi4Po},
+    {"bsi4To", w_bsi4To},
     {"bso", w_bso},
-    {"bsoi4PS_u8_", w_bsoi4PS_u8_},
+    {"bsoi4TS_u8_", w_bsoi4TS_u8_},
     {"bsoi4i4", w_bsoi4i4},
     {"bsoo", w_bsoo},
-    {"bsooi4PS_u8_", w_bsooi4PS_u8_},
+    {"bsooi4TS_u8_", w_bsooi4TS_u8_},
     {"bss", w_bss},
     {"bssDoDb", w_bssDoDb},
     {"bssi4", w_bssi4},
     {"bssi4S_i8_", w_bssi4S_i8_},
     {"bssi4bb", w_bssi4bb},
-    {"bssoi4PS_u8_", w_bssoi4PS_u8_},
+    {"bssoi4TS_u8_", w_bssoi4TS_u8_},
     {"bt", w_bt},
     {"btDb", w_btDb},
     {"btDi4", w_btDi4},
-    {"btDr4", w_btDr4},
+    {"btDr4Db", w_btDr4Db},
     {"btO", w_btO},
     {"btPS_S_p_su4_", w_btPS_S_p_su4_},
-    {"btPS_i4i4i4S_i4S_r4r4r4_r4r4i4_S_u1_i4u4u8u8S_r4_i4S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4_r4r4i4i4S_S_r4r4r4r4_S_r4r4r4_r4r4r4r4r4S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_r4u4S_u1_S_u1_r4S_r4r4r4_S_r4_i4S_i4u4i4_u4i4i4_r4i4S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_r4i4bi4_", w_btPS_i4i4i4S_i4S_r4r4r4_r4r4i4_S_u1_i4u4u8u8S_r4_i4S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4_r4r4i4i4S_S_r4r4r4r4_S_r4r4r4_r4r4r4r4r4S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_r4u4S_u1_S_u1_r4S_r4r4r4_S_r4_i4S_i4u4i4_u4i4i4_r4i4S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_r4i4bi4_},
     {"btPS_o_", w_btPS_o_},
     {"btPS_oooi4i4_u4", w_btPS_oooi4i4_u4},
     {"btPS_r4r4r4_", w_btPS_r4r4r4_},
@@ -2729,10 +2615,10 @@ static WrapFuncInfo g_wrapFuncInfos[] = {
     {"btPi4Pi4Pi4Pi4", w_btPi4Pi4Pi4Pi4},
     {"btPoPo", w_btPoPo},
     {"btS_S_p_i4_", w_btS_S_p_i4_},
-    {"btS_S_p_i4_Pi4DS_S_p_i4_Do", w_btS_S_p_i4_Pi4DS_S_p_i4_Do},
+    {"btS_S_p_i4_Ti4DS_S_p_i4_Do", w_btS_S_p_i4_Ti4DS_S_p_i4_Do},
     {"btS_S_r4r4r4_S_r4r4r4__", w_btS_S_r4r4r4_S_r4r4r4__},
-    {"btS_S_r4r4r4_S_r4r4r4__Pr4", w_btS_S_r4r4r4_S_r4r4r4__Pr4},
-    {"btS_i4i4_S_i4i4_bbbbPu4", w_btS_i4i4_S_i4i4_bbbbPu4},
+    {"btS_S_r4r4r4_S_r4r4r4__Tr4", w_btS_S_r4r4r4_S_r4r4r4__Tr4},
+    {"btS_i4i4_S_i4i4_bbbbTu4", w_btS_i4i4_S_i4i4_bbbbTu4},
     {"btS_i8_ss", w_btS_i8_ss},
     {"btS_r4r4_", w_btS_r4r4_},
     {"btS_r4r4_o", w_btS_r4r4_o},
@@ -2744,9 +2630,10 @@ static WrapFuncInfo g_wrapFuncInfos[] = {
     {"btS_u4o_", w_btS_u4o_},
     {"btS_u4o_u4u4", w_btS_u4o_u4u4},
     {"btS_u8_", w_btS_u8_},
+    {"btTS_i4i4i4S_i4S_r4r4r4_r4r4i4_S_u1_i4u4u8u8S_r4_i4S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4_r4r4i4i4S_S_r4r4r4r4_S_r4r4r4_r4r4r4r4r4S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_r4u4S_u1_S_u1_r4S_r4r4r4_S_r4_i4S_i4u4i4_u4i4i4_r4i4S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_r4i4bi4_", w_btTS_i4i4i4S_i4S_r4r4r4_r4r4i4_S_u1_i4u4u8u8S_r4_i4S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4_r4r4i4i4S_S_r4r4r4r4_S_r4r4r4_r4r4r4r4r4S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_r4u4S_u1_S_u1_r4S_r4r4r4_S_r4_i4S_i4u4i4_u4i4i4_r4i4S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_r4i4bi4_},
     {"btb", w_btb},
     {"btbDi4", w_btbDi4},
-    {"btbPS_i4i4i4S_i4S_r4r4r4_r4r4i4_S_u1_i4u4u8u8S_r4_i4S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4_r4r4i4i4S_S_r4r4r4r4_S_r4r4r4_r4r4r4r4r4S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_r4u4S_u1_S_u1_r4S_r4r4r4_S_r4_i4S_i4u4i4_u4i4i4_r4i4S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_r4i4bi4_", w_btbPS_i4i4i4S_i4S_r4r4r4_r4r4i4_S_u1_i4u4u8u8S_r4_i4S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4_r4r4i4i4S_S_r4r4r4r4_S_r4r4r4_r4r4r4r4r4S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_r4u4S_u1_S_u1_r4S_r4r4r4_S_r4_i4S_i4u4i4_u4i4i4_r4i4S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_r4i4bi4_},
+    {"btbTS_i4i4i4S_i4S_r4r4r4_r4r4i4_S_u1_i4u4u8u8S_r4_i4S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4_r4r4i4i4S_S_r4r4r4r4_S_r4r4r4_r4r4r4r4r4S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_r4u4S_u1_S_u1_r4S_r4r4r4_S_r4_i4S_i4u4i4_u4i4i4_r4i4S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_r4i4bi4_", w_btbTS_i4i4i4S_i4S_r4r4r4_r4r4i4_S_u1_i4u4u8u8S_r4_i4S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4_r4r4i4i4S_S_r4r4r4r4_S_r4r4r4_r4r4r4r4r4S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_r4u4S_u1_S_u1_r4S_r4r4r4_S_r4_i4S_i4u4i4_u4i4i4_r4i4S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_r4i4bi4_},
     {"btbVO", w_btbVO},
     {"btbi4", w_btbi4},
     {"btc", w_btc},
@@ -2754,36 +2641,39 @@ static WrapFuncInfo g_wrapFuncInfos[] = {
     {"bti4", w_bti4},
     {"bti4Db", w_bti4Db},
     {"bti4Di4", w_bti4Di4},
-    {"bti4Dr4", w_bti4Dr4},
-    {"bti4Dr4Dr4", w_bti4Dr4Dr4},
-    {"bti4PS_i4i4_", w_bti4PS_i4i4_},
-    {"bti4PS_r4r4r4_", w_bti4PS_r4r4r4_},
-    {"bti4PS_u4u4u4u4u4u4u4u4u4S_u1u4u4_ou4u4u4u4si4i4i4su4o_", w_bti4PS_u4u4u4u4u4u4u4u4u4S_u1u4u4_ou4u4u4u4si4i4i4su4o_},
-    {"bti4Pi4", w_bti4Pi4},
-    {"bti4Po", w_bti4Po},
-    {"bti4PsPi4", w_bti4PsPi4},
-    {"bti4Pu4Ps", w_bti4Pu4Ps},
-    {"bti4S_i4i4_bbi4Pu4", w_bti4S_i4i4_bbi4Pu4},
+    {"bti4Dr4Db", w_bti4Dr4Db},
+    {"bti4Dr4Dr4Db", w_bti4Dr4Dr4Db},
+    {"bti4S_i4i4_bbi4Tu4", w_bti4S_i4i4_bbi4Tu4},
+    {"bti4TS_i4i4_", w_bti4TS_i4i4_},
+    {"bti4TS_r4r4r4_", w_bti4TS_r4r4r4_},
+    {"bti4Ti4", w_bti4Ti4},
+    {"bti4To", w_bti4To},
+    {"bti4TsTi4", w_bti4TsTi4},
+    {"bti4Tu4Ts", w_bti4Tu4Ts},
     {"bti4b", w_bti4b},
     {"bti4bi4b", w_bti4bi4b},
     {"bti4i4", w_bti4i4},
     {"bti4o", w_bti4o},
     {"bti4u4", w_bti4u4},
-    {"bti4u4u4u4bPu4", w_bti4u4u4u4bPu4},
+    {"bti4u4u4u4bTu4", w_bti4u4u4u4bTu4},
     {"bti8", w_bti8},
     {"bto", w_bto},
     {"btoO", w_btoO},
-    {"btoPo", w_btoPo},
-    {"btoPs", w_btoPs},
     {"btoS_r4r4_i4", w_btoS_r4r4_i4},
+    {"btoTo", w_btoTo},
+    {"btoTs", w_btoTs},
     {"btob", w_btob},
     {"btobbO", w_btobbO},
     {"btoi4", w_btoi4},
+    {"btoi4Di4", w_btoi4Di4},
     {"btoi4i4", w_btoi4i4},
+    {"btoi8Di4", w_btoi8Di4},
     {"btoo", w_btoo},
     {"btoou4", w_btoou4},
+    {"btosDi4", w_btosDi4},
     {"btou4Du4", w_btou4Du4},
-    {"btou4Ps", w_btou4Ps},
+    {"btou4Ts", w_btou4Ts},
+    {"btpi8Di4", w_btpi8Di4},
     {"btr4Dr4", w_btr4Dr4},
     {"btr4r4", w_btr4r4},
     {"bts", w_bts},
@@ -2791,29 +2681,32 @@ static WrapFuncInfo g_wrapFuncInfos[] = {
     {"btsDi4", w_btsDi4},
     {"btsDi4Db", w_btsDi4Db},
     {"btsDoDs", w_btsDoDs},
-    {"btsPS_r4r4r4_", w_btsPS_r4r4r4_},
-    {"btsPo", w_btsPo},
-    {"btsPs", w_btsPs},
+    {"btsTS_r4r4r4_", w_btsTS_r4r4r4_},
+    {"btsTo", w_btsTo},
+    {"btsTs", w_btsTs},
+    {"btsbDoDs", w_btsbDoDs},
     {"btsbo", w_btsbo},
     {"btsi4", w_btsi4},
     {"btso", w_btso},
     {"btss", w_btss},
     {"btssboDi4Di4", w_btssboDi4Di4},
     {"btssss", w_btssss},
-    {"btsu4Po", w_btsu4Po},
+    {"btsu4To", w_btsu4To},
+    {"btsu8i8Di4", w_btsu8i8Di4},
     {"btu1", w_btu1},
     {"btu2", w_btu2},
     {"btu2Di4", w_btu2Di4},
     {"btu2PS_u4u4u4_", w_btu2PS_u4u4u4_},
     {"btu4", w_btu4},
     {"btu4DbDu4", w_btu4DbDu4},
-    {"btu4PS_r4r4r4_", w_btu4PS_r4r4r4_},
     {"btu4Po", w_btu4Po},
-    {"btu4Ps", w_btu4Ps},
-    {"btu4Pu4", w_btu4Pu4},
+    {"btu4TS_r4r4r4_", w_btu4TS_r4r4r4_},
+    {"btu4To", w_btu4To},
+    {"btu4Ts", w_btu4Ts},
+    {"btu4Tu4", w_btu4Tu4},
     {"btu4b", w_btu4b},
     {"btu4i4", w_btu4i4},
-    {"btu4i4u4Ps", w_btu4i4u4Ps},
+    {"btu4i4u4Ts", w_btu4i4u4Ts},
     {"btu4oi4", w_btu4oi4},
     {"btu4oo", w_btu4oo},
     {"btu4u4", w_btu4u4},
@@ -2828,7 +2721,7 @@ static WrapFuncInfo g_wrapFuncInfos[] = {
     {"bu4i4Do", w_bu4i4Do},
     {"bu4u4", w_bu4u4},
     {"bu4u4Db", w_bu4u4Db},
-    {"bu4u4Ps", w_bu4u4Ps},
+    {"bu4u4Ts", w_bu4u4Ts},
     {"bu8", w_bu8},
     {"cO", w_cO},
     {"cOo", w_cOo},
@@ -2893,8 +2786,6 @@ static WrapFuncInfo g_wrapFuncInfos[] = {
     {"i4", w_i4},
     {"i4O", w_i4O},
     {"i4Oo", w_i4Oo},
-    {"i4Pi4", w_i4Pi4},
-    {"i4Pi4u8", w_i4Pi4u8},
     {"i4Pu1i4u8", w_i4Pu1i4u8},
     {"i4S_i4_", w_i4S_i4_},
     {"i4S_i4i4_S_i4i4_", w_i4S_i4i4_S_i4i4_},
@@ -2904,6 +2795,8 @@ static WrapFuncInfo g_wrapFuncInfos[] = {
     {"i4S_u4o_S_u4o_", w_i4S_u4o_S_u4o_},
     {"i4S_u8_", w_i4S_u8_},
     {"i4S_u8_S_u8_", w_i4S_u8_S_u8_},
+    {"i4Ti4", w_i4Ti4},
+    {"i4Ti4u8", w_i4Ti4u8},
     {"i4Vi4", w_i4Vi4},
     {"i4Vs", w_i4Vs},
     {"i4b", w_i4b},
@@ -2940,14 +2833,14 @@ static WrapFuncInfo g_wrapFuncInfos[] = {
     {"i4oOi4", w_i4oOi4},
     {"i4oOi4i4", w_i4oOi4i4},
     {"i4oOo", w_i4oOo},
-    {"i4oPS_r4r4r4_PS_r4r4r4_oPu4", w_i4oPS_r4r4r4_PS_r4r4r4_oPu4},
-    {"i4oPu4Pr4", w_i4oPu4Pr4},
-    {"i4oPu4Pr4u8", w_i4oPu4Pr4u8},
+    {"i4oPS_r4r4r4_PS_r4r4r4_oTu4", w_i4oPS_r4r4r4_PS_r4r4r4_oTu4},
+    {"i4oPu4Tr4", w_i4oPu4Tr4},
+    {"i4oPu4Tr4u8", w_i4oPu4Tr4u8},
     {"i4oPu4o", w_i4oPu4o},
-    {"i4oPu8", w_i4oPu8},
-    {"i4oPu8o", w_i4oPu8o},
-    {"i4oPu8ou4", w_i4oPu8ou4},
     {"i4oS_r4r4r4_S_r4r4r4_S_r4r4r4_", w_i4oS_r4r4r4_S_r4r4r4_S_r4r4r4_},
+    {"i4oTu8", w_i4oTu8},
+    {"i4oTu8o", w_i4oTu8o},
+    {"i4oTu8ou4", w_i4oTu8ou4},
     {"i4obo", w_i4obo},
     {"i4oboo", w_i4oboo},
     {"i4oi4i4O", w_i4oi4i4O},
@@ -2955,9 +2848,9 @@ static WrapFuncInfo g_wrapFuncInfos[] = {
     {"i4oi4i4oi4", w_i4oi4i4oi4},
     {"i4oi4i4oi4i4", w_i4oi4i4oi4i4},
     {"i4oo", w_i4oo},
-    {"i4ooPr4", w_i4ooPr4},
-    {"i4ooPr4Pr4", w_i4ooPr4Pr4},
     {"i4ooPu4", w_i4ooPu4},
+    {"i4ooTr4", w_i4ooTr4},
+    {"i4ooTr4Tr4", w_i4ooTr4Tr4},
     {"i4ooi4i4i4", w_i4ooi4i4i4},
     {"i4ooou4", w_i4ooou4},
     {"i4oor4", w_i4oor4},
@@ -2968,27 +2861,27 @@ static WrapFuncInfo g_wrapFuncInfos[] = {
     {"i4or4", w_i4or4},
     {"i4or4r4r4r4r4r4r4r4r4", w_i4or4r4r4r4r4r4r4r4r4},
     {"i4os", w_i4os},
-    {"i4osPr4", w_i4osPr4},
+    {"i4osTr4", w_i4osTr4},
     {"i4ou4", w_i4ou4},
     {"i4ou4b", w_i4ou4b},
     {"i4ou4r4", w_i4ou4r4},
     {"i4ou4r4u8", w_i4ou4r4u8},
     {"i4ou8", w_i4ou8},
-    {"i4ou8Pu8", w_i4ou8Pu8},
+    {"i4ou8Tu8", w_i4ou8Tu8},
     {"i4pi4", w_i4pi4},
-    {"i4pu4Pu4", w_i4pu4Pu4},
-    {"i4pu4bsbPu4", w_i4pu4bsbPu4},
-    {"i4pu4oOPu4", w_i4pu4oOPu4},
+    {"i4pu4Tu4", w_i4pu4Tu4},
+    {"i4pu4bsbTu4", w_i4pu4bsbTu4},
+    {"i4pu4oOTu4", w_i4pu4oOTu4},
     {"i4r4", w_i4r4},
     {"i4r4c", w_i4r4c},
     {"i4r8", w_i4r8},
     {"i4s", w_i4s},
-    {"i4sPr4", w_i4sPr4},
-    {"i4sPr4Pi4", w_i4sPr4Pi4},
-    {"i4sPu4", w_i4sPu4},
     {"i4sPu4o", w_i4sPu4o},
+    {"i4sTr4", w_i4sTr4},
+    {"i4sTr4Ti4", w_i4sTr4Ti4},
+    {"i4sTu4", w_i4sTu4},
     {"i4sbDi4", w_i4sbDi4},
-    {"i4sbPu4", w_i4sbPu4},
+    {"i4sbTu4", w_i4sbTu4},
     {"i4scc", w_i4scc},
     {"i4si4", w_i4si4},
     {"i4si4o", w_i4si4o},
@@ -3005,8 +2898,8 @@ static WrapFuncInfo g_wrapFuncInfos[] = {
     {"i4si4u4ou4", w_i4si4u4ou4},
     {"i4si4u4ou4b", w_i4si4u4ou4b},
     {"i4so", w_i4so},
-    {"i4soOPu4", w_i4soOPu4},
-    {"i4soPu4", w_i4soPu4},
+    {"i4soOTu4", w_i4soOTu4},
+    {"i4soTu4", w_i4soTu4},
     {"i4soi4", w_i4soi4},
     {"i4soi4b", w_i4soi4b},
     {"i4soi4bu4", w_i4soi4bu4},
@@ -3015,7 +2908,7 @@ static WrapFuncInfo g_wrapFuncInfos[] = {
     {"i4sor4", w_i4sor4},
     {"i4sor4b", w_i4sor4b},
     {"i4sor4bu4", w_i4sor4bu4},
-    {"i4sou4Pr4Pi4", w_i4sou4Pr4Pi4},
+    {"i4sou4Tr4Pi4", w_i4sou4Tr4Pi4},
     {"i4sp", w_i4sp},
     {"i4spoO", w_i4spoO},
     {"i4sr4", w_i4sr4},
@@ -3049,10 +2942,10 @@ static WrapFuncInfo g_wrapFuncInfos[] = {
     {"i4tci4i4", w_i4tci4i4},
     {"i4ti1sO", w_i4ti1sO},
     {"i4ti4", w_i4ti4},
-    {"i4ti4Pi8", w_i4ti4Pi8},
-    {"i4ti4Po", w_i4ti4Po},
-    {"i4ti4Pr8", w_i4ti4Pr8},
-    {"i4ti4Ps", w_i4ti4Ps},
+    {"i4ti4Ti8", w_i4ti4Ti8},
+    {"i4ti4To", w_i4ti4To},
+    {"i4ti4Tr8", w_i4ti4Tr8},
+    {"i4ti4Ts", w_i4ti4Ts},
     {"i4ti4b", w_i4ti4b},
     {"i4ti4i4", w_i4ti4i4},
     {"i4ti4i4i4", w_i4ti4i4i4},
@@ -3077,7 +2970,7 @@ static WrapFuncInfo g_wrapFuncInfos[] = {
     {"i4tsi4i4", w_i4tsi4i4},
     {"i4tsi4i4i4", w_i4tsi4i4i4},
     {"i4tso", w_i4tso},
-    {"i4tsu4PS_si4_PS_sb_Pi4", w_i4tsu4PS_si4_PS_sb_Pi4},
+    {"i4tsu4TS_si4_TS_sb_Ti4", w_i4tsu4TS_si4_TS_sb_Ti4},
     {"i4tu4", w_i4tu4},
     {"i4tu4PS_u4u4u4_", w_i4tu4PS_u4u4u4_},
     {"i4tu4u4", w_i4tu4u4},
@@ -3085,13 +2978,14 @@ static WrapFuncInfo g_wrapFuncInfos[] = {
     {"i4u1", w_i4u1},
     {"i4u2", w_i4u2},
     {"i4u4", w_i4u4},
-    {"i4u4Pi4", w_i4u4Pi4},
-    {"i4u4Pi4Pi4", w_i4u4Pi4Pi4},
-    {"i4u4Pi4b", w_i4u4Pi4b},
-    {"i4u4Pr4Pi4", w_i4u4Pr4Pi4},
-    {"i4u4Pu4", w_i4u4Pu4},
-    {"i4u4Pu4Pu4", w_i4u4Pu4Pu4},
     {"i4u4Pu4o", w_i4u4Pu4o},
+    {"i4u4Ti4", w_i4u4Ti4},
+    {"i4u4Ti4Ti4", w_i4u4Ti4Ti4},
+    {"i4u4Ti4b", w_i4u4Ti4b},
+    {"i4u4Tr4Ti4", w_i4u4Tr4Ti4},
+    {"i4u4Tu4", w_i4u4Tu4},
+    {"i4u4Tu4Tu4", w_i4u4Tu4Tu4},
+    {"i4u4Tu4o", w_i4u4Tu4o},
     {"i4u4b", w_i4u4b},
     {"i4u4cc", w_i4u4cc},
     {"i4u4i4", w_i4u4i4},
@@ -3103,7 +2997,7 @@ static WrapFuncInfo g_wrapFuncInfos[] = {
     {"i4u4i4oi4i4u4", w_i4u4i4oi4i4u4},
     {"i4u4o", w_i4u4o},
     {"i4u4oO", w_i4u4oO},
-    {"i4u4oPu4", w_i4u4oPu4},
+    {"i4u4oTu4", w_i4u4oTu4},
     {"i4u4ob", w_i4u4ob},
     {"i4u4oi4", w_i4u4oi4},
     {"i4u4oi4b", w_i4u4oi4b},
@@ -3117,7 +3011,7 @@ static WrapFuncInfo g_wrapFuncInfos[] = {
     {"i4u4or4", w_i4u4or4},
     {"i4u4or4b", w_i4u4or4b},
     {"i4u4or4bu4", w_i4u4or4bu4},
-    {"i4u4ou4Pr4Pi4", w_i4u4ou4Pr4Pi4},
+    {"i4u4ou4Tr4Pi4", w_i4u4ou4Tr4Pi4},
     {"i4u4ou4u8o", w_i4u4ou4u8o},
     {"i4u4p", w_i4u4p},
     {"i4u4poO", w_i4u4poO},
@@ -3132,15 +3026,15 @@ static WrapFuncInfo g_wrapFuncInfos[] = {
     {"i4u4r4u4i4i4", w_i4u4r4u4i4i4},
     {"i4u4r4u4i4i4b", w_i4u4r4u4i4i4b},
     {"i4u4u4", w_i4u4u4},
-    {"i4u4u4Pi4", w_i4u4u4Pi4},
-    {"i4u4u4Pr4", w_i4u4u4Pr4},
-    {"i4u4u4Pu4o", w_i4u4u4Pu4o},
+    {"i4u4u4Ti4", w_i4u4u4Ti4},
+    {"i4u4u4Tr4", w_i4u4u4Tr4},
+    {"i4u4u4Tu4o", w_i4u4u4Tu4o},
     {"i4u4u4o", w_i4u4u4o},
     {"i4u4u4u4", w_i4u4u4u4},
-    {"i4u4u4u4PobDb", w_i4u4u4u4PobDb},
-    {"i4u4u4u4oPoDb", w_i4u4u4u4oPoDb},
+    {"i4u4u4u4TobDb", w_i4u4u4u4TobDb},
+    {"i4u4u4u4oToDb", w_i4u4u4u4oToDb},
     {"i4u8", w_i4u8},
-    {"i4u8Pr4", w_i4u8Pr4},
+    {"i4u8Tr4", w_i4u8Tr4},
     {"i4u8oS_r4r4r4_bu8u8", w_i4u8oS_r4r4r4_bu8u8},
     {"i4u8os", w_i4u8os},
     {"i4u8ou4ou4ou4u8bb", w_i4u8ou4ou4ou4u8bb},
@@ -3211,7 +3105,6 @@ static WrapFuncInfo g_wrapFuncInfos[] = {
     {"ooDO", w_ooDO},
     {"ooDo", w_ooDo},
     {"ooPS_u4o_bb", w_ooPS_u4o_bb},
-    {"ooPo", w_ooPo},
     {"ooS_r4r4_S_r4r4_r4", w_ooS_r4r4_S_r4r4_r4},
     {"ooS_r4r4_r4", w_ooS_r4r4_r4},
     {"ooS_r4r4r4_", w_ooS_r4r4r4_},
@@ -3223,6 +3116,7 @@ static WrapFuncInfo g_wrapFuncInfos[] = {
     {"ooS_r4r4r4_r4r4", w_ooS_r4r4r4_r4r4},
     {"ooS_r4r4r4r4_S_r4r4r4r4_r4", w_ooS_r4r4r4r4_S_r4r4r4r4_r4},
     {"ooS_r4r4r4r4_r4", w_ooS_r4r4r4r4_r4},
+    {"ooTo", w_ooTo},
     {"ooVi4", w_ooVi4},
     {"ooVi8", w_ooVi8},
     {"ooVo", w_ooVo},
@@ -3292,7 +3186,7 @@ static WrapFuncInfo g_wrapFuncInfos[] = {
     {"ossoDS_o_", w_ossoDS_o_},
     {"ot", w_ot},
     {"otDb", w_otDb},
-    {"otDi4", w_otDi4},
+    {"otDo", w_otDo},
     {"otO", w_otO},
     {"otPS_u4S_S_u8_u4u4u4u4u4u1u1u1u1_u1u1u1_", w_otPS_u4S_S_u8_u4u4u4u4u4u1u1u1u1_u1u1u1_},
     {"otPS_u4u4u4u4u4u4u1u1u4u4S_r4r4r4_u4u2i2u1_", w_otPS_u4u4u4u4u4u4u1u1u4u4S_r4r4r4_u4u2i2u1_},
@@ -3417,10 +3311,12 @@ static WrapFuncInfo g_wrapFuncInfos[] = {
     {"otsi4ooo", w_otsi4ooo},
     {"otsi4oooo", w_otsi4oooo},
     {"otso", w_otso},
-    {"otsoDODbDN_bS_r4r4r4__", w_otsoDODbDN_bS_r4r4r4__},
-    {"otsoDODbDoDN_bS_r4r4r4__", w_otsoDODbDoDN_bS_r4r4r4__},
+    {"otsoDODb", w_otsoDODb},
+    {"otsoDODbDo", w_otsoDODbDo},
     {"otsoDo", w_otsoDo},
     {"otsoDoDo", w_otsoDoDo},
+    {"otsoObS_r4r4r4_", w_otsoObS_r4r4r4_},
+    {"otsoOboS_r4r4r4_", w_otsoOboS_r4r4r4_},
     {"otsoo", w_otsoo},
     {"otsooi4bbDi4", w_otsooi4bbDi4},
     {"otsooo", w_otsooo},
@@ -3494,7 +3390,6 @@ static WrapFuncInfo g_wrapFuncInfos[] = {
     {"r4sr4", w_r4sr4},
     {"r4t", w_r4t},
     {"r4tS_r4r4r4_", w_r4tS_r4r4r4_},
-    {"r4tbDi4", w_r4tbDi4},
     {"r4ti4", w_r4ti4},
     {"r4ti4i4", w_r4ti4i4},
     {"r4ti4sb", w_r4ti4sb},
@@ -3563,8 +3458,8 @@ static WrapFuncInfo g_wrapFuncInfos[] = {
     {"si2o", w_si2o},
     {"si4", w_si4},
     {"si4Di4", w_si4Di4},
-    {"si4Pu4", w_si4Pu4},
-    {"si4Pu4i4", w_si4Pu4i4},
+    {"si4Tu4", w_si4Tu4},
+    {"si4Tu4i4", w_si4Tu4i4},
     {"si4b", w_si4b},
     {"si4i4", w_si4i4},
     {"si4i4b", w_si4i4b},
@@ -3639,8 +3534,8 @@ static WrapFuncInfo g_wrapFuncInfos[] = {
     {"sto", w_sto},
     {"sts", w_sts},
     {"stsDs", w_stsDs},
-    {"stsPi4Po", w_stsPi4Po},
-    {"stsPs", w_stsPs},
+    {"stsTi4To", w_stsTi4To},
+    {"stsTs", w_stsTs},
     {"stsb", w_stsb},
     {"stsbDs", w_stsbDs},
     {"stsbs", w_stsbs},
@@ -3778,6 +3673,7 @@ static WrapFuncInfo g_wrapFuncInfos[] = {
     {"u4u4ou4oOu4o", w_u4u4ou4oOu4o},
     {"u4u4ou4oOu4ou4", w_u4u4ou4oOu4ou4},
     {"u4u4ou4u4", w_u4u4ou4u4},
+    {"u4u4u4", w_u4u4u4},
     {"u4u4u8", w_u4u4u8},
     {"u4u4u8u4oO", w_u4u4u8u4oO},
     {"u4u4u8u4oOu4o", w_u4u4u8u4oOu4o},
@@ -3824,7 +3720,7 @@ static WrapFuncInfo g_wrapFuncInfos[] = {
     {"vPS_S_u4u4u4u4u4u4u1u1u4u4S_r4r4r4_u4u2i2u1_S_S_i4i4i4_S_r4r4r4_S_i4i4i4_u1u1u1_S_i4i4i4i4i4i4i4i4i4i4_S_oo_S_i4i4__", w_vPS_S_u4u4u4u4u4u4u1u1u4u4S_r4r4r4_u4u2i2u1_S_S_i4i4i4_S_r4r4r4_S_i4i4i4_u1u1u1_S_i4i4i4i4i4i4i4i4i4i4_S_oo_S_i4i4__},
     {"vPS_S_u8_u4u4u4u1u1u1u1u1S_u8_i4u4i4_", w_vPS_S_u8_u4u4u4u1u1u1u1u1S_u8_i4u4i4_},
     {"vPS_i4S_u8_r4S_r4r4r4_r4u4S_u8__", w_vPS_i4S_u8_r4S_r4r4r4_r4u4S_u8__},
-    {"vPS_i4u4u4S_oS_u8_oor4_S_S_u8_ou1_S_u1S_r4r4r4_u1r4u1_S_S_u8_i4_S_u1S_u8_u1i4_S_i4i4i4i4__", w_vPS_i4u4u4S_oS_u8_oor4_S_S_u8_ou1_S_u1S_r4r4r4_u1r4u1_S_S_u8_i4_S_u1S_u8_u1i4_S_i4i4i4i4__},
+    {"vPS_i4u4u4S_oS_u8_oor4_S_S_u8_ou1_S_u1S_r4r4r4_u1r4u1_S_S_u8_i4_S_u1S_u8_u1i4_S_i4i4i4i4__b", w_vPS_i4u4u4S_oS_u8_oor4_S_S_u8_ou1_S_u1S_r4r4r4_u1r4u1_S_S_u8_i4_S_u1S_u8_u1i4_S_i4i4i4i4__b},
     {"vPS_i4u4u4i4i4o_", w_vPS_i4u4u4i4i4o_},
     {"vPS_oS_u8_u1_", w_vPS_oS_u8_u1_},
     {"vPS_o_", w_vPS_o_},
@@ -3833,7 +3729,6 @@ static WrapFuncInfo g_wrapFuncInfos[] = {
     {"vPS_oou1_", w_vPS_oou1_},
     {"vPS_r4r4r4_PS_r4r4r4_", w_vPS_r4r4r4_PS_r4r4r4_},
     {"vPS_r4r4r4_PS_r4r4r4_PS_r4r4r4_", w_vPS_r4r4r4_PS_r4r4r4_PS_r4r4r4_},
-    {"vPS_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_r4S_r4r4_S_r4r4_r4r4DS_i4r4_", w_vPS_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_r4S_r4r4_S_r4r4_r4r4DS_i4r4_},
     {"vPS_si8ou1oss_", w_vPS_si8ou1oss_},
     {"vPS_so_", w_vPS_so_},
     {"vPS_su4_", w_vPS_su4_},
@@ -3872,7 +3767,6 @@ static WrapFuncInfo g_wrapFuncInfos[] = {
     {"vPS_u4u4u4u1_", w_vPS_u4u4u4u1_},
     {"vPS_u4u4u4u4u1i4u1_", w_vPS_u4u4u4u4u1i4u1_},
     {"vPS_u4u4u4u4u4_", w_vPS_u4u4u4u4u4_},
-    {"vPi4Pi4", w_vPi4Pi4},
     {"vPi4o", w_vPi4o},
     {"vPo", w_vPo},
     {"vPu1", w_vPu1},
@@ -3883,11 +3777,13 @@ static WrapFuncInfo g_wrapFuncInfos[] = {
     {"vS_r4r4_", w_vS_r4r4_},
     {"vS_r4r4r4_", w_vS_r4r4r4_},
     {"vS_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_Dr4Do", w_vS_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_Dr4Do},
-    {"vS_r4r4r4r4_Pr4Pr4Pr4", w_vS_r4r4r4r4_Pr4Pr4Pr4},
+    {"vS_r4r4r4r4_Tr4Tr4Tr4", w_vS_r4r4r4r4_Tr4Tr4Tr4},
     {"vS_u4bbbi4_", w_vS_u4bbbi4_},
     {"vS_u8_", w_vS_u8_},
     {"vS_u8_PS_o_", w_vS_u8_PS_o_},
     {"vS_u8_u4", w_vS_u8_u4},
+    {"vTS_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_r4S_r4r4_S_r4r4_r4r4DS_i4r4_", w_vTS_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_r4S_r4r4_S_r4r4_r4r4DS_i4r4_},
+    {"vTi4Ti4", w_vTi4Ti4},
     {"vb", w_vb},
     {"vbS_u8_", w_vbS_u8_},
     {"vbbb", w_vbbb},
@@ -3900,9 +3796,9 @@ static WrapFuncInfo g_wrapFuncInfos[] = {
     {"vi4DsDs", w_vi4DsDs},
     {"vi4O", w_vi4O},
     {"vi4PS_oo_", w_vi4PS_oo_},
-    {"vi4Pi4Pi4", w_vi4Pi4Pi4},
     {"vi4S_r4r4r4r4_", w_vi4S_r4r4r4r4_},
     {"vi4S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_", w_vi4S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_},
+    {"vi4Ti4Ti4", w_vi4Ti4Ti4},
     {"vi4b", w_vi4b},
     {"vi4i4", w_vi4i4},
     {"vi4i4b", w_vi4i4b},
@@ -3913,6 +3809,7 @@ static WrapFuncInfo g_wrapFuncInfos[] = {
     {"vi4i4i4i4", w_vi4i4i4i4},
     {"vi4i4i4i4i4", w_vi4i4i4i4i4},
     {"vi4i4i4i4i4b", w_vi4i4i4i4i4b},
+    {"vi4i4i8i8i4bs", w_vi4i4i8i8i4bs},
     {"vi4i4o", w_vi4i4o},
     {"vi4i4oooo", w_vi4i4oooo},
     {"vi4i8", w_vi4i8},
@@ -3927,8 +3824,7 @@ static WrapFuncInfo g_wrapFuncInfos[] = {
     {"vi4si4u4o", w_vi4si4u4o},
     {"vi4ss", w_vi4ss},
     {"vi4sss", w_vi4sss},
-    {"vi4ssso", w_vi4ssso},
-    {"vi4sssoi4", w_vi4sssoi4},
+    {"vi4sssoDi4Ds", w_vi4sssoDi4Ds},
     {"vi4u1i4i4", w_vi4u1i4i4},
     {"vi4u4", w_vi4u4},
     {"vi4u4b", w_vi4u4b},
@@ -3958,7 +3854,6 @@ static WrapFuncInfo g_wrapFuncInfos[] = {
     {"vobb", w_vobb},
     {"voi4", w_voi4},
     {"voi4Db", w_voi4Db},
-    {"voi4Pi4Pb", w_voi4Pi4Pb},
     {"voi4bb", w_voi4bb},
     {"voi4i4", w_voi4i4},
     {"voi4i4b", w_voi4i4b},
@@ -3981,7 +3876,7 @@ static WrapFuncInfo g_wrapFuncInfos[] = {
     {"voos", w_voos},
     {"vor4", w_vor4},
     {"vor4PS_r4r4_", w_vor4PS_r4r4_},
-    {"vor4Pr4Pr4", w_vor4Pr4Pr4},
+    {"vor4Tr4Tr4", w_vor4Tr4Tr4},
     {"vor4r4r4", w_vor4r4r4},
     {"vos", w_vos},
     {"vosr4", w_vosr4},
@@ -3992,6 +3887,7 @@ static WrapFuncInfo g_wrapFuncInfos[] = {
     {"vr4i4", w_vr4i4},
     {"vr4r4r4r4r4r4", w_vr4r4r4r4r4r4},
     {"vs", w_vs},
+    {"vsDb", w_vsDb},
     {"vsDi4", w_vsDi4},
     {"vsDo", w_vsDo},
     {"vsDsDi4", w_vsDsDi4},
@@ -4049,7 +3945,7 @@ static WrapFuncInfo g_wrapFuncInfos[] = {
     {"vsu4u4", w_vsu4u4},
     {"vt", w_vt},
     {"vtDO", w_vtDO},
-    {"vtDODoDoDODbDN_bS_r4r4r4__", w_vtDODoDoDODbDN_bS_r4r4r4__},
+    {"vtDODoDoDODb", w_vtDODoDoDODb},
     {"vtDb", w_vtDb},
     {"vtDbDb", w_vtDbDb},
     {"vtDi4", w_vtDi4},
@@ -4077,9 +3973,11 @@ static WrapFuncInfo g_wrapFuncInfos[] = {
     {"vtOi8i8i8", w_vtOi8i8i8},
     {"vtOo", w_vtOo},
     {"vtOoo", w_vtOoo},
-    {"vtOooOboDN_bS_r4r4r4__", w_vtOooOboDN_bS_r4r4r4__},
+    {"vtOooObS_r4r4r4_", w_vtOooObS_r4r4r4_},
+    {"vtOooObo", w_vtOooObo},
+    {"vtOooOboS_r4r4r4_", w_vtOooOboS_r4r4r4_},
     {"vtPPu1", w_vtPPu1},
-    {"vtPS_S_S_r4r4r4_S_r4r4r4_S_r4r4r4__S_r4r4r4i4__PS_r4r4r4_PS_r4r4r4r4_PS_r4r4r4_", w_vtPS_S_S_r4r4r4_S_r4r4r4_S_r4r4r4__S_r4r4r4i4__PS_r4r4r4_PS_r4r4r4r4_PS_r4r4r4_},
+    {"vtPS_S_S_r4r4r4_S_r4r4r4_S_r4r4r4__S_r4r4r4i4__TS_r4r4r4_TS_r4r4r4r4_TS_r4r4r4_", w_vtPS_S_S_r4r4r4_S_r4r4r4_S_r4r4r4__S_r4r4r4i4__TS_r4r4r4_TS_r4r4r4r4_TS_r4r4r4_},
     {"vtPS_S_p_su4_", w_vtPS_S_p_su4_},
     {"vtPS_S_p_su4_b", w_vtPS_S_p_su4_b},
     {"vtPS_S_r4r4r4_S_r4r4r4_S_r4r4r4_r4_DoDr4", w_vtPS_S_r4r4r4_S_r4r4r4_S_r4r4r4_r4_DoDr4},
@@ -4098,10 +3996,6 @@ static WrapFuncInfo g_wrapFuncInfos[] = {
     {"vtPS_r4r4_", w_vtPS_r4r4_},
     {"vtPS_r4r4r4_", w_vtPS_r4r4r4_},
     {"vtPS_r4r4r4_PS_i4i4i4_PS_r4r4r4r4_", w_vtPS_r4r4r4_PS_i4i4i4_PS_r4r4r4r4_},
-    {"vtPS_r4r4r4_PS_r4r4r4r4_", w_vtPS_r4r4r4_PS_r4r4r4r4_},
-    {"vtPS_r4r4r4_Pr4", w_vtPS_r4r4r4_Pr4},
-    {"vtPS_su4_", w_vtPS_su4_},
-    {"vtPS_su4_b", w_vtPS_su4_b},
     {"vtPS_u1u1u1u1u1u1ooo_", w_vtPS_u1u1u1u1u1u1ooo_},
     {"vtPS_u1u2u1u1S_S_u4u4u4u4u4u4u4u4_u4u4u1u4u4__", w_vtPS_u1u2u1u1S_S_u4u4u4u4u4u4u4u4_u4u4u1u4u4__},
     {"vtPS_u1u4u4i4i4i4u4u4u1u4i4_", w_vtPS_u1u4u4i4i4i4u4u4u1u4i4_},
@@ -4119,7 +4013,6 @@ static WrapFuncInfo g_wrapFuncInfos[] = {
     {"vtPS_u4u4u4o_", w_vtPS_u4u4u4o_},
     {"vtPS_u4u4u4u4u4u4u1u1u4u4S_r4r4r4_u4u2i2u1_", w_vtPS_u4u4u4u4u4u4u1u1u4u4S_r4r4r4_u4u2i2u1_},
     {"vtPS_u4u4u4u4u4u4u4u4_", w_vtPS_u4u4u4u4u4u4u4u4_},
-    {"vtPS_u4u4u4u4u4u4u4u4u4S_u1u4u4_ou4u4u4u4si4i4i4su4o_u4", w_vtPS_u4u4u4u4u4u4u4u4u4S_u1u4u4_ou4u4u4u4si4i4i4su4o_u4},
     {"vtPS_u4u4u4u4u4u4u4u4u4u4_u4", w_vtPS_u4u4u4u4u4u4u4u4u4u4_u4},
     {"vtPc", w_vtPc},
     {"vtPci4i4", w_vtPci4i4},
@@ -4128,7 +4021,6 @@ static WrapFuncInfo g_wrapFuncInfos[] = {
     {"vtPi1i4i4o", w_vtPi1i4i4o},
     {"vtPi4Pi4", w_vtPi4Pi4},
     {"vtPo", w_vtPo},
-    {"vtPr4PS_r4r4r4_", w_vtPr4PS_r4r4r4_},
     {"vtPr4r4PS_S_S_r4r4r4_S_r4r4r4_S_r4r4r4__S_r4r4r4i4__PS_S_S_r4r4r4_S_r4r4r4_S_r4r4r4__S_r4r4r4i4__PS_S_S_r4r4r4_S_r4r4r4_S_r4r4r4__S_r4r4r4i4__", w_vtPr4r4PS_S_S_r4r4r4_S_r4r4r4_S_r4r4r4__S_r4r4r4i4__PS_S_S_r4r4r4_S_r4r4r4_S_r4r4r4__S_r4r4r4i4__PS_S_S_r4r4r4_S_r4r4r4_S_r4r4r4__S_r4r4r4i4__},
     {"vtS_Pu1i4i4i4i4S_pi4i4__", w_vtS_Pu1i4i4i4i4S_pi4i4__},
     {"vtS_Pvi4i4i4S_pi4i4_i4_", w_vtS_Pvi4i4i4S_pi4i4_i4_},
@@ -4137,8 +4029,6 @@ static WrapFuncInfo g_wrapFuncInfos[] = {
     {"vtS_S_p_pp_O", w_vtS_S_p_pp_O},
     {"vtS_S_r4r4_r4S_r4r4__", w_vtS_S_r4r4_r4S_r4r4__},
     {"vtS_S_r4r4r4_S_r4r4r4__", w_vtS_S_r4r4r4_S_r4r4r4__},
-    {"vtS__", w_vtS__},
-    {"vtS__i4", w_vtS__i4},
     {"vtS_i4_", w_vtS_i4_},
     {"vtS_i4i4_", w_vtS_i4i4_},
     {"vtS_i4i4_S_i4i4_bb", w_vtS_i4i4_S_i4i4_bb},
@@ -4146,40 +4036,15 @@ static WrapFuncInfo g_wrapFuncInfos[] = {
     {"vtS_i4i4_bb", w_vtS_i4i4_bb},
     {"vtS_i4i4_o", w_vtS_i4i4_o},
     {"vtS_i4i4i4_", w_vtS_i4i4i4_},
-    {"vtS_i4i4i4i4_", w_vtS_i4i4i4i4_},
     {"vtS_i4i4i4i4b_", w_vtS_i4i4i4i4b_},
     {"vtS_i4i4i4i4i4i4i4i4i4i4i4i4i4_", w_vtS_i4i4i4i4i4i4i4i4i4i4i4i4i4_},
-    {"vtS_i4i4i4pi4i4i4_", w_vtS_i4i4i4pi4i4i4_},
-    {"vtS_i4i4i4pi4i4i4_S_i4i4i4pi4i4i4_", w_vtS_i4i4i4pi4i4i4_S_i4i4i4pi4i4i4_},
-    {"vtS_i4i4i4pi4i4i4_S_i4i4i4pi4i4i4_S_r4r4_S_r4r4_", w_vtS_i4i4i4pi4i4i4_S_i4i4i4pi4i4i4_S_r4r4_S_r4r4_},
-    {"vtS_i4i4i4pi4i4i4_S_i4i4i4pi4i4i4_S_r4r4_S_r4r4_i4i4", w_vtS_i4i4i4pi4i4i4_S_i4i4i4pi4i4i4_S_r4r4_S_r4r4_i4i4},
-    {"vtS_i4i4i4pi4i4i4_S_i4i4i4pi4i4i4_i4", w_vtS_i4i4i4pi4i4i4_S_i4i4i4pi4i4i4_i4},
-    {"vtS_i4i4i4pi4i4i4_S_i4i4i4pi4i4i4_i4i4", w_vtS_i4i4i4pi4i4i4_S_i4i4i4pi4i4i4_i4i4},
-    {"vtS_i4i4i4pi4i4i4_S_i4i4i4pi4i4i4_i4i4i4", w_vtS_i4i4i4pi4i4i4_S_i4i4i4pi4i4i4_i4i4i4},
-    {"vtS_i4i4i4pi4i4i4_S_i4i4i4pi4i4i4_o", w_vtS_i4i4i4pi4i4i4_S_i4i4i4pi4i4i4_o},
-    {"vtS_i4i4i4pi4i4i4_S_i4i4i4pi4i4i4_oi4", w_vtS_i4i4i4pi4i4i4_S_i4i4i4pi4i4i4_oi4},
-    {"vtS_i4i4i4pi4i4i4_S_i4i4i4pi4i4i4_oi4i4", w_vtS_i4i4i4pi4i4i4_S_i4i4i4pi4i4i4_oi4i4},
-    {"vtS_i4i4i4pi4i4i4_i4", w_vtS_i4i4i4pi4i4i4_i4},
-    {"vtS_i4i4i4pi4i4i4_i4S_i4i4i4pi4i4i4_i4", w_vtS_i4i4i4pi4i4i4_i4S_i4i4i4pi4i4i4_i4},
-    {"vtS_i4i4i4pi4i4i4_i4i4", w_vtS_i4i4i4pi4i4i4_i4i4},
-    {"vtS_i4i4i4pi4i4i4_i4i4S_i4i4i4pi4i4i4_i4i4", w_vtS_i4i4i4pi4i4i4_i4i4S_i4i4i4pi4i4i4_i4i4},
-    {"vtS_i4i4i4pi4i4i4_i4i4i4", w_vtS_i4i4i4pi4i4i4_i4i4i4},
-    {"vtS_i4i4i4pi4i4i4_i4i4i4i4", w_vtS_i4i4i4pi4i4i4_i4i4i4i4},
-    {"vtS_i4i4i4pi4i4i4_i4i4i4i4i4i4S_i4i4i4pi4i4i4_i4i4i4i4", w_vtS_i4i4i4pi4i4i4_i4i4i4i4i4i4S_i4i4i4pi4i4i4_i4i4i4i4},
-    {"vtS_i4i4i4pi4i4i4_pi4i4i4i4i4i4", w_vtS_i4i4i4pi4i4i4_pi4i4i4i4i4i4},
     {"vtS_i4ooS_r4r4r4r4_S_r4r4r4r4__", w_vtS_i4ooS_r4r4r4r4_S_r4r4r4r4__},
     {"vtS_i4p_S_i4p_", w_vtS_i4p_S_i4p_},
     {"vtS_i4r4oor4r4_", w_vtS_i4r4oor4r4_},
     {"vtS_i4u8r4b_", w_vtS_i4u8r4b_},
-    {"vtS_oS_i4i4i4pi4i4i4_ooi4i4i4_", w_vtS_oS_i4i4i4pi4i4i4_ooi4i4i4_},
-    {"vtS_oS_i4i4i4pi4i4i4_ooi4i4i4_i4i4i4", w_vtS_oS_i4i4i4pi4i4i4_ooi4i4i4_i4i4i4},
     {"vtS_o_", w_vtS_o_},
     {"vtS_oo_", w_vtS_oo_},
     {"vtS_oou1_", w_vtS_oou1_},
-    {"vtS_p_", w_vtS_p_},
-    {"vtS_pi4i4_", w_vtS_pi4i4_},
-    {"vtS_pi4i4_i4", w_vtS_pi4i4_i4},
-    {"vtS_pu4u4u4_", w_vtS_pu4u4u4_},
     {"vtS_r4r4_", w_vtS_r4r4_},
     {"vtS_r4r4_Db", w_vtS_r4r4_Db},
     {"vtS_r4r4_Dr4", w_vtS_r4r4_Dr4},
@@ -4213,12 +4078,6 @@ static WrapFuncInfo g_wrapFuncInfos[] = {
     {"vtS_r4r4r4r4r4r4_", w_vtS_r4r4r4r4r4r4_},
     {"vtS_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_", w_vtS_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_},
     {"vtS_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_", w_vtS_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_},
-    {"vtS_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_oi4i4i4", w_vtS_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_oi4i4i4},
-    {"vtS_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_oi4i4i4i4", w_vtS_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_oi4i4i4i4},
-    {"vtS_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_oi4i4i4i4o", w_vtS_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_oi4i4i4i4o},
-    {"vtS_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_oi4i4o", w_vtS_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_oi4i4o},
-    {"vtS_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_oi4i4oi4", w_vtS_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_oi4i4oi4},
-    {"vtS_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_oi4i4oi4o", w_vtS_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_oi4i4oi4o},
     {"vtS_ssso_", w_vtS_ssso_},
     {"vtS_u1i4i4_", w_vtS_u1i4i4_},
     {"vtS_u4o_", w_vtS_u4o_},
@@ -4233,7 +4092,10 @@ static WrapFuncInfo g_wrapFuncInfos[] = {
     {"vtS_u4u4u1_", w_vtS_u4u4u1_},
     {"vtS_u4u4u4_", w_vtS_u4u4u4_},
     {"vtS_u4u4u4i4u4o_", w_vtS_u4u4u4i4u4o_},
-    {"vtS_u4u4u4u4u4u4u4u4u4S_u1u4u4_ou4u4u4u4si4i4i4su4o_", w_vtS_u4u4u4u4u4u4u4u4u4S_u1u4u4_ou4u4u4u4si4i4i4su4o_},
+    {"vtTS_r4r4r4_TS_r4r4r4r4_", w_vtTS_r4r4r4_TS_r4r4r4r4_},
+    {"vtTS_r4r4r4_Tr4", w_vtTS_r4r4r4_Tr4},
+    {"vtTi4Ti4", w_vtTi4Ti4},
+    {"vtTr4TS_r4r4r4_", w_vtTr4TS_r4r4r4_},
     {"vtVO", w_vtVO},
     {"vtb", w_vtb},
     {"vtbDb", w_vtbDb},
@@ -4241,8 +4103,6 @@ static WrapFuncInfo g_wrapFuncInfos[] = {
     {"vtbDi4", w_vtbDi4},
     {"vtbVi4", w_vtbVi4},
     {"vtbb", w_vtbb},
-    {"vtbbS_r4r4r4r4_", w_vtbbS_r4r4r4r4_},
-    {"vtbbS_r4r4r4r4_r4", w_vtbbS_r4r4r4r4_r4},
     {"vtbbb", w_vtbbb},
     {"vtbbo", w_vtbbo},
     {"vtbbu4", w_vtbbu4},
@@ -4265,20 +4125,15 @@ static WrapFuncInfo g_wrapFuncInfos[] = {
     {"vti4Ds", w_vti4Ds},
     {"vti4Du4", w_vti4Du4},
     {"vti4OVi4", w_vti4OVi4},
-    {"vti4Pi4Pi4", w_vti4Pi4Pi4},
     {"vti4S_S_p_i4_i4", w_vti4S_S_p_i4_i4},
-    {"vti4S_i4i4i4i4i4i4i4i4i4i4i4i4i4_", w_vti4S_i4i4i4i4i4i4i4i4i4i4i4i4i4_},
-    {"vti4S_i4i4i4i4i4i4i4i4i4i4i4i4i4_i4", w_vti4S_i4i4i4i4i4i4i4i4i4i4i4i4i4_i4},
-    {"vti4S_i4i4i4pi4i4i4_", w_vti4S_i4i4i4pi4i4i4_},
-    {"vti4S_i4i4i4pi4i4i4_i4", w_vti4S_i4i4i4pi4i4i4_i4},
     {"vti4S_r4r4_", w_vti4S_r4r4_},
     {"vti4S_r4r4r4_", w_vti4S_r4r4r4_},
     {"vti4S_r4r4r4r4_", w_vti4S_r4r4r4r4_},
     {"vti4S_r4r4r4r4_r4r4", w_vti4S_r4r4r4r4_r4r4},
-    {"vti4S_r4r4r4r4_r4u4", w_vti4S_r4r4r4r4_r4u4},
     {"vti4S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_", w_vti4S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_},
     {"vti4S_u4o_b", w_vti4S_u4o_b},
     {"vti4S_u4u4u4i4_", w_vti4S_u4u4u4i4_},
+    {"vti4Ti4Ti4", w_vti4Ti4Ti4},
     {"vti4Vi4", w_vti4Vi4},
     {"vti4b", w_vti4b},
     {"vti4bo", w_vti4bo},
@@ -4287,6 +4142,7 @@ static WrapFuncInfo g_wrapFuncInfos[] = {
     {"vti4i4Db", w_vti4i4Db},
     {"vti4i4S_i4i4i4i4_i4", w_vti4i4S_i4i4i4i4_i4},
     {"vti4i4S_r4r4r4_", w_vti4i4S_r4r4r4_},
+    {"vti4i4b", w_vti4i4b},
     {"vti4i4bOVi4", w_vti4i4bOVi4},
     {"vti4i4bObVi4", w_vti4i4bObVi4},
     {"vti4i4bo", w_vti4i4bo},
@@ -4297,16 +4153,7 @@ static WrapFuncInfo g_wrapFuncInfos[] = {
     {"vti4i4i4i4i4", w_vti4i4i4i4i4},
     {"vti4i4i4i4i4i4", w_vti4i4i4i4i4i4},
     {"vti4i4i4i4i4i4i4", w_vti4i4i4i4i4i4i4},
-    {"vti4i4i4i4i4i4i4b", w_vti4i4i4i4i4i4i4b},
-    {"vti4i4i4i4i4i4i4bi4", w_vti4i4i4i4i4i4i4bi4},
-    {"vti4i4i4i4i4i4i4bi4b", w_vti4i4i4i4i4i4i4bi4b},
     {"vti4i4i4i4i4i4i4i4", w_vti4i4i4i4i4i4i4i4},
-    {"vti4i4i4i4i4i4i4i4b", w_vti4i4i4i4i4i4i4i4b},
-    {"vti4i4i4i4i4i4i4i4bb", w_vti4i4i4i4i4i4i4i4bb},
-    {"vti4i4i4i4i4i4i4i4bi4", w_vti4i4i4i4i4i4i4i4bi4},
-    {"vti4i4i4i4i4i4i4i4bi4b", w_vti4i4i4i4i4i4i4i4bi4b},
-    {"vti4i4i4i4i4i4i4i4i4", w_vti4i4i4i4i4i4i4i4i4},
-    {"vti4i4i4i4i4i4i4i4i4b", w_vti4i4i4i4i4i4i4i4i4b},
     {"vti4i4i4i4i4i4i4o", w_vti4i4i4i4i4i4i4o},
     {"vti4i4i4i4i4i4i4oi4", w_vti4i4i4i4i4i4i4oi4},
     {"vti4i4i4i4i4i4o", w_vti4i4i4i4i4i4o},
@@ -4318,7 +4165,6 @@ static WrapFuncInfo g_wrapFuncInfos[] = {
     {"vti4i4s", w_vti4i4s},
     {"vti4i4u4S_r4r4r4_DbDu4Di4", w_vti4i4u4S_r4r4r4_DbDu4Di4},
     {"vti4o", w_vti4o},
-    {"vti4ob", w_vti4ob},
     {"vti4oi1si1DsDi4Di4Di4DODO", w_vti4oi1si1DsDi4Di4Di4DODO},
     {"vti4oi1si1si4i4Di4DODO", w_vti4oi1si1si4i4Di4DODO},
     {"vti4oi4", w_vti4oi4},
@@ -4340,7 +4186,7 @@ static WrapFuncInfo g_wrapFuncInfos[] = {
     {"vti8s", w_vti8s},
     {"vti8u8", w_vti8u8},
     {"vto", w_vto},
-    {"vtoDS_r4r4r4_", w_vtoDS_r4r4r4_},
+    {"vtoDS_r4r4r4_Di4", w_vtoDS_r4r4r4_Di4},
     {"vtoDb", w_vtoDb},
     {"vtoDbDb", w_vtoDbDb},
     {"vtoDi4", w_vtoDi4},
@@ -4351,14 +4197,8 @@ static WrapFuncInfo g_wrapFuncInfos[] = {
     {"vtoDs", w_vtoDs},
     {"vtoDsDS_bbi4bo_", w_vtoDsDS_bbi4bo_},
     {"vtoO", w_vtoO},
-    {"vtoPS_S_p_su4_", w_vtoPS_S_p_su4_},
-    {"vtoPS_S_p_su4_b", w_vtoPS_S_p_su4_b},
+    {"vtoPS_S_r4r4r4_S_r4r4r4_S_r4r4r4_r4_o", w_vtoPS_S_r4r4r4_S_r4r4r4_S_r4r4r4_r4_o},
     {"vtoS_Oi4_", w_vtoS_Oi4_},
-    {"vtoS_i4i4i4pi4i4i4_", w_vtoS_i4i4i4pi4i4i4_},
-    {"vtoS_i4i4i4pi4i4i4_S_r4r4_S_r4r4_", w_vtoS_i4i4i4pi4i4i4_S_r4r4_S_r4r4_},
-    {"vtoS_i4i4i4pi4i4i4_i4i4i4", w_vtoS_i4i4i4pi4i4i4_i4i4i4},
-    {"vtoS_i4i4i4pi4i4i4_o", w_vtoS_i4i4i4pi4i4i4_o},
-    {"vtoS_i4i4i4pi4i4i4_oi4", w_vtoS_i4i4i4pi4i4i4_oi4},
     {"vtoS_i4p_", w_vtoS_i4p_},
     {"vtoS_r4r4_", w_vtoS_r4r4_},
     {"vtoS_r4r4_S_r4r4_S_r4r4_", w_vtoS_r4r4_S_r4r4_S_r4r4_},
@@ -4367,15 +4207,6 @@ static WrapFuncInfo g_wrapFuncInfos[] = {
     {"vtoS_r4r4r4_b", w_vtoS_r4r4r4_b},
     {"vtoS_r4r4r4_o", w_vtoS_r4r4r4_o},
     {"vtoS_r4r4r4r4_DsDS_bbi4bo_", w_vtoS_r4r4r4r4_DsDS_bbi4bo_},
-    {"vtoS_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_o", w_vtoS_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_o},
-    {"vtoS_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_oi4", w_vtoS_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_oi4},
-    {"vtoS_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_oi4i4", w_vtoS_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_oi4i4},
-    {"vtoS_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_oi4i4i4", w_vtoS_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_oi4i4i4},
-    {"vtoS_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_oi4i4i4i4", w_vtoS_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_oi4i4i4i4},
-    {"vtoS_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_oi4i4i4i4o", w_vtoS_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_oi4i4i4i4o},
-    {"vtoS_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_oi4i4o", w_vtoS_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_oi4i4o},
-    {"vtoS_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_oi4i4oi4", w_vtoS_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_oi4i4oi4},
-    {"vtoS_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_oi4i4oi4o", w_vtoS_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_oi4i4oi4o},
     {"vtoS_u4o_O", w_vtoS_u4o_O},
     {"vtoVO", w_vtoVO},
     {"vtoVi4", w_vtoVi4},
@@ -4387,48 +4218,20 @@ static WrapFuncInfo g_wrapFuncInfos[] = {
     {"vtoi4Di1", w_vtoi4Di1},
     {"vtoi4Di4Db", w_vtoi4Di4Db},
     {"vtoi4DoDoDo", w_vtoi4DoDoDo},
-    {"vtoi4S_i4i4i4pi4i4i4_", w_vtoi4S_i4i4i4pi4i4i4_},
-    {"vtoi4S_r4r4r4r4_", w_vtoi4S_r4r4r4r4_},
-    {"vtoi4S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_", w_vtoi4S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_},
-    {"vtoi4VS_r4r4r4r4_", w_vtoi4VS_r4r4r4r4_},
-    {"vtoi4VS_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_", w_vtoi4VS_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_},
-    {"vtoi4Vi4", w_vtoi4Vi4},
-    {"vtoi4Vr4", w_vtoi4Vr4},
     {"vtoi4b", w_vtoi4b},
     {"vtoi4i4", w_vtoi4i4},
-    {"vtoi4i4S_i4i4i4pi4i4i4_", w_vtoi4i4S_i4i4i4pi4i4i4_},
-    {"vtoi4i4S_i4i4i4pi4i4i4_i4", w_vtoi4i4S_i4i4i4pi4i4i4_i4},
-    {"vtoi4i4S_i4i4i4pi4i4i4_i4i4", w_vtoi4i4S_i4i4i4pi4i4i4_i4i4},
-    {"vtoi4i4S_u4_", w_vtoi4i4S_u4_},
     {"vtoi4i4b", w_vtoi4i4b},
     {"vtoi4i4i4", w_vtoi4i4i4},
-    {"vtoi4i4i4i4", w_vtoi4i4i4i4},
-    {"vtoi4i4i4i4i4i4i4i4o", w_vtoi4i4i4i4i4i4i4i4o},
-    {"vtoi4i4i4i4i4i4i4o", w_vtoi4i4i4i4i4i4i4o},
     {"vtoi4i4o", w_vtoi4i4o},
     {"vtoi4o", w_vtoi4o},
     {"vtoi4oDo", w_vtoi4oDo},
-    {"vtoi4oi4i4", w_vtoi4oi4i4},
-    {"vtoi4oi4i4Do", w_vtoi4oi4i4Do},
-    {"vtoi4oi4o", w_vtoi4oi4o},
-    {"vtoi4oi4oi4", w_vtoi4oi4oi4},
-    {"vtoi4oi4oi4o", w_vtoi4oi4oi4o},
-    {"vtoi4ou4", w_vtoi4ou4},
-    {"vtoi4r4", w_vtoi4r4},
-    {"vtoi4sS_i4i4i4pi4i4i4_", w_vtoi4sS_i4i4i4pi4i4i4_},
-    {"vtoi4sS_i4i4i4pi4i4i4_i4", w_vtoi4sS_i4i4i4pi4i4i4_i4},
-    {"vtoi4sS_i4i4i4pi4i4i4_i4i4", w_vtoi4sS_i4i4i4pi4i4i4_i4i4},
-    {"vtoi4sS_u4_", w_vtoi4sS_u4_},
-    {"vtoi4so", w_vtoi4so},
     {"vtoi8", w_vtoi8},
     {"vtoo", w_vtoo},
     {"vtooDb", w_vtooDb},
     {"vtooPbPr4r4", w_vtooPbPr4r4},
     {"vtoob", w_vtoob},
-    {"vtooi4", w_vtooi4},
-    {"vtooi4i4", w_vtooi4i4},
-    {"vtooi4i4i4", w_vtooi4i4i4},
     {"vtooi4o", w_vtooi4o},
+    {"vtooi4r4DoDS_bbbbbbbi4i4_", w_vtooi4r4DoDS_bbbbbbbi4i4_},
     {"vtooo", w_vtooo},
     {"vtoooDoDoDo", w_vtoooDoDoDo},
     {"vtoooDr4Db", w_vtoooDr4Db},
@@ -4449,30 +4252,13 @@ static WrapFuncInfo g_wrapFuncInfos[] = {
     {"vtor4i4soor4r4i4DoDs", w_vtor4i4soor4r4i4DoDs},
     {"vtos", w_vtos},
     {"vtosDb", w_vtosDb},
-    {"vtosS_i4i4i4pi4i4i4_", w_vtosS_i4i4i4pi4i4i4_},
-    {"vtosS_r4r4r4r4_", w_vtosS_r4r4r4r4_},
-    {"vtosS_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_", w_vtosS_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_},
-    {"vtosVS_r4r4r4r4_", w_vtosVS_r4r4r4r4_},
-    {"vtosVS_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_", w_vtosVS_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_},
-    {"vtosVi4", w_vtosVi4},
-    {"vtosVr4", w_vtosVr4},
     {"vtosb", w_vtosb},
     {"vtosi4", w_vtosi4},
     {"vtosi4i4", w_vtosi4i4},
     {"vtosi4i4b", w_vtosi4i4b},
-    {"vtoso", w_vtoso},
-    {"vtosoi4i4", w_vtosoi4i4},
-    {"vtosr4", w_vtosr4},
-    {"vtosu4u4u4Do", w_vtosu4u4u4Do},
     {"vtou4", w_vtou4},
     {"vtou4o", w_vtou4o},
     {"vtou4u4bb", w_vtou4u4bb},
-    {"vtp", w_vtp},
-    {"vtpi4", w_vtpi4},
-    {"vtpi4i4p", w_vtpi4i4p},
-    {"vtpi4p", w_vtpi4p},
-    {"vtpou4", w_vtpou4},
-    {"vtpu4S_i4i4i4pi4i4i4_S_i4i4i4pi4i4i4_u4u4", w_vtpu4S_i4i4i4pi4i4i4_S_i4i4i4pi4i4i4_u4u4},
     {"vtr4", w_vtr4},
     {"vtr4DbDr4", w_vtr4DbDr4},
     {"vtr4S_S_S_r4r4r4_S_r4r4r4_S_r4r4r4__S_r4r4r4i4__", w_vtr4S_S_S_r4r4r4_S_r4r4r4_S_r4r4r4__S_r4r4r4i4__},
@@ -4494,18 +4280,16 @@ static WrapFuncInfo g_wrapFuncInfos[] = {
     {"vtsDbDoDbDbDbDb", w_vtsDbDoDbDbDbDb},
     {"vtsDi4DbDbDbDs", w_vtsDi4DbDbDbDs},
     {"vtsDo", w_vtsDo},
-    {"vtsDoDoDODbDN_bS_r4r4r4__", w_vtsDoDoDODbDN_bS_r4r4r4__},
-    {"vtsDoDoDODbDoDN_bS_r4r4r4__", w_vtsDoDoDODbDoDN_bS_r4r4r4__},
+    {"vtsDoDoDODb", w_vtsDoDoDODb},
+    {"vtsDoDoDODbDo", w_vtsDoDoDODbDo},
     {"vtsDoDoDi4Dr4Db", w_vtsDoDoDi4Dr4Db},
     {"vtsDr4Dr4", w_vtsDr4Dr4},
     {"vtsO", w_vtsO},
     {"vtsOi4", w_vtsOi4},
-    {"vtsPi4", w_vtsPi4},
-    {"vtsS_i4i4i4pi4i4i4_", w_vtsS_i4i4i4pi4i4i4_},
-    {"vtsS_i4i4i4pi4i4i4_i4", w_vtsS_i4i4i4pi4i4i4_i4},
     {"vtsS_r4r4_", w_vtsS_r4r4_},
     {"vtsS_r4r4r4r4_", w_vtsS_r4r4r4r4_},
     {"vtsS_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_", w_vtsS_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_},
+    {"vtsTi4", w_vtsTi4},
     {"vtsVo", w_vtsVo},
     {"vtsVs", w_vtsVs},
     {"vtsb", w_vtsb},
@@ -4526,7 +4310,8 @@ static WrapFuncInfo g_wrapFuncInfos[] = {
     {"vtsoDi1", w_vtsoDi1},
     {"vtsoi4", w_vtsoi4},
     {"vtsoi4i4", w_vtsoi4i4},
-    {"vtsoso", w_vtsoso},
+    {"vtsooObS_r4r4r4_", w_vtsooObS_r4r4r4_},
+    {"vtsooOboS_r4r4r4_", w_vtsooOboS_r4r4r4_},
     {"vtsr4", w_vtsr4},
     {"vtsr4Db", w_vtsr4Db},
     {"vtsr4DoDbDbDb", w_vtsr4DoDbDbDb},
@@ -4539,7 +4324,6 @@ static WrapFuncInfo g_wrapFuncInfos[] = {
     {"vtsr4r4DoDbDbDb", w_vtsr4r4DoDbDbDb},
     {"vtsr4r4DoDbDbDbDb", w_vtsr4r4DoDbDbDbDb},
     {"vtss", w_vtss},
-    {"vtssDO", w_vtssDO},
     {"vtssDo", w_vtssDo},
     {"vtssb", w_vtssb},
     {"vtssi4", w_vtssi4},
@@ -4554,7 +4338,6 @@ static WrapFuncInfo g_wrapFuncInfos[] = {
     {"vtu4Di4Db", w_vtu4Di4Db},
     {"vtu4Do", w_vtu4Do},
     {"vtu4PS_u1u1u1u1u1u1ooo_", w_vtu4PS_u1u1u1u1u1u1ooo_},
-    {"vtu4PoPo", w_vtu4PoPo},
     {"vtu4S_i4i4_bb", w_vtu4S_i4i4_bb},
     {"vtu4S_r4r4_", w_vtu4S_r4r4_},
     {"vtu4S_r4r4r4_", w_vtu4S_r4r4r4_},
@@ -4562,8 +4345,9 @@ static WrapFuncInfo g_wrapFuncInfos[] = {
     {"vtu4S_r4r4r4r4_", w_vtu4S_r4r4r4r4_},
     {"vtu4S_u4bbbi4_Db", w_vtu4S_u4bbbi4_Db},
     {"vtu4S_u8_b", w_vtu4S_u8_b},
+    {"vtu4ToTo", w_vtu4ToTo},
     {"vtu4b", w_vtu4b},
-    {"vtu4bN_bi4_", w_vtu4bN_bi4_},
+    {"vtu4bi4", w_vtu4bi4},
     {"vtu4bsi4S_r4r4_", w_vtu4bsi4S_r4r4_},
     {"vtu4i4", w_vtu4i4},
     {"vtu4i4DoDo", w_vtu4i4DoDo},
@@ -4589,6 +4373,7 @@ static WrapFuncInfo g_wrapFuncInfos[] = {
     {"vtu4u4u4u4u4u4", w_vtu4u4u4u4u4u4},
     {"vtu8", w_vtu8},
     {"vtu8o", w_vtu8o},
+    {"vtu8u8", w_vtu8u8},
     {"vu1", w_vu1},
     {"vu2Pv", w_vu2Pv},
     {"vu2o", w_vu2o},
@@ -4610,14 +4395,13 @@ static WrapFuncInfo g_wrapFuncInfos[] = {
     {"vu4PS_u4u4oS_u8_o_", w_vu4PS_u4u4oS_u8_o_},
     {"vu4PS_u4u4u4u4u4u4S_u8_u1i4i4u1S_S_u8_u4u4u4u4u4u1u1u1u1_S_i4i4i4_S_r4r4r4_S_r4r4r4r4_S_r4r4r4_r4r4r4u1u1u1u1u1u1u1u4u4u1u1u1u1S_r4r4r4_i4u4u4u4u4u1u1u1i4u1u1u4u4r4u4u1u1u1r4_", w_vu4PS_u4u4u4u4u4u4S_u8_u1i4i4u1S_S_u8_u4u4u4u4u4u1u1u1u1_S_i4i4i4_S_r4r4r4_S_r4r4r4r4_S_r4r4r4_r4r4r4u1u1u1u1u1u1u1u4u4u1u1u1u1S_r4r4r4_i4u4u4u4u4u1u1u1i4u1u1u4u4r4u4u1u1u1r4_},
     {"vu4PS_u4u4u4u4u4u4u4u4_", w_vu4PS_u4u4u4u4u4u4u4u4_},
-    {"vu4PS_u4u4u4u4u4u4u4u4u4S_u1u4u4_ou4u4u4u4si4i4i4su4o_i4", w_vu4PS_u4u4u4u4u4u4u4u4u4S_u1u4u4_ou4u4u4u4si4i4i4su4o_i4},
-    {"vu4Pi4Pi4", w_vu4Pi4Pi4},
     {"vu4S_i4u1o_o", w_vu4S_i4u1o_o},
     {"vu4S_r4r4r4_", w_vu4S_r4r4r4_},
     {"vu4S_r4r4r4_bS_r4r4r4_", w_vu4S_r4r4r4_bS_r4r4r4_},
     {"vu4S_r4r4r4r4_", w_vu4S_r4r4r4r4_},
     {"vu4S_u8_b", w_vu4S_u8_b},
     {"vu4S_u8_i4b", w_vu4S_u8_i4b},
+    {"vu4Ti4Ti4", w_vu4Ti4Ti4},
     {"vu4b", w_vu4b},
     {"vu4bb", w_vu4bb},
     {"vu4bu4", w_vu4bu4},
@@ -4630,6 +4414,7 @@ static WrapFuncInfo g_wrapFuncInfos[] = {
     {"vu4i4i4i4i4i4", w_vu4i4i4i4i4i4},
     {"vu4i4o", w_vu4i4o},
     {"vu4i4u4", w_vu4i4u4},
+    {"vu4i4u4b", w_vu4i4u4b},
     {"vu4i4u4u4", w_vu4i4u4u4},
     {"vu4o", w_vu4o},
     {"vu4oi4", w_vu4oi4},
@@ -4666,6 +4451,7 @@ static WrapFuncInfo g_wrapFuncInfos[] = {
     {"vu4u4u4u4", w_vu4u4u4u4},
     {"vu4u4u4u4i4b", w_vu4u4u4u4i4b},
     {"vu4u8", w_vu4u8},
+    {"vu8", w_vu8},
     {nullptr, nullptr}
 };
 

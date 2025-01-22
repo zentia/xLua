@@ -13,9 +13,6 @@ namespace XLua
 #else
         const string DLLNAME = "GameCore";
 #endif
-#if XLUA_IL2CPP && ENABLE_IL2CPP
-        [DllImport("__Internal", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void InitialXLua(IntPtr PesapiImpl);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr CreateNativeLuaEnv();
@@ -25,6 +22,10 @@ namespace XLua
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DestroyNativeLuaEnv(IntPtr luaEnv);
+#if XLUA_IL2CPP && ENABLE_IL2CPP
+        
+        [DllImport("__Internal", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void InitialXLua(IntPtr PesapiImpl);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr GetRegisterApi();
@@ -69,7 +70,7 @@ namespace XLua
         public static extern void CleanupPendingKillScriptObjects(IntPtr luaEnv);
 
         [MethodImpl(MethodImplOptions.InternalCall)]
-        public static IntPtr InitialPapiEnvRef(IntPtr api, IntPtr envRef, Object obj, MethodBase addMethodBase, MethodBase removeMethodBase)
+        public static IntPtr InitialPapiEnvRef(IntPtr api, IntPtr envRef)
         {
             throw new NotImplementedException();
         }
@@ -270,6 +271,8 @@ namespace XLua
     public delegate bool pesapi_is_double_func(IntPtr env, IntPtr value);
     public delegate bool pesapi_is_string_func(IntPtr env, IntPtr value);
     public delegate bool pesapi_is_object_func(IntPtr env, IntPtr value);
+
+    public delegate bool pesapi_is_userdata_func(IntPtr env, IntPtr value);
     public delegate bool pesapi_is_function_func(IntPtr env, int value);
     public delegate bool pesapi_is_binary_func(IntPtr env, IntPtr value);
     public delegate bool pesapi_is_array_func(IntPtr env, IntPtr value);
@@ -368,6 +371,7 @@ namespace XLua
         public pesapi_is_double_func is_double;
         public pesapi_is_string_func is_string;
         public pesapi_is_object_func is_object;
+        public pesapi_is_userdata_func is_userdata;
         public pesapi_is_function_func is_function;
         public pesapi_is_binary_func is_binary;
         public pesapi_is_array_func is_array;

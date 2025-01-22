@@ -1,9 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
 using System.Text;
-#if OS_GAME
 using Assets.Plugins.Perf;
-#endif
 
 namespace XLua.LuaDLL
 {
@@ -89,9 +87,6 @@ namespace XLua.LuaDLL
 		public static extern int lua_setfenv(IntPtr L, int stackPos);
 
         [DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
-		public static extern IntPtr luaL_newstate();
-
-		[DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
 		public static extern void lua_close(IntPtr L);
 
 		[DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)] //[-0, +0, m]
@@ -106,7 +101,7 @@ namespace XLua.LuaDLL
 		[DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
 		public static extern void lua_createtable(IntPtr L, int narr, int nrec);//[-0, +0, m]
 
-#if OS_GAME
+        #if OS_GAME
         [DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
         
         public static extern int luaregist_stats_custom_name(IntPtr L, StatsLite.PFRegistCustomName pf);
@@ -116,7 +111,7 @@ namespace XLua.LuaDLL
 
         [DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
         public static extern int luastats_end_sample_by_index(IntPtr L, StatsLite.PFStatsEndSampleByIndex pf);
-#endif
+        #endif
         public static void lua_newtable(IntPtr L)//[-0, +0, m]
         {
 			lua_createtable(L, 0, 0);

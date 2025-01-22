@@ -816,12 +816,12 @@ namespace XLua
 
         internal object GetObject(RealStatePtr L, int index)
         {
-            return (objectCasters.GetCaster(typeof(object))(L, index, null));
+            return (objectCasters.GetCaster(typeof(object), null, null)(L, index, null));
         }
 
         internal T GetObject<T>(RealStatePtr L, int index)
         {
-            return (T)objectCasters.GetCaster(typeof(T))(L, index, null);
+            return (T)objectCasters.GetCaster(typeof(T), null, null)(L, index, null);
         }
 
         public Type GetTypeOf(RealStatePtr L, int idx)
@@ -893,7 +893,7 @@ namespace XLua
                         return get(L, index);
                     }
                 }
-                return (objectCasters.GetCaster(type)(L, index, null));
+                return (objectCasters.GetCaster(type, null, null)(L, index, null));
             }
         }
 
@@ -957,7 +957,7 @@ namespace XLua
             }
             return ret;
         }
-#if UNITY_EDITOR || XLUA_GENERAL
+#if UNITY_EDITOR 
         public void PushParams(RealStatePtr L, Array ary)
         {
             if (ary != null)

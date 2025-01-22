@@ -29,6 +29,18 @@ namespace XLua
     [UnityEngine.Scripting.Preserve]
     public static partial class Utils
     {
+        public static string TraceBack(IntPtr L)
+        {
+            LuaAPI.xlua_getglobal(L, "debug");
+            LuaAPI.lua_pushstring(L, "traceback");
+            LuaAPI.lua_rawget(L, -2);
+            LuaAPI.lua_remove(L, -2);
+            LuaAPI.lua_pushvalue(L, 1);
+            LuaAPI.lua_pushnumber(L, 2);
+            LuaAPI.lua_pcall(L, 2, 1, 0);
+            return LuaAPI.lua_tostring(L, -1);
+        }
+
         public static long TwoIntToLong(int b, int a)
         {
             return (long)a << 32 | b & 0xFFFFFFFFL;
@@ -760,7 +772,7 @@ namespace XLua
 				{
 					string prop_name = method.Name.Substring(4);
 					LuaAPI.xlua_pushasciistring(L, prop_name);
-					translator.PushFixCSFunction(L, translator.methodWrapsCache._GenMethodWrap(method.DeclaringType, prop_name, new MethodBase[] { method }).Call);
+					translator.PushFixCSFunction(L, translator.methodWrapsCache._GenMethodWrap(method.DeclaringType, prop_name, new MethodBase[] { method }, false, L).Call);
 					LuaAPI.lua_rawset(L, method.IsStatic ? cls_getter : obj_getter);
                     continue;
 				}
@@ -768,7 +780,7 @@ namespace XLua
 				{
 					string prop_name = method.Name.Substring(4);
 					LuaAPI.xlua_pushasciistring(L, prop_name);
-					translator.PushFixCSFunction(L, translator.methodWrapsCache._GenMethodWrap(method.DeclaringType, prop_name, new MethodBase[] { method }).Call);
+					translator.PushFixCSFunction(L, translator.methodWrapsCache._GenMethodWrap(method.DeclaringType, prop_name, new MethodBase[] { method }, false, L).Call);
 					LuaAPI.lua_rawset(L, method.IsStatic ? cls_setter : obj_setter);
                     continue;
 				}
@@ -803,14 +815,14 @@ namespace XLua
 				if (kv.Key.Name.StartsWith("op_")) // 操作符
 				{
 					LuaAPI.xlua_pushasciistring(L, InternalGlobals.supportOp[kv.Key.Name]);
-					translator.PushFixCSFunction(L, new LuaCSFunction(translator.methodWrapsCache._GenMethodWrap(type, kv.Key.Name, kv.Value.ToArray()).Call));
+					translator.PushFixCSFunction(L, new LuaCSFunction(translator.methodWrapsCache._GenMethodWrap(type, kv.Key.Name, kv.Value.ToArray(), false, L).Call));
 					LuaAPI.lua_rawset(L, obj_meta);
 				}
 				else
 				{
 					LuaAPI.xlua_pushasciistring(L, kv.Key.Name);
 					translator.PushFixCSFunction(L,
-						new LuaCSFunction(translator.methodWrapsCache._GenMethodWrap(type, kv.Key.Name, kv.Value.ToArray()).Call));
+						new LuaCSFunction(translator.methodWrapsCache._GenMethodWrap(type, kv.Key.Name, kv.Value.ToArray(), false, L).Call));
 					LuaAPI.lua_rawset(L, kv.Key.IsStatic ? cls_field : obj_field);
 				}
 			}
@@ -979,7 +991,7 @@ namespace XLua
 			LuaAPI.lua_pop(L, 1);
 			LuaAPI.lua_rawset(L, cls_meta); // set __newindex
 
-			LuaCSFunction constructor = typeof(Delegate).IsAssignableFrom(type) ? translator.metaFunctions.DelegateCtor : translator.methodWrapsCache.GetConstructorWrap(type);
+			LuaCSFunction constructor = typeof(Delegate).IsAssignableFrom(type) ? translator.metaFunctions.DelegateCtor : translator.methodWrapsCache.GetConstructorWrap(type, L);
 			if (constructor == null)
 			{
 				constructor = (RealStatePtr LL) =>
