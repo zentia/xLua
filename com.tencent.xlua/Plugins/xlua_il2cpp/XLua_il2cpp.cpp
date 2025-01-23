@@ -358,7 +358,6 @@ namespace xlua
 
     static bool IsExtensionMethod(const MethodInfo* method)
     {
-        static Il2CppClass* s_ExtensionAttribute = Class::FromName(il2cpp_defaults.corlib, "System.Runtime.CompilerServices", "ExtensionAttribute");
         return Method::HasAttribute(method, s_ExtensionAttribute);
     }
 
