@@ -5,6 +5,7 @@
 #include "il2cpp-api.h"
 #include "il2cpp-class-internals.h"
 #include "il2cpp-object-internals.h"
+#include "mono-structs.h"
 #include "vm/InternalCalls.h"
 #include "vm/Object.h"
 #include "vm/Array.h"
@@ -2721,6 +2722,51 @@ static bool IsPrimitive(Il2CppTypeEnum type)
 	    delete luaEnvPrivate;
 	}
 
+    Il2CppClass* GenericParamGetBaseType(Il2CppMetadataGenericParameterHandle gparam)
+	{
+        Il2CppClass** constraints = Class::GetOrCreateMonoGenericParameterInfo(gparam)->constraints;
+
+        Il2CppClass* base_class = il2cpp_defaults.object_class;
+
+        if (constraints)
+        {
+	        for (int i = 0; constraints[i]; ++i)
+	        {
+                Il2CppClass* constraint = constraints[i];
+
+                if (Class::IsInterface(constraint))
+                {
+	                continue;
+                }
+
+                Il2CppType* constraint_type = &constraint->byval_arg;
+                if (constraint_type->type == IL2CPP_TYPE_VAR || constraint_type->type == IL2CPP_TYPE_MVAR)
+                {
+                    Il2CppMetadataGenericParameterHandle constraint_param = constraint_type->data.genericParameterHandle;
+                    Il2CppGenericParameterInfo constraint_info = MetadataCache::GetGenericParameterInfo(constraint_param);
+                    if ((constraint_info.flags & IL2CPP_GENERIC_PARAMETER_ATTRIBUTE_REFERENCE_TYPE_CONSTRAINT) == 0 &&
+                        (constraint_info.flags & IL2CPP_GENERIC_PARAMETER_ATTRIBUTE_NOT_NULLABLE_VALUE_TYPE_CONSTRAINT) == 0)
+                    {
+	                    continue;
+                    }
+                }
+
+                base_class = constraint;
+	        }
+        }
+
+        if (base_class == il2cpp_defaults.object_class)
+        {
+            Il2CppGenericParameterInfo gparamInfo = MetadataCache::GetGenericParameterInfo(gparam);
+            if ((gparamInfo.flags & IL2CPP_GENERIC_PARAMETER_ATTRIBUTE_NOT_NULLABLE_VALUE_TYPE_CONSTRAINT) != 0)
+            {
+                base_class = il2cpp_defaults.value_type_class;
+            }
+        }
+
+        return base_class;
+	}
+
     static const MethodInfo* MakeGenericMethodByConstraintedArguments(const MethodInfo* method)
 	{
 		if (!Method::IsGeneric(method) || Method::IsInflated(method))
@@ -2736,8 +2782,7 @@ static bool IsPrimitive(Il2CppTypeEnum type)
 		for (uint32_t i = 0; i < count; i++)
 		{
             Il2CppMetadataGenericParameterHandle param = GenericContainer::GetGenericParameter(containerHandle, i);
-            Il2CppClass* pklass = Class::FromGenericParameter(param);
-            genericArguments[i] = &(Class::GenericParamGetBaseType(pklass)->byval_arg);
+            genericArguments[i] = &(GenericParamGetBaseType(param)->byval_arg);
 		}
         return MetadataCache::GetGenericInstanceMethod(method, genericArguments, count);
 	}
