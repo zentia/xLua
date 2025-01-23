@@ -15,14 +15,14 @@ namespace XLua
     [UnityEngine.Scripting.Preserve]
     public class LuaEnv : LuaEnvBase
     {
+        private static List<LuaEnv> luaEnvs = new List<LuaEnv>();
+        private static bool isInitialized = false;
+        private static Type persistentObjectInfoType;
+        private static MethodInfo extensionMethodGetMethodInfo;
+
         IntPtr apis;
         IntPtr nativePesapiEnv;
         IntPtr nativeScriptObjectsRefsMgr;
-
-        Type persistentObjectInfoType;
-        MethodInfo objectPoolAddMethodInfo;
-        MethodInfo objectPoolRemoveMethodInfo;
-        MethodInfo tryLoadTypeMethodInfo;
 
         [UnityEngine.Scripting.Preserve]
         private void Preserver()
@@ -43,19 +43,29 @@ namespace XLua
         public LuaEnv()
         {
             UnityEngine.Debug.Log("Native XLua Env");
+            if (!isInitialized)
+            {
+                lock (luaEnvs)
+                {
+                    if (!isInitialized)
+                    {
+                        //only once is enough
+                        XLua.NativeAPI.SetLogCallback(LogCallback, LogWarningCallback, LogErrorCallback);
+                        XLua.NativeAPI.InitialXLua(XLua.NativeAPI.GetRegisterApi());
+                        extensionMethodGetMethodInfo = typeof(XLua.ExtensionMethodInfo).GetMethod("Get");
 
+                        XLua.NativeAPI.SetExtensionMethodGet(extensionMethodGetMethodInfo);
+
+                        persistentObjectInfoType = typeof(XLua.LuaTable);
+                        XLua.NativeAPI.SetGlobalType_LuaTable(typeof(LuaTable));
+                        XLua.NativeAPI.SetGlobalType_Array(typeof(Array));
+                        XLua.NativeAPI.SetGlobalType_ArrayBuffer(typeof(byte[]));
+                        isInitialized = true;
+                    }
+                }
+            }
             Instance = this;
-            XLua.NativeAPI.SetLogCallback(LogCallback, LogWarningCallback, LogErrorCallback);
-            XLua.NativeAPI.InitialXLua(XLua.NativeAPI.GetRegisterApi());
             apis = XLua.NativeAPI.GetFFIApi();
-            tryLoadTypeMethodInfo = typeof(TypeRegister).GetMethod("RegisterNoThrow");
-            XLua.NativeAPI.SetRegisterNoThrow(tryLoadTypeMethodInfo);
-
-            persistentObjectInfoType = typeof(XLua.LuaTable);
-            XLua.NativeAPI.SetGlobalType_LuaTable(typeof(LuaTable));
-            XLua.NativeAPI.SetGlobalType_Array(typeof(Array));
-            XLua.NativeAPI.SetGlobalType_ArrayBuffer(typeof(byte[]));
-
             Init();
             nativePesapiEnv = XLua.NativeAPI.GetPapiEnvRef(nativeLuaEnv);
             nativeScriptObjectsRefsMgr = XLua.NativeAPI.InitialPapiEnvRef(apis, nativePesapiEnv);

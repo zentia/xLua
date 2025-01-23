@@ -189,7 +189,7 @@ typedef int(*pesapi_get_return_num_func)(pesapi_callback_info info);
 typedef void (*pesapi_throw_by_string_func)(pesapi_callback_info pinfo, const char* msg);
 
 typedef pesapi_env_ref(*pesapi_create_env_ref_func)(pesapi_env env);
-typedef bool (*pesapi_env_ref_is_valid_func)(pesapi_env_ref env);
+typedef bool (*pesapi_env_ref_is_valid_func)(pesapi_env env);
 typedef pesapi_env(*pesapi_get_env_from_ref_func)(pesapi_env_ref env_ref);
 typedef pesapi_env_ref(*pesapi_duplicate_env_ref_func)(pesapi_env_ref env_ref);
 typedef void (*pesapi_release_env_ref_func)(pesapi_env_ref env_ref);

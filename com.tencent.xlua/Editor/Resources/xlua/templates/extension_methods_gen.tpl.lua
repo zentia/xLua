@@ -12,12 +12,12 @@ namespace XLua
 public static class ExtensionMethodInfos_Gen
 {
     [UnityEngine.Scripting.Preserve]
-    public static IEnumerable<MethodInfo> TryLoadExtensionMethod(Type type)
+    public static MethodInfo[] TryLoadExtensionMethod(string assemblyQualifiedName)
     {
         if (false) {}]], FOR(getExtendedTypeToExtensionTypeInfo(rawInfo), function(e)
             return TaggedTemplateEngine([[
             
-        else if (type == typeof(]], e.extendedType, [[))
+        else if (typeof(]], e.extendedType, [[).AssemblyQualifiedName == assemblyQualifiedName)
         {
             return ExtensionMethodInfo.GetExtensionMethods(typeof(]], e.extendedType, ')',
                 FOR(e.extendedTypes, function(extensionType) return string.format(', typeof(%s)', extensionType) end),

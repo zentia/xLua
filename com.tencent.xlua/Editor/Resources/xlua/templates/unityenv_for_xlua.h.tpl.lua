@@ -2,18 +2,13 @@
 --local dbg = require('emmy_core')
 --dbg.tcpConnect('localhost', 9966)
 
-require("tte")
+require("il2cpp_snippets")
 
-function unityenv_for_xlua(newerthan2023, shared) 
-    return TaggedTemplateEngine('', IF(newerthan2023), [[
-#ifndef UNITY_2023_2_OR_NEWER
-    #define UNITY_2023_2_OR_NEWER
-#endif
-]], ENDIF(), [[
-
-]], IF(shared), [[
-#ifndef XLUA_SHARED
-    #define XLUA_SHARED
-#endif
-]], ENDIF(), '')
+function unityenv_for_xlua(definesList) 
+    local defines = il2cpp_snippets.listToLuaArray(definesList)
+    return table.join(table.map(defines, function(d)
+        return string.format([[#ifndef %s
+    #define %s
+#endif]], d, d)
+    end), '\n')
 end

@@ -763,19 +763,19 @@ namespace XLua.Editor.Generator
                 var bytes = File.ReadAllBytes(path);
                 luaEnv.DoString<LuaFunction>(bytes, path);
                 var func = luaEnv.Global.Get<LuaFunction>("unityenv_for_xlua");
-                string macroHeaderContent = func.Func<bool, bool, string>(
-#if UNITY_2023_2_OR_NEWER
-                       true,
-#else
-                    false,
+                var defines = new List<string>()
+                {
+#if UNITY_2021_1_OR_NEWER
+                    "UNITY_2021_1_OR_NEWER",
 #endif
-
-#if UNITY_IPHONE
-                        false
-#else
-                    true
+#if UNITY_2022_1_OR_NEWER
+                    "UNITY_2022_1_OR_NEWER",
 #endif
-                );
+#if !UNITY_IPHONE
+                    "XLUA_SHARED"
+#endif
+                };
+                string macroHeaderContent = func.Func<List<string>, string>(defines);
 
                 using (StreamWriter textWriter = new StreamWriter(filePath, false, Encoding.UTF8))
                 {
