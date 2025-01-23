@@ -47,7 +47,6 @@ namespace xlua
             GLogErrorCallback(SLogBuffer);
         }
     }
-
     LuaEnv::LuaEnv()
     {
         L = luaL_newstate();
@@ -59,42 +58,49 @@ namespace xlua
 
 extern pesapi_func_ptr reg_apis[];
 
-xlua::LuaEnv* CreateNativeLuaEnv()
-{
-    return new xlua::LuaEnv();
-}
 
-lua_State* GetLuaState(xlua::LuaEnv* luaEnv)
-{
-    return luaEnv->L;
-}
+#ifdef __cplusplus
+extern "C" {
+#endif
+    PESAPI_MODULE_EXPORT xlua::LuaEnv* CreateNativeLuaEnv()
+    {
+        return new xlua::LuaEnv();
+    }
 
-void DestroyNativeLuaEnv(xlua::LuaEnv* luaEnv)
-{
-    delete luaEnv;
-}
+    PESAPI_MODULE_EXPORT lua_State* GetLuaState(xlua::LuaEnv* luaEnv)
+    {
+        return luaEnv->L;
+    }
 
-void SetLogCallback(xlua::LogCallback Log, LogCallback LogWarning, LogCallback LogError)
-{
-    xlua::GLogCallback        = Log;
-    xlua::GLogWarningCallback = LogWarning;
-    xlua::GLogErrorCallback   = LogError;
-}
+    PESAPI_MODULE_EXPORT void DestroyNativeLuaEnv(xlua::LuaEnv* luaEnv)
+    {
+        delete luaEnv;
+    }
 
-pesapi_env_ref GetPapiEnvRef(xlua::LuaEnv* luaEnv)
-{
-    lua_State* L = luaEnv->L;
+    PESAPI_MODULE_EXPORT pesapi_env_ref GetPapiEnvRef(xlua::LuaEnv* luaEnv)
+    {
+        lua_State* L = luaEnv->L;
 
-    auto env = reinterpret_cast<pesapi_env>(L);
-    return g_pesapi_ffi.create_env_ref(env);
-}
+        auto env = reinterpret_cast<pesapi_env>(L);
+        return g_pesapi_ffi.create_env_ref(env);
+    }
 
-pesapi_ffi* GetFFIApi()
-{
-    return &g_pesapi_ffi;
-}
+    PESAPI_MODULE_EXPORT void SetLogCallback(xlua::LogCallback Log, xlua::LogCallback LogWarning, xlua::LogCallback LogError)
+    {
+        xlua::GLogCallback = Log;
+        xlua::GLogWarningCallback = LogWarning;
+        xlua::GLogErrorCallback = LogError;
+    }
 
-pesapi_func_ptr* GetRegisterApi()
-{
-    return reg_apis;
+    PESAPI_MODULE_EXPORT pesapi_func_ptr* GetRegisterApi()
+    {
+        return reg_apis;
+    }
+
+    PESAPI_MODULE_EXPORT pesapi_ffi* GetFFIApi()
+    {
+        return &g_pesapi_ffi;
+    }
+#ifdef __cplusplus
 }
+#endif

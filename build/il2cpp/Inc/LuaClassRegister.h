@@ -81,10 +81,46 @@ struct LUAENV_API LuaClassDefinition
     void* Data = nullptr;
     pesapi_on_native_object_enter OnEnter = nullptr;
     pesapi_on_native_object_exit OnExit = nullptr;
+    LuaClassDefinition(const void* typeId,
+        const void* superTypeId,
+        const char* scriptName,
+        InitializeFunc initialize,
+        LuaFunctionInfo* methods,
+        LuaFunctionInfo* functions,
+        LuaPropertyInfo* properties,
+        LuaPropertyInfo* variables,
+        FinalizeFunc finalize,
+        NamedFunctionInfo* constructorInfos,
+        NamedFunctionInfo* methodInfos,
+        NamedFunctionInfo* functionInfos,
+        NamedPropertyInfo* propertyInfos,
+        NamedPropertyInfo* variableInfos,
+        void* data,
+        pesapi_on_native_object_enter onEnter,
+        pesapi_on_native_object_exit onExit)
+    {
+        TypeId = typeId;
+        SuperTypeId = superTypeId;
+        ScriptName = scriptName;
+        Initialize = initialize;
+        Methods = methods;
+        Functions = functions;
+        Properties = properties;
+        Variables = variables;
+        Finalize = finalize;
+        ConstructorInfos = constructorInfos;
+        MethodInfos = methodInfos;
+        FunctionInfos = functionInfos;
+        PropertyInfos = propertyInfos;
+        VariableInfos = variableInfos;
+        Data = data;
+        OnEnter = onEnter;
+        OnExit = onExit;
+    }
 };
 MSVC_PRAGMA(warning(pop));
 
-#define LuaClassEmptyDefinition {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+#define LuaClassEmptyDefinition xlua::LuaClassDefinition(nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr)
 
 void LUAENV_API RegisterLuaClass(const LuaClassDefinition& ClassDefinition);
 

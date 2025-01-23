@@ -161,6 +161,7 @@ typedef bool (*pesapi_is_uint64_func)(pesapi_env env, int value);
 typedef bool (*pesapi_is_double_func)(pesapi_env env, int value);
 typedef bool (*pesapi_is_string_func)(pesapi_env env, int value);
 typedef bool (*pesapi_is_object_func)(pesapi_env env, int value);
+typedef bool (*pesapi_is_userdata_func)(pesapi_env env, int value);
 typedef bool (*pesapi_is_function_func)(pesapi_env env, int value);
 typedef bool (*pesapi_is_binary_func)(pesapi_env env, int value);
 typedef bool (*pesapi_is_array_func)(pesapi_env env, int value);
@@ -188,7 +189,7 @@ typedef int(*pesapi_get_return_num_func)(pesapi_callback_info info);
 typedef void (*pesapi_throw_by_string_func)(pesapi_callback_info pinfo, const char* msg);
 
 typedef pesapi_env_ref(*pesapi_create_env_ref_func)(pesapi_env env);
-typedef bool (*pesapi_env_ref_is_valid_func)(pesapi_env_ref env);
+typedef bool (*pesapi_env_ref_is_valid_func)(pesapi_env env);
 typedef pesapi_env(*pesapi_get_env_from_ref_func)(pesapi_env_ref env_ref);
 typedef pesapi_env_ref(*pesapi_duplicate_env_ref_func)(pesapi_env_ref env_ref);
 typedef void (*pesapi_release_env_ref_func)(pesapi_env_ref env_ref);
@@ -267,6 +268,7 @@ struct pesapi_ffi
     pesapi_is_double_func is_double;
     pesapi_is_string_func is_string;
     pesapi_is_object_func is_object;
+    pesapi_is_userdata_func is_userdata;
     pesapi_is_function_func is_function;
     pesapi_is_binary_func is_binary;
     pesapi_is_array_func is_array;

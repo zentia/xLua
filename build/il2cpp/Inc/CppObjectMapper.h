@@ -10,14 +10,6 @@
 
 #include "LuaClassRegister.h"
 #include "ObjectCacheNode.h"
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-extern pesapi_ffi g_pesapi_ffi;
-#ifdef __cplusplus
-}
-#endif
 
 typedef struct
 {
@@ -35,6 +27,7 @@ struct pesapi_callback_info__
 };
 
 typedef pesapi_callback_info__ PersistentObjectEnvInfo;
+extern pesapi_ffi g_pesapi_ffi;
 
 namespace xlua
 {

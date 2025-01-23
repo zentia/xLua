@@ -582,7 +582,7 @@ class dense_hashtable {
 
   // As a convenience for resize(), we allow an optional second argument
   // which lets you make this new hashtable a different size than ht
-  dense_hashtable(const dense_hashtable& ht, size_type min_buckets_wanted = 0)
+  dense_hashtable(const dense_hashtable& ht, size_type min_buckets_wanted)
     : hash(ht.hash), equals(ht.equals), get_key(ht.get_key), num_deleted(0),
       use_deleted(ht.use_deleted), use_empty(ht.use_empty),
       delval(ht.delval), emptyval(ht.emptyval),
@@ -591,6 +591,8 @@ class dense_hashtable {
     reset_thresholds();
     copy_from(ht, min_buckets_wanted);   // copy_from() ignores deleted entries
   }
+
+  dense_hashtable(const dense_hashtable& ht) : dense_hashtable(ht, 0) {}
 
   dense_hashtable& operator= (const dense_hashtable& ht) {
     if (&ht == this)  return *this;        // don't copy onto ourselves
@@ -1001,6 +1003,7 @@ inline void swap(dense_hashtable<V,K,HF,ExK,EqK,A> &x,
 }
 
 #undef JUMP_
+#undef DenseTableAssert
 
 template <class V, class K, class HF, class ExK, class EqK, class A>
 const typename dense_hashtable<V,K,HF,ExK,EqK,A>::size_type
@@ -1013,8 +1016,8 @@ const float dense_hashtable<V,K,HF,ExK,EqK,A>::HT_OCCUPANCY_FLT = 0.5f;
 
 // How empty we let the table get before we resize lower.
 // It should be less than OCCUPANCY_FLT / 2 or we thrash resizing
-template <class V, class K, class HF, class ExK, class EqK, class A>
-const float dense_hashtable<V,K,HF,ExK,EqK,A>::HT_EMPTY_FLT = 0.4f *
-dense_hashtable<V,K,HF,ExK,EqK,A>::HT_OCCUPANCY_FLT;
+template <class Value, class Key, class HashFcn, class ExtractKey, class EqualKey, class Alloc>
+const float dense_hashtable<Value,Key,HashFcn,ExtractKey,EqualKey,Alloc>::HT_EMPTY_FLT = 0.4f *
+dense_hashtable<Value,Key,HashFcn,ExtractKey,EqualKey,Alloc>::HT_OCCUPANCY_FLT;
 
 #endif /* _DENSEHASHTABLE_H_ */

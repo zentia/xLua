@@ -31,7 +31,7 @@ static T* PropertyInfoDuplicate(T* Arr)
 
 LuaClassDefinition* LuaClassDefinitionDuplicate(const LuaClassDefinition* ClassDefinition)
 {
-    auto Ret = new LuaClassDefinition;
+    auto Ret = new LuaClassDefinition(nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr);
     ::memcpy(Ret, ClassDefinition, sizeof(LuaClassDefinition));
     Ret->Methods = PropertyInfoDuplicate(ClassDefinition->Methods);
     Ret->Functions = PropertyInfoDuplicate(ClassDefinition->Functions);

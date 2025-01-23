@@ -11,7 +11,9 @@
 #include "DataTransfer.h"
 #include "XLua.h"
 
-EXTERN_C_START
+extern "C" int lua_setfenv(lua_State * L, int idx);
+
+
 // value process
 int pesapi_create_null(pesapi_env env)
 {
@@ -230,6 +232,12 @@ bool pesapi_is_object(pesapi_env env, pesapi_value pvalue)
     return lua_istable(L, pvalue);
 }
 
+bool pesapi_is_userdata(pesapi_env env, pesapi_value value)
+{
+    lua_State* L = reinterpret_cast<lua_State*>(env);
+    return lua_isuserdata(L, value);
+}
+
 bool pesapi_is_function(pesapi_env env, pesapi_value pvalue)
 {
     lua_State* L = reinterpret_cast<lua_State*>(env);
@@ -244,7 +252,8 @@ bool pesapi_is_binary(pesapi_env env, pesapi_value pvalue)
 
 bool pesapi_is_array(pesapi_env env, pesapi_value pvalue)
 {
-    return pesapi_is_object(env, pvalue);
+    lua_State* L = reinterpret_cast<lua_State*>(env);
+    return lua_istable(L, pvalue);
 }
 
 int pesapi_native_object_to_value(pesapi_env env, const void* class_id, void* object_ptr, bool copy)
@@ -395,9 +404,9 @@ pesapi_env_ref pesapi_create_env_ref(pesapi_env env)
     return new pesapi_env_ref__(mL);
 }
 
-bool pesapi_env_ref_is_valid(pesapi_env_ref env_ref)
+bool pesapi_env_ref_is_valid(pesapi_env env)
 {
-    return !env_ref->env_life_cycle_tracker.expired();
+    return !xlua::DataTransfer::GetLuaEnvLifeCycleTracker(reinterpret_cast<lua_State*>(env)).expired();
 }
 
 pesapi_env pesapi_get_env_from_ref(pesapi_env_ref env_ref)
@@ -744,6 +753,7 @@ pesapi_ffi g_pesapi_ffi{
     &pesapi_is_double,
     &pesapi_is_string,
     &pesapi_is_object,
+    &pesapi_is_userdata,
     &pesapi_is_function,
     &pesapi_is_binary,
     &pesapi_is_array,
@@ -797,7 +807,7 @@ pesapi_ffi g_pesapi_ffi{
     &pesapi_get_env_private,
     &pesapi_set_env_private,
 };
-
+EXTERN_C_START
 struct pesapi_type_info__
 {
     const char* name;
@@ -925,7 +935,7 @@ MSVC_PRAGMA(warning(disable : 4191))
 void pesapi_define_class(const void* type_id, const void* super_type_id, const char* type_name, pesapi_constructor constructor,
     pesapi_finalize finalize, size_t property_count, pesapi_property_descriptor properties, void* userdata)
 {
-    xlua::LuaClassDefinition classDef = LuaClassEmptyDefinition;
+    xlua::LuaClassDefinition classDef = xlua::LuaClassDefinition(nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr);
     classDef.TypeId = type_id;
     classDef.SuperTypeId = super_type_id;
     std::string ScriptNameWithModuleName = GPesapiModuleName == nullptr ? std::string() : GPesapiModuleName;

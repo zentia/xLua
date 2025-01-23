@@ -5,7 +5,7 @@
 #include "pesapi.h"
 
 #if OSG_PROFILE
-    #include <common/cmbase.h>
+#include "cmlua/cmlua.h"
 #endif
 
 EXTERN_C_START
@@ -165,7 +165,7 @@ namespace xlua
     {
         PesapiCallbackData* FunctionInfo = reinterpret_cast<PesapiCallbackData*>(lua_touserdata(L, lua_upvalueindex(1)));
         pesapi_callback_info__ info{L, 0, 0};
-        FunctionInfo->Callback(GetFFIApi(), &info);
+        FunctionInfo->Callback(&g_pesapi_ffi, &info);
         return 1;
     }
 
@@ -180,7 +180,7 @@ namespace xlua
     {
         if (CallbackData->Finalize)
         {
-            CallbackData->Finalize(GetFFIApi(), CallbackData->Data, DataTransfer::GetLuaEnvPrivate());
+            CallbackData->Finalize(&g_pesapi_ffi, CallbackData->Data, DataTransfer::GetLuaEnvPrivate());
         }
         for (auto it = ms_Instance->FunctionDatas.begin(); it != ms_Instance->FunctionDatas.end();)
         {
@@ -331,7 +331,7 @@ namespace xlua
                 const LuaClassDefinition* ClassDefinition = FindClassByID(obj->TypeId);
                 if (ClassDefinition && ClassDefinition->Finalize && need_delete && obj->NeedDelete)
                 {
-                    ClassDefinition->Finalize(GetFFIApi(), KV.first, ClassDefinition->Data, PData);
+                    ClassDefinition->Finalize(&g_pesapi_ffi, KV.first, ClassDefinition->Data, PData);
                     need_delete = false;
                 }
                 if (ClassDefinition && ClassDefinition->OnExit)
@@ -515,16 +515,15 @@ namespace xlua
 
     static int object_new(lua_State* L)
     {
+        // auto starttime = system_clock::now();
+        LuaClassDefinition* class_definition = (LuaClassDefinition*)lua_touserdata(L, lua_upvalueindex(1));
 #if OSG_PROFILE
         int index = 0;
         if (pf_stats_begin_sample != nullptr)
-            index = pf_stats_begin_sample(CppObjectMapper::PrefNewIndex, 0);
+            index = pf_stats_begin_sample(CppObjectMapper::PrefNewIndex, pf_stats_regist_custom_name(class_definition->ScriptName));
 #endif
-
-        // auto starttime = system_clock::now();
-        LuaClassDefinition* class_definition = (LuaClassDefinition*)lua_touserdata(L, lua_upvalueindex(1));
         pesapi_callback_info__ callback_info{L, 1, 0};
-        xlua::CppObjectMapper::Get()->BindCppObject(L, class_definition, class_definition->Initialize(GetFFIApi(), &callback_info), false, true);
+        xlua::CppObjectMapper::Get()->BindCppObject(L, class_definition, class_definition->Initialize(&g_pesapi_ffi, &callback_info), false, true);
         /*auto diff = std::chrono::duration_cast<std::chrono::microseconds>(system_clock::now() - starttime).count();
         xlua::Log("%I64d", diff);*/
 #if OSG_PROFILE
@@ -538,12 +537,12 @@ namespace xlua
 
     static int object_gc(lua_State* L)
     {
+        LuaClassDefinition* class_definition = (LuaClassDefinition*)lua_touserdata(L, lua_upvalueindex(1));
 #if OSG_PROFILE
         int index = 0;
         if (pf_stats_begin_sample != nullptr)
-            index = pf_stats_begin_sample(CppObjectMapper::PrefGCIndex, 0);
+            index = pf_stats_begin_sample(CppObjectMapper::PrefGCIndex, pf_stats_regist_custom_name(class_definition->ScriptName));
 #endif
-        LuaClassDefinition* class_definition = (LuaClassDefinition*)lua_touserdata(L, lua_upvalueindex(1));
         CppObject* cppObject                 = (CppObject*)lua_touserdata(L, -1);
         auto instance                        = xlua::CppObjectMapper::Get();
         if (instance == nullptr)
@@ -553,7 +552,7 @@ namespace xlua
         {
             // printf("Finalize %p\n", cppObject->Ptr);
             if (class_definition->Finalize)
-                class_definition->Finalize(GetFFIApi(), cppObject->Ptr, class_definition->Data, L);
+                class_definition->Finalize(&g_pesapi_ffi, cppObject->Ptr, class_definition->Data, L);
         }
 #if OSG_PROFILE
         if (pf_stats_end_sample_by_index != nullptr)
@@ -638,16 +637,15 @@ namespace xlua
 
     static int property_getter_wrap(lua_State* L)
     {
+        LuaPropertyInfo* prop_info = (LuaPropertyInfo*)lua_touserdata(L, lua_upvalueindex(1));
 #if OSG_PROFILE
         int index = 0;
         if (pf_stats_begin_sample != nullptr)
-            index = pf_stats_begin_sample(CppObjectMapper::PrefPropertyGetterIndex, 0);
+            index = pf_stats_begin_sample(CppObjectMapper::PrefPropertyGetterIndex, pf_stats_regist_custom_name(prop_info->Name));
 #endif
-
-        LuaPropertyInfo* prop_info = (LuaPropertyInfo*)lua_touserdata(L, lua_upvalueindex(1));
         // printf("property_getter_wrap %p\n", prop_info);
         pesapi_callback_info__ callback_info{L, 1, 0};
-        prop_info->Getter(GetFFIApi(), &callback_info);
+        prop_info->Getter(&g_pesapi_ffi, &callback_info);
 #if OSG_PROFILE
         if (pf_stats_end_sample_by_index != nullptr)
         {
@@ -659,15 +657,15 @@ namespace xlua
 
     static int property_setter_wrap(lua_State* L)
     {
+        LuaPropertyInfo* prop_info = (LuaPropertyInfo*)lua_touserdata(L, lua_upvalueindex(1));
 #if OSG_PROFILE
         int index = 0;
         if (pf_stats_begin_sample != nullptr)
-            index = pf_stats_begin_sample(CppObjectMapper::PrefPropertySetterIndex, 0);
+            index = pf_stats_begin_sample(CppObjectMapper::PrefPropertySetterIndex, pf_stats_regist_custom_name(prop_info->Name));
 #endif
-        LuaPropertyInfo* prop_info = (LuaPropertyInfo*)lua_touserdata(L, lua_upvalueindex(1));
         // printf("property_setter_wrap %p\n", prop_info);
         pesapi_callback_info__ callback_info{L, 1, 0};
-        prop_info->Setter(GetFFIApi(), &callback_info);
+        prop_info->Setter(&g_pesapi_ffi, &callback_info);
 #if OSG_PROFILE
         if (pf_stats_end_sample_by_index != nullptr)
         {
@@ -679,15 +677,16 @@ namespace xlua
 
     static int variable_getter_wrap(lua_State* L)
     {
+
+        LuaPropertyInfo* prop_info = (LuaPropertyInfo*)lua_touserdata(L, lua_upvalueindex(1));
 #if OSG_PROFILE
         int index = 0;
         if (pf_stats_begin_sample != nullptr)
-            index = pf_stats_begin_sample(CppObjectMapper::PrefFieldGetterIndex, 0);
+            index = pf_stats_begin_sample(CppObjectMapper::PrefFieldGetterIndex, pf_stats_regist_custom_name(prop_info->Name));
 #endif
-        LuaPropertyInfo* prop_info = (LuaPropertyInfo*)lua_touserdata(L, lua_upvalueindex(1));
         // printf("variable_getter_wrap %p top=%d\n", prop_info, lua_gettop(L));
         pesapi_callback_info__ callback_info{L, 0, 0};
-        prop_info->Getter(GetFFIApi(), &callback_info);
+        prop_info->Getter(&g_pesapi_ffi, &callback_info);
 #if OSG_PROFILE
         if (pf_stats_end_sample_by_index != nullptr)
         {
@@ -699,15 +698,16 @@ namespace xlua
 
     static int variable_setter_wrap(lua_State* L)
     {
+        LuaPropertyInfo* prop_info = (LuaPropertyInfo*)lua_touserdata(L, lua_upvalueindex(1));
 #if OSG_PROFILE
         int index = 0;
         if (pf_stats_begin_sample != nullptr)
-            index = pf_stats_begin_sample(CppObjectMapper::PrefFieldSetterIndex, 0);
+            index = pf_stats_begin_sample(CppObjectMapper::PrefFieldSetterIndex, pf_stats_regist_custom_name(prop_info->Name));
 #endif
-        LuaPropertyInfo* prop_info = (LuaPropertyInfo*)lua_touserdata(L, lua_upvalueindex(1));
+        
         // printf("variable_setter_wrap %p top=%d\n", prop_info, lua_gettop(L));
         pesapi_callback_info__ callback_info{L, 0, 0};
-        prop_info->Setter(GetFFIApi(), &callback_info);
+        prop_info->Setter(&g_pesapi_ffi, &callback_info);
 #if OSG_PROFILE
         if (pf_stats_end_sample_by_index != nullptr)
         {
@@ -719,15 +719,15 @@ namespace xlua
 
     static int method_wrap(lua_State* L)
     {
+        LuaFunctionInfo* func_info = (LuaFunctionInfo*)lua_touserdata(L, lua_upvalueindex(1));
 #if OSG_PROFILE
         int index = 0;
         if (pf_stats_begin_sample != nullptr)
-            index = pf_stats_begin_sample(CppObjectMapper::PrefMethodIndex, 0);
+            index = pf_stats_begin_sample(CppObjectMapper::PrefMethodIndex, pf_stats_regist_custom_name(func_info->Name));
 #endif
-        LuaFunctionInfo* func_info = (LuaFunctionInfo*)lua_touserdata(L, lua_upvalueindex(1));
         // printf("method_wrap %p\n", func_info);
         pesapi_callback_info__ callback_info{L, 1, 0};
-        func_info->Callback(GetFFIApi(), &callback_info);
+        func_info->Callback(&g_pesapi_ffi, &callback_info);
 #if OSG_PROFILE
         if (pf_stats_end_sample_by_index != nullptr)
         {
@@ -739,15 +739,16 @@ namespace xlua
 
     static int function_wrap(lua_State* L)
     {
+
+        LuaFunctionInfo* func_info = (LuaFunctionInfo*)lua_touserdata(L, lua_upvalueindex(1));
 #if OSG_PROFILE
         int index = 0;
         if (pf_stats_begin_sample != nullptr)
-            index = pf_stats_begin_sample(CppObjectMapper::PrefFunctionIndex, 0);
+            index = pf_stats_begin_sample(CppObjectMapper::PrefFunctionIndex, pf_stats_regist_custom_name(func_info->Name));
 #endif
-        LuaFunctionInfo* func_info = (LuaFunctionInfo*)lua_touserdata(L, lua_upvalueindex(1));
         // printf("function_wrap %p\n", func_info);
         pesapi_callback_info__ callback_info{L, 0, 0};
-        func_info->Callback(GetFFIApi(), &callback_info);
+        func_info->Callback(&g_pesapi_ffi, &callback_info);
 #if OSG_PROFILE
         if (pf_stats_end_sample_by_index != nullptr)
         {
