@@ -60,6 +60,8 @@ namespace XLua
                         XLua.NativeAPI.SetGlobalType_LuaTable(typeof(LuaTable));
                         XLua.NativeAPI.SetGlobalType_Array(typeof(Array));
                         XLua.NativeAPI.SetGlobalType_ArrayBuffer(typeof(byte[]));
+                        
+                        XLua.ExtensionMethodInfo.LoadExtensionMethodInfo();
                         isInitialized = true;
                     }
                 }
@@ -87,8 +89,6 @@ namespace XLua
                 var methodInfoOfRegister = autoRegister.GetMethod("AddRegisterInfoGetterIntoLuaEnv");
                 methodInfoOfRegister.Invoke(null, new object[] { this });
             }
-
-            XLua.ExtensionMethodInfo.LoadExtensionMethodInfo();
 
             ffi = Marshal.PtrToStructure<XLua.pesapi_ffi>(apis);
             var scope = ffi.open_scope(rawL);
