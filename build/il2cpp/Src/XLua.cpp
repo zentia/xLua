@@ -26,7 +26,7 @@ namespace xlua
     LogCallback GLogWarningCallback = nullptr;
     LogCallback GLogErrorCallback   = nullptr;
 
-    void PLog(LogLevel Level, const std::string Fmt, ...)
+    void PLog(LogLevel level, const std::string Fmt, ...)
     {
         static char SLogBuffer[1024];
         va_list list;
@@ -34,15 +34,15 @@ namespace xlua
         vsnprintf(SLogBuffer, sizeof(SLogBuffer), Fmt.c_str(), list);
         va_end(list);
 
-        if (Level == Log && GLogCallback)
+        if (level == Log && GLogCallback)
         {
             GLogCallback(SLogBuffer);
         }
-        else if (Level == Warning && GLogWarningCallback)
+        else if (level == Warning && GLogWarningCallback)
         {
             GLogWarningCallback(SLogBuffer);
         }
-        else if (Level == Error && GLogErrorCallback)
+        else if (level == Error && GLogErrorCallback)
         {
             GLogErrorCallback(SLogBuffer);
         }

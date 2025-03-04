@@ -2,15 +2,17 @@
 #include <memory>
 #include "DataTransfer.h"
 #include "XLua.h"
+#include "lua.hpp"
 #include "pesapi.h"
 
 #if OSG_PROFILE
-#include "cmlua/cmlua.h"
+    #include "cmlua/cmlua.h"
 #endif
 
-EXTERN_C_START
 int pesapi_dostring(pesapi_env env, const uint8_t* code, size_t code_size, const char* path, pesapi_value_ref value_ref);
+EXTERN_C_START
 int pesapi_create_function(pesapi_env env, pesapi_callback native_impl, void* data, pesapi_function_finalize finalize);
+int debug_traceback(lua_State* L);
 EXTERN_C_END
 
 namespace xlua
@@ -52,20 +54,18 @@ namespace xlua
         };
     }
 
-    CppObjectMapper* CppObjectMapper::Get()
+    LUA_API CppObjectMapper* CppObjectMapper::Get()
     {
         return ms_Instance;
     }
 
-    int CppObjectMapper::LoadTypeById(lua_State* L, const void* TypeId)
+    int CppObjectMapper::LoadTypeById(lua_State* L, const void* typeId)
     {
-        auto ClassDef = xlua::LoadClassByID(TypeId);
-        if (ClassDef)
+        if (const auto classDef = xlua::LoadClassByID(typeId))
         {
             lua_createtable(L, 0, 0);
-            bool pairs   = false;
-            int meta_ref = GetMetaRefOfClass(L, ClassDef, pairs);
-            lua_rawgeti(L, LUA_REGISTRYINDEX, meta_ref);
+            const MetaInfo* metaInfo = GetMetaRefOfClass(L, classDef);
+            lua_rawgeti(L, LUA_REGISTRYINDEX, metaInfo->ref);
             lua_pushlightuserdata(L, &dummy_idx_tag);
             lua_rawget(L, -2);
             lua_remove(L, -2);
@@ -74,91 +74,59 @@ namespace xlua
                 lua_setmetatable(L, -2);
                 return lua_gettop(L);
             }
-            else
-            {
-                return luaL_error(L, "type meta not find");
-            }
+            return luaL_error(L, "type meta not find");
         }
-        else
-        {
-            return luaL_error(L, "no such type");
-        }
+        return luaL_error(L, "no such type");
     }
 
     void CppObjectMapper::Initialize(lua_State* L)
     {
         lua_newtable(L);
-        CacheRef = luaL_ref(L, LUA_REGISTRYINDEX);
         lua_newtable(L);
-        CachePrivateDataRef = luaL_ref(L, LUA_REGISTRYINDEX);
-        TypeIdToMetaMap.set_empty_key((const void*)0);
-        TypeIdToMetaMap.set_deleted_key((const void*)-1);
-        CDataCache.set_empty_key((void*)0);
-        CDataCache.set_deleted_key((void*)-1);
+        lua_pushstring(L, "__mode");
+        lua_pushstring(L, "v");
+        lua_rawset(L, -3);
+        lua_setmetatable(L, -2);
+        m_CacheRef = luaL_ref(L, LUA_REGISTRYINDEX);
+
+        lua_newtable(L);
+        m_CachePrivateDataRef = luaL_ref(L, LUA_REGISTRYINDEX);
+        m_TypeIdToMetaMap.set_empty_key((const void*)0);
+        m_TypeIdToMetaMap.set_deleted_key((const void*)-1);
+        m_DataCache.set_empty_key((void*)0);
+        m_DataCache.set_deleted_key((void*)-1);
         ms_Instance = this;
 
-        const char* __pairs = R"(return function(obj)
-        local isKeyValuePair
+        const char* dictionary = R"(return function(obj)
         local function lua_iter(cs_iter, k)
             if cs_iter:MoveNext() then
                 local current = cs_iter.Current
-                if isKeyValuePair == nil then
-                    if type(current) == 'userdata' then
-                        local t = current:GetType()
-                        isKeyValuePair = t.Name == 'KeyValuePair`2' and t.Namespace == 'System.Collections.Generic'
-                    else
-                        isKeyValuePair = false
-                    end
-                    --print(current, isKeyValuePair)
-                end
-                if isKeyValuePair then
-                    return current.Key, current.Value
-                else
-                    return k + 1, current
-                end
+                return current.Key, current.Value
             end
         end
         return lua_iter, obj:GetEnumerator(), -1
     end)";
-        const size_t size   = strlen(__pairs);
-        int oldTop          = lua_gettop(L);
-        int index           = pesapi_dostring(reinterpret_cast<pesapi_env>(L), reinterpret_cast<const uint8_t*>(__pairs), size, "__pairs", nullptr);
+        size_t size            = strlen(dictionary);
+        int oldTop             = lua_gettop(L);
+        int index              = pesapi_dostring(reinterpret_cast<pesapi_env>(L), reinterpret_cast<const uint8_t*>(dictionary), size, "dictionary", nullptr);
         lua_pushvalue(L, index);
-        PairsRef = luaL_ref(L, LUA_REGISTRYINDEX);
+        m_IDictionary = luaL_ref(L, LUA_REGISTRYINDEX);
         lua_settop(L, oldTop);
-    }
 
-    int CppObjectMapper::FindOrAddCppObject(lua_State* L, const void* TypeId, void* Ptr, bool PassByPointer)
-    {
-        if (Ptr == nullptr)
-        {
-            lua_pushnil(L);
-            return lua_gettop(L);
-        }
-
-        if (PassByPointer)
-        {
-            auto Iter = CDataCache.find(Ptr);
-            if (Iter != CDataCache.end())
-            {
-                auto CacheNodePtr = Iter->second->Find(TypeId);
-                if (CacheNodePtr)
-                {
-                    // printf("find in cache:%p\n", Ptr);
-                    lua_rawgeti(L, LUA_REGISTRYINDEX, CacheRef);
-                    int i = CacheNodePtr->Value;
-                    lua_rawgeti(L, -1, i);
-                    lua_remove(L, -2);
-                    lua_assert(lua_isuserdata(L, -1));
-                    return lua_gettop(L);
-                }
-            }
-        }
-
-        auto ClassDefinition = LoadClassByID(TypeId);
-        lua_assert(ClassDefinition);
-        BindCppObject(L, const_cast<LuaClassDefinition*>(ClassDefinition), Ptr, PassByPointer, false);
-        return lua_gettop(L);
+        const char* enumerable = R"(return function(obj)
+        local function lua_iter(cs_iter, k)
+            if cs_iter:MoveNext() then
+                return k + 1, cs_iter.Current
+            end
+        end
+        return lua_iter, obj:GetEnumerator(), -1
+    end)";
+        size                   = strlen(enumerable);
+        oldTop                 = lua_gettop(L);
+        index                  = pesapi_dostring(reinterpret_cast<pesapi_env>(L), reinterpret_cast<const uint8_t*>(enumerable), size, "enumerable", nullptr);
+        lua_pushvalue(L, index);
+        m_Enumerable = luaL_ref(L, LUA_REGISTRYINDEX);
+        lua_settop(L, oldTop);
     }
 
     static int PesapiFunctionCallback(lua_State* L)
@@ -182,23 +150,26 @@ namespace xlua
         {
             CallbackData->Finalize(&g_pesapi_ffi, CallbackData->Data, DataTransfer::GetLuaEnvPrivate());
         }
-        for (auto it = ms_Instance->FunctionDatas.begin(); it != ms_Instance->FunctionDatas.end();)
+        if (ms_Instance != nullptr)
         {
-            if (*it == CallbackData)
+            for (auto it = ms_Instance->m_FunctionDatas.begin(); it != ms_Instance->m_FunctionDatas.end();)
             {
-                it = ms_Instance->FunctionDatas.erase(it);
-            }
-            else
-            {
-                ++it;
+                if (*it == CallbackData)
+                {
+                    it = ms_Instance->m_FunctionDatas.erase(it);
+                }
+                else
+                {
+                    ++it;
+                }
             }
         }
     }
 
     int CppObjectMapper::CreateFunction(lua_State* L, pesapi_callback Callback, void* Data, pesapi_function_finalize Finalize)
     {
-        auto CallbackData = (PesapiCallbackData*)lua_newuserdata(L, sizeof(PesapiCallbackData));
-        luaL_newmetatable(L, "pesapi_gc_table");
+        const auto CallbackData = (PesapiCallbackData*)lua_newuserdata(L, sizeof(PesapiCallbackData));
+        lua_newtable(L);
         lua_pushlightuserdata(L, CallbackData);
         lua_pushcclosure(L, PesapiFunctionGC, 1);
         lua_setfield(L, -2, "__gc");
@@ -206,10 +177,10 @@ namespace xlua
         CallbackData->Callback = Callback;
         CallbackData->Data     = Data;
         CallbackData->Finalize = Finalize;
-        FunctionDatas.push_back(CallbackData);
+        m_FunctionDatas.push_back(CallbackData);
 
         lua_pushlightuserdata(L, Data);
-        lua_pushcclosure(L, (lua_CFunction)PesapiFunctionCallback, 2);
+        lua_pushcclosure(L, PesapiFunctionCallback, 2);
         return lua_gettop(L);
     }
 
@@ -224,50 +195,114 @@ namespace xlua
         return std::weak_ptr<int>(Ref);
     }
 
-    void CppObjectMapper::BindCppObject(lua_State* L, LuaClassDefinition* ClassDefinition, void* Ptr, bool PassByPointer, bool create)
+    int CppObjectMapper::FindOrAddCppObject(lua_State* L, const void* typeId, void* ptr, bool passByPointer)
     {
-        CppObject* obj  = (CppObject*)lua_newuserdata(L, sizeof(CppObject));
-        obj->Ptr        = Ptr;
-        obj->TypeId     = ClassDefinition->TypeId;
-        obj->NeedDelete = !PassByPointer;
-        bool pairs      = false;
-        int meta_ref    = GetMetaRefOfClass(L, ClassDefinition, pairs);
-        lua_rawgeti(L, LUA_REGISTRYINDEX, meta_ref);
-        lua_setmetatable(L, -2);
-
-        if (!create)
+        if (ptr == nullptr)
         {
-            lua_rawgeti(L, LUA_REGISTRYINDEX, CacheRef);
-            lua_pushvalue(L, -2);
-            int ref = luaL_ref(L, -2);
-            lua_pop(L, 1);
-            auto Iter = CDataCache.find(Ptr);
-            ObjectCacheNode* CacheNodePtr;
-            if (Iter != CDataCache.end())
-            {
-                CacheNodePtr = Iter->second->Add(ClassDefinition->TypeId);
-            }
-            else
-            {
-                auto Ret     = CDataCache.insert({Ptr, new ObjectCacheNode(ClassDefinition->TypeId)});
-                CacheNodePtr = Ret.first->second;
-            }
-            CacheNodePtr->Value = ref;
+            lua_pushnil(L);
+            return lua_gettop(L);
         }
 
-        if (ClassDefinition->OnEnter)
+        if (passByPointer)
         {
-            obj->index = ClassDefinition->OnEnter(Ptr, ClassDefinition->Data, DataTransfer::GetLuaEnvPrivate());
+            const auto iterator = m_DataCache.find(ptr);
+            if (iterator != m_DataCache.end())
+            {
+                xlua::ObjectCacheNode* item = iterator->second;
+                if (const xlua::ObjectCacheNode* node = item->Find(typeId))
+                {
+                    // printf("find in cache:%p\n", Ptr);
+                    // 这里由于是弱引用，所以值不一定会存在
+                    lua_rawgeti(L, LUA_REGISTRYINDEX, m_CacheRef);
+                    if (lua_rawgeti(L, -1, node->Value) != LUA_TNIL)
+                    {
+                        lua_remove(L, -2);
+                        return lua_gettop(L);
+                    }
+                    lua_pop(L, 2);
+                    // 不存在，删掉无效ref
+                    item->Remove(node->TypeId, item == node);
+                    if (!item->IsValid())
+                    {
+                        m_DataCache.erase(iterator);
+                        // PLog(xlua::Log, "FindOrAddCppObject 0X%p", ptr);
+                    }
+                }
+            }
+        }
+        const LuaClassDefinition* classDefinition = LoadClassByID(typeId);
+        BindCppObject(L, classDefinition, ptr, passByPointer);
+        return lua_gettop(L);
+    }
+
+    void CppObjectMapper::BindCppObject(lua_State* L, const LuaClassDefinition* classDefinition, void* ptr, bool passByPointer)
+    {
+        CppObject* obj           = static_cast<CppObject*>(lua_newuserdata(L, sizeof(CppObject)));
+        obj->Ptr                 = ptr;
+        obj->TypeId              = classDefinition->TypeId;
+        obj->NeedDelete          = !passByPointer;
+        const MetaInfo* metaInfo = GetMetaRefOfClass(L, classDefinition);
+        lua_rawgeti(L, LUA_REGISTRYINDEX, metaInfo->ref);
+        lua_setmetatable(L, -2);
+
+        lua_rawgeti(L, LUA_REGISTRYINDEX, m_CacheRef);
+        lua_pushvalue(L, -2);
+        int ref = luaL_ref(L, -2);
+        lua_pop(L, 1);
+        auto iterator = m_DataCache.find(ptr);
+        ObjectCacheNode* cacheNodePtr;
+        if (iterator != m_DataCache.end())
+        {
+            cacheNodePtr = iterator->second->Add(classDefinition->TypeId);
         }
         else
         {
-            obj->index = -1;
+            /*if (strcmp(classDefinition->ScriptName, "List`1") == 0)
+            {
+                int top = lua_gettop(L);
+                lua_getglobal(L, "debug");
+                lua_getfield(L, -1, "traceback");
+                lua_pushstring(L, classDefinition->ScriptName);
+                lua_pushinteger(L, 1);
+                if (lua_pcall(L, 2, 1, 0) == LUA_OK)
+                {
+                    const char* msg = lua_tostring(L, -1);
+                    PLog(xlua::Log, "0X%p %s", ptr, msg);
+                }
+                lua_settop(L,top);
+            }*/
+            if (classDefinition->OnEnter)
+            {
+                classDefinition->OnEnter(ptr, classDefinition->Data, DataTransfer::GetLuaEnvPrivate());
+                // PLog(xlua::Log, "BindCppObject 0X%p", ptr);
+            }
+            auto ret     = m_DataCache.insert({ptr, new ObjectCacheNode(classDefinition->TypeId)});
+            cacheNodePtr = ret.first->second;
+        }
+        cacheNodePtr->Value = ref;
+    }
+
+    void CppObjectMapper::UnBindCppObject(lua_State* L, const LuaClassDefinition* classDefinition, void* ptr)
+    {
+        auto iterator = m_DataCache.find(ptr);
+        if (iterator != m_DataCache.end())
+        {
+            iterator->second->Remove(classDefinition->TypeId, true);
+            if (!iterator->second->TypeId)
+            {
+                m_DataCache.erase(ptr);
+                if (classDefinition->OnExit)
+                {
+                    classDefinition->OnExit(ptr, classDefinition->Data, DataTransfer::GetLuaEnvPrivate());
+                    // PLog(xlua::Log, "UnBindCppObject 0X%p", ptr);
+                }
+            }
         }
     }
 
-    void* CppObjectMapper::GetPrivateData(lua_State* L, int index)
+    void* CppObjectMapper::GetPrivateData(lua_State* L, int index) const
     {
-        lua_rawgeti(L, LUA_REGISTRYINDEX, CachePrivateDataRef);
+        lua_rawgeti(L, LUA_REGISTRYINDEX, m_CachePrivateDataRef);
         lua_pushvalue(L, index);
         lua_rawget(L, -2);
         if (lua_isnil(L, -1))
@@ -280,84 +315,64 @@ namespace xlua
         return data;
     }
 
-    void CppObjectMapper::SetPrivateData(lua_State* L, int value_ref, void* Ptr)
+    void CppObjectMapper::SetPrivateData(lua_State* L, int index, void* ptr)
     {
-        lua_rawgeti(L, LUA_REGISTRYINDEX, CachePrivateDataRef);
-        lua_rawgeti(L, LUA_REGISTRYINDEX, value_ref);
-        if (Ptr == nullptr)
+        lua_rawgeti(L, LUA_REGISTRYINDEX, m_CachePrivateDataRef);
+        lua_rawgeti(L, LUA_REGISTRYINDEX, index);
+        if (ptr == nullptr)
         {
             lua_pushnil(L);
         }
         else
         {
-            lua_pushlightuserdata(L, Ptr);
+            lua_pushlightuserdata(L, ptr);
         }
         lua_rawset(L, -3);
         lua_pop(L, 1);
     }
 
-    void CppObjectMapper::UnBindCppObject(lua_State* L, LuaClassDefinition* ClassDefinition, void* Ptr, int UserData)
-    {
-        CDataFinalizeMap.erase(Ptr);
-        auto Iter = CDataCache.find(Ptr);
-        if (Iter != CDataCache.end())
-        {
-            Iter->second->Remove(ClassDefinition->TypeId, true);
-            if (!Iter->second->TypeId)
-            {
-                CDataCache.erase(Ptr);
-            }
-        }
-
-        if (ClassDefinition->OnExit)
-        {
-            ClassDefinition->OnExit(Ptr, ClassDefinition->Data, DataTransfer::GetLuaEnvPrivate(), UserData);
-        }
-    }
-
     void CppObjectMapper::UnInitialize(lua_State* L)
     {
-        auto PData = DataTransfer::GetLuaEnvPrivate();
-        lua_rawgeti(L, LUA_REGISTRYINDEX, CacheRef);
-        for (auto& KV : CDataCache)
+        const auto PData = DataTransfer::GetLuaEnvPrivate();
+        lua_rawgeti(L, LUA_REGISTRYINDEX, m_CacheRef);
+        for (auto& KV : m_DataCache)
         {
             ObjectCacheNode* PNode = KV.second;
             bool need_delete       = true;
+            bool exit              = false;
             while (PNode)
             {
                 lua_rawgeti(L, -1, PNode->Value);
                 lua_assert(lua_isuserdata(L, -1));
-                CppObject* obj                            = (CppObject*)lua_touserdata(L, -1);
+                const auto obj                            = (CppObject*)lua_touserdata(L, -1);
                 const LuaClassDefinition* ClassDefinition = FindClassByID(obj->TypeId);
                 if (ClassDefinition && ClassDefinition->Finalize && need_delete && obj->NeedDelete)
                 {
                     ClassDefinition->Finalize(&g_pesapi_ffi, KV.first, ClassDefinition->Data, PData);
                     need_delete = false;
                 }
-                if (ClassDefinition && ClassDefinition->OnExit)
+                if (ClassDefinition && ClassDefinition->OnExit && !exit)
                 {
-                    ClassDefinition->OnExit(KV.first, ClassDefinition->Data, PData, 0);
+                    ClassDefinition->OnExit(KV.first, ClassDefinition->Data, PData);
+                    exit = true;
                 }
                 lua_pop(L, 1);
-                ObjectCacheNode* temp = PNode;
-                PNode                 = PNode->Next;
+                const ObjectCacheNode* temp = PNode;
+                PNode                       = PNode->Next;
                 delete temp;
             }
         }
-        for (int i = 0; i < FunctionDatas.size(); ++i)
-        {
-            delete FunctionDatas[i];
-        }
-        FunctionDatas.clear();
-        CDataCache.clear();
-        for (const auto& pairs : TypeIdToMetaMap)
+        m_FunctionDatas.clear();
+        m_DataCache.clear();
+        for (const auto& pairs : m_TypeIdToMetaMap)
         {
             delete pairs.second;
         }
-        TypeIdToMetaMap.clear();
-        luaL_unref(L, LUA_REGISTRYINDEX, CacheRef);
-        luaL_unref(L, LUA_REGISTRYINDEX, CachePrivateDataRef);
-        luaL_unref(L, LUA_REGISTRYINDEX, PairsRef);
+        m_TypeIdToMetaMap.clear();
+        luaL_unref(L, LUA_REGISTRYINDEX, m_CacheRef);
+        luaL_unref(L, LUA_REGISTRYINDEX, m_CachePrivateDataRef);
+        luaL_unref(L, LUA_REGISTRYINDEX, m_IDictionary);
+        luaL_unref(L, LUA_REGISTRYINDEX, m_Enumerable);
         ms_Instance = nullptr;
     }
 
@@ -422,360 +437,364 @@ namespace xlua
         }
     }
 
-    // param   --- [1]: obj, [2]: key
-    static int obj_indexer(lua_State* L)
+    namespace
     {
-        int t = lua_type(L, 2);
-        if (t == LUA_TSTRING)
+        // param   --- [1]: obj, [2]: key
+        int object_indexer(lua_State* L)
         {
-            return obj_internal_indexer(L, false);
-        }
-        else if (t == LUA_TNUMBER)
-        {
-            lua_pushstring(L, "get_Item");
-            return obj_internal_indexer(L, true);
-        }
-        else
-        {
-            return 0;
-        }
-    }
-    // upvalue --- [1]:methods, [2]:setters, [3]:base_newindex
-    // param   --- [1]: obj, [2]: key, [3]: value [4]: string
-    static int obj_internal_newindexer(lua_State* L, bool is_indexer)
-    {
-        if (is_indexer)
-        {
-            lua_gettable(L, lua_upvalueindex(1));
-            //[1]: obj, [2]: key, [3]: value [4]: string [5]: set_Item
-            // set_Item(1,2,3)
-            if (!lua_isnil(L, -1))
+            int t = lua_type(L, 2);
+            if (t == LUA_TSTRING)
             {
-                // has method
-                lua_pushvalue(L, 1);
-                lua_pushvalue(L, 2);
-                lua_pushvalue(L, 3);
-                lua_call(L, 3, 0);
+                return obj_internal_indexer(L, false);
+            }
+            else if (t == LUA_TNUMBER)
+            {
+                lua_pushstring(L, "get_Item");
+                return obj_internal_indexer(L, true);
+            }
+            else
+            {
                 return 0;
             }
-            lua_pop(L, 1);
         }
-        else
+
+        // upvalue --- [1]:methods, [2]:setters, [3]:base_newindex
+        // param   --- [1]: obj, [2]: key, [3]: value [4]: string
+        int obj_internal_new_indexer(lua_State* L, bool is_indexer)
         {
-            // setter
-            if (!lua_isnil(L, lua_upvalueindex(2)))
+            if (is_indexer)
             {
-                if (!is_indexer)
-                    lua_pushvalue(L, 2);
-                lua_gettable(L, lua_upvalueindex(2));
+                lua_gettable(L, lua_upvalueindex(1));
+                //[1]: obj, [2]: key, [3]: value [4]: string [5]: set_Item
+                // set_Item(1,2,3)
                 if (!lua_isnil(L, -1))
-                { // has setter
+                {
+                    // has method
                     lua_pushvalue(L, 1);
+                    lua_pushvalue(L, 2);
                     lua_pushvalue(L, 3);
-                    lua_call(L, 2, 0);
+                    lua_call(L, 3, 0);
                     return 0;
                 }
                 lua_pop(L, 1);
             }
-        }
-
-        if (!lua_isnil(L, lua_upvalueindex(3)))
-        {
-            lua_settop(L, 3);
-            lua_pushvalue(L, lua_upvalueindex(3));
-            lua_insert(L, 1);
-            lua_call(L, 3, 0);
-            return 0;
-        }
-        else
-        {
-            return luaL_error(L, "class cannot set %s, no such field", lua_tostring(L, 2));
-        }
-    }
-
-    // upvalue --- [1]:setters, [2]:base_newindex
-    // param   --- [1]: obj, [2]: key, [3]: value
-    static int obj_newindexer(lua_State* L)
-    {
-        int t = lua_type(L, 2);
-        if (t == LUA_TSTRING)
-        {
-            return obj_internal_newindexer(L, false);
-        }
-        else if (t == LUA_TNUMBER)
-        {
-            lua_pushstring(L, "set_Item");
-            return obj_internal_newindexer(L, true);
-        }
-        else
-        {
-            return 0;
-        }
-    }
-
-    static int object_new(lua_State* L)
-    {
-        // auto starttime = system_clock::now();
-        LuaClassDefinition* class_definition = (LuaClassDefinition*)lua_touserdata(L, lua_upvalueindex(1));
-#if OSG_PROFILE
-        int index = 0;
-        if (pf_stats_begin_sample != nullptr)
-            index = pf_stats_begin_sample(CppObjectMapper::PrefNewIndex, pf_stats_regist_custom_name(class_definition->ScriptName));
-#endif
-        pesapi_callback_info__ callback_info{L, 1, 0};
-        xlua::CppObjectMapper::Get()->BindCppObject(L, class_definition, class_definition->Initialize(&g_pesapi_ffi, &callback_info), false, true);
-        /*auto diff = std::chrono::duration_cast<std::chrono::microseconds>(system_clock::now() - starttime).count();
-        xlua::Log("%I64d", diff);*/
-#if OSG_PROFILE
-        if (pf_stats_end_sample_by_index != nullptr)
-        {
-            pf_stats_end_sample_by_index(index);
-        }
-#endif
-        return 1;
-    }
-
-    static int object_gc(lua_State* L)
-    {
-        LuaClassDefinition* class_definition = (LuaClassDefinition*)lua_touserdata(L, lua_upvalueindex(1));
-#if OSG_PROFILE
-        int index = 0;
-        if (pf_stats_begin_sample != nullptr)
-            index = pf_stats_begin_sample(CppObjectMapper::PrefGCIndex, pf_stats_regist_custom_name(class_definition->ScriptName));
-#endif
-        CppObject* cppObject                 = (CppObject*)lua_touserdata(L, -1);
-        auto instance                        = xlua::CppObjectMapper::Get();
-        if (instance == nullptr)
-            return 0;
-        instance->UnBindCppObject(L, class_definition, cppObject->Ptr, cppObject->index);
-        if (cppObject->NeedDelete)
-        {
-            // printf("Finalize %p\n", cppObject->Ptr);
-            if (class_definition->Finalize)
-                class_definition->Finalize(&g_pesapi_ffi, cppObject->Ptr, class_definition->Data, L);
-        }
-#if OSG_PROFILE
-        if (pf_stats_end_sample_by_index != nullptr)
-        {
-            pf_stats_end_sample_by_index(index);
-        }
-#endif
-        return 0;
-    }
-
-    // upvalue --- [1]:getters, [2]:fields, [3]:base_index
-    // param   --- [1]: obj, [2]: key
-    static int static_indexer(lua_State* L)
-    {
-        if (!lua_isnil(L, lua_upvalueindex(1)))
-        {
-            lua_pushvalue(L, 2);
-            lua_gettable(L, lua_upvalueindex(1));
-            if (!lua_isnil(L, -1))
-            { // has getter
-                lua_call(L, 0, 1);
-                return 1;
+            else
+            {
+                // setter
+                if (!lua_isnil(L, lua_upvalueindex(2)))
+                {
+                    if (!is_indexer)
+                        lua_pushvalue(L, 2);
+                    lua_gettable(L, lua_upvalueindex(2));
+                    if (!lua_isnil(L, -1))
+                    { // has setter
+                        lua_pushvalue(L, 1);
+                        lua_pushvalue(L, 3);
+                        lua_call(L, 2, 0);
+                        return 0;
+                    }
+                    lua_pop(L, 1);
+                }
             }
-            lua_pop(L, 1);
-        }
 
-        if (!lua_isnil(L, lua_upvalueindex(2)))
-        {
-            lua_pushvalue(L, 2);
-            lua_rawget(L, lua_upvalueindex(2));
-            if (!lua_isnil(L, -1))
-            { // has field
-                return 1;
+            if (!lua_isnil(L, lua_upvalueindex(3)))
+            {
+                lua_settop(L, 3);
+                lua_pushvalue(L, lua_upvalueindex(3));
+                lua_insert(L, 1);
+                lua_call(L, 3, 0);
+                return 0;
             }
-            lua_pop(L, 1);
+            else
+            {
+                return luaL_error(L, "class cannot set %s, no such field", lua_tostring(L, 2));
+            }
         }
 
-        if (!lua_isnil(L, lua_upvalueindex(3)))
+        // upvalue --- [1]:setters, [2]:base_newindex
+        // param   --- [1]: obj, [2]: key, [3]: value
+        int obj_new_indexer(lua_State* L)
         {
-            lua_settop(L, 2);
-            lua_pushvalue(L, lua_upvalueindex(3));
-            lua_insert(L, 1);
-            lua_call(L, 2, 1);
-            return 1;
-        }
-        else
-        {
-            lua_pushnil(L);
-            return 1;
-        }
-    }
-
-    // upvalue --- [1]:setters, [2]:base_newindex
-    // param   --- [1]: obj, [2]: key, [3]: value
-    static int static_newindexer(lua_State* L)
-    {
-        if (!lua_isnil(L, lua_upvalueindex(1)))
-        {
-            lua_pushvalue(L, 2);
-            lua_gettable(L, lua_upvalueindex(1));
-            if (!lua_isnil(L, -1))
-            { // has setter
-                lua_pushvalue(L, 3);
-                lua_call(L, 1, 0);
+            int t = lua_type(L, 2);
+            if (t == LUA_TSTRING)
+            {
+                return obj_internal_new_indexer(L, false);
+            }
+            else if (t == LUA_TNUMBER)
+            {
+                lua_pushstring(L, "set_Item");
+                return obj_internal_new_indexer(L, true);
+            }
+            else
+            {
                 return 0;
             }
         }
 
-        if (!lua_isnil(L, lua_upvalueindex(2)))
+        int object_new(lua_State* L)
         {
-            lua_settop(L, 3);
-            lua_pushvalue(L, lua_upvalueindex(2));
-            lua_insert(L, 1);
-            lua_call(L, 3, 0);
+            LuaClassDefinition* class_definition = static_cast<LuaClassDefinition*>(lua_touserdata(L, lua_upvalueindex(1)));
+#if OSG_PROFILE
+            int index = 0;
+            if (pf_stats_begin_sample != nullptr)
+                index = pf_stats_begin_sample(CppObjectMapper::PrefNewIndex, pf_stats_regist_custom_name(class_definition->ScriptName));
+#endif
+            pesapi_callback_info__ callback_info{L, 1, 0};
+            xlua::CppObjectMapper::Get()->BindCppObject(L, class_definition, class_definition->Initialize(&g_pesapi_ffi, &callback_info), false);
+#if OSG_PROFILE
+            if (pf_stats_end_sample_by_index != nullptr)
+            {
+                pf_stats_end_sample_by_index(index);
+            }
+#endif
+            return 1;
+        }
+
+        int object_gc(lua_State* L)
+        {
+            LuaClassDefinition* class_definition = (LuaClassDefinition*)lua_touserdata(L, lua_upvalueindex(1));
+#if OSG_PROFILE
+            int index = 0;
+            if (pf_stats_begin_sample != nullptr)
+                index = pf_stats_begin_sample(CppObjectMapper::PrefGCIndex, pf_stats_regist_custom_name(class_definition->ScriptName));
+#endif
+            CppObject* cppObject = (CppObject*)lua_touserdata(L, -1);
+            const auto instance  = xlua::CppObjectMapper::Get();
+            if (instance == nullptr)
+                return 0;
+            instance->UnBindCppObject(L, class_definition, cppObject->Ptr);
+            if (cppObject->NeedDelete)
+            {
+                // printf("Finalize %p\n", cppObject->Ptr);
+                if (class_definition->Finalize)
+                    class_definition->Finalize(&g_pesapi_ffi, cppObject->Ptr, class_definition->Data, L);
+            }
+#if OSG_PROFILE
+            if (pf_stats_end_sample_by_index != nullptr)
+            {
+                pf_stats_end_sample_by_index(index);
+            }
+#endif
             return 0;
         }
-        else
+
+        // upvalue --- [1]:getters, [2]:fields, [3]:base_index
+        // param   --- [1]: obj, [2]: key
+        int static_indexer(lua_State* L)
         {
-            return luaL_error(L, "no static field %s", lua_tostring(L, 2));
-        }
-    }
+            if (!lua_isnil(L, lua_upvalueindex(1)))
+            {
+                lua_pushvalue(L, 2);
+                lua_gettable(L, lua_upvalueindex(1));
+                if (!lua_isnil(L, -1))
+                { // has getter
+                    lua_call(L, 0, 1);
+                    return 1;
+                }
+                lua_pop(L, 1);
+            }
 
-    static int property_getter_wrap(lua_State* L)
-    {
-        LuaPropertyInfo* prop_info = (LuaPropertyInfo*)lua_touserdata(L, lua_upvalueindex(1));
-#if OSG_PROFILE
-        int index = 0;
-        if (pf_stats_begin_sample != nullptr)
-            index = pf_stats_begin_sample(CppObjectMapper::PrefPropertyGetterIndex, pf_stats_regist_custom_name(prop_info->Name));
-#endif
-        // printf("property_getter_wrap %p\n", prop_info);
-        pesapi_callback_info__ callback_info{L, 1, 0};
-        prop_info->Getter(&g_pesapi_ffi, &callback_info);
-#if OSG_PROFILE
-        if (pf_stats_end_sample_by_index != nullptr)
+            if (!lua_isnil(L, lua_upvalueindex(2)))
+            {
+                lua_pushvalue(L, 2);
+                lua_rawget(L, lua_upvalueindex(2));
+                if (!lua_isnil(L, -1))
+                { // has field
+                    return 1;
+                }
+                lua_pop(L, 1);
+            }
+
+            if (!lua_isnil(L, lua_upvalueindex(3)))
+            {
+                lua_settop(L, 2);
+                lua_pushvalue(L, lua_upvalueindex(3));
+                lua_insert(L, 1);
+                lua_call(L, 2, 1);
+                return 1;
+            }
+            else
+            {
+                lua_pushnil(L);
+                return 1;
+            }
+        }
+
+        // upvalue --- [1]:setters, [2]:base_newindex
+        // param   --- [1]: obj, [2]: key, [3]: value
+        static int static_newindexer(lua_State* L)
         {
-            pf_stats_end_sample_by_index(index);
-        }
-#endif
-        return callback_info.RetNum;
-    }
+            if (!lua_isnil(L, lua_upvalueindex(1)))
+            {
+                lua_pushvalue(L, 2);
+                lua_gettable(L, lua_upvalueindex(1));
+                if (!lua_isnil(L, -1))
+                { // has setter
+                    lua_pushvalue(L, 3);
+                    lua_call(L, 1, 0);
+                    return 0;
+                }
+            }
 
-    static int property_setter_wrap(lua_State* L)
-    {
-        LuaPropertyInfo* prop_info = (LuaPropertyInfo*)lua_touserdata(L, lua_upvalueindex(1));
-#if OSG_PROFILE
-        int index = 0;
-        if (pf_stats_begin_sample != nullptr)
-            index = pf_stats_begin_sample(CppObjectMapper::PrefPropertySetterIndex, pf_stats_regist_custom_name(prop_info->Name));
-#endif
-        // printf("property_setter_wrap %p\n", prop_info);
-        pesapi_callback_info__ callback_info{L, 1, 0};
-        prop_info->Setter(&g_pesapi_ffi, &callback_info);
-#if OSG_PROFILE
-        if (pf_stats_end_sample_by_index != nullptr)
+            if (!lua_isnil(L, lua_upvalueindex(2)))
+            {
+                lua_settop(L, 3);
+                lua_pushvalue(L, lua_upvalueindex(2));
+                lua_insert(L, 1);
+                lua_call(L, 3, 0);
+                return 0;
+            }
+            else
+            {
+                return luaL_error(L, "no static field %s", lua_tostring(L, 2));
+            }
+        }
+
+        int property_getter_wrap(lua_State* L)
         {
-            pf_stats_end_sample_by_index(index);
+            LuaPropertyInfo* prop_info = (LuaPropertyInfo*)lua_touserdata(L, lua_upvalueindex(1));
+#if OSG_PROFILE
+            int index = 0;
+            if (pf_stats_begin_sample != nullptr)
+                index = pf_stats_begin_sample(CppObjectMapper::PrefPropertyGetterIndex, pf_stats_regist_custom_name(prop_info->Name));
+#endif
+            // printf("property_getter_wrap %p\n", prop_info);
+            pesapi_callback_info__ callback_info{L, 1, 0};
+            prop_info->Getter(&g_pesapi_ffi, &callback_info);
+#if OSG_PROFILE
+            if (pf_stats_end_sample_by_index != nullptr)
+            {
+                pf_stats_end_sample_by_index(index);
+            }
+#endif
+            return callback_info.RetNum;
         }
-#endif
-        return callback_info.RetNum;
-    }
 
-    static int variable_getter_wrap(lua_State* L)
-    {
-
-        LuaPropertyInfo* prop_info = (LuaPropertyInfo*)lua_touserdata(L, lua_upvalueindex(1));
-#if OSG_PROFILE
-        int index = 0;
-        if (pf_stats_begin_sample != nullptr)
-            index = pf_stats_begin_sample(CppObjectMapper::PrefFieldGetterIndex, pf_stats_regist_custom_name(prop_info->Name));
-#endif
-        // printf("variable_getter_wrap %p top=%d\n", prop_info, lua_gettop(L));
-        pesapi_callback_info__ callback_info{L, 0, 0};
-        prop_info->Getter(&g_pesapi_ffi, &callback_info);
-#if OSG_PROFILE
-        if (pf_stats_end_sample_by_index != nullptr)
+        static int property_setter_wrap(lua_State* L)
         {
-            pf_stats_end_sample_by_index(index);
+            LuaPropertyInfo* prop_info = (LuaPropertyInfo*)lua_touserdata(L, lua_upvalueindex(1));
+#if OSG_PROFILE
+            int index = 0;
+            if (pf_stats_begin_sample != nullptr)
+                index = pf_stats_begin_sample(CppObjectMapper::PrefPropertySetterIndex, pf_stats_regist_custom_name(prop_info->Name));
+#endif
+            // printf("property_setter_wrap %p\n", prop_info);
+            pesapi_callback_info__ callback_info{L, 1, 0};
+            prop_info->Setter(&g_pesapi_ffi, &callback_info);
+#if OSG_PROFILE
+            if (pf_stats_end_sample_by_index != nullptr)
+            {
+                pf_stats_end_sample_by_index(index);
+            }
+#endif
+            return callback_info.RetNum;
         }
-#endif
-        return callback_info.RetNum;
-    }
 
-    static int variable_setter_wrap(lua_State* L)
-    {
-        LuaPropertyInfo* prop_info = (LuaPropertyInfo*)lua_touserdata(L, lua_upvalueindex(1));
-#if OSG_PROFILE
-        int index = 0;
-        if (pf_stats_begin_sample != nullptr)
-            index = pf_stats_begin_sample(CppObjectMapper::PrefFieldSetterIndex, pf_stats_regist_custom_name(prop_info->Name));
-#endif
-        
-        // printf("variable_setter_wrap %p top=%d\n", prop_info, lua_gettop(L));
-        pesapi_callback_info__ callback_info{L, 0, 0};
-        prop_info->Setter(&g_pesapi_ffi, &callback_info);
-#if OSG_PROFILE
-        if (pf_stats_end_sample_by_index != nullptr)
+        static int variable_getter_wrap(lua_State* L)
         {
-            pf_stats_end_sample_by_index(index);
-        }
-#endif
-        return callback_info.RetNum;
-    }
 
-    static int method_wrap(lua_State* L)
-    {
-        LuaFunctionInfo* func_info = (LuaFunctionInfo*)lua_touserdata(L, lua_upvalueindex(1));
+            LuaPropertyInfo* prop_info = (LuaPropertyInfo*)lua_touserdata(L, lua_upvalueindex(1));
 #if OSG_PROFILE
-        int index = 0;
-        if (pf_stats_begin_sample != nullptr)
-            index = pf_stats_begin_sample(CppObjectMapper::PrefMethodIndex, pf_stats_regist_custom_name(func_info->Name));
+            int index = 0;
+            if (pf_stats_begin_sample != nullptr)
+                index = pf_stats_begin_sample(CppObjectMapper::PrefFieldGetterIndex, pf_stats_regist_custom_name(prop_info->Name));
 #endif
-        // printf("method_wrap %p\n", func_info);
-        pesapi_callback_info__ callback_info{L, 1, 0};
-        func_info->Callback(&g_pesapi_ffi, &callback_info);
+            // printf("variable_getter_wrap %p top=%d\n", prop_info, lua_gettop(L));
+            pesapi_callback_info__ callback_info{L, 0, 0};
+            prop_info->Getter(&g_pesapi_ffi, &callback_info);
 #if OSG_PROFILE
-        if (pf_stats_end_sample_by_index != nullptr)
+            if (pf_stats_end_sample_by_index != nullptr)
+            {
+                pf_stats_end_sample_by_index(index);
+            }
+#endif
+            return callback_info.RetNum;
+        }
+
+        static int variable_setter_wrap(lua_State* L)
         {
-            pf_stats_end_sample_by_index(index);
+            LuaPropertyInfo* prop_info = (LuaPropertyInfo*)lua_touserdata(L, lua_upvalueindex(1));
+#if OSG_PROFILE
+            int index = 0;
+            if (pf_stats_begin_sample != nullptr)
+                index = pf_stats_begin_sample(CppObjectMapper::PrefFieldSetterIndex, pf_stats_regist_custom_name(prop_info->Name));
+#endif
+
+            // printf("variable_setter_wrap %p top=%d\n", prop_info, lua_gettop(L));
+            pesapi_callback_info__ callback_info{L, 0, 0};
+            prop_info->Setter(&g_pesapi_ffi, &callback_info);
+#if OSG_PROFILE
+            if (pf_stats_end_sample_by_index != nullptr)
+            {
+                pf_stats_end_sample_by_index(index);
+            }
+#endif
+            return callback_info.RetNum;
         }
-#endif
-        return callback_info.RetNum;
-    }
 
-    static int function_wrap(lua_State* L)
-    {
-
-        LuaFunctionInfo* func_info = (LuaFunctionInfo*)lua_touserdata(L, lua_upvalueindex(1));
-#if OSG_PROFILE
-        int index = 0;
-        if (pf_stats_begin_sample != nullptr)
-            index = pf_stats_begin_sample(CppObjectMapper::PrefFunctionIndex, pf_stats_regist_custom_name(func_info->Name));
-#endif
-        // printf("function_wrap %p\n", func_info);
-        pesapi_callback_info__ callback_info{L, 0, 0};
-        func_info->Callback(&g_pesapi_ffi, &callback_info);
-#if OSG_PROFILE
-        if (pf_stats_end_sample_by_index != nullptr)
+        static int method_wrap(lua_State* L)
         {
-            pf_stats_end_sample_by_index(index);
-        }
+            LuaFunctionInfo* func_info = (LuaFunctionInfo*)lua_touserdata(L, lua_upvalueindex(1));
+#if OSG_PROFILE
+            int index = 0;
+            if (pf_stats_begin_sample != nullptr)
+                index = pf_stats_begin_sample(CppObjectMapper::PrefMethodIndex, pf_stats_regist_custom_name(func_info->Name));
 #endif
-        return callback_info.RetNum;
-    }
+            // printf("method_wrap %p\n", func_info);
+            pesapi_callback_info__ callback_info{L, 1, 0};
+            func_info->Callback(&g_pesapi_ffi, &callback_info);
+#if OSG_PROFILE
+            if (pf_stats_end_sample_by_index != nullptr)
+            {
+                pf_stats_end_sample_by_index(index);
+            }
+#endif
+            return callback_info.RetNum;
+        }
 
-    int CppObjectMapper::GetMetaRefOfClass(lua_State* L, const LuaClassDefinition* ClassDefinition, bool& pairs)
+        static int function_wrap(lua_State* L)
+        {
+
+            LuaFunctionInfo* func_info = (LuaFunctionInfo*)lua_touserdata(L, lua_upvalueindex(1));
+#if OSG_PROFILE
+            int index = 0;
+            if (pf_stats_begin_sample != nullptr)
+                index = pf_stats_begin_sample(CppObjectMapper::PrefFunctionIndex, pf_stats_regist_custom_name(func_info->Name));
+#endif
+            // printf("function_wrap %p\n", func_info);
+            pesapi_callback_info__ callback_info{L, 0, 0};
+            func_info->Callback(&g_pesapi_ffi, &callback_info);
+#if OSG_PROFILE
+            if (pf_stats_end_sample_by_index != nullptr)
+            {
+                pf_stats_end_sample_by_index(index);
+            }
+#endif
+            return callback_info.RetNum;
+        }
+    } // namespace
+
+    MetaInfo* CppObjectMapper::GetMetaRefOfClass(lua_State* L, const LuaClassDefinition* classDefinition)
     {
         // requires at least 13 slots in stack: 8 fixed slots (obj_methods, obj_getters, obj_setters, static_functions, static_getters, static_setters, meta, cls_meta), 5 extension
         // slots (__index, obj_methods, obj_getters, super_meta_ref, __index)
         luaL_checkstack(L, 13, "not enough stack space for GetMetaRefOfClass");
         // printf("GetMetaRefOfClass %p \n", ClassDefinition);
-        auto Iter = TypeIdToMetaMap.find(ClassDefinition->TypeId);
-        if (Iter == TypeIdToMetaMap.end())
+        const auto iterator = m_TypeIdToMetaMap.find(classDefinition->TypeId);
+        if (iterator == m_TypeIdToMetaMap.end())
         {
-            int org_top        = lua_gettop(L);
-            int super_meta_ref = 0;
-            bool has_super     = false;
-            if (ClassDefinition->SuperTypeId)
+            MetaInfo* metaInfo       = new MetaInfo(0, classDefinition->dictionary, classDefinition->enumerable);
+            int org_top              = lua_gettop(L);
+            MetaInfo* super_meta_ref = nullptr;
+            bool has_super           = false;
+            if (classDefinition->SuperTypeId)
             {
-                if (auto SuperDefinition = LoadClassByID(ClassDefinition->SuperTypeId))
+                if (const xlua::LuaClassDefinition* superDefinition = LoadClassByID(classDefinition->SuperTypeId))
                 {
-                    super_meta_ref = GetMetaRefOfClass(L, SuperDefinition, pairs);
-                    has_super      = true;
+                    super_meta_ref       = GetMetaRefOfClass(L, superDefinition);
+                    has_super            = true;
+                    metaInfo->dictionary = super_meta_ref->dictionary || metaInfo->dictionary;
+                    metaInfo->enumerable = super_meta_ref->enumerable || metaInfo->enumerable;
                 }
             }
 
@@ -793,10 +812,10 @@ namespace xlua
             lua_createtable(L, 0, 0);
             int static_setters = lua_gettop(L);
 
-            luaL_newmetatable(L, ClassDefinition->ScriptName);
+            lua_newtable(L);
             int meta = lua_gettop(L);
 
-            LuaPropertyInfo* PropertyInfo = ClassDefinition->Properties;
+            LuaPropertyInfo* PropertyInfo = classDefinition->Properties;
             while (PropertyInfo && PropertyInfo->Name)
             {
                 if (PropertyInfo->Getter)
@@ -820,7 +839,7 @@ namespace xlua
                 ++PropertyInfo;
             }
 
-            PropertyInfo = ClassDefinition->Variables;
+            PropertyInfo = classDefinition->Variables;
             while (PropertyInfo && PropertyInfo->Name)
             {
                 if (PropertyInfo->Getter)
@@ -844,7 +863,7 @@ namespace xlua
                 ++PropertyInfo;
             }
 
-            LuaFunctionInfo* FunctionInfo = ClassDefinition->Methods;
+            LuaFunctionInfo* FunctionInfo = classDefinition->Methods;
             while (FunctionInfo && FunctionInfo->Name && FunctionInfo->Callback)
             {
                 if (strcmp(FunctionInfo->Name, "Invoke") == 0)
@@ -855,10 +874,6 @@ namespace xlua
                     lua_pushcclosure(L, method_wrap, 2);
                     lua_rawset(L, meta);
                 }
-                else if (strcmp(FunctionInfo->Name, "GetEnumerator") == 0)
-                {
-                    pairs = true;
-                }
                 lua_pushstring(L, FunctionInfo->Name);
                 lua_pushlightuserdata(L, FunctionInfo);
                 lua_pushlightuserdata(L, FunctionInfo->Data);
@@ -867,19 +882,25 @@ namespace xlua
                 lua_rawset(L, obj_methods);
                 ++FunctionInfo;
             }
-            if (pairs)
+            if (metaInfo->dictionary)
             {
                 lua_pushstring(L, "__pairs");
-                lua_rawgeti(L, LUA_REGISTRYINDEX, PairsRef);
+                lua_rawgeti(L, LUA_REGISTRYINDEX, m_IDictionary);
                 lua_rawset(L, meta);
             }
-            FunctionInfo = ClassDefinition->Functions;
+            else if (metaInfo->enumerable)
+            {
+                lua_pushstring(L, "__pairs");
+                lua_rawgeti(L, LUA_REGISTRYINDEX, m_Enumerable);
+                lua_rawset(L, meta);
+            }
+            FunctionInfo = classDefinition->Functions;
             while (FunctionInfo && FunctionInfo->Name && FunctionInfo->Callback)
             {
-                auto iter = supportOp.find(FunctionInfo->Name);
-                if (iter != supportOp.end())
+                auto op = supportOp.find(FunctionInfo->Name);
+                if (op != supportOp.end())
                 {
-                    lua_pushstring(L, iter->second);
+                    lua_pushstring(L, op->second);
                     lua_pushlightuserdata(L, FunctionInfo);
                     lua_pushlightuserdata(L, FunctionInfo->Data);
                     // printf("f %s, %p \n", FunctionInfo->Name, FunctionInfo);
@@ -903,7 +924,7 @@ namespace xlua
             lua_pushvalue(L, obj_getters);
             if (has_super)
             {
-                lua_rawgeti(L, LUA_REGISTRYINDEX, super_meta_ref);
+                lua_rawgeti(L, LUA_REGISTRYINDEX, super_meta_ref->ref);
                 lua_pushstring(L, "__index");
                 lua_rawget(L, -2);
                 lua_remove(L, -2);
@@ -912,7 +933,7 @@ namespace xlua
             {
                 lua_pushnil(L);
             }
-            lua_pushcclosure(L, obj_indexer, 3);
+            lua_pushcclosure(L, object_indexer, 3);
             lua_rawset(L, meta);
 
             lua_pushstring(L, "__newindex");
@@ -920,7 +941,7 @@ namespace xlua
             lua_pushvalue(L, obj_setters);
             if (has_super)
             {
-                lua_rawgeti(L, LUA_REGISTRYINDEX, super_meta_ref);
+                lua_rawgeti(L, LUA_REGISTRYINDEX, super_meta_ref->ref);
                 lua_pushstring(L, "__newindex");
                 lua_rawget(L, -2);
                 lua_remove(L, -2);
@@ -929,11 +950,11 @@ namespace xlua
             {
                 lua_pushnil(L);
             }
-            lua_pushcclosure(L, obj_newindexer, 3);
+            lua_pushcclosure(L, obj_new_indexer, 3);
             lua_rawset(L, meta);
 
             lua_pushstring(L, "__gc");
-            lua_pushlightuserdata(L, const_cast<LuaClassDefinition*>(ClassDefinition));
+            lua_pushlightuserdata(L, const_cast<LuaClassDefinition*>(classDefinition));
             lua_pushcclosure(L, object_gc, 1);
             lua_rawset(L, meta);
 
@@ -941,8 +962,8 @@ namespace xlua
             int cls_meta = lua_gettop(L);
 
             lua_pushstring(L, "__call");
-            lua_pushlightuserdata(L, const_cast<LuaClassDefinition*>(ClassDefinition));
-            lua_pushlightuserdata(L, ClassDefinition->Data);
+            lua_pushlightuserdata(L, const_cast<LuaClassDefinition*>(classDefinition));
+            lua_pushlightuserdata(L, classDefinition->Data);
             lua_pushcclosure(L, object_new, 2);
             lua_rawset(L, cls_meta);
 
@@ -951,7 +972,7 @@ namespace xlua
             lua_pushvalue(L, static_functions);
             if (has_super)
             {
-                lua_rawgeti(L, LUA_REGISTRYINDEX, super_meta_ref);
+                lua_rawgeti(L, LUA_REGISTRYINDEX, super_meta_ref->ref);
                 lua_pushlightuserdata(L, &dummy_idx_tag);
 
                 lua_rawget(L, -2);
@@ -974,7 +995,7 @@ namespace xlua
             lua_pushvalue(L, static_setters);
             if (has_super)
             {
-                lua_rawgeti(L, LUA_REGISTRYINDEX, super_meta_ref);
+                lua_rawgeti(L, LUA_REGISTRYINDEX, super_meta_ref->ref);
                 lua_pushlightuserdata(L, &dummy_idx_tag);
                 lua_rawget(L, -2);
                 lua_remove(L, -2);
@@ -995,23 +1016,16 @@ namespace xlua
             lua_pushlightuserdata(L, &dummy_idx_tag);
             lua_insert(L, cls_meta);
             lua_rawset(L, meta);
-
-            int meta_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+            metaInfo->ref = luaL_ref(L, LUA_REGISTRYINDEX);
             lua_pop(L, 6);
 
             if (org_top != lua_gettop(L))
             {
                 luaL_error(L, "stack top changed ? %d, %d\n", org_top, lua_gettop(L));
             }
-            MetaInfo* metaInfo                       = new MetaInfo{meta_ref, pairs};
-            TypeIdToMetaMap[ClassDefinition->TypeId] = metaInfo;
-            return meta_ref;
+            m_TypeIdToMetaMap[classDefinition->TypeId] = metaInfo;
+            return metaInfo;
         }
-        else
-        {
-            pairs = Iter->second->pairs;
-            return Iter->second->ref;
-        }
+        return iterator->second;
     }
-
 } // namespace xlua

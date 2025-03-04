@@ -63,7 +63,7 @@ static Il2CppObject* b_OOso(void* target, Il2CppObject* p0, Il2CppString* p1, Il
          
     // LuaValToCSVal o/O
     Il2CppObject* ret = LuaValueToCSRef(apis, TIret, env, luaret);
-        
+
     return ret;
 
 }
@@ -105,7 +105,7 @@ static Il2CppObject* b_Oi4so(void* target, int32_t p0, Il2CppString* p1, Il2CppO
          
     // LuaValToCSVal o/O
     Il2CppObject* ret = LuaValueToCSRef(apis, TIret, env, luaret);
-        
+
     return ret;
 
 }
@@ -147,7 +147,7 @@ static Il2CppObject* b_Opi4O(void* target, void* p0, int32_t p1, Il2CppObject* p
          
     // LuaValToCSVal o/O
     Il2CppObject* ret = LuaValueToCSRef(apis, TIret, env, luaret);
-        
+
     return ret;
 
 }
@@ -185,7 +185,7 @@ static Il2CppObject* b_Os(void* target, Il2CppString* p0, MethodInfo* method) {
          
     // LuaValToCSVal o/O
     Il2CppObject* ret = LuaValueToCSRef(apis, TIret, env, luaret);
-        
+
     return ret;
 
 }
@@ -226,7 +226,7 @@ static Il2CppObject* b_Oss(void* target, Il2CppString* p0, Il2CppString* p1, Met
          
     // LuaValToCSVal o/O
     Il2CppObject* ret = LuaValueToCSRef(apis, TIret, env, luaret);
-        
+
     return ret;
 
 }
@@ -259,7 +259,8 @@ static struct S_r4r4_ b_S_r4r4_i4(void* target, int32_t p0, MethodInfo* method) 
         il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException(msg));
         return {};
     }
-          // LuaValToCSVal struct
+          
+    // LuaValToCSVal struct
     S_r4r4_* pret = DataTransfer::GetPointer<S_r4r4_>(apis, env, luaret);
     S_r4r4_ ret = pret ? *pret : S_r4r4_ {};
         
@@ -297,7 +298,8 @@ static struct S_r4r4_ b_S_r4r4_o(void* target, Il2CppObject* p0, MethodInfo* met
         il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException(msg));
         return {};
     }
-          // LuaValToCSVal struct
+          
+    // LuaValToCSVal struct
     S_r4r4_* pret = DataTransfer::GetPointer<S_r4r4_>(apis, env, luaret);
     S_r4r4_ ret = pret ? *pret : S_r4r4_ {};
         
@@ -331,10 +333,52 @@ static struct S_r4r4r4_ b_S_r4r4r4_(void* target, MethodInfo* method) {
         il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException(msg));
         return {};
     }
-          // LuaValToCSVal struct
+          
+    // LuaValToCSVal struct
     S_r4r4r4_* pret = DataTransfer::GetPointer<S_r4r4r4_>(apis, env, luaret);
     S_r4r4r4_ ret = pret ? *pret : S_r4r4r4_ {};
         
+    return ret;
+
+}
+// Byte[] Invoke(System.String, XLua.LuaTable) declare in System.Func`3[System.String,XLua.LuaTable,System.Byte[]]
+static Il2CppObject* b_aso(void* target, Il2CppString* p0, Il2CppObject* p1, MethodInfo* method) {
+    // PLog("Running b_aso");
+
+    auto TIret = GetReturnType(method);
+            
+    auto TIp0 = GetParameterType(method, 0);
+        
+    auto TIp1 = GetParameterType(method, 1);
+
+    PObjectRefInfo* delegateInfo = GetPObjectRefInfo(target);
+    struct pesapi_ffi* apis = delegateInfo->Apis;
+
+    pesapi_env env = apis->get_ref_associated_env(delegateInfo->ValueRef);
+    AutoValueScope valueScope(apis, env);
+    if (!env)
+    {
+        il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException("LuaEnv had been destroy"));
+        return {};
+    }
+    auto func = apis->get_value_from_ref(env, delegateInfo->ValueRef);
+
+    pesapi_value argv[2]{
+    converter::Converter<Il2CppString*>::toScript(apis, env, p0),
+            CSRefToLuaValue(apis, env, TIp1, p1)
+    };
+    auto luaret = apis->call_function(env, func, 0, 2, argv);
+
+    if (apis->has_caught(env))
+    {
+        auto msg = apis->get_exception_as_string(env, true);
+        il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException(msg));
+        return {};
+    }
+         
+    // LuaValToCSVal o/O
+    Il2CppObject* ret = LuaValueToCSRef(apis, TIret, env, luaret);
+
     return ret;
 
 }
@@ -366,7 +410,7 @@ static bool b_b(void* target, MethodInfo* method) {
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -402,7 +446,7 @@ static bool b_bO(void* target, Il2CppObject* p0, MethodInfo* method) {
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -441,7 +485,7 @@ static bool b_bOO(void* target, Il2CppObject* p0, Il2CppObject* p1, MethodInfo* 
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -483,7 +527,7 @@ static bool b_bOOS_r4r4_(void* target, Il2CppObject* p0, Il2CppObject* p1, struc
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -528,7 +572,7 @@ static bool b_bOOS_r4r4_o(void* target, Il2CppObject* p0, Il2CppObject* p1, stru
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -567,7 +611,7 @@ static bool b_bOS_i4i4o_(void* target, Il2CppObject* p0, struct S_i4i4o_ p1, Met
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -606,7 +650,7 @@ static bool b_bOS_r4r4_(void* target, Il2CppObject* p0, struct S_r4r4_ p1, Metho
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -648,7 +692,46 @@ static bool b_bOS_r4r4_o(void* target, Il2CppObject* p0, struct S_r4r4_ p1, Il2C
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
+
+    return ret;
+
+}
+// Boolean Invoke(System.Object, UnityEngine.Vector3) declare in UIEventID`1[UnityEngine.Vector3]
+static bool b_bOS_r4r4r4_(void* target, Il2CppObject* p0, struct S_r4r4r4_ p1, MethodInfo* method) {
+    // PLog("Running b_bOS_r4r4r4_");
+            
+    auto TIp0 = GetParameterType(method, 0);
         
+    auto TIp1 = GetParameterType(method, 1);
+
+    PObjectRefInfo* delegateInfo = GetPObjectRefInfo(target);
+    struct pesapi_ffi* apis = delegateInfo->Apis;
+
+    pesapi_env env = apis->get_ref_associated_env(delegateInfo->ValueRef);
+    AutoValueScope valueScope(apis, env);
+    if (!env)
+    {
+        il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException("LuaEnv had been destroy"));
+        return {};
+    }
+    auto func = apis->get_value_from_ref(env, delegateInfo->ValueRef);
+
+    pesapi_value argv[2]{
+    CSRefToLuaValue(apis, env, TIp0, p0),
+            DataTransfer::CopyValueType(apis, env, p1, TIp1)
+    };
+    auto luaret = apis->call_function(env, func, 0, 2, argv);
+
+    if (apis->has_caught(env))
+    {
+        auto msg = apis->get_exception_as_string(env, true);
+        il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException(msg));
+        return {};
+    }
+             
+    // LuaValToCSVal P any
+    bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
+
     return ret;
 
 }
@@ -687,7 +770,7 @@ static bool b_bOS_u4oob_(void* target, Il2CppObject* p0, struct S_u4oob_ p1, Met
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -726,7 +809,7 @@ static bool b_bOS_u4u4i4S_r4r4_u4_(void* target, Il2CppObject* p0, struct S_u4u4
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -765,7 +848,7 @@ static bool b_bOS_u4u4r4i4b_(void* target, Il2CppObject* p0, struct S_u4u4r4i4b_
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -804,7 +887,7 @@ static bool b_bOS_u4u4u4_(void* target, Il2CppObject* p0, struct S_u4u4u4_ p1, M
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -843,7 +926,7 @@ static bool b_bOS_u4u4u4u4_(void* target, Il2CppObject* p0, struct S_u4u4u4u4_ p
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -883,7 +966,7 @@ static bool b_bOS_u8i4si4u8u8u8_b(void* target, Il2CppObject* p0, struct S_u8i4s
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -920,7 +1003,7 @@ static bool b_bOb(void* target, Il2CppObject* p0, bool p1, MethodInfo* method) {
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -958,7 +1041,7 @@ static bool b_bObi4(void* target, Il2CppObject* p0, bool p1, int32_t p2, MethodI
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -997,7 +1080,7 @@ static bool b_bObi4i4(void* target, Il2CppObject* p0, bool p1, int32_t p2, int32
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -1034,7 +1117,7 @@ static bool b_bOi4(void* target, Il2CppObject* p0, int32_t p1, MethodInfo* metho
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -1072,7 +1155,7 @@ static bool b_bOi4b(void* target, Il2CppObject* p0, int32_t p1, bool p2, MethodI
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -1111,7 +1194,7 @@ static bool b_bOi4bb(void* target, Il2CppObject* p0, int32_t p1, bool p2, bool p
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -1152,7 +1235,7 @@ static bool b_bOi4bo(void* target, Il2CppObject* p0, int32_t p1, bool p2, Il2Cpp
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -1190,7 +1273,7 @@ static bool b_bOi4i4(void* target, Il2CppObject* p0, int32_t p1, int32_t p2, Met
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -1229,7 +1312,7 @@ static bool b_bOi4i4b(void* target, Il2CppObject* p0, int32_t p1, int32_t p2, bo
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -1271,7 +1354,7 @@ static bool b_bOi4i4bo(void* target, Il2CppObject* p0, int32_t p1, int32_t p2, b
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -1311,7 +1394,7 @@ static bool b_bOi4o(void* target, Il2CppObject* p0, int32_t p1, Il2CppObject* p2
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -1354,7 +1437,7 @@ static bool b_bOi4oo(void* target, Il2CppObject* p0, int32_t p1, Il2CppObject* p
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -1394,7 +1477,7 @@ static bool b_bOi4u4u4u4(void* target, Il2CppObject* p0, int32_t p1, uint32_t p2
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -1433,7 +1516,7 @@ static bool b_bOo(void* target, Il2CppObject* p0, Il2CppObject* p1, MethodInfo* 
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -1476,7 +1559,7 @@ static bool b_bOoS_r4r4_b(void* target, Il2CppObject* p0, Il2CppObject* p1, stru
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -1522,7 +1605,7 @@ static bool b_bOoS_r4r4_ob(void* target, Il2CppObject* p0, Il2CppObject* p1, str
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -1562,7 +1645,7 @@ static bool b_bOob(void* target, Il2CppObject* p0, Il2CppObject* p1, bool p2, Me
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -1602,7 +1685,7 @@ static bool b_bOoi4(void* target, Il2CppObject* p0, Il2CppObject* p1, int32_t p2
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -1644,53 +1727,7 @@ static bool b_bOoo(void* target, Il2CppObject* p0, Il2CppObject* p1, Il2CppObjec
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
-    return ret;
 
-}
-// Boolean Invoke(System.Object, EquipWithActor, Assets.Scripts.UI.InTheGame.Equip.UIEquipToastSyntheticItem, UnityEngine.Vector2, Boolean) declare in UIEventID`4[Assets.Scripts.UI.InTheGame.Common.UIEquipCommonItem+EquipWithActor,Assets.Scripts.UI.InTheGame.Equip.UIEquipToastSyntheticItem,UnityEngine.Vector2,System.Boolean]
-static bool b_bOooS_r4r4_b(void* target, Il2CppObject* p0, Il2CppObject* p1, Il2CppObject* p2, struct S_r4r4_ p3, bool p4, MethodInfo* method) {
-    // PLog("Running b_bOooS_r4r4_b");
-            
-    auto TIp0 = GetParameterType(method, 0);
-        
-    auto TIp1 = GetParameterType(method, 1);
-        
-    auto TIp2 = GetParameterType(method, 2);
-        
-    auto TIp3 = GetParameterType(method, 3);
-            
-    PObjectRefInfo* delegateInfo = GetPObjectRefInfo(target);
-    struct pesapi_ffi* apis = delegateInfo->Apis;
-
-    pesapi_env env = apis->get_ref_associated_env(delegateInfo->ValueRef);
-    AutoValueScope valueScope(apis, env);
-    if (!env)
-    {
-        il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException("LuaEnv had been destroy"));
-        return {};
-    }
-    auto func = apis->get_value_from_ref(env, delegateInfo->ValueRef);
-
-    pesapi_value argv[5]{
-    CSRefToLuaValue(apis, env, TIp0, p0),
-            CSRefToLuaValue(apis, env, TIp1, p1),
-            CSRefToLuaValue(apis, env, TIp2, p2),
-            DataTransfer::CopyValueType(apis, env, p3, TIp3),
-            converter::Converter<bool>::toScript(apis, env, p4)
-    };
-    auto luaret = apis->call_function(env, func, 0, 5, argv);
-
-    if (apis->has_caught(env))
-    {
-        auto msg = apis->get_exception_as_string(env, true);
-        il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException(msg));
-        return {};
-    }
-             
-    // LuaValToCSVal P any
-    bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
     return ret;
 
 }
@@ -1733,7 +1770,7 @@ static bool b_bOoob(void* target, Il2CppObject* p0, Il2CppObject* p1, Il2CppObje
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -1778,7 +1815,7 @@ static bool b_bOooo(void* target, Il2CppObject* p0, Il2CppObject* p1, Il2CppObje
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -1824,7 +1861,7 @@ static bool b_bOooou4(void* target, Il2CppObject* p0, Il2CppObject* p1, Il2CppOb
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -1864,7 +1901,7 @@ static bool b_bOor4(void* target, Il2CppObject* p0, Il2CppObject* p1, float p2, 
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -1910,7 +1947,7 @@ static bool b_bOou4oo(void* target, Il2CppObject* p0, Il2CppObject* p1, uint32_t
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -1949,7 +1986,7 @@ static bool b_bOs(void* target, Il2CppObject* p0, Il2CppString* p1, MethodInfo* 
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -1986,7 +2023,7 @@ static bool b_bOu4(void* target, Il2CppObject* p0, uint32_t p1, MethodInfo* meth
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -2026,7 +2063,7 @@ static bool b_bOu4S_i4i4i4sS_u4u4u4i4u4o__(void* target, Il2CppObject* p0, uint3
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -2066,7 +2103,7 @@ static bool b_bOu4S_r4r4r4_(void* target, Il2CppObject* p0, uint32_t p1, struct 
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -2106,7 +2143,7 @@ static bool b_bOu4S_u4u4u4_(void* target, Il2CppObject* p0, uint32_t p1, struct 
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -2144,7 +2181,7 @@ static bool b_bOu4b(void* target, Il2CppObject* p0, uint32_t p1, bool p2, Method
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -2182,7 +2219,7 @@ static bool b_bOu4i4(void* target, Il2CppObject* p0, uint32_t p1, int32_t p2, Me
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -2222,7 +2259,7 @@ static bool b_bOu4o(void* target, Il2CppObject* p0, uint32_t p1, Il2CppObject* p
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -2263,7 +2300,7 @@ static bool b_bOu4ob(void* target, Il2CppObject* p0, uint32_t p1, Il2CppObject* 
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -2304,7 +2341,7 @@ static bool b_bOu4oi4(void* target, Il2CppObject* p0, uint32_t p1, Il2CppObject*
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -2342,7 +2379,7 @@ static bool b_bOu4r4(void* target, Il2CppObject* p0, uint32_t p1, float p2, Meth
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -2381,7 +2418,7 @@ static bool b_bOu4r4b(void* target, Il2CppObject* p0, uint32_t p1, float p2, boo
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -2419,7 +2456,7 @@ static bool b_bOu4u4(void* target, Il2CppObject* p0, uint32_t p1, uint32_t p2, M
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -2461,7 +2498,7 @@ static bool b_bOu4u4i4o(void* target, Il2CppObject* p0, uint32_t p1, uint32_t p2
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -2502,7 +2539,7 @@ static bool b_bOu4u4o(void* target, Il2CppObject* p0, uint32_t p1, uint32_t p2, 
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -2542,7 +2579,7 @@ static bool b_bOu4u4u4u4(void* target, Il2CppObject* p0, uint32_t p1, uint32_t p
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -2578,7 +2615,7 @@ static bool b_bPS_u4o_(void* target, struct S_u4o_* p0, MethodInfo* method) {
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -2614,7 +2651,7 @@ static bool b_bS_i4i4o_(void* target, struct S_i4i4o_ p0, MethodInfo* method) {
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -2650,7 +2687,43 @@ static bool b_bS_r4r4_(void* target, struct S_r4r4_ p0, MethodInfo* method) {
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
+    return ret;
+
+}
+// Boolean Invoke(UnityEngine.Vector3) declare in GenericDelegate`1[UnityEngine.Vector3]
+static bool b_bS_r4r4r4_(void* target, struct S_r4r4r4_ p0, MethodInfo* method) {
+    // PLog("Running b_bS_r4r4r4_");
+            
+    auto TIp0 = GetParameterType(method, 0);
+
+    PObjectRefInfo* delegateInfo = GetPObjectRefInfo(target);
+    struct pesapi_ffi* apis = delegateInfo->Apis;
+
+    pesapi_env env = apis->get_ref_associated_env(delegateInfo->ValueRef);
+    AutoValueScope valueScope(apis, env);
+    if (!env)
+    {
+        il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException("LuaEnv had been destroy"));
+        return {};
+    }
+    auto func = apis->get_value_from_ref(env, delegateInfo->ValueRef);
+
+    pesapi_value argv[1]{
+    DataTransfer::CopyValueType(apis, env, p0, TIp0)
+    };
+    auto luaret = apis->call_function(env, func, 0, 1, argv);
+
+    if (apis->has_caught(env))
+    {
+        auto msg = apis->get_exception_as_string(env, true);
+        il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException(msg));
+        return {};
+    }
+             
+    // LuaValToCSVal P any
+    bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
+
     return ret;
 
 }
@@ -2686,7 +2759,7 @@ static bool b_bS_u4o_(void* target, struct S_u4o_ p0, MethodInfo* method) {
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -2722,7 +2795,7 @@ static bool b_bS_u4oob_(void* target, struct S_u4oob_ p0, MethodInfo* method) {
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -2758,7 +2831,43 @@ static bool b_bS_u4u4i4S_r4r4_u4_(void* target, struct S_u4u4i4S_r4r4_u4_ p0, Me
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
+    return ret;
+
+}
+// Boolean Invoke(Assets.Scripts.GameLogic.Project8EquipPair) declare in System.Predicate`1[Assets.Scripts.GameLogic.Project8EquipPair]
+static bool b_bS_u4u4i4_(void* target, struct S_u4u4i4_ p0, MethodInfo* method) {
+    // PLog("Running b_bS_u4u4i4_");
+            
+    auto TIp0 = GetParameterType(method, 0);
+
+    PObjectRefInfo* delegateInfo = GetPObjectRefInfo(target);
+    struct pesapi_ffi* apis = delegateInfo->Apis;
+
+    pesapi_env env = apis->get_ref_associated_env(delegateInfo->ValueRef);
+    AutoValueScope valueScope(apis, env);
+    if (!env)
+    {
+        il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException("LuaEnv had been destroy"));
+        return {};
+    }
+    auto func = apis->get_value_from_ref(env, delegateInfo->ValueRef);
+
+    pesapi_value argv[1]{
+    DataTransfer::CopyValueType(apis, env, p0, TIp0)
+    };
+    auto luaret = apis->call_function(env, func, 0, 1, argv);
+
+    if (apis->has_caught(env))
+    {
+        auto msg = apis->get_exception_as_string(env, true);
+        il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException(msg));
+        return {};
+    }
+             
+    // LuaValToCSVal P any
+    bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
+
     return ret;
 
 }
@@ -2794,7 +2903,7 @@ static bool b_bS_u4u4r4i4b_(void* target, struct S_u4u4r4i4b_ p0, MethodInfo* me
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -2830,7 +2939,7 @@ static bool b_bS_u4u4u4_(void* target, struct S_u4u4u4_ p0, MethodInfo* method) 
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -2866,7 +2975,7 @@ static bool b_bS_u4u4u4u4_(void* target, struct S_u4u4u4u4_ p0, MethodInfo* meth
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -2903,7 +3012,7 @@ static bool b_bS_u8i4si4u8u8u8_b(void* target, struct S_u8i4si4u8u8u8_ p0, bool 
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -2937,7 +3046,7 @@ static bool b_bb(void* target, bool p0, MethodInfo* method) {
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -2972,7 +3081,7 @@ static bool b_bbi4(void* target, bool p0, int32_t p1, MethodInfo* method) {
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -3008,7 +3117,7 @@ static bool b_bbi4i4(void* target, bool p0, int32_t p1, int32_t p2, MethodInfo* 
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -3042,7 +3151,7 @@ static bool b_bi4(void* target, int32_t p0, MethodInfo* method) {
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -3079,7 +3188,7 @@ static bool b_bi4S_r4r4_(void* target, int32_t p0, struct S_r4r4_ p1, MethodInfo
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -3114,7 +3223,7 @@ static bool b_bi4b(void* target, int32_t p0, bool p1, MethodInfo* method) {
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -3150,7 +3259,7 @@ static bool b_bi4bb(void* target, int32_t p0, bool p1, bool p2, MethodInfo* meth
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -3186,7 +3295,7 @@ static bool b_bi4bi4(void* target, int32_t p0, bool p1, int32_t p2, MethodInfo* 
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -3224,7 +3333,7 @@ static bool b_bi4bo(void* target, int32_t p0, bool p1, Il2CppObject* p2, MethodI
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -3259,7 +3368,7 @@ static bool b_bi4i4(void* target, int32_t p0, int32_t p1, MethodInfo* method) {
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -3295,7 +3404,7 @@ static bool b_bi4i4b(void* target, int32_t p0, int32_t p1, bool p2, MethodInfo* 
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -3334,7 +3443,7 @@ static bool b_bi4i4bo(void* target, int32_t p0, int32_t p1, bool p2, Il2CppObjec
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -3371,7 +3480,7 @@ static bool b_bi4o(void* target, int32_t p0, Il2CppObject* p1, MethodInfo* metho
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -3411,7 +3520,7 @@ static bool b_bi4oo(void* target, int32_t p0, Il2CppObject* p1, Il2CppObject* p2
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -3450,7 +3559,7 @@ static bool b_bi4r4r4r4r4r4(void* target, int32_t p0, float p1, float p2, float 
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -3487,7 +3596,7 @@ static bool b_bi4u4u4u4(void* target, int32_t p0, uint32_t p1, uint32_t p2, uint
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -3521,7 +3630,7 @@ static bool b_bi8(void* target, int64_t p0, MethodInfo* method) {
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -3557,7 +3666,7 @@ static bool b_bo(void* target, Il2CppObject* p0, MethodInfo* method) {
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -3597,7 +3706,7 @@ static bool b_boS_r4r4_b(void* target, Il2CppObject* p0, struct S_r4r4_ p1, bool
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -3640,7 +3749,7 @@ static bool b_boS_r4r4_ob(void* target, Il2CppObject* p0, struct S_r4r4_ p1, Il2
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -3677,7 +3786,7 @@ static bool b_bob(void* target, Il2CppObject* p0, bool p1, MethodInfo* method) {
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -3717,7 +3826,7 @@ static bool b_bobo(void* target, Il2CppObject* p0, bool p1, Il2CppObject* p2, Me
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -3754,7 +3863,7 @@ static bool b_boi4(void* target, Il2CppObject* p0, int32_t p1, MethodInfo* metho
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -3793,50 +3902,7 @@ static bool b_boo(void* target, Il2CppObject* p0, Il2CppObject* p1, MethodInfo* 
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
-    return ret;
 
-}
-// Boolean Invoke(EquipWithActor, Assets.Scripts.UI.InTheGame.Equip.UIEquipToastSyntheticItem, UnityEngine.Vector2, Boolean) declare in GenericDelegate`4[Assets.Scripts.UI.InTheGame.Common.UIEquipCommonItem+EquipWithActor,Assets.Scripts.UI.InTheGame.Equip.UIEquipToastSyntheticItem,UnityEngine.Vector2,System.Boolean]
-static bool b_booS_r4r4_b(void* target, Il2CppObject* p0, Il2CppObject* p1, struct S_r4r4_ p2, bool p3, MethodInfo* method) {
-    // PLog("Running b_booS_r4r4_b");
-            
-    auto TIp0 = GetParameterType(method, 0);
-        
-    auto TIp1 = GetParameterType(method, 1);
-        
-    auto TIp2 = GetParameterType(method, 2);
-            
-    PObjectRefInfo* delegateInfo = GetPObjectRefInfo(target);
-    struct pesapi_ffi* apis = delegateInfo->Apis;
-
-    pesapi_env env = apis->get_ref_associated_env(delegateInfo->ValueRef);
-    AutoValueScope valueScope(apis, env);
-    if (!env)
-    {
-        il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException("LuaEnv had been destroy"));
-        return {};
-    }
-    auto func = apis->get_value_from_ref(env, delegateInfo->ValueRef);
-
-    pesapi_value argv[4]{
-    CSRefToLuaValue(apis, env, TIp0, p0),
-            CSRefToLuaValue(apis, env, TIp1, p1),
-            DataTransfer::CopyValueType(apis, env, p2, TIp2),
-            converter::Converter<bool>::toScript(apis, env, p3)
-    };
-    auto luaret = apis->call_function(env, func, 0, 4, argv);
-
-    if (apis->has_caught(env))
-    {
-        auto msg = apis->get_exception_as_string(env, true);
-        il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException(msg));
-        return {};
-    }
-             
-    // LuaValToCSVal P any
-    bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
     return ret;
 
 }
@@ -3876,7 +3942,7 @@ static bool b_boob(void* target, Il2CppObject* p0, Il2CppObject* p1, bool p2, Me
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -3918,7 +3984,7 @@ static bool b_booo(void* target, Il2CppObject* p0, Il2CppObject* p1, Il2CppObjec
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -3961,7 +4027,7 @@ static bool b_booou4(void* target, Il2CppObject* p0, Il2CppObject* p1, Il2CppObj
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -3998,7 +4064,7 @@ static bool b_bor4(void* target, Il2CppObject* p0, float p1, MethodInfo* method)
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -4041,7 +4107,7 @@ static bool b_bou4oo(void* target, Il2CppObject* p0, uint32_t p1, Il2CppObject* 
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -4077,7 +4143,7 @@ static bool b_bs(void* target, Il2CppString* p0, MethodInfo* method) {
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -4115,7 +4181,7 @@ static bool b_bsu4i4(void* target, Il2CppString* p0, uint32_t p1, int32_t p2, Me
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -4149,7 +4215,7 @@ static bool b_bu4(void* target, uint32_t p0, MethodInfo* method) {
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -4186,7 +4252,7 @@ static bool b_bu4S_i4i4i4sS_u4u4u4i4u4o__(void* target, uint32_t p0, struct S_i4
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -4223,7 +4289,7 @@ static bool b_bu4S_r4r4r4_(void* target, uint32_t p0, struct S_r4r4r4_ p1, Metho
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -4260,7 +4326,7 @@ static bool b_bu4S_u4u4u4_(void* target, uint32_t p0, struct S_u4u4u4_ p1, Metho
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -4295,7 +4361,7 @@ static bool b_bu4b(void* target, uint32_t p0, bool p1, MethodInfo* method) {
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -4330,7 +4396,7 @@ static bool b_bu4i4(void* target, uint32_t p0, int32_t p1, MethodInfo* method) {
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -4367,7 +4433,7 @@ static bool b_bu4o(void* target, uint32_t p0, Il2CppObject* p1, MethodInfo* meth
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -4405,7 +4471,7 @@ static bool b_bu4ob(void* target, uint32_t p0, Il2CppObject* p1, bool p2, Method
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -4443,7 +4509,7 @@ static bool b_bu4oi4(void* target, uint32_t p0, Il2CppObject* p1, int32_t p2, Me
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -4482,7 +4548,7 @@ static bool b_bu4ou4u4(void* target, uint32_t p0, Il2CppObject* p1, uint32_t p2,
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -4517,7 +4583,7 @@ static bool b_bu4r4(void* target, uint32_t p0, float p1, MethodInfo* method) {
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -4553,7 +4619,7 @@ static bool b_bu4r4b(void* target, uint32_t p0, float p1, bool p2, MethodInfo* m
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -4588,7 +4654,7 @@ static bool b_bu4u4(void* target, uint32_t p0, uint32_t p1, MethodInfo* method) 
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -4627,7 +4693,7 @@ static bool b_bu4u4i4o(void* target, uint32_t p0, uint32_t p1, int32_t p2, Il2Cp
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -4665,7 +4731,7 @@ static bool b_bu4u4o(void* target, uint32_t p0, uint32_t p1, Il2CppObject* p2, M
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -4702,7 +4768,7 @@ static bool b_bu4u4u4u4(void* target, uint32_t p0, uint32_t p1, uint32_t p2, uin
              
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -4740,7 +4806,7 @@ static Il2CppChar b_csi4c(void* target, Il2CppString* p0, int32_t p1, Il2CppChar
              
     // LuaValToCSVal P any
     Il2CppChar ret = converter::Converter<Il2CppChar>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -4772,7 +4838,46 @@ static int32_t b_i4(void* target, MethodInfo* method) {
              
     // LuaValToCSVal P any
     int32_t ret = converter::Converter<int32_t>::toCpp(apis, env, luaret);
+
+    return ret;
+
+}
+// Int32 Invoke(Assets.Scripts.GameLogic.Project8EquipPair, Assets.Scripts.GameLogic.Project8EquipPair) declare in System.Comparison`1[Assets.Scripts.GameLogic.Project8EquipPair]
+static int32_t b_i4S_u4u4i4_S_u4u4i4_(void* target, struct S_u4u4i4_ p0, struct S_u4u4i4_ p1, MethodInfo* method) {
+    // PLog("Running b_i4S_u4u4i4_S_u4u4i4_");
+            
+    auto TIp0 = GetParameterType(method, 0);
         
+    auto TIp1 = GetParameterType(method, 1);
+
+    PObjectRefInfo* delegateInfo = GetPObjectRefInfo(target);
+    struct pesapi_ffi* apis = delegateInfo->Apis;
+
+    pesapi_env env = apis->get_ref_associated_env(delegateInfo->ValueRef);
+    AutoValueScope valueScope(apis, env);
+    if (!env)
+    {
+        il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException("LuaEnv had been destroy"));
+        return {};
+    }
+    auto func = apis->get_value_from_ref(env, delegateInfo->ValueRef);
+
+    pesapi_value argv[2]{
+    DataTransfer::CopyValueType(apis, env, p0, TIp0),
+            DataTransfer::CopyValueType(apis, env, p1, TIp1)
+    };
+    auto luaret = apis->call_function(env, func, 0, 2, argv);
+
+    if (apis->has_caught(env))
+    {
+        auto msg = apis->get_exception_as_string(env, true);
+        il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException(msg));
+        return {};
+    }
+             
+    // LuaValToCSVal P any
+    int32_t ret = converter::Converter<int32_t>::toCpp(apis, env, luaret);
+
     return ret;
 
 }
@@ -4806,7 +4911,42 @@ static int32_t b_i4b(void* target, bool p0, MethodInfo* method) {
              
     // LuaValToCSVal P any
     int32_t ret = converter::Converter<int32_t>::toCpp(apis, env, luaret);
-        
+
+    return ret;
+
+}
+// Int32 Invoke(Int16, Int32) declare in Assets.Plugins.Perf.StatsLite+PFStatsBeginSample
+static int32_t b_i4i2i4(void* target, int16_t p0, int32_t p1, MethodInfo* method) {
+    // PLog("Running b_i4i2i4");
+
+    PObjectRefInfo* delegateInfo = GetPObjectRefInfo(target);
+    struct pesapi_ffi* apis = delegateInfo->Apis;
+
+    pesapi_env env = apis->get_ref_associated_env(delegateInfo->ValueRef);
+    AutoValueScope valueScope(apis, env);
+    if (!env)
+    {
+        il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException("LuaEnv had been destroy"));
+        return {};
+    }
+    auto func = apis->get_value_from_ref(env, delegateInfo->ValueRef);
+
+    pesapi_value argv[2]{
+    converter::Converter<int16_t>::toScript(apis, env, p0),
+            converter::Converter<int32_t>::toScript(apis, env, p1)
+    };
+    auto luaret = apis->call_function(env, func, 0, 2, argv);
+
+    if (apis->has_caught(env))
+    {
+        auto msg = apis->get_exception_as_string(env, true);
+        il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException(msg));
+        return {};
+    }
+             
+    // LuaValToCSVal P any
+    int32_t ret = converter::Converter<int32_t>::toCpp(apis, env, luaret);
+
     return ret;
 
 }
@@ -4840,7 +4980,7 @@ static int32_t b_i4i4(void* target, int32_t p0, MethodInfo* method) {
              
     // LuaValToCSVal P any
     int32_t ret = converter::Converter<int32_t>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -4877,7 +5017,7 @@ static int32_t b_i4i4O(void* target, int32_t p0, Il2CppObject* p1, MethodInfo* m
              
     // LuaValToCSVal P any
     int32_t ret = converter::Converter<int32_t>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -4912,7 +5052,7 @@ static int32_t b_i4i4i4(void* target, int32_t p0, int32_t p1, MethodInfo* method
              
     // LuaValToCSVal P any
     int32_t ret = converter::Converter<int32_t>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -4948,7 +5088,7 @@ static int32_t b_i4o(void* target, Il2CppObject* p0, MethodInfo* method) {
              
     // LuaValToCSVal P any
     int32_t ret = converter::Converter<int32_t>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -4987,7 +5127,7 @@ static int32_t b_i4oo(void* target, Il2CppObject* p0, Il2CppObject* p1, MethodIn
              
     // LuaValToCSVal P any
     int32_t ret = converter::Converter<int32_t>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -5039,7 +5179,7 @@ static int32_t b_i4osooObS_r4r4r4_(void* target, Il2CppObject* p0, Il2CppString*
              
     // LuaValToCSVal P any
     int32_t ret = converter::Converter<int32_t>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -5075,7 +5215,7 @@ static int32_t b_i4p(void* target, void* p0, MethodInfo* method) {
              
     // LuaValToCSVal P any
     int32_t ret = converter::Converter<int32_t>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -5116,7 +5256,7 @@ static int32_t b_i4pi4i4p(void* target, void* p0, int32_t p1, int32_t p2, void* 
              
     // LuaValToCSVal P any
     int32_t ret = converter::Converter<int32_t>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -5160,7 +5300,7 @@ static int32_t b_i4pi4pi4p(void* target, void* p0, int32_t p1, void* p2, int32_t
              
     // LuaValToCSVal P any
     int32_t ret = converter::Converter<int32_t>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -5200,7 +5340,7 @@ static int32_t b_i4pi8i8i8i8(void* target, void* p0, int64_t p1, int64_t p2, int
              
     // LuaValToCSVal P any
     int32_t ret = converter::Converter<int32_t>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -5236,7 +5376,7 @@ static int32_t b_i4s(void* target, Il2CppString* p0, MethodInfo* method) {
              
     // LuaValToCSVal P any
     int32_t ret = converter::Converter<int32_t>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -5285,7 +5425,7 @@ static int32_t b_i4sbS_r4r4r4_S_r4r4r4_ss(void* target, Il2CppString* p0, bool p
              
     // LuaValToCSVal P any
     int32_t ret = converter::Converter<int32_t>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -5324,7 +5464,7 @@ static int32_t b_i4si4DbDb(void* target, Il2CppString* p0, int32_t p1, bool p2, 
              
     // LuaValToCSVal P any
     int32_t ret = converter::Converter<int32_t>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -5363,7 +5503,7 @@ static int32_t b_i4ss(void* target, Il2CppString* p0, Il2CppString* p1, MethodIn
              
     // LuaValToCSVal P any
     int32_t ret = converter::Converter<int32_t>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -5397,7 +5537,7 @@ static int32_t b_i4u4(void* target, uint32_t p0, MethodInfo* method) {
              
     // LuaValToCSVal P any
     int32_t ret = converter::Converter<int32_t>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -5432,7 +5572,7 @@ static int32_t b_i4u4i4(void* target, uint32_t p0, int32_t p1, MethodInfo* metho
              
     // LuaValToCSVal P any
     int32_t ret = converter::Converter<int32_t>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -5468,7 +5608,7 @@ static int32_t b_i4u4i4i4(void* target, uint32_t p0, int32_t p1, int32_t p2, Met
              
     // LuaValToCSVal P any
     int32_t ret = converter::Converter<int32_t>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -5503,7 +5643,7 @@ static int32_t b_i4u4u4(void* target, uint32_t p0, uint32_t p1, MethodInfo* meth
              
     // LuaValToCSVal P any
     int32_t ret = converter::Converter<int32_t>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -5537,7 +5677,7 @@ static Il2CppObject* b_o(void* target, MethodInfo* method) {
          
     // LuaValToCSVal o/O
     Il2CppObject* ret = LuaValueToCSRef(apis, TIret, env, luaret);
-        
+
     return ret;
 
 }
@@ -5573,7 +5713,7 @@ static Il2CppObject* b_oi4(void* target, int32_t p0, MethodInfo* method) {
          
     // LuaValToCSVal o/O
     Il2CppObject* ret = LuaValueToCSRef(apis, TIret, env, luaret);
-        
+
     return ret;
 
 }
@@ -5612,7 +5752,7 @@ static Il2CppObject* b_oi4S_r4r4r4_(void* target, int32_t p0, struct S_r4r4r4_ p
          
     // LuaValToCSVal o/O
     Il2CppObject* ret = LuaValueToCSRef(apis, TIret, env, luaret);
-        
+
     return ret;
 
 }
@@ -5650,7 +5790,7 @@ static Il2CppObject* b_oo(void* target, Il2CppObject* p0, MethodInfo* method) {
          
     // LuaValToCSVal o/O
     Il2CppObject* ret = LuaValueToCSRef(apis, TIret, env, luaret);
-        
+
     return ret;
 
 }
@@ -5689,7 +5829,7 @@ static Il2CppObject* b_oob(void* target, Il2CppObject* p0, bool p1, MethodInfo* 
          
     // LuaValToCSVal o/O
     Il2CppObject* ret = LuaValueToCSRef(apis, TIret, env, luaret);
-        
+
     return ret;
 
 }
@@ -5728,7 +5868,7 @@ static Il2CppObject* b_opi4(void* target, void* p0, int32_t p1, MethodInfo* meth
          
     // LuaValToCSVal o/O
     Il2CppObject* ret = LuaValueToCSRef(apis, TIret, env, luaret);
-        
+
     return ret;
 
 }
@@ -5766,7 +5906,7 @@ static Il2CppObject* b_os(void* target, Il2CppString* p0, MethodInfo* method) {
          
     // LuaValToCSVal o/O
     Il2CppObject* ret = LuaValueToCSRef(apis, TIret, env, luaret);
-        
+
     return ret;
 
 }
@@ -5807,13 +5947,13 @@ static Il2CppObject* b_osO(void* target, Il2CppString* p0, Il2CppObject* p1, Met
          
     // LuaValToCSVal o/O
     Il2CppObject* ret = LuaValueToCSRef(apis, TIret, env, luaret);
-        
+
     return ret;
 
 }
-// Byte[] Invoke(System.String, XLua.LuaTable) declare in System.Func`3[System.String,XLua.LuaTable,System.Byte[]]
-static Il2CppObject* b_oso(void* target, Il2CppString* p0, Il2CppObject* p1, MethodInfo* method) {
-    // PLog("Running b_oso");
+// XLua.LuaTable Invoke(System.String, Byte[]) declare in System.Func`3[System.String,System.Byte[],XLua.LuaTable]
+static Il2CppObject* b_osa(void* target, Il2CppString* p0, Il2CppObject* p1, MethodInfo* method) {
+    // PLog("Running b_osa");
 
     auto TIret = GetReturnType(method);
             
@@ -5848,7 +5988,7 @@ static Il2CppObject* b_oso(void* target, Il2CppString* p0, Il2CppObject* p1, Met
          
     // LuaValToCSVal o/O
     Il2CppObject* ret = LuaValueToCSRef(apis, TIret, env, luaret);
-        
+
     return ret;
 
 }
@@ -5880,7 +6020,7 @@ static float b_r4(void* target, MethodInfo* method) {
              
     // LuaValToCSVal P any
     float ret = converter::Converter<float>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -5916,7 +6056,7 @@ static float b_r4o(void* target, Il2CppObject* p0, MethodInfo* method) {
              
     // LuaValToCSVal P any
     float ret = converter::Converter<float>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -5952,7 +6092,7 @@ static float b_r4s(void* target, Il2CppString* p0, MethodInfo* method) {
              
     // LuaValToCSVal P any
     float ret = converter::Converter<float>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -6244,7 +6384,7 @@ static uint32_t b_u4(void* target, MethodInfo* method) {
              
     // LuaValToCSVal P any
     uint32_t ret = converter::Converter<uint32_t>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -6279,18 +6419,20 @@ static uint32_t b_u4i4u4(void* target, int32_t p0, uint32_t p1, MethodInfo* meth
              
     // LuaValToCSVal P any
     uint32_t ret = converter::Converter<uint32_t>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
-// UInt32 Invoke(System.String, MsgBoxDelegate, OSProto.MsgBoxStyle, OSProto.MsgBoxForm) declare in Assets.Scripts.Framework.Lua.LuaMsgBox+DelegateMsgBoxShow
-static uint32_t b_u4soi4i4(void* target, Il2CppString* p0, Il2CppObject* p1, int32_t p2, int32_t p3, MethodInfo* method) {
-    // PLog("Running b_u4soi4i4");
+// UInt32 Invoke(System.String, MsgBoxDelegate, OSProto.MsgBoxStyle, OSProto.MsgBoxForm, System.String) declare in Assets.Scripts.Framework.Lua.LuaMsgBox+DelegateMsgBoxShow
+static uint32_t b_u4soi4i4s(void* target, Il2CppString* p0, Il2CppObject* p1, int32_t p2, int32_t p3, Il2CppString* p4, MethodInfo* method) {
+    // PLog("Running b_u4soi4i4s");
             
     auto TIp0 = GetParameterType(method, 0);
         
     auto TIp1 = GetParameterType(method, 1);
-                        
+                                
+    auto TIp4 = GetParameterType(method, 4);
+
     PObjectRefInfo* delegateInfo = GetPObjectRefInfo(target);
     struct pesapi_ffi* apis = delegateInfo->Apis;
 
@@ -6303,13 +6445,14 @@ static uint32_t b_u4soi4i4(void* target, Il2CppString* p0, Il2CppObject* p1, int
     }
     auto func = apis->get_value_from_ref(env, delegateInfo->ValueRef);
 
-    pesapi_value argv[4]{
+    pesapi_value argv[5]{
     converter::Converter<Il2CppString*>::toScript(apis, env, p0),
             CSRefToLuaValue(apis, env, TIp1, p1),
             converter::Converter<int32_t>::toScript(apis, env, p2),
-            converter::Converter<int32_t>::toScript(apis, env, p3)
+            converter::Converter<int32_t>::toScript(apis, env, p3),
+            converter::Converter<Il2CppString*>::toScript(apis, env, p4)
     };
-    auto luaret = apis->call_function(env, func, 0, 4, argv);
+    auto luaret = apis->call_function(env, func, 0, 5, argv);
 
     if (apis->has_caught(env))
     {
@@ -6320,7 +6463,7 @@ static uint32_t b_u4soi4i4(void* target, Il2CppString* p0, Il2CppObject* p1, int
              
     // LuaValToCSVal P any
     uint32_t ret = converter::Converter<uint32_t>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -6356,7 +6499,7 @@ static uint64_t b_u8o(void* target, Il2CppObject* p0, MethodInfo* method) {
              
     // LuaValToCSVal P any
     uint64_t ret = converter::Converter<uint64_t>::toCpp(apis, env, luaret);
-        
+
     return ret;
 
 }
@@ -7680,7 +7823,7 @@ static void b_vPS_u4u4_(void* target, struct S_u4u4_* p0, MethodInfo* method) {
     }
 
 }
-// Void Invoke(CardFilterChessInfo ByRef) declare in SGW+CardFilterChessInfoTypeDelegate
+// Void Invoke(PlayerIntelligentDropInfo ByRef) declare in SGW+PlayerIntelligentDropInfoTypeDelegate
 static void b_vPS_u4u4oo_(void* target, struct S_u4u4oo_* p0, MethodInfo* method) {
     // PLog("Running b_vPS_u4u4oo_");
             
@@ -7709,7 +7852,7 @@ static void b_vPS_u4u4oo_(void* target, struct S_u4u4oo_* p0, MethodInfo* method
     }
 
 }
-// Void Invoke(CardAdvanceUseInfo ByRef) declare in SGW+CardAdvanceUseInfoTypeDelegate
+// Void Invoke(CardFilterChessInfo ByRef) declare in SGW+CardFilterChessInfoTypeDelegate
 static void b_vPS_u4u4ooo_(void* target, struct S_u4u4ooo_* p0, MethodInfo* method) {
     // PLog("Running b_vPS_u4u4ooo_");
             
@@ -9034,8 +9177,8 @@ static void b_vS_u4i4s_(void* target, struct S_u4i4s_ p0, MethodInfo* method) {
 
 }
 // Void Invoke(OSHPlayerEnergyChangeInfo) declare in System.Action`1[SGW+OSHPlayerEnergyChangeInfo]
-static void b_vS_u4i4u1u4_(void* target, struct S_u4i4u1u4_ p0, MethodInfo* method) {
-    // PLog("Running b_vS_u4i4u1u4_");
+static void b_vS_u4i4u4i4_(void* target, struct S_u4i4u4i4_ p0, MethodInfo* method) {
+    // PLog("Running b_vS_u4i4u4i4_");
             
     auto TIp0 = GetParameterType(method, 0);
 
@@ -9298,7 +9441,36 @@ static void b_vS_u4u4b_(void* target, struct S_u4u4b_ p0, MethodInfo* method) {
     }
 
 }
-// Void Invoke(CardFilterChessInfo) declare in SGW+CardFilterChessInfoLuaDelegate
+// Void Invoke(Assets.Scripts.GameLogic.Project8EquipPair) declare in System.Action`1[Assets.Scripts.GameLogic.Project8EquipPair]
+static void b_vS_u4u4i4_(void* target, struct S_u4u4i4_ p0, MethodInfo* method) {
+    // PLog("Running b_vS_u4u4i4_");
+            
+    auto TIp0 = GetParameterType(method, 0);
+
+    PObjectRefInfo* delegateInfo = GetPObjectRefInfo(target);
+    struct pesapi_ffi* apis = delegateInfo->Apis;
+
+    pesapi_env env = apis->get_ref_associated_env(delegateInfo->ValueRef);
+    AutoValueScope valueScope(apis, env);
+    if (!env)
+    {
+        il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException("LuaEnv had been destroy"));
+    }
+    auto func = apis->get_value_from_ref(env, delegateInfo->ValueRef);
+
+    pesapi_value argv[1]{
+    DataTransfer::CopyValueType(apis, env, p0, TIp0)
+    };
+    auto luaret = apis->call_function(env, func, 0, 1, argv);
+
+    if (apis->has_caught(env))
+    {
+        auto msg = apis->get_exception_as_string(env, true);
+        il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException(msg));
+    }
+
+}
+// Void Invoke(PlayerIntelligentDropInfo) declare in SGW+PlayerIntelligentDropInfoLuaDelegate
 static void b_vS_u4u4oo_(void* target, struct S_u4u4oo_ p0, MethodInfo* method) {
     // PLog("Running b_vS_u4u4oo_");
             
@@ -9327,7 +9499,7 @@ static void b_vS_u4u4oo_(void* target, struct S_u4u4oo_ p0, MethodInfo* method) 
     }
 
 }
-// Void Invoke(CardAdvanceUseInfo) declare in SGW+CardAdvanceUseInfoLuaDelegate
+// Void Invoke(CardFilterChessInfo) declare in SGW+CardFilterChessInfoLuaDelegate
 static void b_vS_u4u4ooo_(void* target, struct S_u4u4ooo_ p0, MethodInfo* method) {
     // PLog("Running b_vS_u4u4ooo_");
             
@@ -9559,6 +9731,35 @@ static void b_vS_u8u4u4u4u4u4u4u4u4u2S_u4u4u4u4u4u4_S_u4u4u4u4u4u4__(void* targe
     }
 
 }
+// Void Invoke(Byte[]) declare in System.Action`1[System.Byte[]]
+static void b_va(void* target, Il2CppObject* p0, MethodInfo* method) {
+    // PLog("Running b_va");
+            
+    auto TIp0 = GetParameterType(method, 0);
+
+    PObjectRefInfo* delegateInfo = GetPObjectRefInfo(target);
+    struct pesapi_ffi* apis = delegateInfo->Apis;
+
+    pesapi_env env = apis->get_ref_associated_env(delegateInfo->ValueRef);
+    AutoValueScope valueScope(apis, env);
+    if (!env)
+    {
+        il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException("LuaEnv had been destroy"));
+    }
+    auto func = apis->get_value_from_ref(env, delegateInfo->ValueRef);
+
+    pesapi_value argv[1]{
+    CSRefToLuaValue(apis, env, TIp0, p0)
+    };
+    auto luaret = apis->call_function(env, func, 0, 1, argv);
+
+    if (apis->has_caught(env))
+    {
+        auto msg = apis->get_exception_as_string(env, true);
+        il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException(msg));
+    }
+
+}
 // Void Invoke(Boolean) declare in UnityEngine.Events.UnityEvent`1[System.Boolean]
 static void b_vb(void* target, bool p0, MethodInfo* method) {
     // PLog("Running b_vb");
@@ -9721,6 +9922,36 @@ static void b_vbu4(void* target, bool p0, uint32_t p1, MethodInfo* method) {
     pesapi_value argv[2]{
     converter::Converter<bool>::toScript(apis, env, p0),
             converter::Converter<uint32_t>::toScript(apis, env, p1)
+    };
+    auto luaret = apis->call_function(env, func, 0, 2, argv);
+
+    if (apis->has_caught(env))
+    {
+        auto msg = apis->get_exception_as_string(env, true);
+        il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException(msg));
+    }
+
+}
+// Void Invoke(Int16, System.String) declare in Assets.Plugins.Perf.StatsLite+PFStatsAddMarkerLua
+static void b_vi2s(void* target, int16_t p0, Il2CppString* p1, MethodInfo* method) {
+    // PLog("Running b_vi2s");
+                        
+    auto TIp1 = GetParameterType(method, 1);
+
+    PObjectRefInfo* delegateInfo = GetPObjectRefInfo(target);
+    struct pesapi_ffi* apis = delegateInfo->Apis;
+
+    pesapi_env env = apis->get_ref_associated_env(delegateInfo->ValueRef);
+    AutoValueScope valueScope(apis, env);
+    if (!env)
+    {
+        il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException("LuaEnv had been destroy"));
+    }
+    auto func = apis->get_value_from_ref(env, delegateInfo->ValueRef);
+
+    pesapi_value argv[2]{
+    converter::Converter<int16_t>::toScript(apis, env, p0),
+            converter::Converter<Il2CppString*>::toScript(apis, env, p1)
     };
     auto luaret = apis->call_function(env, func, 0, 2, argv);
 
@@ -10302,12 +10533,12 @@ static void b_vi4o(void* target, int32_t p0, Il2CppObject* p1, MethodInfo* metho
     }
 
 }
-// Void Invoke(Int32, XLua.LuaTable, Int32) declare in Assets.Scripts.Framework.Lua.RuntimeCSharpCallLuaInteraction+DelegateGetLineUpCallback
-static void b_vi4oi4(void* target, int32_t p0, Il2CppObject* p1, int32_t p2, MethodInfo* method) {
-    // PLog("Running b_vi4oi4");
+// Void Invoke(Int32, XLua.LuaTable, Int32, Int32) declare in Assets.Scripts.Framework.Lua.RuntimeCSharpCallLuaInteraction+DelegateGetLineUpCallback
+static void b_vi4oi4i4(void* target, int32_t p0, Il2CppObject* p1, int32_t p2, int32_t p3, MethodInfo* method) {
+    // PLog("Running b_vi4oi4i4");
                         
     auto TIp1 = GetParameterType(method, 1);
-            
+                        
     PObjectRefInfo* delegateInfo = GetPObjectRefInfo(target);
     struct pesapi_ffi* apis = delegateInfo->Apis;
 
@@ -10319,12 +10550,13 @@ static void b_vi4oi4(void* target, int32_t p0, Il2CppObject* p1, int32_t p2, Met
     }
     auto func = apis->get_value_from_ref(env, delegateInfo->ValueRef);
 
-    pesapi_value argv[3]{
+    pesapi_value argv[4]{
     converter::Converter<int32_t>::toScript(apis, env, p0),
             CSRefToLuaValue(apis, env, TIp1, p1),
-            converter::Converter<int32_t>::toScript(apis, env, p2)
+            converter::Converter<int32_t>::toScript(apis, env, p2),
+            converter::Converter<int32_t>::toScript(apis, env, p3)
     };
-    auto luaret = apis->call_function(env, func, 0, 3, argv);
+    auto luaret = apis->call_function(env, func, 0, 4, argv);
 
     if (apis->has_caught(env))
     {
@@ -11427,6 +11659,37 @@ static void b_vou4oo(void* target, Il2CppObject* p0, uint32_t p1, Il2CppObject* 
     }
 
 }
+// Void Invoke(UnityEngine.RectTransform, UInt64, UInt32) declare in Assets.Scripts.Framework.Lua.RuntimeCSharpCallLuaInteraction+PopupPlayerInfoTipDelegate
+static void b_vou8u4(void* target, Il2CppObject* p0, uint64_t p1, uint32_t p2, MethodInfo* method) {
+    // PLog("Running b_vou8u4");
+            
+    auto TIp0 = GetParameterType(method, 0);
+                        
+    PObjectRefInfo* delegateInfo = GetPObjectRefInfo(target);
+    struct pesapi_ffi* apis = delegateInfo->Apis;
+
+    pesapi_env env = apis->get_ref_associated_env(delegateInfo->ValueRef);
+    AutoValueScope valueScope(apis, env);
+    if (!env)
+    {
+        il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException("LuaEnv had been destroy"));
+    }
+    auto func = apis->get_value_from_ref(env, delegateInfo->ValueRef);
+
+    pesapi_value argv[3]{
+    CSRefToLuaValue(apis, env, TIp0, p0),
+            converter::Converter<uint64_t>::toScript(apis, env, p1),
+            converter::Converter<uint32_t>::toScript(apis, env, p2)
+    };
+    auto luaret = apis->call_function(env, func, 0, 3, argv);
+
+    if (apis->has_caught(env))
+    {
+        auto msg = apis->get_exception_as_string(env, true);
+        il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException(msg));
+    }
+
+}
 // Void Invoke(IntPtr) declare in CriWare.CriMana.Player+SubtitleChangeCallback
 static void b_vp(void* target, void* p0, MethodInfo* method) {
     // PLog("Running b_vp");
@@ -11523,6 +11786,38 @@ static void b_vpS_r4r4_(void* target, void* p0, struct S_r4r4_ p1, MethodInfo* m
 // Void Invoke(IntPtr, UnityEngine.Vector3) declare in System.Action`2[System.IntPtr,UnityEngine.Vector3]
 static void b_vpS_r4r4r4_(void* target, void* p0, struct S_r4r4r4_ p1, MethodInfo* method) {
     // PLog("Running b_vpS_r4r4r4_");
+            
+    auto TIp0 = GetParameterType(method, 0);
+        
+    auto TIp1 = GetParameterType(method, 1);
+
+    PObjectRefInfo* delegateInfo = GetPObjectRefInfo(target);
+    struct pesapi_ffi* apis = delegateInfo->Apis;
+
+    pesapi_env env = apis->get_ref_associated_env(delegateInfo->ValueRef);
+    AutoValueScope valueScope(apis, env);
+    if (!env)
+    {
+        il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException("LuaEnv had been destroy"));
+    }
+    auto func = apis->get_value_from_ref(env, delegateInfo->ValueRef);
+
+    pesapi_value argv[2]{
+    apis->create_binary(env, p0, 0),
+            DataTransfer::CopyValueType(apis, env, p1, TIp1)
+    };
+    auto luaret = apis->call_function(env, func, 0, 2, argv);
+
+    if (apis->has_caught(env))
+    {
+        auto msg = apis->get_exception_as_string(env, true);
+        il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException(msg));
+    }
+
+}
+// Void Invoke(IntPtr, Assets.Scripts.UI.InTheGame.GlobalInfo.UICommonBattleHeroData) declare in System.Action`2[System.IntPtr,Assets.Scripts.UI.InTheGame.GlobalInfo.UICommonBattleHeroData]
+static void b_vpS_u4u4i4ou4bu4u4u4bu4_(void* target, void* p0, struct S_u4u4i4ou4bu4u4u4bu4_ p1, MethodInfo* method) {
+    // PLog("Running b_vpS_u4u4i4ou4bu4u4u4bu4_");
             
     auto TIp0 = GetParameterType(method, 0);
         
@@ -11876,6 +12171,40 @@ static void b_vsO(void* target, Il2CppString* p0, Il2CppObject* p1, MethodInfo* 
             CSRefToLuaValue(apis, env, TIp1, p1)
     };
     auto luaret = apis->call_function(env, func, 0, 2, argv);
+
+    if (apis->has_caught(env))
+    {
+        auto msg = apis->get_exception_as_string(env, true);
+        il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException(msg));
+    }
+
+}
+// Void Invoke(System.String, Byte[], Int32, Int32) declare in Assets.Scripts.Framework.Lua.RuntimeCSharpCallLuaInteraction+DelegateSendFrameCmd
+static void b_vsai4i4(void* target, Il2CppString* p0, Il2CppObject* p1, int32_t p2, int32_t p3, MethodInfo* method) {
+    // PLog("Running b_vsai4i4");
+            
+    auto TIp0 = GetParameterType(method, 0);
+        
+    auto TIp1 = GetParameterType(method, 1);
+                        
+    PObjectRefInfo* delegateInfo = GetPObjectRefInfo(target);
+    struct pesapi_ffi* apis = delegateInfo->Apis;
+
+    pesapi_env env = apis->get_ref_associated_env(delegateInfo->ValueRef);
+    AutoValueScope valueScope(apis, env);
+    if (!env)
+    {
+        il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException("LuaEnv had been destroy"));
+    }
+    auto func = apis->get_value_from_ref(env, delegateInfo->ValueRef);
+
+    pesapi_value argv[4]{
+    converter::Converter<Il2CppString*>::toScript(apis, env, p0),
+            CSRefToLuaValue(apis, env, TIp1, p1),
+            converter::Converter<int32_t>::toScript(apis, env, p2),
+            converter::Converter<int32_t>::toScript(apis, env, p3)
+    };
+    auto luaret = apis->call_function(env, func, 0, 4, argv);
 
     if (apis->has_caught(env))
     {
@@ -12275,40 +12604,6 @@ static void b_vsoi4(void* target, Il2CppString* p0, Il2CppObject* p1, int32_t p2
             converter::Converter<int32_t>::toScript(apis, env, p2)
     };
     auto luaret = apis->call_function(env, func, 0, 3, argv);
-
-    if (apis->has_caught(env))
-    {
-        auto msg = apis->get_exception_as_string(env, true);
-        il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException(msg));
-    }
-
-}
-// Void Invoke(System.String, Byte[], Int32, Int32) declare in Assets.Scripts.Framework.Lua.RuntimeCSharpCallLuaInteraction+DelegateSendFrameCmd
-static void b_vsoi4i4(void* target, Il2CppString* p0, Il2CppObject* p1, int32_t p2, int32_t p3, MethodInfo* method) {
-    // PLog("Running b_vsoi4i4");
-            
-    auto TIp0 = GetParameterType(method, 0);
-        
-    auto TIp1 = GetParameterType(method, 1);
-                        
-    PObjectRefInfo* delegateInfo = GetPObjectRefInfo(target);
-    struct pesapi_ffi* apis = delegateInfo->Apis;
-
-    pesapi_env env = apis->get_ref_associated_env(delegateInfo->ValueRef);
-    AutoValueScope valueScope(apis, env);
-    if (!env)
-    {
-        il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException("LuaEnv had been destroy"));
-    }
-    auto func = apis->get_value_from_ref(env, delegateInfo->ValueRef);
-
-    pesapi_value argv[4]{
-    converter::Converter<Il2CppString*>::toScript(apis, env, p0),
-            CSRefToLuaValue(apis, env, TIp1, p1),
-            converter::Converter<int32_t>::toScript(apis, env, p2),
-            converter::Converter<int32_t>::toScript(apis, env, p3)
-    };
-    auto luaret = apis->call_function(env, func, 0, 4, argv);
 
     if (apis->has_caught(env))
     {
@@ -13009,7 +13304,7 @@ static void b_vu4i4u4(void* target, uint32_t p0, int32_t p1, uint32_t p2, Method
     }
 
 }
-// Void Invoke(UInt32, System.Collections.Generic.Dictionary`2[ResData.ActorAbilitySymmetryType,System.Int32]) declare in System.Action`2[System.UInt32,System.Collections.Generic.Dictionary`2[ResData.ActorAbilitySymmetryType,System.Int32]]
+// Void Invoke(UInt32, GameLogic.Highlight.RankItem.IRankingBubble) declare in System.Action`2[System.UInt32,GameLogic.Highlight.RankItem.IRankingBubble]
 static void b_vu4o(void* target, uint32_t p0, Il2CppObject* p1, MethodInfo* method) {
     // PLog("Running b_vu4o");
                         
@@ -13256,6 +13551,35 @@ static void b_vu4u4b(void* target, uint32_t p0, uint32_t p1, bool p2, MethodInfo
     }
 
 }
+// Void Invoke(UInt32, UInt32, Int32) declare in Assets.Scripts.Framework.Lua.RuntimeCSharpCallLuaInteraction+ReqOSOWinRoundPlayersDelegate
+static void b_vu4u4i4(void* target, uint32_t p0, uint32_t p1, int32_t p2, MethodInfo* method) {
+    // PLog("Running b_vu4u4i4");
+
+    PObjectRefInfo* delegateInfo = GetPObjectRefInfo(target);
+    struct pesapi_ffi* apis = delegateInfo->Apis;
+
+    pesapi_env env = apis->get_ref_associated_env(delegateInfo->ValueRef);
+    AutoValueScope valueScope(apis, env);
+    if (!env)
+    {
+        il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException("LuaEnv had been destroy"));
+    }
+    auto func = apis->get_value_from_ref(env, delegateInfo->ValueRef);
+
+    pesapi_value argv[3]{
+    converter::Converter<uint32_t>::toScript(apis, env, p0),
+            converter::Converter<uint32_t>::toScript(apis, env, p1),
+            converter::Converter<int32_t>::toScript(apis, env, p2)
+    };
+    auto luaret = apis->call_function(env, func, 0, 3, argv);
+
+    if (apis->has_caught(env))
+    {
+        auto msg = apis->get_exception_as_string(env, true);
+        il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException(msg));
+    }
+
+}
 // Void Invoke(UInt32, UInt32, UnityEngine.RectTransform) declare in System.Action`3[System.UInt32,System.UInt32,UnityEngine.RectTransform]
 static void b_vu4u4o(void* target, uint32_t p0, uint32_t p1, Il2CppObject* p2, MethodInfo* method) {
     // PLog("Running b_vu4u4o");
@@ -13446,6 +13770,7 @@ static BridgeFuncInfo g_bridgeFuncInfos[] = {
     {"S_r4r4_i4", (Il2CppMethodPointer)b_S_r4r4_i4},
     {"S_r4r4_o", (Il2CppMethodPointer)b_S_r4r4_o},
     {"S_r4r4r4_", (Il2CppMethodPointer)b_S_r4r4r4_},
+    {"aso", (Il2CppMethodPointer)b_aso},
     {"b", (Il2CppMethodPointer)b_b},
     {"bO", (Il2CppMethodPointer)b_bO},
     {"bOO", (Il2CppMethodPointer)b_bOO},
@@ -13454,6 +13779,7 @@ static BridgeFuncInfo g_bridgeFuncInfos[] = {
     {"bOS_i4i4o_", (Il2CppMethodPointer)b_bOS_i4i4o_},
     {"bOS_r4r4_", (Il2CppMethodPointer)b_bOS_r4r4_},
     {"bOS_r4r4_o", (Il2CppMethodPointer)b_bOS_r4r4_o},
+    {"bOS_r4r4r4_", (Il2CppMethodPointer)b_bOS_r4r4r4_},
     {"bOS_u4oob_", (Il2CppMethodPointer)b_bOS_u4oob_},
     {"bOS_u4u4i4S_r4r4_u4_", (Il2CppMethodPointer)b_bOS_u4u4i4S_r4r4_u4_},
     {"bOS_u4u4r4i4b_", (Il2CppMethodPointer)b_bOS_u4u4r4i4b_},
@@ -13479,7 +13805,6 @@ static BridgeFuncInfo g_bridgeFuncInfos[] = {
     {"bOob", (Il2CppMethodPointer)b_bOob},
     {"bOoi4", (Il2CppMethodPointer)b_bOoi4},
     {"bOoo", (Il2CppMethodPointer)b_bOoo},
-    {"bOooS_r4r4_b", (Il2CppMethodPointer)b_bOooS_r4r4_b},
     {"bOoob", (Il2CppMethodPointer)b_bOoob},
     {"bOooo", (Il2CppMethodPointer)b_bOooo},
     {"bOooou4", (Il2CppMethodPointer)b_bOooou4},
@@ -13504,9 +13829,11 @@ static BridgeFuncInfo g_bridgeFuncInfos[] = {
     {"bPS_u4o_", (Il2CppMethodPointer)b_bPS_u4o_},
     {"bS_i4i4o_", (Il2CppMethodPointer)b_bS_i4i4o_},
     {"bS_r4r4_", (Il2CppMethodPointer)b_bS_r4r4_},
+    {"bS_r4r4r4_", (Il2CppMethodPointer)b_bS_r4r4r4_},
     {"bS_u4o_", (Il2CppMethodPointer)b_bS_u4o_},
     {"bS_u4oob_", (Il2CppMethodPointer)b_bS_u4oob_},
     {"bS_u4u4i4S_r4r4_u4_", (Il2CppMethodPointer)b_bS_u4u4i4S_r4r4_u4_},
+    {"bS_u4u4i4_", (Il2CppMethodPointer)b_bS_u4u4i4_},
     {"bS_u4u4r4i4b_", (Il2CppMethodPointer)b_bS_u4u4r4i4b_},
     {"bS_u4u4u4_", (Il2CppMethodPointer)b_bS_u4u4u4_},
     {"bS_u4u4u4u4_", (Il2CppMethodPointer)b_bS_u4u4u4u4_},
@@ -13535,7 +13862,6 @@ static BridgeFuncInfo g_bridgeFuncInfos[] = {
     {"bobo", (Il2CppMethodPointer)b_bobo},
     {"boi4", (Il2CppMethodPointer)b_boi4},
     {"boo", (Il2CppMethodPointer)b_boo},
-    {"booS_r4r4_b", (Il2CppMethodPointer)b_booS_r4r4_b},
     {"boob", (Il2CppMethodPointer)b_boob},
     {"booo", (Il2CppMethodPointer)b_booo},
     {"booou4", (Il2CppMethodPointer)b_booou4},
@@ -13561,7 +13887,9 @@ static BridgeFuncInfo g_bridgeFuncInfos[] = {
     {"bu4u4u4u4", (Il2CppMethodPointer)b_bu4u4u4u4},
     {"csi4c", (Il2CppMethodPointer)b_csi4c},
     {"i4", (Il2CppMethodPointer)b_i4},
+    {"i4S_u4u4i4_S_u4u4i4_", (Il2CppMethodPointer)b_i4S_u4u4i4_S_u4u4i4_},
     {"i4b", (Il2CppMethodPointer)b_i4b},
+    {"i4i2i4", (Il2CppMethodPointer)b_i4i2i4},
     {"i4i4", (Il2CppMethodPointer)b_i4i4},
     {"i4i4O", (Il2CppMethodPointer)b_i4i4O},
     {"i4i4i4", (Il2CppMethodPointer)b_i4i4i4},
@@ -13588,7 +13916,7 @@ static BridgeFuncInfo g_bridgeFuncInfos[] = {
     {"opi4", (Il2CppMethodPointer)b_opi4},
     {"os", (Il2CppMethodPointer)b_os},
     {"osO", (Il2CppMethodPointer)b_osO},
-    {"oso", (Il2CppMethodPointer)b_oso},
+    {"osa", (Il2CppMethodPointer)b_osa},
     {"r4", (Il2CppMethodPointer)b_r4},
     {"r4o", (Il2CppMethodPointer)b_r4o},
     {"r4s", (Il2CppMethodPointer)b_r4s},
@@ -13601,7 +13929,7 @@ static BridgeFuncInfo g_bridgeFuncInfos[] = {
     {"sssoo", (Il2CppMethodPointer)b_sssoo},
     {"u4", (Il2CppMethodPointer)b_u4},
     {"u4i4u4", (Il2CppMethodPointer)b_u4i4u4},
-    {"u4soi4i4", (Il2CppMethodPointer)b_u4soi4i4},
+    {"u4soi4i4s", (Il2CppMethodPointer)b_u4soi4i4s},
     {"u8o", (Il2CppMethodPointer)b_u8o},
     {"v", (Il2CppMethodPointer)b_v},
     {"vO", (Il2CppMethodPointer)b_vO},
@@ -13694,7 +14022,7 @@ static BridgeFuncInfo g_bridgeFuncInfos[] = {
     {"vS_u4i4o_", (Il2CppMethodPointer)b_vS_u4i4o_},
     {"vS_u4i4ooo_", (Il2CppMethodPointer)b_vS_u4i4ooo_},
     {"vS_u4i4s_", (Il2CppMethodPointer)b_vS_u4i4s_},
-    {"vS_u4i4u1u4_", (Il2CppMethodPointer)b_vS_u4i4u1u4_},
+    {"vS_u4i4u4i4_", (Il2CppMethodPointer)b_vS_u4i4u4i4_},
     {"vS_u4o_", (Il2CppMethodPointer)b_vS_u4o_},
     {"vS_u4o_S_u1u2u1u1S_S_u4u4u4u4u4u4u4u4_u4u4u1u4u4__", (Il2CppMethodPointer)b_vS_u4o_S_u1u2u1u1S_S_u4u4u4u4u4u4u4u4_u4u4u1u4u4__},
     {"vS_u4o_b", (Il2CppMethodPointer)b_vS_u4o_b},
@@ -13703,6 +14031,7 @@ static BridgeFuncInfo g_bridgeFuncInfos[] = {
     {"vS_u4u1u4u4u1u4u4_", (Il2CppMethodPointer)b_vS_u4u1u4u4u1u4u4_},
     {"vS_u4u4_", (Il2CppMethodPointer)b_vS_u4u4_},
     {"vS_u4u4b_", (Il2CppMethodPointer)b_vS_u4u4b_},
+    {"vS_u4u4i4_", (Il2CppMethodPointer)b_vS_u4u4i4_},
     {"vS_u4u4oo_", (Il2CppMethodPointer)b_vS_u4u4oo_},
     {"vS_u4u4ooo_", (Il2CppMethodPointer)b_vS_u4u4ooo_},
     {"vS_u4u4oooo_", (Il2CppMethodPointer)b_vS_u4u4oooo_},
@@ -13712,12 +14041,14 @@ static BridgeFuncInfo g_bridgeFuncInfos[] = {
     {"vS_u4u4u4u4u4_", (Il2CppMethodPointer)b_vS_u4u4u4u4u4_},
     {"vS_u4u4u4u4u4u4u4u4u4u4_", (Il2CppMethodPointer)b_vS_u4u4u4u4u4u4u4u4u4u4_},
     {"vS_u8u4u4u4u4u4u4u4u4u2S_u4u4u4u4u4u4_S_u4u4u4u4u4u4__", (Il2CppMethodPointer)b_vS_u8u4u4u4u4u4u4u4u4u2S_u4u4u4u4u4u4_S_u4u4u4u4u4u4__},
+    {"va", (Il2CppMethodPointer)b_va},
     {"vb", (Il2CppMethodPointer)b_vb},
     {"vbPS_i4i4_", (Il2CppMethodPointer)b_vbPS_i4i4_},
     {"vbi4", (Il2CppMethodPointer)b_vbi4},
     {"vbi4u4", (Il2CppMethodPointer)b_vbi4u4},
     {"vbo", (Il2CppMethodPointer)b_vbo},
     {"vbu4", (Il2CppMethodPointer)b_vbu4},
+    {"vi2s", (Il2CppMethodPointer)b_vi2s},
     {"vi4", (Il2CppMethodPointer)b_vi4},
     {"vi4O", (Il2CppMethodPointer)b_vi4O},
     {"vi4S_r4r4_", (Il2CppMethodPointer)b_vi4S_r4r4_},
@@ -13736,7 +14067,7 @@ static BridgeFuncInfo g_bridgeFuncInfos[] = {
     {"vi4i4si4s", (Il2CppMethodPointer)b_vi4i4si4s},
     {"vi4i4ss", (Il2CppMethodPointer)b_vi4i4ss},
     {"vi4o", (Il2CppMethodPointer)b_vi4o},
-    {"vi4oi4", (Il2CppMethodPointer)b_vi4oi4},
+    {"vi4oi4i4", (Il2CppMethodPointer)b_vi4oi4i4},
     {"vi4s", (Il2CppMethodPointer)b_vi4s},
     {"vi4sDu8DoDi4", (Il2CppMethodPointer)b_vi4sDu8DoDi4},
     {"vi4sb", (Il2CppMethodPointer)b_vi4sb},
@@ -13771,10 +14102,12 @@ static BridgeFuncInfo g_bridgeFuncInfos[] = {
     {"vor4r4", (Il2CppMethodPointer)b_vor4r4},
     {"vos", (Il2CppMethodPointer)b_vos},
     {"vou4oo", (Il2CppMethodPointer)b_vou4oo},
+    {"vou8u4", (Il2CppMethodPointer)b_vou8u4},
     {"vp", (Il2CppMethodPointer)b_vp},
     {"vpO", (Il2CppMethodPointer)b_vpO},
     {"vpS_r4r4_", (Il2CppMethodPointer)b_vpS_r4r4_},
     {"vpS_r4r4r4_", (Il2CppMethodPointer)b_vpS_r4r4r4_},
+    {"vpS_u4u4i4ou4bu4u4u4bu4_", (Il2CppMethodPointer)b_vpS_u4u4i4ou4bu4u4u4bu4_},
     {"vpb", (Il2CppMethodPointer)b_vpb},
     {"vpi4", (Il2CppMethodPointer)b_vpi4},
     {"vpi4i4i4", (Il2CppMethodPointer)b_vpi4i4i4},
@@ -13786,6 +14119,7 @@ static BridgeFuncInfo g_bridgeFuncInfos[] = {
     {"vr4r4", (Il2CppMethodPointer)b_vr4r4},
     {"vs", (Il2CppMethodPointer)b_vs},
     {"vsO", (Il2CppMethodPointer)b_vsO},
+    {"vsai4i4", (Il2CppMethodPointer)b_vsai4i4},
     {"vsb", (Il2CppMethodPointer)b_vsb},
     {"vsbS_S_Pvi4i4i4S_pi4i4_i4_i4i4i4_", (Il2CppMethodPointer)b_vsbS_S_Pvi4i4i4S_pi4i4_i4_i4i4i4_},
     {"vsbS_r4r4r4_S_r4r4r4_", (Il2CppMethodPointer)b_vsbS_r4r4r4_S_r4r4r4_},
@@ -13798,7 +14132,6 @@ static BridgeFuncInfo g_bridgeFuncInfos[] = {
     {"vso", (Il2CppMethodPointer)b_vso},
     {"vsob", (Il2CppMethodPointer)b_vsob},
     {"vsoi4", (Il2CppMethodPointer)b_vsoi4},
-    {"vsoi4i4", (Il2CppMethodPointer)b_vsoi4i4},
     {"vss", (Il2CppMethodPointer)b_vss},
     {"vssO", (Il2CppMethodPointer)b_vssO},
     {"vssi4", (Il2CppMethodPointer)b_vssi4},
@@ -13829,6 +14162,7 @@ static BridgeFuncInfo g_bridgeFuncInfos[] = {
     {"vu4ss", (Il2CppMethodPointer)b_vu4ss},
     {"vu4u4", (Il2CppMethodPointer)b_vu4u4},
     {"vu4u4b", (Il2CppMethodPointer)b_vu4u4b},
+    {"vu4u4i4", (Il2CppMethodPointer)b_vu4u4i4},
     {"vu4u4o", (Il2CppMethodPointer)b_vu4u4o},
     {"vu4u4u4", (Il2CppMethodPointer)b_vu4u4u4},
     {"vu4u4u4u4", (Il2CppMethodPointer)b_vu4u4u4u4},

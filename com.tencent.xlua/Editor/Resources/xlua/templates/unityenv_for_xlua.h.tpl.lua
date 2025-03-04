@@ -2,10 +2,10 @@
 --local dbg = require('emmy_core')
 --dbg.tcpConnect('localhost', 9966)
 
-require("il2cpp_snippets")
+require("tte")
 
 function unityenv_for_xlua(definesList) 
-    local defines = il2cpp_snippets.listToLuaArray(definesList)
+    local defines = listToLuaArray(definesList)
     return table.join(table.map(defines, function(d)
         return string.format([[#ifndef %s
     #define %s

@@ -166,7 +166,7 @@ namespace XLua.CSObjectWrap
             else %>
             #if OSG_PROFILE
             int sampleIndex = -1;
-            StatsLite.BeginSample(StatsSampleId.Lua_New, ref sampleIndex);
+            StatsLite.BeginSample(StatsSampleId.xLua_New, ref sampleIndex);
             #endif
 			try 
 			{
@@ -250,7 +250,7 @@ namespace XLua.CSObjectWrap
         {
             #if OSG_PROFILE
             int sampleIndex = -1;
-            StatsLite.BeginSample(StatsSampleId.Lua_Indexer, ref sampleIndex);
+            StatsLite.BeginSample(StatsSampleId.xLua_Indexer, ref sampleIndex);
             #endif
 			<%if type.IsArray then %>
 			try 
@@ -317,7 +317,7 @@ namespace XLua.CSObjectWrap
         {
             #if OSG_PROFILE
             int sampleIndex = -1;
-            StatsLite.BeginSample(StatsSampleId.Lua_NewIndexer, ref sampleIndex);
+            StatsLite.BeginSample(StatsSampleId.xLua_NewIndexer, ref sampleIndex);
             #endif
 			<%if type.IsArray or newindexers.Count > 0 then %>ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);<%end%>
 			<%if type.IsArray then 
@@ -387,7 +387,7 @@ namespace XLua.CSObjectWrap
         {
             #if OSG_PROFILE
             int sampleIndex = -1;
-            StatsLite.BeginSample(StatsSampleId.Lua_Operator, ref sampleIndex);
+            StatsLite.BeginSample(StatsSampleId.xLua_Operator, ref sampleIndex);
             #endif
             <% if operator.Name ~= "op_UnaryNegation" and operator.Name ~= "op_OnesComplement"  then %>
 			try 
@@ -447,7 +447,7 @@ namespace XLua.CSObjectWrap
         {
             #if OSG_PROFILE
             int sampleIndex = -1;
-            StatsLite.BeginSample(StatsSampleId.Lua_Method, ref sampleIndex);
+            StatsLite.BeginSample(StatsSampleId.xLua_Method, "<%=method.Name%>", ref sampleIndex);
             #endif
 		    try 
 		    {
@@ -569,7 +569,7 @@ namespace XLua.CSObjectWrap
         {
             #if OSG_PROFILE
             int sampleIndex = -1;
-            StatsLite.BeginSample(StatsSampleId.Lua_PropertyGetter, ref sampleIndex);
+            StatsLite.BeginSample(StatsSampleId.xLua_PropertyGetter, ref sampleIndex);
             #endif
 		    try 
 		    {
@@ -599,7 +599,7 @@ namespace XLua.CSObjectWrap
         {
             #if OSG_PROFILE
             int sampleIndex = -1;
-            StatsLite.BeginSample(StatsSampleId.Lua_PropertySetter, ref sampleIndex);
+            StatsLite.BeginSample(StatsSampleId.xLua_PropertySetter, ref sampleIndex);
             #endif
 		    try 
 		    {
@@ -637,7 +637,7 @@ namespace XLua.CSObjectWrap
         {
             #if OSG_PROFILE
             int sampleIndex = -1;
-            StatsLite.BeginSample(StatsSampleId.Lua_AddEvent, ref sampleIndex);
+            StatsLite.BeginSample(StatsSampleId.xLua_AddEvent, ref sampleIndex);
             #endif
 		    try {
                 ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
@@ -680,7 +680,7 @@ namespace XLua.CSObjectWrap
         {  
             #if OSG_PROFILE
             int sampleIndex = -1;
-            StatsLite.BeginSample(StatsSampleId.Lua_RemoveEvent, ref sampleIndex);
+            StatsLite.BeginSample(StatsSampleId.xLua_RemoveEvent, ref sampleIndex);
             #endif
 		    try 
 		    {
@@ -726,7 +726,7 @@ namespace XLua.CSObjectWrap
         {
             #if OSG_PROFILE
             int sampleIndex = -1;
-            StatsLite.BeginSample(StatsSampleId.Lua_StaticAddEvent, ref sampleIndex);
+            StatsLite.BeginSample(StatsSampleId.xLua_StaticAddEvent, ref sampleIndex);
             #endif
 		    try 
 		    {
@@ -760,7 +760,7 @@ namespace XLua.CSObjectWrap
         {
             #if OSG_PROFILE
             int sampleIndex = -1;
-            StatsLite.BeginSample(StatsSampleId.Lua_StaticRemoveEvent, ref sampleIndex);
+            StatsLite.BeginSample(StatsSampleId.xLua_StaticRemoveEvent, ref sampleIndex);
             #endif
 		    try 
 		    {

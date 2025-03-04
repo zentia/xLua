@@ -94,6 +94,7 @@ namespace XLua
             public static string Object = "o";
             public static string StructPrefix = "S_";
             public static string NullableStructPrefix = "N_";
+            public static string ArrayBuffer = "a";
         }
         private static Type GetType(string className, bool isQualifiedName)
         {
@@ -246,7 +247,7 @@ namespace XLua
             }
             else if (!type.IsValueType)
             {
-                return TypeSignatures.Object;
+                return typeof(byte[]) == type ? TypeSignatures.ArrayBuffer : TypeSignatures.Object;
             }
             else if (type.IsValueType && !type.IsPrimitive)
             {

@@ -17,7 +17,7 @@ namespace XLua
 
         const int LIB_VERSION_EXPECT = 105;
 
-        public LuaEnv(Type bridgeType = null, Type objectTranslator = null)
+        public LuaEnv(CustomLoader loader, Type bridgeType = null, Type objectTranslator = null)
         {
             UnityEngine.Debug.Log("Default XLua Env");
             if (LuaAPI.xlua_get_lib_version() != LIB_VERSION_EXPECT)
@@ -27,6 +27,10 @@ namespace XLua
             }
             LuaIndexes.LUA_REGISTRYINDEX = LuaAPI.xlua_get_registry_index();
             Init();
+            if (loader != null)
+            {
+                AddLoader(loader);
+            }
 
             if (objectTranslator != null)
             {
@@ -45,8 +49,7 @@ namespace XLua
 
             errorFuncRef = LuaAPI.get_error_func_ref(rawL);
 
-            DoStringWithoutReturnValue(init_xlua, "Init");
-            init_xlua = null;
+            DoStringWithoutReturnValue("require 'vm/init'");
 
             AddBuildin("CS", StaticLuaCallbacks.LoadCS);
 
@@ -111,7 +114,8 @@ namespace XLua
                 }
             }
 
-            translator.CreateEnumerablePairs(rawL);
+            translator.CreateIDictionaryEnumerable(rawL);
+            translator.CreateIListEnumerable(rawL);
             translator.CreateArrayMetatable(rawL);
             translator.CreateDelegateMetatable(rawL);
         }
@@ -313,10 +317,6 @@ namespace XLua
 
         public void Tick()
         {
-#if THREAD_SAFE || HOTFIX_ENABLE
-            lock (luaEnvLock)
-            {
-#endif
             var _L = L;
             lock (refQueue)
             {
@@ -326,12 +326,7 @@ namespace XLua
                     translator.ReleaseLuaBase(_L, gca.Reference, gca.IsDelegate);
                 }
             }
-#if !XLUA_GENERAL
             last_check_point = translator.objects.Check(last_check_point, max_check_per_tick, object_valid_checker, translator.reverseMap);
-#endif
-#if THREAD_SAFE || HOTFIX_ENABLE
-            }
-#endif
         }
 
         //兼容API
@@ -407,7 +402,7 @@ namespace XLua
             ObjectTranslatorPool.Instance.Remove(L);
 
             translator = null;
-            
+
             disposed = true;
 #if THREAD_SAFE || HOTFIX_ENABLE
             }
@@ -458,137 +453,6 @@ namespace XLua
                 refQueue.Enqueue(action);
             }
         }
-
-        private string init_xlua = @"
-            local metatable = {}
-            local rawget = rawget
-            local setmetatable = setmetatable
-            local import_type = xlua.import_type
-            local import_generic_type = xlua.import_generic_type
-            local load_assembly = xlua.load_assembly
-
-            function metatable:__index(key)
-                local fqn = rawget(self,'.fqn')
-                fqn = ((fqn and fqn .. '.') or '') .. key
-
-                local obj = import_type(fqn)
-
-                if obj == nil then
-                    -- It might be an assembly, so we load it too.
-                    obj = { ['.fqn'] = fqn }
-                    setmetatable(obj, metatable)
-                elseif obj == true then
-                    return rawget(self, key)
-                end
-
-                -- Cache this lookup
-                rawset(self, key, obj)
-                return obj
-            end
-
-            function metatable:__newindex()
-                error('No such type: ' .. rawget(self,'.fqn'), 2)
-            end
-
-            -- A non-type has been called; e.g. foo = System.Foo()
-            function metatable:__call(...)
-                local n = select('#', ...)
-                local fqn = rawget(self,'.fqn')
-                if n > 0 then
-                    local gt = import_generic_type(fqn, ...)
-                    if gt then
-                        return rawget(CS, gt)
-                    end
-                end
-                error('No such type: ' .. fqn, 2)
-            end
-
-            CS = CS or {}
-            setmetatable(CS, metatable)
-
-            typeof = function(t) return t.UnderlyingSystemType end
-            cast = xlua.cast
-            if not setfenv or not getfenv then
-                local function getfunction(level)
-                    local info = debug.getinfo(level + 1, 'f')
-                    return info and info.func
-                end
-
-                function setfenv(fn, env)
-                  if type(fn) == 'number' then fn = getfunction(fn + 1) end
-                  local i = 1
-                  while true do
-                    local name = debug.getupvalue(fn, i)
-                    if name == '_ENV' then
-                      debug.upvaluejoin(fn, i, (function()
-                        return env
-                      end), 1)
-                      break
-                    elseif not name then
-                      break
-                    end
-
-                    i = i + 1
-                  end
-
-                  return fn
-                end
-
-                function getfenv(fn)
-                  if type(fn) == 'number' then fn = getfunction(fn + 1) end
-                  local i = 1
-                  while true do
-                    local name, val = debug.getupvalue(fn, i)
-                    if name == '_ENV' then
-                      return val
-                    elseif not name then
-                      break
-                    end
-                    i = i + 1
-                  end
-                end
-            end
-
-            xlua.getmetatable = function(cs)
-                return xlua.metatable_operation(cs)
-            end
-            xlua.setmetatable = function(cs, mt)
-                return xlua.metatable_operation(cs, mt)
-            end
-            xlua.setclass = function(parent, name, impl)
-                impl.UnderlyingSystemType = parent[name].UnderlyingSystemType
-                rawset(parent, name, impl)
-            end
-
-            local base_mt = {
-                __index = function(t, k)
-                    local csobj = t['__csobj']
-                    local func = csobj['<>xLuaBaseProxy_'..k]
-                    return function(_, ...)
-                         return func(csobj, ...)
-                    end
-                end
-            }
-            base = function(csobj)
-                return setmetatable({__csobj = csobj}, base_mt)
-            end
-
-            local __print = print
-
-            function print_func_ref_by_csharp(errorArray)
-                local registry = debug.getregistry()
-                for k, v in pairs(registry) do
-                    if type(k) == 'number' and type(v) == 'function' and registry[v] == k then
-                        if function_tostring then
-                            errorArray[#errorArray + 1] = function_tostring(v)
-                        else
-                            local info = debug.getinfo(v)
-                            errorArray[#errorArray + 1] = string.format('%s:%d', info.short_src, info.linedefined)
-                        end
-                    end
-                end
-            end
-            ";
 
         public delegate byte[] CustomLoader(ref string filepath);
 

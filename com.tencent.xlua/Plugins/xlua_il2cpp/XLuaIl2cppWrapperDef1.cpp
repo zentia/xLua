@@ -24,6 +24,1147 @@
 namespace xlua
 {
 
+// LTDescr setAxis(UnityEngine.Vector3) declare in LTDescr
+bool w_otS_r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_otS_r4r4r4_");
+    AutoValueScope value_scope(apis, env);
+    auto TIret = wrapData->TypeInfos[0];
+    auto TIp0 = wrapData->TypeInfos[1];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    if (checkLuaArgument) {
+        if (lua_args_len != 1) 
+            return false;
+
+        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
+            return false;        
+    }
+     
+    // LuaValToCSVal struct
+    S_r4r4r4_* pp0 = DataTransfer::GetPointer<S_r4r4r4_>(apis, env, _sv0);
+    S_r4r4r4_ p0 = pp0 ? *pp0 : S_r4r4r4_ {};
+        
+    typedef Il2CppObject* (*FuncToCall)(void*,struct S_r4r4r4_ p1, const void* method);
+    Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0,  method);
+	int r = CSRefToLuaValue(apis, env, TIret, ret);
+	apis->add_return(info, r);
+    value_scope.reserve = apis->get_return_num(info);
+    return true;
+}
+// LTDescr LeanValue(UnityEngine.GameObject, UnityEngine.Vector3, UnityEngine.Vector3, Single) declare in LeanTweenExt
+bool w_otS_r4r4r4_S_r4r4r4_r4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_otS_r4r4r4_S_r4r4r4_r4");
+    AutoValueScope value_scope(apis, env);
+    auto TIret = wrapData->TypeInfos[0];
+    auto TIp0 = wrapData->TypeInfos[1];
+    auto TIp1 = wrapData->TypeInfos[2];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    int _sv1 = apis->get_arg(info, 1);
+    int _sv2 = apis->get_arg(info, 2);
+    if (checkLuaArgument) {
+        if (lua_args_len != 3) 
+            return false;
+
+        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
+            return false;
+        if (!DataTransfer::IsAssignable(apis, env, _sv1, TIp1, true))
+            return false;
+        if (!converter::Converter<float>::accept(apis, env, _sv2))
+            return false;        
+    }
+     
+    // LuaValToCSVal struct
+    S_r4r4r4_* pp0 = DataTransfer::GetPointer<S_r4r4r4_>(apis, env, _sv0);
+    S_r4r4r4_ p0 = pp0 ? *pp0 : S_r4r4r4_ {};
+             
+    // LuaValToCSVal struct
+    S_r4r4r4_* pp1 = DataTransfer::GetPointer<S_r4r4r4_>(apis, env, _sv1);
+    S_r4r4r4_ p1 = pp1 ? *pp1 : S_r4r4r4_ {};
+                
+    // LuaValToCSVal P any
+    float p2 = converter::Converter<float>::toCpp(apis, env, _sv2);
+
+    typedef Il2CppObject* (*FuncToCall)(void*,struct S_r4r4r4_ p1, struct S_r4r4r4_ p2, float p3, const void* method);
+    Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1, p2,  method);
+	int r = CSRefToLuaValue(apis, env, TIret, ret);
+	apis->add_return(info, r);
+    value_scope.reserve = apis->get_return_num(info);
+    return true;
+}
+// LTDescr LeanMove(UnityEngine.GameObject, UnityEngine.Vector3, Single) declare in LeanTweenExt
+bool w_otS_r4r4r4_r4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_otS_r4r4r4_r4");
+    AutoValueScope value_scope(apis, env);
+    auto TIret = wrapData->TypeInfos[0];
+    auto TIp0 = wrapData->TypeInfos[1];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    int _sv1 = apis->get_arg(info, 1);
+    if (checkLuaArgument) {
+        if (lua_args_len != 2) 
+            return false;
+
+        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
+            return false;
+        if (!converter::Converter<float>::accept(apis, env, _sv1))
+            return false;        
+    }
+     
+    // LuaValToCSVal struct
+    S_r4r4r4_* pp0 = DataTransfer::GetPointer<S_r4r4r4_>(apis, env, _sv0);
+    S_r4r4r4_ p0 = pp0 ? *pp0 : S_r4r4r4_ {};
+                
+    // LuaValToCSVal P any
+    float p1 = converter::Converter<float>::toCpp(apis, env, _sv1);
+
+    typedef Il2CppObject* (*FuncToCall)(void*,struct S_r4r4r4_ p1, float p2, const void* method);
+    Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1,  method);
+	int r = CSRefToLuaValue(apis, env, TIret, ret);
+	apis->add_return(info, r);
+    value_scope.reserve = apis->get_return_num(info);
+    return true;
+}
+// LTDescr LeanRotateAround(UnityEngine.GameObject, UnityEngine.Vector3, Single, Single) declare in LeanTweenExt
+bool w_otS_r4r4r4_r4r4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_otS_r4r4r4_r4r4");
+    AutoValueScope value_scope(apis, env);
+    auto TIret = wrapData->TypeInfos[0];
+    auto TIp0 = wrapData->TypeInfos[1];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    int _sv1 = apis->get_arg(info, 1);
+    int _sv2 = apis->get_arg(info, 2);
+    if (checkLuaArgument) {
+        if (lua_args_len != 3) 
+            return false;
+
+        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
+            return false;
+        if (!converter::Converter<float>::accept(apis, env, _sv1))
+            return false;
+        if (!converter::Converter<float>::accept(apis, env, _sv2))
+            return false;        
+    }
+     
+    // LuaValToCSVal struct
+    S_r4r4r4_* pp0 = DataTransfer::GetPointer<S_r4r4r4_>(apis, env, _sv0);
+    S_r4r4r4_ p0 = pp0 ? *pp0 : S_r4r4r4_ {};
+                
+    // LuaValToCSVal P any
+    float p1 = converter::Converter<float>::toCpp(apis, env, _sv1);
+        
+    // LuaValToCSVal P any
+    float p2 = converter::Converter<float>::toCpp(apis, env, _sv2);
+
+    typedef Il2CppObject* (*FuncToCall)(void*,struct S_r4r4r4_ p1, float p2, float p3, const void* method);
+    Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1, p2,  method);
+	int r = CSRefToLuaValue(apis, env, TIret, ret);
+	apis->add_return(info, r);
+    value_scope.reserve = apis->get_return_num(info);
+    return true;
+}
+// LTDescr setFromColor(UnityEngine.Color) declare in LTDescr
+bool w_otS_r4r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_otS_r4r4r4r4_");
+    AutoValueScope value_scope(apis, env);
+    auto TIret = wrapData->TypeInfos[0];
+    auto TIp0 = wrapData->TypeInfos[1];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    if (checkLuaArgument) {
+        if (lua_args_len != 1) 
+            return false;
+
+        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
+            return false;        
+    }
+     
+    // LuaValToCSVal struct
+    S_r4r4r4r4_* pp0 = DataTransfer::GetPointer<S_r4r4r4r4_>(apis, env, _sv0);
+    S_r4r4r4r4_ p0 = pp0 ? *pp0 : S_r4r4r4r4_ {};
+        
+    typedef Il2CppObject* (*FuncToCall)(void*,struct S_r4r4r4r4_ p1, const void* method);
+    Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0,  method);
+	int r = CSRefToLuaValue(apis, env, TIret, ret);
+	apis->add_return(info, r);
+    value_scope.reserve = apis->get_return_num(info);
+    return true;
+}
+// LTDescr LeanValue(UnityEngine.GameObject, UnityEngine.Color, UnityEngine.Color, Single) declare in LeanTweenExt
+bool w_otS_r4r4r4r4_S_r4r4r4r4_r4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_otS_r4r4r4r4_S_r4r4r4r4_r4");
+    AutoValueScope value_scope(apis, env);
+    auto TIret = wrapData->TypeInfos[0];
+    auto TIp0 = wrapData->TypeInfos[1];
+    auto TIp1 = wrapData->TypeInfos[2];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    int _sv1 = apis->get_arg(info, 1);
+    int _sv2 = apis->get_arg(info, 2);
+    if (checkLuaArgument) {
+        if (lua_args_len != 3) 
+            return false;
+
+        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
+            return false;
+        if (!DataTransfer::IsAssignable(apis, env, _sv1, TIp1, true))
+            return false;
+        if (!converter::Converter<float>::accept(apis, env, _sv2))
+            return false;        
+    }
+     
+    // LuaValToCSVal struct
+    S_r4r4r4r4_* pp0 = DataTransfer::GetPointer<S_r4r4r4r4_>(apis, env, _sv0);
+    S_r4r4r4r4_ p0 = pp0 ? *pp0 : S_r4r4r4r4_ {};
+             
+    // LuaValToCSVal struct
+    S_r4r4r4r4_* pp1 = DataTransfer::GetPointer<S_r4r4r4r4_>(apis, env, _sv1);
+    S_r4r4r4r4_ p1 = pp1 ? *pp1 : S_r4r4r4r4_ {};
+                
+    // LuaValToCSVal P any
+    float p2 = converter::Converter<float>::toCpp(apis, env, _sv2);
+
+    typedef Il2CppObject* (*FuncToCall)(void*,struct S_r4r4r4r4_ p1, struct S_r4r4r4r4_ p2, float p3, const void* method);
+    Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1, p2,  method);
+	int r = CSRefToLuaValue(apis, env, TIret, ret);
+	apis->add_return(info, r);
+    value_scope.reserve = apis->get_return_num(info);
+    return true;
+}
+// System.Collections.IEnumerator Capture(UnityEngine.Rect, System.Action`1[System.String], System.Action`1[UnityEngine.Texture2D], System.String, Assets.Scripts.GameSystem.CaptureSettings) declare in Assets.Scripts.GameSystem.ShareCaptureSys
+bool w_otS_r4r4r4r4_oDoDsDS_bbi4bo_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_otS_r4r4r4r4_oDoDsDS_bbi4bo_");
+    AutoValueScope value_scope(apis, env);
+    auto TIret = wrapData->TypeInfos[0];
+    auto TIp0 = wrapData->TypeInfos[1];
+    auto TIp1 = wrapData->TypeInfos[2];
+    auto TIp2 = wrapData->TypeInfos[3];
+    auto TIp3 = wrapData->TypeInfos[4];
+    auto TIp4 = wrapData->TypeInfos[5];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    int _sv1 = apis->get_arg(info, 1);
+    int _sv2 = apis->get_arg(info, 2);
+    int _sv3 = apis->get_arg(info, 3);
+    int _sv4 = apis->get_arg(info, 4);
+    if (true) {
+        if (lua_args_len < 2 || lua_args_len > 5) 
+            return false;
+
+        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
+            return false;
+        if (!DataTransfer::IsAssignable(apis, env, _sv1, TIp1, false))
+            return false;
+        if (lua_args_len > 2 && !DataTransfer::IsAssignable(apis, env, _sv2, TIp2, false))
+            return false;
+        if (lua_args_len > 3 && !converter::Converter<Il2CppString*>::accept(apis, env, _sv3))
+            return false;
+        if (lua_args_len > 4 && !DataTransfer::IsAssignable(apis, env, _sv4, TIp4, true))
+            return false;        
+    }
+     
+    // LuaValToCSVal struct
+    S_r4r4r4r4_* pp0 = DataTransfer::GetPointer<S_r4r4r4r4_>(apis, env, _sv0);
+    S_r4r4r4r4_ p0 = pp0 ? *pp0 : S_r4r4r4r4_ {};
+            
+    // LuaValToCSVal o/O
+    Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
+    // LuaValToCSVal ref with default
+    Il2CppObject* p2 = OptionalParameter<Il2CppObject*>::GetRefType(apis, env, info, method, wrapData, lua_args_len, 2, TIp2);    // LuaValToCSVal string with default
+    Il2CppString* p3 = OptionalParameter<Il2CppString*>::GetString(apis, env, info, method, wrapData, lua_args_len, 3);    // LuaValToCSVal valuetype with default
+    S_bbi4bo_ p4 = OptionalParameter<S_bbi4bo_>::GetValueType(apis, env, info, method, wrapData, lua_args_len, 4);
+            
+    typedef Il2CppObject* (*FuncToCall)(void*,struct S_r4r4r4r4_ p1, Il2CppObject* p2, Il2CppObject* p3, Il2CppString* p4, struct S_bbi4bo_ p5, const void* method);
+    Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1, p2, p3, p4,  method);
+	int r = CSRefToLuaValue(apis, env, TIret, ret);
+	apis->add_return(info, r);
+    value_scope.reserve = apis->get_return_num(info);
+    return true;
+}
+// LTDescr LeanColor(UnityEngine.GameObject, UnityEngine.Color, Single) declare in LeanTweenExt
+bool w_otS_r4r4r4r4_r4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_otS_r4r4r4r4_r4");
+    AutoValueScope value_scope(apis, env);
+    auto TIret = wrapData->TypeInfos[0];
+    auto TIp0 = wrapData->TypeInfos[1];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    int _sv1 = apis->get_arg(info, 1);
+    if (checkLuaArgument) {
+        if (lua_args_len != 2) 
+            return false;
+
+        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
+            return false;
+        if (!converter::Converter<float>::accept(apis, env, _sv1))
+            return false;        
+    }
+     
+    // LuaValToCSVal struct
+    S_r4r4r4r4_* pp0 = DataTransfer::GetPointer<S_r4r4r4r4_>(apis, env, _sv0);
+    S_r4r4r4r4_ p0 = pp0 ? *pp0 : S_r4r4r4r4_ {};
+                
+    // LuaValToCSVal P any
+    float p1 = converter::Converter<float>::toCpp(apis, env, _sv1);
+
+    typedef Il2CppObject* (*FuncToCall)(void*,struct S_r4r4r4r4_ p1, float p2, const void* method);
+    Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1,  method);
+	int r = CSRefToLuaValue(apis, env, TIret, ret);
+	apis->add_return(info, r);
+    value_scope.reserve = apis->get_return_num(info);
+    return true;
+}
+// System.String[] Split(Char[]) declare in System.String
+bool w_otVc(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_otVc");
+    AutoValueScope value_scope(apis, env);
+    auto TIret = wrapData->TypeInfos[0];
+    auto TIp0 = wrapData->TypeInfos[1];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    if (checkLuaArgument) {
+        if (lua_args_len < 0 || lua_args_len > 1) 
+            return false;
+        if(lua_args_len > 0 && !converter::Converter<Il2CppChar>::accept(apis, env, _sv0))
+            return false;        
+    }
+     
+    // LuaValToCSVal primitive params
+    Il2CppArray* p0 = Params<Il2CppChar>::PackPrimitive(apis, env, info, TIp0, lua_args_len, 0);
+
+    typedef Il2CppObject* (*FuncToCall)(void*,Il2CppArray* p1, const void* method);
+    Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0,  method);
+	int r = CSRefToLuaValue(apis, env, TIret, ret);
+	apis->add_return(info, r);
+    value_scope.reserve = apis->get_return_num(info);
+    return true;
+}
+// System.Type MakeGenericType(System.Type[]) declare in System.Type
+bool w_otVo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_otVo");
+    AutoValueScope value_scope(apis, env);
+    auto TIret = wrapData->TypeInfos[0];
+    auto TIp0 = wrapData->TypeInfos[1];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    if (checkLuaArgument) {
+        if (lua_args_len < 0 || lua_args_len > 1) 
+            return false;
+        auto TIp0_V = il2cpp::vm::Class::GetElementClass(TIp0);if(lua_args_len > 0 && !DataTransfer::IsAssignable(apis, env, _sv0, TIp0_V, false))
+            return false;        
+    }
+    // LuaValToCSVal ref params
+    Il2CppArray* p0 = Params<void*>::PackRef(apis, env, info, TIp0, lua_args_len, 0);
+            
+    typedef Il2CppObject* (*FuncToCall)(void*,Il2CppArray* p1, const void* method);
+    Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0,  method);
+	int r = CSRefToLuaValue(apis, env, TIret, ret);
+	apis->add_return(info, r);
+    value_scope.reserve = apis->get_return_num(info);
+    return true;
+}
+// LTDescr setHasInitialized(Boolean) declare in LTDescr
+bool w_otb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_otb");
+    AutoValueScope value_scope(apis, env);
+    auto TIret = wrapData->TypeInfos[0];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    if (checkLuaArgument) {
+        if (lua_args_len != 1) 
+            return false;
+
+        if (!converter::Converter<bool>::accept(apis, env, _sv0))
+            return false;        
+    }
+        
+    // LuaValToCSVal P any
+    bool p0 = converter::Converter<bool>::toCpp(apis, env, _sv0);
+
+    typedef Il2CppObject* (*FuncToCall)(void*,bool p1, const void* method);
+    Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0,  method);
+	int r = CSRefToLuaValue(apis, env, TIret, ret);
+	apis->add_return(info, r);
+    value_scope.reserve = apis->get_return_num(info);
+    return true;
+}
+// System.Collections.Generic.List`1[Assets.Scripts.UI.InTheGame.Standard.UIRoundStateAwardItemData] GetAirdropIconList(Boolean, Int32, Int32, System.Collections.Generic.List`1[Assets.Scripts.UI.InTheGame.Standard.UIRoundStateAwardItemData] ByRef) declare in Assets.Scripts.GameLogic.Project8AirdropAwardLogic
+bool w_otbi4i4Po(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_otbi4i4Po");
+    AutoValueScope value_scope(apis, env);
+    auto TIret = wrapData->TypeInfos[0];
+    auto TIp3 = wrapData->TypeInfos[1];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    int _sv1 = apis->get_arg(info, 1);
+    int _sv2 = apis->get_arg(info, 2);
+    int _sv3 = apis->get_arg(info, 3);
+    if (checkLuaArgument) {
+        if (lua_args_len != 4) 
+            return false;
+
+        if (!converter::Converter<bool>::accept(apis, env, _sv0))
+            return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv1))
+            return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv2))
+            return false;
+        if (!apis->is_object(env, _sv3)) return false;        
+    }
+        
+    // LuaValToCSVal P any
+    bool p0 = converter::Converter<bool>::toCpp(apis, env, _sv0);
+        
+    // LuaValToCSVal P any
+    int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
+        
+    // LuaValToCSVal P any
+    int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
+     // LuaValToCSVal Po/PO
+    Il2CppObject* up3 = DataTransfer::GetPointer<Il2CppObject>(apis, env, apis->unboxing(env, _sv3)); // object ret
+    Il2CppObject** p3 = &up3;
+        
+    typedef Il2CppObject* (*FuncToCall)(void*,bool p1, int32_t p2, int32_t p3, Il2CppObject** p4, const void* method);
+    Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1, p2, p3,  method);
+	int r = CSRefToLuaValue(apis, env, TIret, ret);
+	int ret3 = CSRefToLuaValue(apis, env, TIp3, *p3);
+	apis->add_return(info, r);
+	apis->add_return(info, ret3);
+    value_scope.reserve = apis->get_return_num(info);
+    return true;
+}
+// TimelineRuntime.Timeline PlayAction(Boolean, UnityEngine.GameObject, Assets.Scripts.GameLogic.Project8PlayerInstance) declare in Assets.Scripts.GameSystem.UIHeroOp
+bool w_otboDo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_otboDo");
+    AutoValueScope value_scope(apis, env);
+    auto TIret = wrapData->TypeInfos[0];
+    auto TIp1 = wrapData->TypeInfos[1];
+    auto TIp2 = wrapData->TypeInfos[2];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    int _sv1 = apis->get_arg(info, 1);
+    int _sv2 = apis->get_arg(info, 2);
+    if (true) {
+        if (lua_args_len < 2 || lua_args_len > 3) 
+            return false;
+
+        if (!converter::Converter<bool>::accept(apis, env, _sv0))
+            return false;
+        if (!DataTransfer::IsAssignable(apis, env, _sv1, TIp1, false))
+            return false;
+        if (lua_args_len > 2 && !DataTransfer::IsAssignable(apis, env, _sv2, TIp2, false))
+            return false;        
+    }
+        
+    // LuaValToCSVal P any
+    bool p0 = converter::Converter<bool>::toCpp(apis, env, _sv0);
+    
+    // LuaValToCSVal o/O
+    Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
+    // LuaValToCSVal ref with default
+    Il2CppObject* p2 = OptionalParameter<Il2CppObject*>::GetRefType(apis, env, info, method, wrapData, lua_args_len, 2, TIp2);
+    typedef Il2CppObject* (*FuncToCall)(void*,bool p1, Il2CppObject* p2, Il2CppObject* p3, const void* method);
+    Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1, p2,  method);
+	int r = CSRefToLuaValue(apis, env, TIret, ret);
+	apis->add_return(info, r);
+    value_scope.reserve = apis->get_return_num(info);
+    return true;
+}
+// System.String[] GetDateTimeFormats(Char) declare in System.DateTime
+bool w_otc(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_otc");
+    AutoValueScope value_scope(apis, env);
+    auto TIret = wrapData->TypeInfos[0];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    if (checkLuaArgument) {
+        if (lua_args_len != 1) 
+            return false;
+
+        if (!converter::Converter<Il2CppChar>::accept(apis, env, _sv0))
+            return false;        
+    }
+        
+    // LuaValToCSVal P any
+    Il2CppChar p0 = converter::Converter<Il2CppChar>::toCpp(apis, env, _sv0);
+
+    typedef Il2CppObject* (*FuncToCall)(void*,Il2CppChar p1, const void* method);
+    Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0,  method);
+	int r = CSRefToLuaValue(apis, env, TIret, ret);
+	apis->add_return(info, r);
+    value_scope.reserve = apis->get_return_num(info);
+    return true;
+}
+// System.String[] Split(Char, System.StringSplitOptions) declare in System.String
+bool w_otcDi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_otcDi4");
+    AutoValueScope value_scope(apis, env);
+    auto TIret = wrapData->TypeInfos[0];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    int _sv1 = apis->get_arg(info, 1);
+    if (true) {
+        if (lua_args_len < 1 || lua_args_len > 2) 
+            return false;
+
+        if (!converter::Converter<Il2CppChar>::accept(apis, env, _sv0))
+            return false;
+        if (lua_args_len > 1 && !converter::Converter<int32_t>::accept(apis, env, _sv1))
+            return false;        
+    }
+        
+    // LuaValToCSVal P any
+    Il2CppChar p0 = converter::Converter<Il2CppChar>::toCpp(apis, env, _sv0);
+ // LuaValToCSVal primitive with default
+    int32_t p1 = OptionalParameter<int32_t>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 1);
+            
+    typedef Il2CppObject* (*FuncToCall)(void*,Il2CppChar p1, int32_t p2, const void* method);
+    Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1,  method);
+	int r = CSRefToLuaValue(apis, env, TIret, ret);
+	apis->add_return(info, r);
+    value_scope.reserve = apis->get_return_num(info);
+    return true;
+}
+// System.Text.StringBuilder AppendJoin(Char, System.Object[]) declare in System.Text.StringBuilder
+bool w_otcVO(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_otcVO");
+    AutoValueScope value_scope(apis, env);
+    auto TIret = wrapData->TypeInfos[0];
+    auto TIp1 = wrapData->TypeInfos[1];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    int _sv1 = apis->get_arg(info, 1);
+    if (checkLuaArgument) {
+        if (lua_args_len < 1 || lua_args_len > 2) 
+            return false;
+
+        if (!converter::Converter<Il2CppChar>::accept(apis, env, _sv0))
+            return false;        
+    }
+        
+    // LuaValToCSVal P any
+    Il2CppChar p0 = converter::Converter<Il2CppChar>::toCpp(apis, env, _sv0);
+    // LuaValToCSVal ref params
+    Il2CppArray* p1 = Params<void*>::PackRef(apis, env, info, TIp1, lua_args_len, 1);
+            
+    typedef Il2CppObject* (*FuncToCall)(void*,Il2CppChar p1, Il2CppArray* p2, const void* method);
+    Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1,  method);
+	int r = CSRefToLuaValue(apis, env, TIret, ret);
+	apis->add_return(info, r);
+    value_scope.reserve = apis->get_return_num(info);
+    return true;
+}
+// System.Text.StringBuilder AppendJoin(Char, System.String[]) declare in System.Text.StringBuilder
+bool w_otcVs(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_otcVs");
+    AutoValueScope value_scope(apis, env);
+    auto TIret = wrapData->TypeInfos[0];
+    auto TIp1 = wrapData->TypeInfos[1];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    int _sv1 = apis->get_arg(info, 1);
+    if (checkLuaArgument) {
+        if (lua_args_len < 1 || lua_args_len > 2) 
+            return false;
+
+        if (!converter::Converter<Il2CppChar>::accept(apis, env, _sv0))
+            return false;        if(lua_args_len > 1 && !converter::Converter<Il2CppString*>::accept(apis, env, _sv1))
+            return false;        
+    }
+        
+    // LuaValToCSVal P any
+    Il2CppChar p0 = converter::Converter<Il2CppChar>::toCpp(apis, env, _sv0);
+     // LuaValToCSVal string params
+    Il2CppArray* p1 = Params<void*>::PackString(apis, env, info, TIp1, lua_args_len, 1);
+            
+    typedef Il2CppObject* (*FuncToCall)(void*,Il2CppChar p1, Il2CppArray* p2, const void* method);
+    Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1,  method);
+	int r = CSRefToLuaValue(apis, env, TIret, ret);
+	apis->add_return(info, r);
+    value_scope.reserve = apis->get_return_num(info);
+    return true;
+}
+// System.Text.StringBuilder Replace(Char, Char) declare in System.Text.StringBuilder
+bool w_otcc(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_otcc");
+    AutoValueScope value_scope(apis, env);
+    auto TIret = wrapData->TypeInfos[0];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    int _sv1 = apis->get_arg(info, 1);
+    if (checkLuaArgument) {
+        if (lua_args_len != 2) 
+            return false;
+
+        if (!converter::Converter<Il2CppChar>::accept(apis, env, _sv0))
+            return false;
+        if (!converter::Converter<Il2CppChar>::accept(apis, env, _sv1))
+            return false;        
+    }
+        
+    // LuaValToCSVal P any
+    Il2CppChar p0 = converter::Converter<Il2CppChar>::toCpp(apis, env, _sv0);
+        
+    // LuaValToCSVal P any
+    Il2CppChar p1 = converter::Converter<Il2CppChar>::toCpp(apis, env, _sv1);
+
+    typedef Il2CppObject* (*FuncToCall)(void*,Il2CppChar p1, Il2CppChar p2, const void* method);
+    Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1,  method);
+	int r = CSRefToLuaValue(apis, env, TIret, ret);
+	apis->add_return(info, r);
+    value_scope.reserve = apis->get_return_num(info);
+    return true;
+}
+// System.Text.StringBuilder Replace(Char, Char, Int32, Int32) declare in System.Text.StringBuilder
+bool w_otcci4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_otcci4i4");
+    AutoValueScope value_scope(apis, env);
+    auto TIret = wrapData->TypeInfos[0];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    int _sv1 = apis->get_arg(info, 1);
+    int _sv2 = apis->get_arg(info, 2);
+    int _sv3 = apis->get_arg(info, 3);
+    if (checkLuaArgument) {
+        if (lua_args_len != 4) 
+            return false;
+
+        if (!converter::Converter<Il2CppChar>::accept(apis, env, _sv0))
+            return false;
+        if (!converter::Converter<Il2CppChar>::accept(apis, env, _sv1))
+            return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv2))
+            return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv3))
+            return false;        
+    }
+        
+    // LuaValToCSVal P any
+    Il2CppChar p0 = converter::Converter<Il2CppChar>::toCpp(apis, env, _sv0);
+        
+    // LuaValToCSVal P any
+    Il2CppChar p1 = converter::Converter<Il2CppChar>::toCpp(apis, env, _sv1);
+        
+    // LuaValToCSVal P any
+    int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
+        
+    // LuaValToCSVal P any
+    int32_t p3 = converter::Converter<int32_t>::toCpp(apis, env, _sv3);
+
+    typedef Il2CppObject* (*FuncToCall)(void*,Il2CppChar p1, Il2CppChar p2, int32_t p3, int32_t p4, const void* method);
+    Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1, p2, p3,  method);
+	int r = CSRefToLuaValue(apis, env, TIret, ret);
+	apis->add_return(info, r);
+    value_scope.reserve = apis->get_return_num(info);
+    return true;
+}
+// System.Text.StringBuilder Append(Char, Int32) declare in System.Text.StringBuilder
+bool w_otci4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_otci4");
+    AutoValueScope value_scope(apis, env);
+    auto TIret = wrapData->TypeInfos[0];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    int _sv1 = apis->get_arg(info, 1);
+    if (checkLuaArgument) {
+        if (lua_args_len != 2) 
+            return false;
+
+        if (!converter::Converter<Il2CppChar>::accept(apis, env, _sv0))
+            return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv1))
+            return false;        
+    }
+        
+    // LuaValToCSVal P any
+    Il2CppChar p0 = converter::Converter<Il2CppChar>::toCpp(apis, env, _sv0);
+        
+    // LuaValToCSVal P any
+    int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
+
+    typedef Il2CppObject* (*FuncToCall)(void*,Il2CppChar p1, int32_t p2, const void* method);
+    Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1,  method);
+	int r = CSRefToLuaValue(apis, env, TIret, ret);
+	apis->add_return(info, r);
+    value_scope.reserve = apis->get_return_num(info);
+    return true;
+}
+// System.String[] Split(Char, Int32, System.StringSplitOptions) declare in System.String
+bool w_otci4Di4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_otci4Di4");
+    AutoValueScope value_scope(apis, env);
+    auto TIret = wrapData->TypeInfos[0];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    int _sv1 = apis->get_arg(info, 1);
+    int _sv2 = apis->get_arg(info, 2);
+    if (true) {
+        if (lua_args_len < 2 || lua_args_len > 3) 
+            return false;
+
+        if (!converter::Converter<Il2CppChar>::accept(apis, env, _sv0))
+            return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv1))
+            return false;
+        if (lua_args_len > 2 && !converter::Converter<int32_t>::accept(apis, env, _sv2))
+            return false;        
+    }
+        
+    // LuaValToCSVal P any
+    Il2CppChar p0 = converter::Converter<Il2CppChar>::toCpp(apis, env, _sv0);
+        
+    // LuaValToCSVal P any
+    int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
+ // LuaValToCSVal primitive with default
+    int32_t p2 = OptionalParameter<int32_t>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 2);
+            
+    typedef Il2CppObject* (*FuncToCall)(void*,Il2CppChar p1, int32_t p2, int32_t p3, const void* method);
+    Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1, p2,  method);
+	int r = CSRefToLuaValue(apis, env, TIret, ret);
+	apis->add_return(info, r);
+    value_scope.reserve = apis->get_return_num(info);
+    return true;
+}
+// System.String[] GetDateTimeFormats(Char, System.IFormatProvider) declare in System.DateTime
+bool w_otco(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_otco");
+    AutoValueScope value_scope(apis, env);
+    auto TIret = wrapData->TypeInfos[0];
+    auto TIp1 = wrapData->TypeInfos[1];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    int _sv1 = apis->get_arg(info, 1);
+    if (checkLuaArgument) {
+        if (lua_args_len != 2) 
+            return false;
+
+        if (!converter::Converter<Il2CppChar>::accept(apis, env, _sv0))
+            return false;
+        if (!DataTransfer::IsAssignable(apis, env, _sv1, TIp1, false))
+            return false;        
+    }
+        
+    // LuaValToCSVal P any
+    Il2CppChar p0 = converter::Converter<Il2CppChar>::toCpp(apis, env, _sv0);
+    
+    // LuaValToCSVal o/O
+    Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
+
+    typedef Il2CppObject* (*FuncToCall)(void*,Il2CppChar p1, Il2CppObject* p2, const void* method);
+    Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1,  method);
+	int r = CSRefToLuaValue(apis, env, TIret, ret);
+	apis->add_return(info, r);
+    value_scope.reserve = apis->get_return_num(info);
+    return true;
+}
+// System.Text.StringBuilder Append(SByte) declare in System.Text.StringBuilder
+bool w_oti1(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_oti1");
+    AutoValueScope value_scope(apis, env);
+    auto TIret = wrapData->TypeInfos[0];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    if (checkLuaArgument) {
+        if (lua_args_len != 1) 
+            return false;
+
+        if (!converter::Converter<int8_t>::accept(apis, env, _sv0))
+            return false;        
+    }
+        
+    // LuaValToCSVal P any
+    int8_t p0 = converter::Converter<int8_t>::toCpp(apis, env, _sv0);
+
+    typedef Il2CppObject* (*FuncToCall)(void*,int8_t p1, const void* method);
+    Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0,  method);
+	int r = CSRefToLuaValue(apis, env, TIret, ret);
+	apis->add_return(info, r);
+    value_scope.reserve = apis->get_return_num(info);
+    return true;
+}
+// Assets.Scripts.Framework.AssetService.BaseAsset LoadAsset(Assets.Scripts.Framework.AssetService.AssetType, System.String, Assets.Scripts.Framework.AssetService.LifeType, System.String, Int32, System.Object) declare in Assets.Scripts.Framework.AssetService.AssetService
+bool w_oti1si1sDi4DO(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_oti1si1sDi4DO");
+    AutoValueScope value_scope(apis, env);
+    auto TIret = wrapData->TypeInfos[0];
+    auto TIp1 = wrapData->TypeInfos[1];
+    auto TIp3 = wrapData->TypeInfos[2];
+    auto TIp5 = wrapData->TypeInfos[3];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    int _sv1 = apis->get_arg(info, 1);
+    int _sv2 = apis->get_arg(info, 2);
+    int _sv3 = apis->get_arg(info, 3);
+    int _sv4 = apis->get_arg(info, 4);
+    int _sv5 = apis->get_arg(info, 5);
+    if (true) {
+        if (lua_args_len < 4 || lua_args_len > 6) 
+            return false;
+
+        if (!converter::Converter<int8_t>::accept(apis, env, _sv0))
+            return false;
+        if (!converter::Converter<Il2CppString*>::accept(apis, env, _sv1))
+            return false;
+        if (!converter::Converter<int8_t>::accept(apis, env, _sv2))
+            return false;
+        if (!converter::Converter<Il2CppString*>::accept(apis, env, _sv3))
+            return false;
+        if (lua_args_len > 4 && !converter::Converter<int32_t>::accept(apis, env, _sv4))
+            return false;        
+    }
+        
+    // LuaValToCSVal P any
+    int8_t p0 = converter::Converter<int8_t>::toCpp(apis, env, _sv0);
+    // LuaValToCSVal s
+    Il2CppString* p1 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv1);        
+    // LuaValToCSVal P any
+    int8_t p2 = converter::Converter<int8_t>::toCpp(apis, env, _sv2);
+    // LuaValToCSVal s
+    Il2CppString* p3 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv3); // LuaValToCSVal primitive with default
+    int32_t p4 = OptionalParameter<int32_t>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 4);
+                // LuaValToCSVal ref with default
+    Il2CppObject* p5 = OptionalParameter<Il2CppObject*>::GetRefType(apis, env, info, method, wrapData, lua_args_len, 5, TIp5);
+    typedef Il2CppObject* (*FuncToCall)(void*,int8_t p1, Il2CppString* p2, int8_t p3, Il2CppString* p4, int32_t p5, Il2CppObject* p6, const void* method);
+    Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1, p2, p3, p4, p5,  method);
+	int r = CSRefToLuaValue(apis, env, TIret, ret);
+	apis->add_return(info, r);
+    value_scope.reserve = apis->get_return_num(info);
+    return true;
+}
+// System.Text.StringBuilder Append(Int16) declare in System.Text.StringBuilder
+bool w_oti2(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_oti2");
+    AutoValueScope value_scope(apis, env);
+    auto TIret = wrapData->TypeInfos[0];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    if (checkLuaArgument) {
+        if (lua_args_len != 1) 
+            return false;
+
+        if (!converter::Converter<int16_t>::accept(apis, env, _sv0))
+            return false;        
+    }
+        
+    // LuaValToCSVal P any
+    int16_t p0 = converter::Converter<int16_t>::toCpp(apis, env, _sv0);
+
+    typedef Il2CppObject* (*FuncToCall)(void*,int16_t p1, const void* method);
+    Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0,  method);
+	int r = CSRefToLuaValue(apis, env, TIret, ret);
+	apis->add_return(info, r);
+    value_scope.reserve = apis->get_return_num(info);
+    return true;
+}
+// UnityEngine.Transform ExtGetChild(UnityEngine.Transform, Int32) declare in ExtTransform
+bool w_oti4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_oti4");
+    AutoValueScope value_scope(apis, env);
+    auto TIret = wrapData->TypeInfos[0];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    if (checkLuaArgument) {
+        if (lua_args_len != 1) 
+            return false;
+
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv0))
+            return false;        
+    }
+        
+    // LuaValToCSVal P any
+    int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
+
+    typedef Il2CppObject* (*FuncToCall)(void*,int32_t p1, const void* method);
+    Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0,  method);
+	int r = CSRefToLuaValue(apis, env, TIret, ret);
+	apis->add_return(info, r);
+    value_scope.reserve = apis->get_return_num(info);
+    return true;
+}
+// Assets.Scripts.GameLogic.Project8ArtField GetArtField(Int32, SceneLevelDefine) declare in Assets.Scripts.GameLogic.Project8Logic
+bool w_oti4Di4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_oti4Di4");
+    AutoValueScope value_scope(apis, env);
+    auto TIret = wrapData->TypeInfos[0];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    int _sv1 = apis->get_arg(info, 1);
+    if (true) {
+        if (lua_args_len < 1 || lua_args_len > 2) 
+            return false;
+
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv0))
+            return false;
+        if (lua_args_len > 1 && !converter::Converter<int32_t>::accept(apis, env, _sv1))
+            return false;        
+    }
+        
+    // LuaValToCSVal P any
+    int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
+ // LuaValToCSVal primitive with default
+    int32_t p1 = OptionalParameter<int32_t>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 1);
+            
+    typedef Il2CppObject* (*FuncToCall)(void*,int32_t p1, int32_t p2, const void* method);
+    Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1,  method);
+	int r = CSRefToLuaValue(apis, env, TIret, ret);
+	apis->add_return(info, r);
+    value_scope.reserve = apis->get_return_num(info);
+    return true;
+}
+// System.Text.StringBuilder Insert(Int32, System.Object) declare in System.Text.StringBuilder
+bool w_oti4O(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_oti4O");
+    AutoValueScope value_scope(apis, env);
+    auto TIret = wrapData->TypeInfos[0];
+    auto TIp1 = wrapData->TypeInfos[1];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    int _sv1 = apis->get_arg(info, 1);
+    if (checkLuaArgument) {
+        if (lua_args_len != 2) 
+            return false;
+
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv0))
+            return false;        
+    }
+        
+    // LuaValToCSVal P any
+    int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
+    
+    // LuaValToCSVal o/O
+    Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
+
+    typedef Il2CppObject* (*FuncToCall)(void*,int32_t p1, Il2CppObject* p2, const void* method);
+    Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1,  method);
+	int r = CSRefToLuaValue(apis, env, TIret, ret);
+	apis->add_return(info, r);
+    value_scope.reserve = apis->get_return_num(info);
+    return true;
+}
+// System.Text.StringBuilder Insert(Int32, System.ReadOnlySpan`1[System.Char]) declare in System.Text.StringBuilder
+bool w_oti4S_S_p_i4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_oti4S_S_p_i4_");
+    AutoValueScope value_scope(apis, env);
+    auto TIret = wrapData->TypeInfos[0];
+    auto TIp1 = wrapData->TypeInfos[1];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    int _sv1 = apis->get_arg(info, 1);
+    if (checkLuaArgument) {
+        if (lua_args_len != 2) 
+            return false;
+
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv0))
+            return false;
+        if (!DataTransfer::IsAssignable(apis, env, _sv1, TIp1, true))
+            return false;        
+    }
+        
+    // LuaValToCSVal P any
+    int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
+     
+    // LuaValToCSVal struct
+    S_S_p_i4_* pp1 = DataTransfer::GetPointer<S_S_p_i4_>(apis, env, _sv1);
+    S_S_p_i4_ p1 = pp1 ? *pp1 : S_S_p_i4_ {};
+        
+    typedef Il2CppObject* (*FuncToCall)(void*,int32_t p1, struct S_S_p_i4_ p2, const void* method);
+    Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1,  method);
+	int r = CSRefToLuaValue(apis, env, TIret, ret);
+	apis->add_return(info, r);
+    value_scope.reserve = apis->get_return_num(info);
+    return true;
+}
+// System.Text.StringBuilder Insert(Int32, System.Decimal) declare in System.Text.StringBuilder
+bool w_oti4S_i4i4i4i4u8_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_oti4S_i4i4i4i4u8_");
+    AutoValueScope value_scope(apis, env);
+    auto TIret = wrapData->TypeInfos[0];
+    auto TIp1 = wrapData->TypeInfos[1];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    int _sv1 = apis->get_arg(info, 1);
+    if (checkLuaArgument) {
+        if (lua_args_len != 2) 
+            return false;
+
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv0))
+            return false;
+        if (!DataTransfer::IsAssignable(apis, env, _sv1, TIp1, true))
+            return false;        
+    }
+        
+    // LuaValToCSVal P any
+    int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
+     
+    // LuaValToCSVal struct
+    S_i4i4i4i4u8_* pp1 = DataTransfer::GetPointer<S_i4i4i4i4u8_>(apis, env, _sv1);
+    S_i4i4i4i4u8_ p1 = pp1 ? *pp1 : S_i4i4i4i4u8_ {};
+        
+    typedef Il2CppObject* (*FuncToCall)(void*,int32_t p1, struct S_i4i4i4i4u8_ p2, const void* method);
+    Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1,  method);
+	int r = CSRefToLuaValue(apis, env, TIret, ret);
+	apis->add_return(info, r);
+    value_scope.reserve = apis->get_return_num(info);
+    return true;
+}
+// UnityEngine.RectTransform CreateItem(Int32, UnityEngine.Vector3) declare in Timi.TimiListView
+bool w_oti4S_r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_oti4S_r4r4r4_");
+    AutoValueScope value_scope(apis, env);
+    auto TIret = wrapData->TypeInfos[0];
+    auto TIp1 = wrapData->TypeInfos[1];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    int _sv1 = apis->get_arg(info, 1);
+    if (checkLuaArgument) {
+        if (lua_args_len != 2) 
+            return false;
+
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv0))
+            return false;
+        if (!DataTransfer::IsAssignable(apis, env, _sv1, TIp1, true))
+            return false;        
+    }
+        
+    // LuaValToCSVal P any
+    int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
+     
+    // LuaValToCSVal struct
+    S_r4r4r4_* pp1 = DataTransfer::GetPointer<S_r4r4r4_>(apis, env, _sv1);
+    S_r4r4r4_ p1 = pp1 ? *pp1 : S_r4r4r4_ {};
+        
+    typedef Il2CppObject* (*FuncToCall)(void*,int32_t p1, struct S_r4r4r4_ p2, const void* method);
+    Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1,  method);
+	int r = CSRefToLuaValue(apis, env, TIret, ret);
+	apis->add_return(info, r);
+    value_scope.reserve = apis->get_return_num(info);
+    return true;
+}
+// System.Text.StringBuilder Insert(Int32, Boolean) declare in System.Text.StringBuilder
+bool w_oti4b(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_oti4b");
+    AutoValueScope value_scope(apis, env);
+    auto TIret = wrapData->TypeInfos[0];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    int _sv1 = apis->get_arg(info, 1);
+    if (checkLuaArgument) {
+        if (lua_args_len != 2) 
+            return false;
+
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv0))
+            return false;
+        if (!converter::Converter<bool>::accept(apis, env, _sv1))
+            return false;        
+    }
+        
+    // LuaValToCSVal P any
+    int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
+        
+    // LuaValToCSVal P any
+    bool p1 = converter::Converter<bool>::toCpp(apis, env, _sv1);
+
+    typedef Il2CppObject* (*FuncToCall)(void*,int32_t p1, bool p2, const void* method);
+    Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1,  method);
+	int r = CSRefToLuaValue(apis, env, TIret, ret);
+	apis->add_return(info, r);
+    value_scope.reserve = apis->get_return_num(info);
+    return true;
+}
+// System.Text.StringBuilder Insert(Int32, Char) declare in System.Text.StringBuilder
+bool w_oti4c(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_oti4c");
+    AutoValueScope value_scope(apis, env);
+    auto TIret = wrapData->TypeInfos[0];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    int _sv1 = apis->get_arg(info, 1);
+    if (checkLuaArgument) {
+        if (lua_args_len != 2) 
+            return false;
+
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv0))
+            return false;
+        if (!converter::Converter<Il2CppChar>::accept(apis, env, _sv1))
+            return false;        
+    }
+        
+    // LuaValToCSVal P any
+    int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
+        
+    // LuaValToCSVal P any
+    Il2CppChar p1 = converter::Converter<Il2CppChar>::toCpp(apis, env, _sv1);
+
+    typedef Il2CppObject* (*FuncToCall)(void*,int32_t p1, Il2CppChar p2, const void* method);
+    Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1,  method);
+	int r = CSRefToLuaValue(apis, env, TIret, ret);
+	apis->add_return(info, r);
+    value_scope.reserve = apis->get_return_num(info);
+    return true;
+}
+// System.Text.StringBuilder Insert(Int32, SByte) declare in System.Text.StringBuilder
+bool w_oti4i1(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_oti4i1");
+    AutoValueScope value_scope(apis, env);
+    auto TIret = wrapData->TypeInfos[0];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    int _sv1 = apis->get_arg(info, 1);
+    if (checkLuaArgument) {
+        if (lua_args_len != 2) 
+            return false;
+
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv0))
+            return false;
+        if (!converter::Converter<int8_t>::accept(apis, env, _sv1))
+            return false;        
+    }
+        
+    // LuaValToCSVal P any
+    int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
+        
+    // LuaValToCSVal P any
+    int8_t p1 = converter::Converter<int8_t>::toCpp(apis, env, _sv1);
+
+    typedef Il2CppObject* (*FuncToCall)(void*,int32_t p1, int8_t p2, const void* method);
+    Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1,  method);
+	int r = CSRefToLuaValue(apis, env, TIret, ret);
+	apis->add_return(info, r);
+    value_scope.reserve = apis->get_return_num(info);
+    return true;
+}
+// System.Text.StringBuilder Insert(Int32, Int16) declare in System.Text.StringBuilder
+bool w_oti4i2(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_oti4i2");
+    AutoValueScope value_scope(apis, env);
+    auto TIret = wrapData->TypeInfos[0];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    int _sv1 = apis->get_arg(info, 1);
+    if (checkLuaArgument) {
+        if (lua_args_len != 2) 
+            return false;
+
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv0))
+            return false;
+        if (!converter::Converter<int16_t>::accept(apis, env, _sv1))
+            return false;        
+    }
+        
+    // LuaValToCSVal P any
+    int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
+        
+    // LuaValToCSVal P any
+    int16_t p1 = converter::Converter<int16_t>::toCpp(apis, env, _sv1);
+
+    typedef Il2CppObject* (*FuncToCall)(void*,int32_t p1, int16_t p2, const void* method);
+    Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1,  method);
+	int r = CSRefToLuaValue(apis, env, TIret, ret);
+	apis->add_return(info, r);
+    value_scope.reserve = apis->get_return_num(info);
+    return true;
+}
 // Char[] ToCharArray(Int32, Int32) declare in System.String
 bool w_oti4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
     // PLog("Running w_oti4i4");
@@ -44,10 +1185,10 @@ bool w_oti4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer m
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-        
+
     typedef Il2CppObject* (*FuncToCall)(void*,int32_t p1, int32_t p2, const void* method);
     Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1,  method);
 	int r = CSRefToLuaValue(apis, env, TIret, ret);
@@ -78,13 +1219,13 @@ bool w_oti4i4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-        
+
     typedef Il2CppObject* (*FuncToCall)(void*,int32_t p1, int32_t p2, int32_t p3, const void* method);
     Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1, p2,  method);
 	int r = CSRefToLuaValue(apis, env, TIret, ret);
@@ -118,16 +1259,16 @@ bool w_oti4i4oO(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p2 = LuaValueToCSRef(apis, TIp2, env, _sv2);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p3 = LuaValueToCSRef(apis, TIp3, env, _sv3);
-        
+
     typedef Il2CppObject* (*FuncToCall)(void*,int32_t p1, int32_t p2, Il2CppObject* p3, Il2CppObject* p4, const void* method);
     Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1, p2, p3,  method);
 	int r = CSRefToLuaValue(apis, env, TIret, ret);
@@ -155,10 +1296,10 @@ bool w_oti4i8(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer m
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     int64_t p1 = converter::Converter<int64_t>::toCpp(apis, env, _sv1);
-        
+
     typedef Il2CppObject* (*FuncToCall)(void*,int32_t p1, int64_t p2, const void* method);
     Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1,  method);
 	int r = CSRefToLuaValue(apis, env, TIret, ret);
@@ -187,10 +1328,10 @@ bool w_oti4o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-        
+
     typedef Il2CppObject* (*FuncToCall)(void*,int32_t p1, Il2CppObject* p2, const void* method);
     Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1,  method);
 	int r = CSRefToLuaValue(apis, env, TIret, ret);
@@ -198,7 +1339,7 @@ bool w_oti4o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
     value_scope.reserve = apis->get_return_num(info);
     return true;
 }
-// System.Action`1[System.Int32] AddBind(ResData.ActorAbilitySymmetryType, System.Action`1[System.Int32], Boolean) declare in BindableDict`2[ResData.ActorAbilitySymmetryType,System.Int32]
+// System.Action`1[OSProto.SyncProject8ActorExtraData+LevelSourceMap] AddBind(OSProto.ActorLevelUpReason, System.Action`1[OSProto.SyncProject8ActorExtraData+LevelSourceMap], Boolean) declare in BindableDict`2[OSProto.ActorLevelUpReason,OSProto.SyncProject8ActorExtraData+LevelSourceMap]
 bool w_oti4oDb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
     // PLog("Running w_oti4oDb");
     AutoValueScope value_scope(apis, env);
@@ -222,10 +1363,10 @@ bool w_oti4oDb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer 
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-         // LuaValToCSVal primitive with default
+ // LuaValToCSVal primitive with default
     bool p2 = OptionalParameter<bool>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 2);
             
     typedef Il2CppObject* (*FuncToCall)(void*,int32_t p1, Il2CppObject* p2, bool p3, const void* method);
@@ -235,7 +1376,7 @@ bool w_oti4oDb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer 
     value_scope.reserve = apis->get_return_num(info);
     return true;
 }
-// System.Action`1[System.Int32] AddBind2Target(ResData.ActorAbilitySymmetryType, System.Action`1[System.Int32], System.Object, Boolean) declare in BindableDict`2[ResData.ActorAbilitySymmetryType,System.Int32]
+// System.Action`1[OSProto.SyncProject8ActorExtraData+LevelSourceMap] AddBind2Target(OSProto.ActorLevelUpReason, System.Action`1[OSProto.SyncProject8ActorExtraData+LevelSourceMap], System.Object, Boolean) declare in BindableDict`2[OSProto.ActorLevelUpReason,OSProto.SyncProject8ActorExtraData+LevelSourceMap]
 bool w_oti4oODb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
     // PLog("Running w_oti4oODb");
     AutoValueScope value_scope(apis, env);
@@ -261,13 +1402,13 @@ bool w_oti4oODb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p2 = LuaValueToCSRef(apis, TIp2, env, _sv2);
-         // LuaValToCSVal primitive with default
+ // LuaValToCSVal primitive with default
     bool p3 = OptionalParameter<bool>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 3);
             
     typedef Il2CppObject* (*FuncToCall)(void*,int32_t p1, Il2CppObject* p2, Il2CppObject* p3, bool p4, const void* method);
@@ -304,16 +1445,16 @@ bool w_oti4oi4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointe
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-                
+        
     // LuaValToCSVal P any
     int32_t p3 = converter::Converter<int32_t>::toCpp(apis, env, _sv3);
-        
+
     typedef Il2CppObject* (*FuncToCall)(void*,int32_t p1, Il2CppObject* p2, int32_t p3, int32_t p4, const void* method);
     Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1, p2, p3,  method);
 	int r = CSRefToLuaValue(apis, env, TIret, ret);
@@ -353,19 +1494,19 @@ bool w_oti4oi4oo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointe
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p3 = LuaValueToCSRef(apis, TIp3, env, _sv3);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p4 = LuaValueToCSRef(apis, TIp4, env, _sv4);
-        
+
     typedef Il2CppObject* (*FuncToCall)(void*,int32_t p1, Il2CppObject* p2, int32_t p3, Il2CppObject* p4, Il2CppObject* p5, const void* method);
     Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1, p2, p3, p4,  method);
 	int r = CSRefToLuaValue(apis, env, TIret, ret);
@@ -402,16 +1543,16 @@ bool w_oti4ooo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer 
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p2 = LuaValueToCSRef(apis, TIp2, env, _sv2);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p3 = LuaValueToCSRef(apis, TIp3, env, _sv3);
-        
+
     typedef Il2CppObject* (*FuncToCall)(void*,int32_t p1, Il2CppObject* p2, Il2CppObject* p3, Il2CppObject* p4, const void* method);
     Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1, p2, p3,  method);
 	int r = CSRefToLuaValue(apis, env, TIret, ret);
@@ -439,10 +1580,10 @@ bool w_oti4r4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer m
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     float p1 = converter::Converter<float>::toCpp(apis, env, _sv1);
-        
+
     typedef Il2CppObject* (*FuncToCall)(void*,int32_t p1, float p2, const void* method);
     Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1,  method);
 	int r = CSRefToLuaValue(apis, env, TIret, ret);
@@ -470,10 +1611,10 @@ bool w_oti4r8(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer m
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     double p1 = converter::Converter<double>::toCpp(apis, env, _sv1);
-        
+
     typedef Il2CppObject* (*FuncToCall)(void*,int32_t p1, double p2, const void* method);
     Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1,  method);
 	int r = CSRefToLuaValue(apis, env, TIret, ret);
@@ -502,7 +1643,7 @@ bool w_oti4s(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-            // LuaValToCSVal s
+    // LuaValToCSVal s
     Il2CppString* p1 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv1);
     typedef Il2CppObject* (*FuncToCall)(void*,int32_t p1, Il2CppString* p2, const void* method);
     Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1,  method);
@@ -535,11 +1676,11 @@ bool w_oti4si4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer 
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-            // LuaValToCSVal s
+    // LuaValToCSVal s
     Il2CppString* p1 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv1);        
     // LuaValToCSVal P any
     int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-        
+
     typedef Il2CppObject* (*FuncToCall)(void*,int32_t p1, Il2CppString* p2, int32_t p3, const void* method);
     Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1, p2,  method);
 	int r = CSRefToLuaValue(apis, env, TIret, ret);
@@ -567,10 +1708,10 @@ bool w_oti4u1(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer m
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     uint8_t p1 = converter::Converter<uint8_t>::toCpp(apis, env, _sv1);
-        
+
     typedef Il2CppObject* (*FuncToCall)(void*,int32_t p1, uint8_t p2, const void* method);
     Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1,  method);
 	int r = CSRefToLuaValue(apis, env, TIret, ret);
@@ -598,10 +1739,10 @@ bool w_oti4u2(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer m
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     uint16_t p1 = converter::Converter<uint16_t>::toCpp(apis, env, _sv1);
-        
+
     typedef Il2CppObject* (*FuncToCall)(void*,int32_t p1, uint16_t p2, const void* method);
     Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1,  method);
 	int r = CSRefToLuaValue(apis, env, TIret, ret);
@@ -629,10 +1770,10 @@ bool w_oti4u4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer m
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     uint32_t p1 = converter::Converter<uint32_t>::toCpp(apis, env, _sv1);
-        
+
     typedef Il2CppObject* (*FuncToCall)(void*,int32_t p1, uint32_t p2, const void* method);
     Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1,  method);
 	int r = CSRefToLuaValue(apis, env, TIret, ret);
@@ -663,13 +1804,13 @@ bool w_oti4u4u4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     uint32_t p1 = converter::Converter<uint32_t>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     uint32_t p2 = converter::Converter<uint32_t>::toCpp(apis, env, _sv2);
-        
+
     typedef Il2CppObject* (*FuncToCall)(void*,int32_t p1, uint32_t p2, uint32_t p3, const void* method);
     Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1, p2,  method);
 	int r = CSRefToLuaValue(apis, env, TIret, ret);
@@ -697,10 +1838,10 @@ bool w_oti4u8(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer m
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     uint64_t p1 = converter::Converter<uint64_t>::toCpp(apis, env, _sv1);
-        
+
     typedef Il2CppObject* (*FuncToCall)(void*,int32_t p1, uint64_t p2, const void* method);
     Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1,  method);
 	int r = CSRefToLuaValue(apis, env, TIret, ret);
@@ -725,7 +1866,7 @@ bool w_oti8(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     int64_t p0 = converter::Converter<int64_t>::toCpp(apis, env, _sv0);
-        
+
     typedef Il2CppObject* (*FuncToCall)(void*,int64_t p1, const void* method);
     Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0,  method);
 	int r = CSRefToLuaValue(apis, env, TIret, ret);
@@ -751,7 +1892,7 @@ bool w_oto(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer meth
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-        
+
     typedef Il2CppObject* (*FuncToCall)(void*,Il2CppObject* p1, const void* method);
     Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0,  method);
 	int r = CSRefToLuaValue(apis, env, TIret, ret);
@@ -779,7 +1920,7 @@ bool w_otoDO(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-            // LuaValToCSVal ref with default
+    // LuaValToCSVal ref with default
     Il2CppObject* p1 = OptionalParameter<Il2CppObject*>::GetRefType(apis, env, info, method, wrapData, lua_args_len, 1, TIp1);
     typedef Il2CppObject* (*FuncToCall)(void*,Il2CppObject* p1, Il2CppObject* p2, const void* method);
     Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1,  method);
@@ -809,7 +1950,7 @@ bool w_otoDb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-         // LuaValToCSVal primitive with default
+ // LuaValToCSVal primitive with default
     bool p1 = OptionalParameter<bool>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 1);
             
     typedef Il2CppObject* (*FuncToCall)(void*,Il2CppObject* p1, bool p2, const void* method);
@@ -840,7 +1981,7 @@ bool w_otoDi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer m
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-         // LuaValToCSVal primitive with default
+ // LuaValToCSVal primitive with default
     int32_t p1 = OptionalParameter<int32_t>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 1);
             
     typedef Il2CppObject* (*FuncToCall)(void*,Il2CppObject* p1, int32_t p2, const void* method);
@@ -870,10 +2011,10 @@ bool w_otoO(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-        
+
     typedef Il2CppObject* (*FuncToCall)(void*,Il2CppObject* p1, Il2CppObject* p2, const void* method);
     Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1,  method);
 	int r = CSRefToLuaValue(apis, env, TIret, ret);
@@ -881,7 +2022,7 @@ bool w_otoO(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
     value_scope.reserve = apis->get_return_num(info);
     return true;
 }
-// System.Action`1[System.Collections.Generic.Dictionary`2[ResData.ActorAbilitySymmetryType,System.Int32]] AddBind2Target(System.Action`1[System.Collections.Generic.Dictionary`2[ResData.ActorAbilitySymmetryType,System.Int32]], System.Object, Boolean) declare in BindableDict`2[ResData.ActorAbilitySymmetryType,System.Int32]
+// System.Action`1[System.Collections.Generic.Dictionary`2[OSProto.ActorLevelUpReason,OSProto.SyncProject8ActorExtraData+LevelSourceMap]] AddBind2Target(System.Action`1[System.Collections.Generic.Dictionary`2[OSProto.ActorLevelUpReason,OSProto.SyncProject8ActorExtraData+LevelSourceMap]], System.Object, Boolean) declare in BindableDict`2[OSProto.ActorLevelUpReason,OSProto.SyncProject8ActorExtraData+LevelSourceMap]
 bool w_otoODb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
     // PLog("Running w_otoODb");
     AutoValueScope value_scope(apis, env);
@@ -904,10 +2045,10 @@ bool w_otoODb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer m
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-         // LuaValToCSVal primitive with default
+ // LuaValToCSVal primitive with default
     bool p2 = OptionalParameter<bool>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 2);
             
     typedef Il2CppObject* (*FuncToCall)(void*,Il2CppObject* p1, Il2CppObject* p2, bool p3, const void* method);
@@ -946,16 +2087,18 @@ bool w_otoS_r4r4_S_r4r4_r4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMe
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-             // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_r4r4_* pp1 = DataTransfer::GetPointer<S_r4r4_>(apis, env, _sv1);
     S_r4r4_ p1 = pp1 ? *pp1 : S_r4r4_ {};
-             // LuaValToCSVal struct
+             
+    // LuaValToCSVal struct
     S_r4r4_* pp2 = DataTransfer::GetPointer<S_r4r4_>(apis, env, _sv2);
     S_r4r4_ p2 = pp2 ? *pp2 : S_r4r4_ {};
                 
     // LuaValToCSVal P any
     float p3 = converter::Converter<float>::toCpp(apis, env, _sv3);
-        
+
     typedef Il2CppObject* (*FuncToCall)(void*,Il2CppObject* p1, struct S_r4r4_ p2, struct S_r4r4_ p3, float p4, const void* method);
     Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1, p2, p3,  method);
 	int r = CSRefToLuaValue(apis, env, TIret, ret);
@@ -992,16 +2135,18 @@ bool w_otoS_r4r4r4_S_r4r4r4_r4(struct pesapi_ffi* apis, MethodInfo* method, Il2C
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-             // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_r4r4r4_* pp1 = DataTransfer::GetPointer<S_r4r4r4_>(apis, env, _sv1);
     S_r4r4r4_ p1 = pp1 ? *pp1 : S_r4r4r4_ {};
-             // LuaValToCSVal struct
+             
+    // LuaValToCSVal struct
     S_r4r4r4_* pp2 = DataTransfer::GetPointer<S_r4r4r4_>(apis, env, _sv2);
     S_r4r4r4_ p2 = pp2 ? *pp2 : S_r4r4r4_ {};
                 
     // LuaValToCSVal P any
     float p3 = converter::Converter<float>::toCpp(apis, env, _sv3);
-        
+
     typedef Il2CppObject* (*FuncToCall)(void*,Il2CppObject* p1, struct S_r4r4r4_ p2, struct S_r4r4r4_ p3, float p4, const void* method);
     Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1, p2, p3,  method);
 	int r = CSRefToLuaValue(apis, env, TIret, ret);
@@ -1038,16 +2183,18 @@ bool w_otoS_r4r4r4r4_S_r4r4r4r4_r4(struct pesapi_ffi* apis, MethodInfo* method, 
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-             // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_r4r4r4r4_* pp1 = DataTransfer::GetPointer<S_r4r4r4r4_>(apis, env, _sv1);
     S_r4r4r4r4_ p1 = pp1 ? *pp1 : S_r4r4r4r4_ {};
-             // LuaValToCSVal struct
+             
+    // LuaValToCSVal struct
     S_r4r4r4r4_* pp2 = DataTransfer::GetPointer<S_r4r4r4r4_>(apis, env, _sv2);
     S_r4r4r4r4_ p2 = pp2 ? *pp2 : S_r4r4r4r4_ {};
                 
     // LuaValToCSVal P any
     float p3 = converter::Converter<float>::toCpp(apis, env, _sv3);
-        
+
     typedef Il2CppObject* (*FuncToCall)(void*,Il2CppObject* p1, struct S_r4r4r4r4_ p2, struct S_r4r4r4r4_ p3, float p4, const void* method);
     Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1, p2, p3,  method);
 	int r = CSRefToLuaValue(apis, env, TIret, ret);
@@ -1076,10 +2223,10 @@ bool w_otob(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     bool p1 = converter::Converter<bool>::toCpp(apis, env, _sv1);
-        
+
     typedef Il2CppObject* (*FuncToCall)(void*,Il2CppObject* p1, bool p2, const void* method);
     Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1,  method);
 	int r = CSRefToLuaValue(apis, env, TIret, ret);
@@ -1108,10 +2255,10 @@ bool w_otoi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-        
+
     typedef Il2CppObject* (*FuncToCall)(void*,Il2CppObject* p1, int32_t p2, const void* method);
     Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1,  method);
 	int r = CSRefToLuaValue(apis, env, TIret, ret);
@@ -1143,13 +2290,13 @@ bool w_otoi4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer 
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-        
+
     typedef Il2CppObject* (*FuncToCall)(void*,Il2CppObject* p1, int32_t p2, int32_t p3, const void* method);
     Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1, p2,  method);
 	int r = CSRefToLuaValue(apis, env, TIret, ret);
@@ -1182,13 +2329,13 @@ bool w_otoob(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     bool p2 = converter::Converter<bool>::toCpp(apis, env, _sv2);
-        
+
     typedef Il2CppObject* (*FuncToCall)(void*,Il2CppObject* p1, Il2CppObject* p2, bool p3, const void* method);
     Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1, p2,  method);
 	int r = CSRefToLuaValue(apis, env, TIret, ret);
@@ -1225,13 +2372,13 @@ bool w_otooi4s(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer 
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-            // LuaValToCSVal s
+    // LuaValToCSVal s
     Il2CppString* p3 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv3);
     typedef Il2CppObject* (*FuncToCall)(void*,Il2CppObject* p1, Il2CppObject* p2, int32_t p3, Il2CppString* p4, const void* method);
     Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1, p2, p3,  method);
@@ -1261,10 +2408,10 @@ bool w_otor4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     float p1 = converter::Converter<float>::toCpp(apis, env, _sv1);
-        
+
     typedef Il2CppObject* (*FuncToCall)(void*,Il2CppObject* p1, float p2, const void* method);
     Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1,  method);
 	int r = CSRefToLuaValue(apis, env, TIret, ret);
@@ -1299,16 +2446,16 @@ bool w_otor4r4r4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointe
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     float p1 = converter::Converter<float>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     float p2 = converter::Converter<float>::toCpp(apis, env, _sv2);
-                
+        
     // LuaValToCSVal P any
     float p3 = converter::Converter<float>::toCpp(apis, env, _sv3);
-        
+
     typedef Il2CppObject* (*FuncToCall)(void*,Il2CppObject* p1, float p2, float p3, float p4, const void* method);
     Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1, p2, p3,  method);
 	int r = CSRefToLuaValue(apis, env, TIret, ret);
@@ -1340,11 +2487,11 @@ bool w_otosO(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-            // LuaValToCSVal s
+    // LuaValToCSVal s
     Il2CppString* p1 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv1);    
     // LuaValToCSVal o/O
     Il2CppObject* p2 = LuaValueToCSRef(apis, TIp2, env, _sv2);
-        
+
     typedef Il2CppObject* (*FuncToCall)(void*,Il2CppObject* p1, Il2CppString* p2, Il2CppObject* p3, const void* method);
     Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1, p2,  method);
 	int r = CSRefToLuaValue(apis, env, TIret, ret);
@@ -1378,14 +2525,14 @@ bool w_otosOO(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer m
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-            // LuaValToCSVal s
+    // LuaValToCSVal s
     Il2CppString* p1 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv1);    
     // LuaValToCSVal o/O
     Il2CppObject* p2 = LuaValueToCSRef(apis, TIp2, env, _sv2);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p3 = LuaValueToCSRef(apis, TIp3, env, _sv3);
-        
+
     typedef Il2CppObject* (*FuncToCall)(void*,Il2CppObject* p1, Il2CppString* p2, Il2CppObject* p3, Il2CppObject* p4, const void* method);
     Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1, p2, p3,  method);
 	int r = CSRefToLuaValue(apis, env, TIret, ret);
@@ -1421,17 +2568,17 @@ bool w_otosOOO(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer 
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-            // LuaValToCSVal s
+    // LuaValToCSVal s
     Il2CppString* p1 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv1);    
     // LuaValToCSVal o/O
     Il2CppObject* p2 = LuaValueToCSRef(apis, TIp2, env, _sv2);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p3 = LuaValueToCSRef(apis, TIp3, env, _sv3);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p4 = LuaValueToCSRef(apis, TIp4, env, _sv4);
-        
+
     typedef Il2CppObject* (*FuncToCall)(void*,Il2CppObject* p1, Il2CppString* p2, Il2CppObject* p3, Il2CppObject* p4, Il2CppObject* p5, const void* method);
     Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1, p2, p3, p4,  method);
 	int r = CSRefToLuaValue(apis, env, TIret, ret);
@@ -1463,7 +2610,7 @@ bool w_otosVO(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer m
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-            // LuaValToCSVal s
+    // LuaValToCSVal s
     Il2CppString* p1 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv1);    // LuaValToCSVal ref params
     Il2CppArray* p2 = Params<void*>::PackRef(apis, env, info, TIp2, lua_args_len, 2);
             
@@ -1495,10 +2642,10 @@ bool w_otou4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     uint32_t p1 = converter::Converter<uint32_t>::toCpp(apis, env, _sv1);
-        
+
     typedef Il2CppObject* (*FuncToCall)(void*,Il2CppObject* p1, uint32_t p2, const void* method);
     Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1,  method);
 	int r = CSRefToLuaValue(apis, env, TIret, ret);
@@ -1530,13 +2677,13 @@ bool w_otou4u4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer 
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     uint32_t p1 = converter::Converter<uint32_t>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     uint32_t p2 = converter::Converter<uint32_t>::toCpp(apis, env, _sv2);
-        
+
     typedef Il2CppObject* (*FuncToCall)(void*,Il2CppObject* p1, uint32_t p2, uint32_t p3, const void* method);
     Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1, p2,  method);
 	int r = CSRefToLuaValue(apis, env, TIret, ret);
@@ -1561,7 +2708,7 @@ bool w_otr4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     float p0 = converter::Converter<float>::toCpp(apis, env, _sv0);
-        
+
     typedef Il2CppObject* (*FuncToCall)(void*,float p1, const void* method);
     Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0,  method);
 	int r = CSRefToLuaValue(apis, env, TIret, ret);
@@ -1590,10 +2737,10 @@ bool w_otr4o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
         
     // LuaValToCSVal P any
     float p0 = converter::Converter<float>::toCpp(apis, env, _sv0);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-        
+
     typedef Il2CppObject* (*FuncToCall)(void*,float p1, Il2CppObject* p2, const void* method);
     Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1,  method);
 	int r = CSRefToLuaValue(apis, env, TIret, ret);
@@ -1621,10 +2768,10 @@ bool w_otr4r4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer m
         
     // LuaValToCSVal P any
     float p0 = converter::Converter<float>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     float p1 = converter::Converter<float>::toCpp(apis, env, _sv1);
-        
+
     typedef Il2CppObject* (*FuncToCall)(void*,float p1, float p2, const void* method);
     Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1,  method);
 	int r = CSRefToLuaValue(apis, env, TIret, ret);
@@ -1655,13 +2802,13 @@ bool w_otr4r4r4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer
         
     // LuaValToCSVal P any
     float p0 = converter::Converter<float>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     float p1 = converter::Converter<float>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     float p2 = converter::Converter<float>::toCpp(apis, env, _sv2);
-        
+
     typedef Il2CppObject* (*FuncToCall)(void*,float p1, float p2, float p3, const void* method);
     Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1, p2,  method);
 	int r = CSRefToLuaValue(apis, env, TIret, ret);
@@ -1686,7 +2833,7 @@ bool w_otr8(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     double p0 = converter::Converter<double>::toCpp(apis, env, _sv0);
-        
+
     typedef Il2CppObject* (*FuncToCall)(void*,double p1, const void* method);
     Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0,  method);
 	int r = CSRefToLuaValue(apis, env, TIret, ret);
@@ -2103,7 +3250,7 @@ bool w_otsO(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-        
+
     typedef Il2CppObject* (*FuncToCall)(void*,Il2CppString* p1, Il2CppObject* p2, const void* method);
     Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1,  method);
 	int r = CSRefToLuaValue(apis, env, TIret, ret);
@@ -2134,10 +3281,10 @@ bool w_otsOO(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p2 = LuaValueToCSRef(apis, TIp2, env, _sv2);
-        
+
     typedef Il2CppObject* (*FuncToCall)(void*,Il2CppString* p1, Il2CppObject* p2, Il2CppObject* p3, const void* method);
     Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1, p2,  method);
 	int r = CSRefToLuaValue(apis, env, TIret, ret);
@@ -2170,13 +3317,13 @@ bool w_otsOOO(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer m
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p2 = LuaValueToCSRef(apis, TIp2, env, _sv2);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p3 = LuaValueToCSRef(apis, TIp3, env, _sv3);
-        
+
     typedef Il2CppObject* (*FuncToCall)(void*,Il2CppString* p1, Il2CppObject* p2, Il2CppObject* p3, Il2CppObject* p4, const void* method);
     Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1, p2, p3,  method);
 	int r = CSRefToLuaValue(apis, env, TIret, ret);
@@ -2263,7 +3410,7 @@ bool w_otsb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);        
     // LuaValToCSVal P any
     bool p1 = converter::Converter<bool>::toCpp(apis, env, _sv1);
-        
+
     typedef Il2CppObject* (*FuncToCall)(void*,Il2CppString* p1, bool p2, const void* method);
     Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1,  method);
 	int r = CSRefToLuaValue(apis, env, TIret, ret);
@@ -2304,13 +3451,15 @@ bool w_otsbi4S_r4r4r4_S_r4r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, I
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);        
     // LuaValToCSVal P any
     bool p1 = converter::Converter<bool>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-             // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_r4r4r4_* pp3 = DataTransfer::GetPointer<S_r4r4r4_>(apis, env, _sv3);
     S_r4r4r4_ p3 = pp3 ? *pp3 : S_r4r4r4_ {};
-             // LuaValToCSVal struct
+             
+    // LuaValToCSVal struct
     S_r4r4r4r4_* pp4 = DataTransfer::GetPointer<S_r4r4r4r4_>(apis, env, _sv4);
     S_r4r4r4r4_ p4 = pp4 ? *pp4 : S_r4r4r4r4_ {};
         
@@ -2365,19 +3514,21 @@ bool w_otsbi4S_r4r4r4_S_r4r4r4r4_i1DsDs(struct pesapi_ffi* apis, MethodInfo* met
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);        
     // LuaValToCSVal P any
     bool p1 = converter::Converter<bool>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-             // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_r4r4r4_* pp3 = DataTransfer::GetPointer<S_r4r4r4_>(apis, env, _sv3);
     S_r4r4r4_ p3 = pp3 ? *pp3 : S_r4r4r4_ {};
-             // LuaValToCSVal struct
+             
+    // LuaValToCSVal struct
     S_r4r4r4r4_* pp4 = DataTransfer::GetPointer<S_r4r4r4r4_>(apis, env, _sv4);
     S_r4r4r4r4_ p4 = pp4 ? *pp4 : S_r4r4r4r4_ {};
                 
     // LuaValToCSVal P any
     int8_t p5 = converter::Converter<int8_t>::toCpp(apis, env, _sv5);
-            // LuaValToCSVal string with default
+    // LuaValToCSVal string with default
     Il2CppString* p6 = OptionalParameter<Il2CppString*>::GetString(apis, env, info, method, wrapData, lua_args_len, 6);    // LuaValToCSVal string with default
     Il2CppString* p7 = OptionalParameter<Il2CppString*>::GetString(apis, env, info, method, wrapData, lua_args_len, 7);
     typedef Il2CppObject* (*FuncToCall)(void*,Il2CppString* p1, bool p2, int32_t p3, struct S_r4r4r4_ p4, struct S_r4r4r4r4_ p5, int8_t p6, Il2CppString* p7, Il2CppString* p8, const void* method);
@@ -2423,16 +3574,17 @@ bool w_otsbi4S_r4r4r4_i1Ds(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMe
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);        
     // LuaValToCSVal P any
     bool p1 = converter::Converter<bool>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-             // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_r4r4r4_* pp3 = DataTransfer::GetPointer<S_r4r4r4_>(apis, env, _sv3);
     S_r4r4r4_ p3 = pp3 ? *pp3 : S_r4r4r4_ {};
                 
     // LuaValToCSVal P any
     int8_t p4 = converter::Converter<int8_t>::toCpp(apis, env, _sv4);
-            // LuaValToCSVal string with default
+    // LuaValToCSVal string with default
     Il2CppString* p5 = OptionalParameter<Il2CppString*>::GetString(apis, env, info, method, wrapData, lua_args_len, 5);
     typedef Il2CppObject* (*FuncToCall)(void*,Il2CppString* p1, bool p2, int32_t p3, struct S_r4r4r4_ p4, int8_t p5, Il2CppString* p6, const void* method);
     Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1, p2, p3, p4, p5,  method);
@@ -2467,7 +3619,8 @@ bool w_otsi1S_S_r4r4r4_o_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMet
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);        
     // LuaValToCSVal P any
     int8_t p1 = converter::Converter<int8_t>::toCpp(apis, env, _sv1);
-             // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_S_r4r4r4_o_* pp2 = DataTransfer::GetPointer<S_S_r4r4r4_o_>(apis, env, _sv2);
     S_S_r4r4r4_o_ p2 = pp2 ? *pp2 : S_S_r4r4r4_o_ {};
         
@@ -2500,7 +3653,7 @@ bool w_otsi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);        
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-        
+
     typedef Il2CppObject* (*FuncToCall)(void*,Il2CppString* p1, int32_t p2, const void* method);
     Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1,  method);
 	int r = CSRefToLuaValue(apis, env, TIret, ret);
@@ -2533,7 +3686,7 @@ bool w_otsi4Di4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);        
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-         // LuaValToCSVal primitive with default
+ // LuaValToCSVal primitive with default
     int32_t p2 = OptionalParameter<int32_t>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 2);
             
     typedef Il2CppObject* (*FuncToCall)(void*,Il2CppString* p1, int32_t p2, int32_t p3, const void* method);
@@ -2568,10 +3721,10 @@ bool w_otsi4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer 
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);        
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-        
+
     typedef Il2CppObject* (*FuncToCall)(void*,Il2CppString* p1, int32_t p2, int32_t p3, const void* method);
     Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1, p2,  method);
 	int r = CSRefToLuaValue(apis, env, TIret, ret);
@@ -2619,22 +3772,22 @@ bool w_otsi4i4oi4oo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPoi
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);        
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p3 = LuaValueToCSRef(apis, TIp3, env, _sv3);
-                
+        
     // LuaValToCSVal P any
     int32_t p4 = converter::Converter<int32_t>::toCpp(apis, env, _sv4);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p5 = LuaValueToCSRef(apis, TIp5, env, _sv5);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p6 = LuaValueToCSRef(apis, TIp6, env, _sv6);
-        
+
     typedef Il2CppObject* (*FuncToCall)(void*,Il2CppString* p1, int32_t p2, int32_t p3, Il2CppObject* p4, int32_t p5, Il2CppObject* p6, Il2CppObject* p7, const void* method);
     Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1, p2, p3, p4, p5, p6,  method);
 	int r = CSRefToLuaValue(apis, env, TIret, ret);
@@ -2679,19 +3832,19 @@ bool w_otsi4i4ooo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPoint
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);        
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p3 = LuaValueToCSRef(apis, TIp3, env, _sv3);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p4 = LuaValueToCSRef(apis, TIp4, env, _sv4);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p5 = LuaValueToCSRef(apis, TIp5, env, _sv5);
-        
+
     typedef Il2CppObject* (*FuncToCall)(void*,Il2CppString* p1, int32_t p2, int32_t p3, Il2CppObject* p4, Il2CppObject* p5, Il2CppObject* p6, const void* method);
     Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1, p2, p3, p4, p5,  method);
 	int r = CSRefToLuaValue(apis, env, TIret, ret);
@@ -2725,10 +3878,10 @@ bool w_otsi4o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer m
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);        
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p2 = LuaValueToCSRef(apis, TIp2, env, _sv2);
-        
+
     typedef Il2CppObject* (*FuncToCall)(void*,Il2CppString* p1, int32_t p2, Il2CppObject* p3, const void* method);
     Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1, p2,  method);
 	int r = CSRefToLuaValue(apis, env, TIret, ret);
@@ -2773,19 +3926,19 @@ bool w_otsi4oi4oo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPoint
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);        
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p2 = LuaValueToCSRef(apis, TIp2, env, _sv2);
-                
+        
     // LuaValToCSVal P any
     int32_t p3 = converter::Converter<int32_t>::toCpp(apis, env, _sv3);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p4 = LuaValueToCSRef(apis, TIp4, env, _sv4);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p5 = LuaValueToCSRef(apis, TIp5, env, _sv5);
-        
+
     typedef Il2CppObject* (*FuncToCall)(void*,Il2CppString* p1, int32_t p2, Il2CppObject* p3, int32_t p4, Il2CppObject* p5, Il2CppObject* p6, const void* method);
     Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1, p2, p3, p4, p5,  method);
 	int r = CSRefToLuaValue(apis, env, TIret, ret);
@@ -2823,13 +3976,13 @@ bool w_otsi4oo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer 
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);        
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p2 = LuaValueToCSRef(apis, TIp2, env, _sv2);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p3 = LuaValueToCSRef(apis, TIp3, env, _sv3);
-        
+
     typedef Il2CppObject* (*FuncToCall)(void*,Il2CppString* p1, int32_t p2, Il2CppObject* p3, Il2CppObject* p4, const void* method);
     Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1, p2, p3,  method);
 	int r = CSRefToLuaValue(apis, env, TIret, ret);
@@ -2871,16 +4024,16 @@ bool w_otsi4ooo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);        
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p2 = LuaValueToCSRef(apis, TIp2, env, _sv2);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p3 = LuaValueToCSRef(apis, TIp3, env, _sv3);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p4 = LuaValueToCSRef(apis, TIp4, env, _sv4);
-        
+
     typedef Il2CppObject* (*FuncToCall)(void*,Il2CppString* p1, int32_t p2, Il2CppObject* p3, Il2CppObject* p4, Il2CppObject* p5, const void* method);
     Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1, p2, p3, p4,  method);
 	int r = CSRefToLuaValue(apis, env, TIret, ret);
@@ -2926,19 +4079,19 @@ bool w_otsi4oooo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointe
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);        
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p2 = LuaValueToCSRef(apis, TIp2, env, _sv2);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p3 = LuaValueToCSRef(apis, TIp3, env, _sv3);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p4 = LuaValueToCSRef(apis, TIp4, env, _sv4);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p5 = LuaValueToCSRef(apis, TIp5, env, _sv5);
-        
+
     typedef Il2CppObject* (*FuncToCall)(void*,Il2CppString* p1, int32_t p2, Il2CppObject* p3, Il2CppObject* p4, Il2CppObject* p5, Il2CppObject* p6, const void* method);
     Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1, p2, p3, p4, p5,  method);
 	int r = CSRefToLuaValue(apis, env, TIret, ret);
@@ -2969,7 +4122,7 @@ bool w_otso(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-        
+
     typedef Il2CppObject* (*FuncToCall)(void*,Il2CppString* p1, Il2CppObject* p2, const void* method);
     Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1,  method);
 	int r = CSRefToLuaValue(apis, env, TIret, ret);
@@ -3005,7 +4158,7 @@ bool w_otsoDODb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-            // LuaValToCSVal ref with default
+    // LuaValToCSVal ref with default
     Il2CppObject* p2 = OptionalParameter<Il2CppObject*>::GetRefType(apis, env, info, method, wrapData, lua_args_len, 2, TIp2); // LuaValToCSVal primitive with default
     bool p3 = OptionalParameter<bool>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 3);
             
@@ -3048,7 +4201,7 @@ bool w_otsoDODbDo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPoint
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-            // LuaValToCSVal ref with default
+    // LuaValToCSVal ref with default
     Il2CppObject* p2 = OptionalParameter<Il2CppObject*>::GetRefType(apis, env, info, method, wrapData, lua_args_len, 2, TIp2); // LuaValToCSVal primitive with default
     bool p3 = OptionalParameter<bool>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 3);
                 // LuaValToCSVal ref with default
@@ -3087,7 +4240,7 @@ bool w_otsoDo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer m
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-            // LuaValToCSVal ref with default
+    // LuaValToCSVal ref with default
     Il2CppObject* p2 = OptionalParameter<Il2CppObject*>::GetRefType(apis, env, info, method, wrapData, lua_args_len, 2, TIp2);
     typedef Il2CppObject* (*FuncToCall)(void*,Il2CppString* p1, Il2CppObject* p2, Il2CppObject* p3, const void* method);
     Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1, p2,  method);
@@ -3127,7 +4280,7 @@ bool w_otsoDoDo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-            // LuaValToCSVal ref with default
+    // LuaValToCSVal ref with default
     Il2CppObject* p2 = OptionalParameter<Il2CppObject*>::GetRefType(apis, env, info, method, wrapData, lua_args_len, 2, TIp2);    // LuaValToCSVal ref with default
     Il2CppObject* p3 = OptionalParameter<Il2CppObject*>::GetRefType(apis, env, info, method, wrapData, lua_args_len, 3, TIp3);
     typedef Il2CppObject* (*FuncToCall)(void*,Il2CppString* p1, Il2CppObject* p2, Il2CppObject* p3, Il2CppObject* p4, const void* method);
@@ -3169,13 +4322,14 @@ bool w_otsoObS_r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethod
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p2 = LuaValueToCSRef(apis, TIp2, env, _sv2);
-                
+        
     // LuaValToCSVal P any
     bool p3 = converter::Converter<bool>::toCpp(apis, env, _sv3);
-             // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_r4r4r4_* pp4 = DataTransfer::GetPointer<S_r4r4r4_>(apis, env, _sv4);
     S_r4r4r4_ p4 = pp4 ? *pp4 : S_r4r4r4_ {};
         
@@ -3222,16 +4376,17 @@ bool w_otsoOboS_r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMetho
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p2 = LuaValueToCSRef(apis, TIp2, env, _sv2);
-                
+        
     // LuaValToCSVal P any
     bool p3 = converter::Converter<bool>::toCpp(apis, env, _sv3);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p4 = LuaValueToCSRef(apis, TIp4, env, _sv4);
-             // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_r4r4r4_* pp5 = DataTransfer::GetPointer<S_r4r4r4_>(apis, env, _sv5);
     S_r4r4r4_ p5 = pp5 ? *pp5 : S_r4r4r4_ {};
         
@@ -3269,73 +4424,12 @@ bool w_otsoo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p2 = LuaValueToCSRef(apis, TIp2, env, _sv2);
-        
+
     typedef Il2CppObject* (*FuncToCall)(void*,Il2CppString* p1, Il2CppObject* p2, Il2CppObject* p3, const void* method);
     Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1, p2,  method);
-	int r = CSRefToLuaValue(apis, env, TIret, ret);
-	apis->add_return(info, r);
-    value_scope.reserve = apis->get_return_num(info);
-    return true;
-}
-// Byte[] PictureCombine(System.String, UnityEngine.Texture2D, UnityEngine.Texture2D, enCombinePosition, Boolean, Boolean, Int32) declare in Assets.Scripts.GameSystem.ShareCaptureSys
-bool w_otsooi4bbDi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_otsooi4bbDi4");
-    AutoValueScope value_scope(apis, env);
-    auto TIret = wrapData->TypeInfos[0];
-    auto TIp0 = wrapData->TypeInfos[1];
-    auto TIp1 = wrapData->TypeInfos[2];
-    auto TIp2 = wrapData->TypeInfos[3];
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    int _sv2 = apis->get_arg(info, 2);
-    int _sv3 = apis->get_arg(info, 3);
-    int _sv4 = apis->get_arg(info, 4);
-    int _sv5 = apis->get_arg(info, 5);
-    int _sv6 = apis->get_arg(info, 6);
-    if (true) {
-        if (lua_args_len < 6 || lua_args_len > 7) 
-            return false;
-
-        if (!converter::Converter<Il2CppString*>::accept(apis, env, _sv0))
-            return false;
-        if (!DataTransfer::IsAssignable(apis, env, _sv1, TIp1, false))
-            return false;
-        if (!DataTransfer::IsAssignable(apis, env, _sv2, TIp2, false))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv3))
-            return false;
-        if (!converter::Converter<bool>::accept(apis, env, _sv4))
-            return false;
-        if (!converter::Converter<bool>::accept(apis, env, _sv5))
-            return false;
-        if (lua_args_len > 6 && !converter::Converter<int32_t>::accept(apis, env, _sv6))
-            return false;        
-    }
-    // LuaValToCSVal s
-    Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);    
-    // LuaValToCSVal o/O
-    Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-            
-    // LuaValToCSVal o/O
-    Il2CppObject* p2 = LuaValueToCSRef(apis, TIp2, env, _sv2);
-                
-    // LuaValToCSVal P any
-    int32_t p3 = converter::Converter<int32_t>::toCpp(apis, env, _sv3);
-                
-    // LuaValToCSVal P any
-    bool p4 = converter::Converter<bool>::toCpp(apis, env, _sv4);
-                
-    // LuaValToCSVal P any
-    bool p5 = converter::Converter<bool>::toCpp(apis, env, _sv5);
-         // LuaValToCSVal primitive with default
-    int32_t p6 = OptionalParameter<int32_t>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 6);
-            
-    typedef Il2CppObject* (*FuncToCall)(void*,Il2CppString* p1, Il2CppObject* p2, Il2CppObject* p3, int32_t p4, bool p5, bool p6, int32_t p7, const void* method);
-    Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1, p2, p3, p4, p5, p6,  method);
 	int r = CSRefToLuaValue(apis, env, TIret, ret);
 	apis->add_return(info, r);
     value_scope.reserve = apis->get_return_num(info);
@@ -3372,13 +4466,13 @@ bool w_otsooo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer m
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p2 = LuaValueToCSRef(apis, TIp2, env, _sv2);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p3 = LuaValueToCSRef(apis, TIp3, env, _sv3);
-        
+
     typedef Il2CppObject* (*FuncToCall)(void*,Il2CppString* p1, Il2CppObject* p2, Il2CppObject* p3, Il2CppObject* p4, const void* method);
     Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1, p2, p3,  method);
 	int r = CSRefToLuaValue(apis, env, TIret, ret);
@@ -3408,7 +4502,7 @@ bool w_otsr4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);        
     // LuaValToCSVal P any
     float p1 = converter::Converter<float>::toCpp(apis, env, _sv1);
-        
+
     typedef Il2CppObject* (*FuncToCall)(void*,Il2CppString* p1, float p2, const void* method);
     Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1,  method);
 	int r = CSRefToLuaValue(apis, env, TIret, ret);
@@ -3441,10 +4535,10 @@ bool w_otsr4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer 
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);        
     // LuaValToCSVal P any
     float p1 = converter::Converter<float>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-        
+
     typedef Il2CppObject* (*FuncToCall)(void*,Il2CppString* p1, float p2, int32_t p3, const void* method);
     Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1, p2,  method);
 	int r = CSRefToLuaValue(apis, env, TIret, ret);
@@ -3480,13 +4574,13 @@ bool w_otsr4i4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointe
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);        
     // LuaValToCSVal P any
     float p1 = converter::Converter<float>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-                
+        
     // LuaValToCSVal P any
     int32_t p3 = converter::Converter<int32_t>::toCpp(apis, env, _sv3);
-        
+
     typedef Il2CppObject* (*FuncToCall)(void*,Il2CppString* p1, float p2, int32_t p3, int32_t p4, const void* method);
     Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1, p2, p3,  method);
 	int r = CSRefToLuaValue(apis, env, TIret, ret);
@@ -3550,7 +4644,7 @@ bool w_otssb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
     Il2CppString* p1 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv1);        
     // LuaValToCSVal P any
     bool p2 = converter::Converter<bool>::toCpp(apis, env, _sv2);
-        
+
     typedef Il2CppObject* (*FuncToCall)(void*,Il2CppString* p1, Il2CppString* p2, bool p3, const void* method);
     Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1, p2,  method);
 	int r = CSRefToLuaValue(apis, env, TIret, ret);
@@ -3588,74 +4682,12 @@ bool w_otssi4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer
     Il2CppString* p1 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv1);        
     // LuaValToCSVal P any
     int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-                
+        
     // LuaValToCSVal P any
     int32_t p3 = converter::Converter<int32_t>::toCpp(apis, env, _sv3);
-        
+
     typedef Il2CppObject* (*FuncToCall)(void*,Il2CppString* p1, Il2CppString* p2, int32_t p3, int32_t p4, const void* method);
     Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1, p2, p3,  method);
-	int r = CSRefToLuaValue(apis, env, TIret, ret);
-	apis->add_return(info, r);
-    value_scope.reserve = apis->get_return_num(info);
-    return true;
-}
-// Byte[] PictureCombineFromPath(System.String, System.String, System.String, enCombinePosition, Boolean, Boolean, Boolean, Int32) declare in Assets.Scripts.GameSystem.ShareCaptureSys
-bool w_otsssi4bbDbDi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_otsssi4bbDbDi4");
-    AutoValueScope value_scope(apis, env);
-    auto TIret = wrapData->TypeInfos[0];
-    auto TIp0 = wrapData->TypeInfos[1];
-    auto TIp1 = wrapData->TypeInfos[2];
-    auto TIp2 = wrapData->TypeInfos[3];
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    int _sv2 = apis->get_arg(info, 2);
-    int _sv3 = apis->get_arg(info, 3);
-    int _sv4 = apis->get_arg(info, 4);
-    int _sv5 = apis->get_arg(info, 5);
-    int _sv6 = apis->get_arg(info, 6);
-    int _sv7 = apis->get_arg(info, 7);
-    if (true) {
-        if (lua_args_len < 6 || lua_args_len > 8) 
-            return false;
-
-        if (!converter::Converter<Il2CppString*>::accept(apis, env, _sv0))
-            return false;
-        if (!converter::Converter<Il2CppString*>::accept(apis, env, _sv1))
-            return false;
-        if (!converter::Converter<Il2CppString*>::accept(apis, env, _sv2))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv3))
-            return false;
-        if (!converter::Converter<bool>::accept(apis, env, _sv4))
-            return false;
-        if (!converter::Converter<bool>::accept(apis, env, _sv5))
-            return false;
-        if (lua_args_len > 6 && !converter::Converter<bool>::accept(apis, env, _sv6))
-            return false;
-        if (lua_args_len > 7 && !converter::Converter<int32_t>::accept(apis, env, _sv7))
-            return false;        
-    }
-    // LuaValToCSVal s
-    Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);    // LuaValToCSVal s
-    Il2CppString* p1 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv1);    // LuaValToCSVal s
-    Il2CppString* p2 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv2);        
-    // LuaValToCSVal P any
-    int32_t p3 = converter::Converter<int32_t>::toCpp(apis, env, _sv3);
-                
-    // LuaValToCSVal P any
-    bool p4 = converter::Converter<bool>::toCpp(apis, env, _sv4);
-                
-    // LuaValToCSVal P any
-    bool p5 = converter::Converter<bool>::toCpp(apis, env, _sv5);
-         // LuaValToCSVal primitive with default
-    bool p6 = OptionalParameter<bool>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 6);
-             // LuaValToCSVal primitive with default
-    int32_t p7 = OptionalParameter<int32_t>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 7);
-            
-    typedef Il2CppObject* (*FuncToCall)(void*,Il2CppString* p1, Il2CppString* p2, Il2CppString* p3, int32_t p4, bool p5, bool p6, bool p7, int32_t p8, const void* method);
-    Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1, p2, p3, p4, p5, p6, p7,  method);
 	int r = CSRefToLuaValue(apis, env, TIret, ret);
 	apis->add_return(info, r);
     value_scope.reserve = apis->get_return_num(info);
@@ -3678,7 +4710,7 @@ bool w_otu1(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     uint8_t p0 = converter::Converter<uint8_t>::toCpp(apis, env, _sv0);
-        
+
     typedef Il2CppObject* (*FuncToCall)(void*,uint8_t p1, const void* method);
     Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0,  method);
 	int r = CSRefToLuaValue(apis, env, TIret, ret);
@@ -3703,7 +4735,7 @@ bool w_otu2(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     uint16_t p0 = converter::Converter<uint16_t>::toCpp(apis, env, _sv0);
-        
+
     typedef Il2CppObject* (*FuncToCall)(void*,uint16_t p1, const void* method);
     Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0,  method);
 	int r = CSRefToLuaValue(apis, env, TIret, ret);
@@ -3731,7 +4763,7 @@ bool w_otu2Du4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer 
         
     // LuaValToCSVal P any
     uint16_t p0 = converter::Converter<uint16_t>::toCpp(apis, env, _sv0);
-         // LuaValToCSVal primitive with default
+ // LuaValToCSVal primitive with default
     uint32_t p1 = OptionalParameter<uint32_t>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 1);
             
     typedef Il2CppObject* (*FuncToCall)(void*,uint16_t p1, uint32_t p2, const void* method);
@@ -3758,7 +4790,7 @@ bool w_otu4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     uint32_t p0 = converter::Converter<uint32_t>::toCpp(apis, env, _sv0);
-        
+
     typedef Il2CppObject* (*FuncToCall)(void*,uint32_t p1, const void* method);
     Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0,  method);
 	int r = CSRefToLuaValue(apis, env, TIret, ret);
@@ -3786,10 +4818,10 @@ bool w_otu4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer m
         
     // LuaValToCSVal P any
     uint32_t p0 = converter::Converter<uint32_t>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-        
+
     typedef Il2CppObject* (*FuncToCall)(void*,uint32_t p1, int32_t p2, const void* method);
     Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1,  method);
 	int r = CSRefToLuaValue(apis, env, TIret, ret);
@@ -3818,10 +4850,10 @@ bool w_otu4o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
         
     // LuaValToCSVal P any
     uint32_t p0 = converter::Converter<uint32_t>::toCpp(apis, env, _sv0);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-        
+
     typedef Il2CppObject* (*FuncToCall)(void*,uint32_t p1, Il2CppObject* p2, const void* method);
     Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1,  method);
 	int r = CSRefToLuaValue(apis, env, TIret, ret);
@@ -3863,18 +4895,18 @@ bool w_otu4ssbbu4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPoint
         
     // LuaValToCSVal P any
     uint32_t p0 = converter::Converter<uint32_t>::toCpp(apis, env, _sv0);
-            // LuaValToCSVal s
+    // LuaValToCSVal s
     Il2CppString* p1 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv1);    // LuaValToCSVal s
     Il2CppString* p2 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv2);        
     // LuaValToCSVal P any
     bool p3 = converter::Converter<bool>::toCpp(apis, env, _sv3);
-                
+        
     // LuaValToCSVal P any
     bool p4 = converter::Converter<bool>::toCpp(apis, env, _sv4);
-                
+        
     // LuaValToCSVal P any
     uint32_t p5 = converter::Converter<uint32_t>::toCpp(apis, env, _sv5);
-        
+
     typedef Il2CppObject* (*FuncToCall)(void*,uint32_t p1, Il2CppString* p2, Il2CppString* p3, bool p4, bool p5, uint32_t p6, const void* method);
     Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1, p2, p3, p4, p5,  method);
 	int r = CSRefToLuaValue(apis, env, TIret, ret);
@@ -3902,10 +4934,10 @@ bool w_otu4u4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer m
         
     // LuaValToCSVal P any
     uint32_t p0 = converter::Converter<uint32_t>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     uint32_t p1 = converter::Converter<uint32_t>::toCpp(apis, env, _sv1);
-        
+
     typedef Il2CppObject* (*FuncToCall)(void*,uint32_t p1, uint32_t p2, const void* method);
     Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1,  method);
 	int r = CSRefToLuaValue(apis, env, TIret, ret);
@@ -3936,10 +4968,10 @@ bool w_otu4u4Db(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer
         
     // LuaValToCSVal P any
     uint32_t p0 = converter::Converter<uint32_t>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     uint32_t p1 = converter::Converter<uint32_t>::toCpp(apis, env, _sv1);
-         // LuaValToCSVal primitive with default
+ // LuaValToCSVal primitive with default
     bool p2 = OptionalParameter<bool>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 2);
             
     typedef Il2CppObject* (*FuncToCall)(void*,uint32_t p1, uint32_t p2, bool p3, const void* method);
@@ -3975,10 +5007,10 @@ bool w_otu4u4DbDb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPoint
         
     // LuaValToCSVal P any
     uint32_t p0 = converter::Converter<uint32_t>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     uint32_t p1 = converter::Converter<uint32_t>::toCpp(apis, env, _sv1);
-         // LuaValToCSVal primitive with default
+ // LuaValToCSVal primitive with default
     bool p2 = OptionalParameter<bool>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 2);
              // LuaValToCSVal primitive with default
     bool p3 = OptionalParameter<bool>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 3);
@@ -4023,22 +5055,22 @@ bool w_otu4u4bi4i4o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPoi
         
     // LuaValToCSVal P any
     uint32_t p0 = converter::Converter<uint32_t>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     uint32_t p1 = converter::Converter<uint32_t>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     bool p2 = converter::Converter<bool>::toCpp(apis, env, _sv2);
-                
+        
     // LuaValToCSVal P any
     int32_t p3 = converter::Converter<int32_t>::toCpp(apis, env, _sv3);
-                
+        
     // LuaValToCSVal P any
     int32_t p4 = converter::Converter<int32_t>::toCpp(apis, env, _sv4);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p5 = LuaValueToCSRef(apis, TIp5, env, _sv5);
-        
+
     typedef Il2CppObject* (*FuncToCall)(void*,uint32_t p1, uint32_t p2, bool p3, int32_t p4, int32_t p5, Il2CppObject* p6, const void* method);
     Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1, p2, p3, p4, p5,  method);
 	int r = CSRefToLuaValue(apis, env, TIret, ret);
@@ -4072,16 +5104,16 @@ bool w_otu4u4i4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPoint
         
     // LuaValToCSVal P any
     uint32_t p0 = converter::Converter<uint32_t>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     uint32_t p1 = converter::Converter<uint32_t>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-                
+        
     // LuaValToCSVal P any
     int32_t p3 = converter::Converter<int32_t>::toCpp(apis, env, _sv3);
-        
+
     typedef Il2CppObject* (*FuncToCall)(void*,uint32_t p1, uint32_t p2, int32_t p3, int32_t p4, const void* method);
     Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1, p2, p3,  method);
 	int r = CSRefToLuaValue(apis, env, TIret, ret);
@@ -4115,16 +5147,16 @@ bool w_otu4u4u4u4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPoint
         
     // LuaValToCSVal P any
     uint32_t p0 = converter::Converter<uint32_t>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     uint32_t p1 = converter::Converter<uint32_t>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     uint32_t p2 = converter::Converter<uint32_t>::toCpp(apis, env, _sv2);
-                
+        
     // LuaValToCSVal P any
     uint32_t p3 = converter::Converter<uint32_t>::toCpp(apis, env, _sv3);
-        
+
     typedef Il2CppObject* (*FuncToCall)(void*,uint32_t p1, uint32_t p2, uint32_t p3, uint32_t p4, const void* method);
     Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0, p1, p2, p3,  method);
 	int r = CSRefToLuaValue(apis, env, TIret, ret);
@@ -4149,7 +5181,7 @@ bool w_otu8(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     uint64_t p0 = converter::Converter<uint64_t>::toCpp(apis, env, _sv0);
-        
+
     typedef Il2CppObject* (*FuncToCall)(void*,uint64_t p1, const void* method);
     Il2CppObject* ret = ((FuncToCall)methodPointer)(self, p0,  method);
 	int r = CSRefToLuaValue(apis, env, TIret, ret);
@@ -4174,7 +5206,7 @@ bool w_ou4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer meth
         
     // LuaValToCSVal P any
     uint32_t p0 = converter::Converter<uint32_t>::toCpp(apis, env, _sv0);
-        
+
     typedef Il2CppObject* (*FuncToCall)(uint32_t p1, const void* method);
     Il2CppObject* ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = CSRefToLuaValue(apis, env, TIret, ret);
@@ -4202,10 +5234,10 @@ bool w_ou4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
         
     // LuaValToCSVal P any
     uint32_t p0 = converter::Converter<uint32_t>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-        
+
     typedef Il2CppObject* (*FuncToCall)(uint32_t p1, int32_t p2, const void* method);
     Il2CppObject* ret = ((FuncToCall)methodPointer)( p0, p1,  method);
 	int r = CSRefToLuaValue(apis, env, TIret, ret);
@@ -4233,10 +5265,10 @@ bool w_ou4u4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
         
     // LuaValToCSVal P any
     uint32_t p0 = converter::Converter<uint32_t>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     uint32_t p1 = converter::Converter<uint32_t>::toCpp(apis, env, _sv1);
-        
+
     typedef Il2CppObject* (*FuncToCall)(uint32_t p1, uint32_t p2, const void* method);
     Il2CppObject* ret = ((FuncToCall)methodPointer)( p0, p1,  method);
 	int r = CSRefToLuaValue(apis, env, TIret, ret);
@@ -4267,13 +5299,13 @@ bool w_ou4u4u4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer 
         
     // LuaValToCSVal P any
     uint32_t p0 = converter::Converter<uint32_t>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     uint32_t p1 = converter::Converter<uint32_t>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     uint32_t p2 = converter::Converter<uint32_t>::toCpp(apis, env, _sv2);
-        
+
     typedef Il2CppObject* (*FuncToCall)(uint32_t p1, uint32_t p2, uint32_t p3, const void* method);
     Il2CppObject* ret = ((FuncToCall)methodPointer)( p0, p1, p2,  method);
 	int r = CSRefToLuaValue(apis, env, TIret, ret);
@@ -4298,7 +5330,7 @@ bool w_ou8(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer meth
         
     // LuaValToCSVal P any
     uint64_t p0 = converter::Converter<uint64_t>::toCpp(apis, env, _sv0);
-        
+
     typedef Il2CppObject* (*FuncToCall)(uint64_t p1, const void* method);
     Il2CppObject* ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = CSRefToLuaValue(apis, env, TIret, ret);
@@ -4344,7 +5376,7 @@ bool w_po(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer metho
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-        
+
     typedef void* (*FuncToCall)(Il2CppObject* p1, const void* method);
     void* ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = apis->create_binary(env, ret, 0);
@@ -4407,7 +5439,7 @@ bool w_r4O(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer meth
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-        
+
     typedef float (*FuncToCall)(Il2CppObject* p1, const void* method);
     float ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<float>::toScript(apis, env, ret);
@@ -4434,10 +5466,10 @@ bool w_r4Oo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-        
+
     typedef float (*FuncToCall)(Il2CppObject* p1, Il2CppObject* p2, const void* method);
     float ret = ((FuncToCall)methodPointer)( p0, p1,  method);
 	int r = converter::Converter<float>::toScript(apis, env, ret);
@@ -4459,7 +5491,8 @@ bool w_r4S_i4i4i4i4u8_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethod
         if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_i4i4i4i4u8_* pp0 = DataTransfer::GetPointer<S_i4i4i4i4u8_>(apis, env, _sv0);
     S_i4i4i4i4u8_ p0 = pp0 ? *pp0 : S_i4i4i4i4u8_ {};
         
@@ -4484,7 +5517,8 @@ bool w_r4S_i4r4oor4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethod
         if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_i4r4oor4r4_* pp0 = DataTransfer::GetPointer<S_i4r4oor4r4_>(apis, env, _sv0);
     S_i4r4oor4r4_ p0 = pp0 ? *pp0 : S_i4r4oor4r4_ {};
         
@@ -4509,7 +5543,8 @@ bool w_r4S_r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointe
         if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_r4r4_* pp0 = DataTransfer::GetPointer<S_r4r4_>(apis, env, _sv0);
     S_r4r4_ p0 = pp0 ? *pp0 : S_r4r4_ {};
         
@@ -4538,10 +5573,12 @@ bool w_r4S_r4r4_S_r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMetho
         if (!DataTransfer::IsAssignable(apis, env, _sv1, TIp1, true))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_r4r4_* pp0 = DataTransfer::GetPointer<S_r4r4_>(apis, env, _sv0);
     S_r4r4_ p0 = pp0 ? *pp0 : S_r4r4_ {};
-             // LuaValToCSVal struct
+             
+    // LuaValToCSVal struct
     S_r4r4_* pp1 = DataTransfer::GetPointer<S_r4r4_>(apis, env, _sv1);
     S_r4r4_ p1 = pp1 ? *pp1 : S_r4r4_ {};
         
@@ -4566,7 +5603,8 @@ bool w_r4S_r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPoin
         if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_r4r4r4_* pp0 = DataTransfer::GetPointer<S_r4r4r4_>(apis, env, _sv0);
     S_r4r4r4_ p0 = pp0 ? *pp0 : S_r4r4r4_ {};
         
@@ -4595,10 +5633,12 @@ bool w_r4S_r4r4r4_S_r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppM
         if (!DataTransfer::IsAssignable(apis, env, _sv1, TIp1, true))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_r4r4r4_* pp0 = DataTransfer::GetPointer<S_r4r4r4_>(apis, env, _sv0);
     S_r4r4r4_ p0 = pp0 ? *pp0 : S_r4r4r4_ {};
-             // LuaValToCSVal struct
+             
+    // LuaValToCSVal struct
     S_r4r4r4_* pp1 = DataTransfer::GetPointer<S_r4r4r4_>(apis, env, _sv1);
     S_r4r4r4_ p1 = pp1 ? *pp1 : S_r4r4r4_ {};
         
@@ -4631,43 +5671,21 @@ bool w_r4S_r4r4r4_S_r4r4r4_S_r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method
         if (!DataTransfer::IsAssignable(apis, env, _sv2, TIp2, true))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_r4r4r4_* pp0 = DataTransfer::GetPointer<S_r4r4r4_>(apis, env, _sv0);
     S_r4r4r4_ p0 = pp0 ? *pp0 : S_r4r4r4_ {};
-             // LuaValToCSVal struct
+             
+    // LuaValToCSVal struct
     S_r4r4r4_* pp1 = DataTransfer::GetPointer<S_r4r4r4_>(apis, env, _sv1);
     S_r4r4r4_ p1 = pp1 ? *pp1 : S_r4r4r4_ {};
-             // LuaValToCSVal struct
+             
+    // LuaValToCSVal struct
     S_r4r4r4_* pp2 = DataTransfer::GetPointer<S_r4r4r4_>(apis, env, _sv2);
     S_r4r4r4_ p2 = pp2 ? *pp2 : S_r4r4r4_ {};
         
     typedef float (*FuncToCall)(struct S_r4r4r4_ p1, struct S_r4r4r4_ p2, struct S_r4r4r4_ p3, const void* method);
     float ret = ((FuncToCall)methodPointer)( p0, p1, p2,  method);
-	int r = converter::Converter<float>::toScript(apis, env, ret);
-	apis->add_return(info, r);
-    value_scope.reserve = apis->get_return_num(info);
-    return true;
-}
-// Single Magnitude(UnityEngine.Vector4) declare in UnityEngine.Vector4
-bool w_r4S_r4r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_r4S_r4r4r4r4_");
-    AutoValueScope value_scope(apis, env);
-    auto TIp0 = wrapData->TypeInfos[0];
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    if (checkLuaArgument) {
-        if (lua_args_len != 1) 
-            return false;
-
-        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
-            return false;        
-    }
-     // LuaValToCSVal struct
-    S_r4r4r4r4_* pp0 = DataTransfer::GetPointer<S_r4r4r4r4_>(apis, env, _sv0);
-    S_r4r4r4r4_ p0 = pp0 ? *pp0 : S_r4r4r4r4_ {};
-        
-    typedef float (*FuncToCall)(struct S_r4r4r4r4_ p1, const void* method);
-    float ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<float>::toScript(apis, env, ret);
 	apis->add_return(info, r);
     value_scope.reserve = apis->get_return_num(info);
@@ -4691,10 +5709,12 @@ bool w_r4S_r4r4r4r4_S_r4r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2
         if (!DataTransfer::IsAssignable(apis, env, _sv1, TIp1, true))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_r4r4r4r4_* pp0 = DataTransfer::GetPointer<S_r4r4r4r4_>(apis, env, _sv0);
     S_r4r4r4r4_ p0 = pp0 ? *pp0 : S_r4r4r4r4_ {};
-             // LuaValToCSVal struct
+             
+    // LuaValToCSVal struct
     S_r4r4r4r4_* pp1 = DataTransfer::GetPointer<S_r4r4r4r4_>(apis, env, _sv1);
     S_r4r4r4r4_ p1 = pp1 ? *pp1 : S_r4r4r4r4_ {};
         
@@ -4719,7 +5739,8 @@ bool w_r4S_u4o_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer
         if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_u4o_* pp0 = DataTransfer::GetPointer<S_u4o_>(apis, env, _sv0);
     S_u4o_ p0 = pp0 ? *pp0 : S_u4o_ {};
         
@@ -4744,7 +5765,8 @@ bool w_r4S_u8_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer 
         if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_u8_* pp0 = DataTransfer::GetPointer<S_u8_>(apis, env, _sv0);
     S_u8_ p0 = pp0 ? *pp0 : S_u8_ {};
         
@@ -4796,7 +5818,7 @@ bool w_r4b(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer meth
         
     // LuaValToCSVal P any
     bool p0 = converter::Converter<bool>::toCpp(apis, env, _sv0);
-        
+
     typedef float (*FuncToCall)(bool p1, const void* method);
     float ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<float>::toScript(apis, env, ret);
@@ -4821,7 +5843,7 @@ bool w_r4c(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer meth
         
     // LuaValToCSVal P any
     Il2CppChar p0 = converter::Converter<Il2CppChar>::toCpp(apis, env, _sv0);
-        
+
     typedef float (*FuncToCall)(Il2CppChar p1, const void* method);
     float ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<float>::toScript(apis, env, ret);
@@ -4846,7 +5868,7 @@ bool w_r4i1(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     int8_t p0 = converter::Converter<int8_t>::toCpp(apis, env, _sv0);
-        
+
     typedef float (*FuncToCall)(int8_t p1, const void* method);
     float ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<float>::toScript(apis, env, ret);
@@ -4871,7 +5893,7 @@ bool w_r4i2(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     int16_t p0 = converter::Converter<int16_t>::toCpp(apis, env, _sv0);
-        
+
     typedef float (*FuncToCall)(int16_t p1, const void* method);
     float ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<float>::toScript(apis, env, ret);
@@ -4896,7 +5918,7 @@ bool w_r4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-        
+
     typedef float (*FuncToCall)(int32_t p1, const void* method);
     float ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<float>::toScript(apis, env, ret);
@@ -4921,7 +5943,7 @@ bool w_r4i8(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     int64_t p0 = converter::Converter<int64_t>::toCpp(apis, env, _sv0);
-        
+
     typedef float (*FuncToCall)(int64_t p1, const void* method);
     float ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<float>::toScript(apis, env, ret);
@@ -4946,7 +5968,7 @@ bool w_r4o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer meth
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-        
+
     typedef float (*FuncToCall)(Il2CppObject* p1, const void* method);
     float ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<float>::toScript(apis, env, ret);
@@ -4974,10 +5996,10 @@ bool w_r4or4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     float p1 = converter::Converter<float>::toCpp(apis, env, _sv1);
-        
+
     typedef float (*FuncToCall)(Il2CppObject* p1, float p2, const void* method);
     float ret = ((FuncToCall)methodPointer)( p0, p1,  method);
 	int r = converter::Converter<float>::toScript(apis, env, ret);
@@ -5002,7 +6024,7 @@ bool w_r4r4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     float p0 = converter::Converter<float>::toCpp(apis, env, _sv0);
-        
+
     typedef float (*FuncToCall)(float p1, const void* method);
     float ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<float>::toScript(apis, env, ret);
@@ -5030,10 +6052,10 @@ bool w_r4r4r4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer m
         
     // LuaValToCSVal P any
     float p0 = converter::Converter<float>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     float p1 = converter::Converter<float>::toCpp(apis, env, _sv1);
-        
+
     typedef float (*FuncToCall)(float p1, float p2, const void* method);
     float ret = ((FuncToCall)methodPointer)( p0, p1,  method);
 	int r = converter::Converter<float>::toScript(apis, env, ret);
@@ -5066,10 +6088,10 @@ bool w_r4r4r4Pr4r4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPoin
         
     // LuaValToCSVal P any
     float p0 = converter::Converter<float>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     float p1 = converter::Converter<float>::toCpp(apis, env, _sv1);
-             
+     
     // LuaValToCSVal P primitive
     float up2 = 0;
     if (2 < lua_args_len)
@@ -5078,7 +6100,7 @@ bool w_r4r4r4Pr4r4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPoin
         
     // LuaValToCSVal P any
     float p3 = converter::Converter<float>::toCpp(apis, env, _sv3);
-        
+
     typedef float (*FuncToCall)(float p1, float p2, float* p3, float p4, const void* method);
     float ret = ((FuncToCall)methodPointer)( p0, p1, p2, p3,  method);
 	int r = converter::Converter<float>::toScript(apis, env, ret);
@@ -5116,10 +6138,10 @@ bool w_r4r4r4Pr4r4r4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPo
         
     // LuaValToCSVal P any
     float p0 = converter::Converter<float>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     float p1 = converter::Converter<float>::toCpp(apis, env, _sv1);
-             
+     
     // LuaValToCSVal P primitive
     float up2 = 0;
     if (2 < lua_args_len)
@@ -5128,10 +6150,10 @@ bool w_r4r4r4Pr4r4r4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPo
         
     // LuaValToCSVal P any
     float p3 = converter::Converter<float>::toCpp(apis, env, _sv3);
-                
+        
     // LuaValToCSVal P any
     float p4 = converter::Converter<float>::toCpp(apis, env, _sv4);
-        
+
     typedef float (*FuncToCall)(float p1, float p2, float* p3, float p4, float p5, const void* method);
     float ret = ((FuncToCall)methodPointer)( p0, p1, p2, p3, p4,  method);
 	int r = converter::Converter<float>::toScript(apis, env, ret);
@@ -5172,10 +6194,10 @@ bool w_r4r4r4Pr4r4r4r4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethod
         
     // LuaValToCSVal P any
     float p0 = converter::Converter<float>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     float p1 = converter::Converter<float>::toCpp(apis, env, _sv1);
-             
+     
     // LuaValToCSVal P primitive
     float up2 = 0;
     if (2 < lua_args_len)
@@ -5184,13 +6206,13 @@ bool w_r4r4r4Pr4r4r4r4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethod
         
     // LuaValToCSVal P any
     float p3 = converter::Converter<float>::toCpp(apis, env, _sv3);
-                
+        
     // LuaValToCSVal P any
     float p4 = converter::Converter<float>::toCpp(apis, env, _sv4);
-                
+        
     // LuaValToCSVal P any
     float p5 = converter::Converter<float>::toCpp(apis, env, _sv5);
-        
+
     typedef float (*FuncToCall)(float p1, float p2, float* p3, float p4, float p5, float p6, const void* method);
     float ret = ((FuncToCall)methodPointer)( p0, p1, p2, p3, p4, p5,  method);
 	int r = converter::Converter<float>::toScript(apis, env, ret);
@@ -5223,13 +6245,13 @@ bool w_r4r4r4r4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer
         
     // LuaValToCSVal P any
     float p0 = converter::Converter<float>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     float p1 = converter::Converter<float>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     float p2 = converter::Converter<float>::toCpp(apis, env, _sv2);
-        
+
     typedef float (*FuncToCall)(float p1, float p2, float p3, const void* method);
     float ret = ((FuncToCall)methodPointer)( p0, p1, p2,  method);
 	int r = converter::Converter<float>::toScript(apis, env, ret);
@@ -5263,13 +6285,13 @@ bool w_r4r4r4r4Dr4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPoin
         
     // LuaValToCSVal P any
     float p0 = converter::Converter<float>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     float p1 = converter::Converter<float>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     float p2 = converter::Converter<float>::toCpp(apis, env, _sv2);
-         // LuaValToCSVal primitive with default
+ // LuaValToCSVal primitive with default
     float p3 = OptionalParameter<float>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 3);
             
     typedef float (*FuncToCall)(float p1, float p2, float p3, float p4, const void* method);
@@ -5308,13 +6330,13 @@ bool w_r4r4r4r4Dr4Dr4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodP
         
     // LuaValToCSVal P any
     float p0 = converter::Converter<float>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     float p1 = converter::Converter<float>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     float p2 = converter::Converter<float>::toCpp(apis, env, _sv2);
-         // LuaValToCSVal primitive with default
+ // LuaValToCSVal primitive with default
     float p3 = OptionalParameter<float>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 3);
              // LuaValToCSVal primitive with default
     float p4 = OptionalParameter<float>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 4);
@@ -5352,16 +6374,16 @@ bool w_r4r4r4r4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPoint
         
     // LuaValToCSVal P any
     float p0 = converter::Converter<float>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     float p1 = converter::Converter<float>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     float p2 = converter::Converter<float>::toCpp(apis, env, _sv2);
-                
+        
     // LuaValToCSVal P any
     int32_t p3 = converter::Converter<int32_t>::toCpp(apis, env, _sv3);
-        
+
     typedef float (*FuncToCall)(float p1, float p2, float p3, int32_t p4, const void* method);
     float ret = ((FuncToCall)methodPointer)( p0, p1, p2, p3,  method);
 	int r = converter::Converter<float>::toScript(apis, env, ret);
@@ -5395,16 +6417,16 @@ bool w_r4r4r4r4r4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPoint
         
     // LuaValToCSVal P any
     float p0 = converter::Converter<float>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     float p1 = converter::Converter<float>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     float p2 = converter::Converter<float>::toCpp(apis, env, _sv2);
-                
+        
     // LuaValToCSVal P any
     float p3 = converter::Converter<float>::toCpp(apis, env, _sv3);
-        
+
     typedef float (*FuncToCall)(float p1, float p2, float p3, float p4, const void* method);
     float ret = ((FuncToCall)methodPointer)( p0, p1, p2, p3,  method);
 	int r = converter::Converter<float>::toScript(apis, env, ret);
@@ -5429,7 +6451,7 @@ bool w_r4r8(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     double p0 = converter::Converter<double>::toCpp(apis, env, _sv0);
-        
+
     typedef float (*FuncToCall)(double p1, const void* method);
     float ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<float>::toScript(apis, env, ret);
@@ -5490,10 +6512,10 @@ bool w_r4sbr4Di4Dr4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPoi
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);        
     // LuaValToCSVal P any
     bool p1 = converter::Converter<bool>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     float p2 = converter::Converter<float>::toCpp(apis, env, _sv2);
-         // LuaValToCSVal primitive with default
+ // LuaValToCSVal primitive with default
     int32_t p3 = OptionalParameter<int32_t>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 3);
              // LuaValToCSVal primitive with default
     float p4 = OptionalParameter<float>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 4);
@@ -5527,7 +6549,7 @@ bool w_r4so(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-        
+
     typedef float (*FuncToCall)(Il2CppString* p1, Il2CppObject* p2, const void* method);
     float ret = ((FuncToCall)methodPointer)( p0, p1,  method);
 	int r = converter::Converter<float>::toScript(apis, env, ret);
@@ -5560,10 +6582,10 @@ bool w_r4sor4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer m
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     float p2 = converter::Converter<float>::toCpp(apis, env, _sv2);
-        
+
     typedef float (*FuncToCall)(Il2CppString* p1, Il2CppObject* p2, float p3, const void* method);
     float ret = ((FuncToCall)methodPointer)( p0, p1, p2,  method);
 	int r = converter::Converter<float>::toScript(apis, env, ret);
@@ -5592,7 +6614,7 @@ bool w_r4sr4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);        
     // LuaValToCSVal P any
     float p1 = converter::Converter<float>::toCpp(apis, env, _sv1);
-        
+
     typedef float (*FuncToCall)(Il2CppString* p1, float p2, const void* method);
     float ret = ((FuncToCall)methodPointer)( p0, p1,  method);
 	int r = converter::Converter<float>::toScript(apis, env, ret);
@@ -5634,7 +6656,8 @@ bool w_r4tS_r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPoi
         if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_r4r4r4_* pp0 = DataTransfer::GetPointer<S_r4r4r4_>(apis, env, _sv0);
     S_r4r4r4_ p0 = pp0 ? *pp0 : S_r4r4r4_ {};
         
@@ -5662,7 +6685,7 @@ bool w_r4ti4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-        
+
     typedef float (*FuncToCall)(void*,int32_t p1, const void* method);
     float ret = ((FuncToCall)methodPointer)(self, p0,  method);
 	int r = converter::Converter<float>::toScript(apis, env, ret);
@@ -5690,10 +6713,10 @@ bool w_r4ti4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer 
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-        
+
     typedef float (*FuncToCall)(void*,int32_t p1, int32_t p2, const void* method);
     float ret = ((FuncToCall)methodPointer)(self, p0, p1,  method);
 	int r = converter::Converter<float>::toScript(apis, env, ret);
@@ -5724,11 +6747,11 @@ bool w_r4ti4sb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer 
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-            // LuaValToCSVal s
+    // LuaValToCSVal s
     Il2CppString* p1 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv1);        
     // LuaValToCSVal P any
     bool p2 = converter::Converter<bool>::toCpp(apis, env, _sv2);
-        
+
     typedef float (*FuncToCall)(void*,int32_t p1, Il2CppString* p2, bool p3, const void* method);
     float ret = ((FuncToCall)methodPointer)(self, p0, p1, p2,  method);
 	int r = converter::Converter<float>::toScript(apis, env, ret);
@@ -5753,7 +6776,7 @@ bool w_r4to(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-        
+
     typedef float (*FuncToCall)(void*,Il2CppObject* p1, const void* method);
     float ret = ((FuncToCall)methodPointer)(self, p0,  method);
 	int r = converter::Converter<float>::toScript(apis, env, ret);
@@ -5781,7 +6804,7 @@ bool w_r4toDb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer m
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-         // LuaValToCSVal primitive with default
+ // LuaValToCSVal primitive with default
     bool p1 = OptionalParameter<bool>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 1);
             
     typedef float (*FuncToCall)(void*,Il2CppObject* p1, bool p2, const void* method);
@@ -5815,11 +6838,11 @@ bool w_r4tosb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer m
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-            // LuaValToCSVal s
+    // LuaValToCSVal s
     Il2CppString* p1 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv1);        
     // LuaValToCSVal P any
     bool p2 = converter::Converter<bool>::toCpp(apis, env, _sv2);
-        
+
     typedef float (*FuncToCall)(void*,Il2CppObject* p1, Il2CppString* p2, bool p3, const void* method);
     float ret = ((FuncToCall)methodPointer)(self, p0, p1, p2,  method);
 	int r = converter::Converter<float>::toScript(apis, env, ret);
@@ -5847,10 +6870,10 @@ bool w_r4tr4r4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer 
         
     // LuaValToCSVal P any
     float p0 = converter::Converter<float>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     float p1 = converter::Converter<float>::toCpp(apis, env, _sv1);
-        
+
     typedef float (*FuncToCall)(void*,float p1, float p2, const void* method);
     float ret = ((FuncToCall)methodPointer)(self, p0, p1,  method);
 	int r = converter::Converter<float>::toScript(apis, env, ret);
@@ -5908,13 +6931,13 @@ bool w_r4tsr4r4r4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPoint
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);        
     // LuaValToCSVal P any
     float p1 = converter::Converter<float>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     float p2 = converter::Converter<float>::toCpp(apis, env, _sv2);
-                
+        
     // LuaValToCSVal P any
     float p3 = converter::Converter<float>::toCpp(apis, env, _sv3);
-        
+
     typedef float (*FuncToCall)(void*,Il2CppString* p1, float p2, float p3, float p4, const void* method);
     float ret = ((FuncToCall)methodPointer)(self, p0, p1, p2, p3,  method);
 	int r = converter::Converter<float>::toScript(apis, env, ret);
@@ -5939,7 +6962,7 @@ bool w_r4tu4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
         
     // LuaValToCSVal P any
     uint32_t p0 = converter::Converter<uint32_t>::toCpp(apis, env, _sv0);
-        
+
     typedef float (*FuncToCall)(void*,uint32_t p1, const void* method);
     float ret = ((FuncToCall)methodPointer)(self, p0,  method);
 	int r = converter::Converter<float>::toScript(apis, env, ret);
@@ -5964,7 +6987,7 @@ bool w_r4u1(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     uint8_t p0 = converter::Converter<uint8_t>::toCpp(apis, env, _sv0);
-        
+
     typedef float (*FuncToCall)(uint8_t p1, const void* method);
     float ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<float>::toScript(apis, env, ret);
@@ -5989,7 +7012,7 @@ bool w_r4u2(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     uint16_t p0 = converter::Converter<uint16_t>::toCpp(apis, env, _sv0);
-        
+
     typedef float (*FuncToCall)(uint16_t p1, const void* method);
     float ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<float>::toScript(apis, env, ret);
@@ -6014,7 +7037,7 @@ bool w_r4u4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     uint32_t p0 = converter::Converter<uint32_t>::toCpp(apis, env, _sv0);
-        
+
     typedef float (*FuncToCall)(uint32_t p1, const void* method);
     float ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<float>::toScript(apis, env, ret);
@@ -6039,7 +7062,7 @@ bool w_r4u8(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     uint64_t p0 = converter::Converter<uint64_t>::toCpp(apis, env, _sv0);
-        
+
     typedef float (*FuncToCall)(uint64_t p1, const void* method);
     float ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<float>::toScript(apis, env, ret);
@@ -6082,7 +7105,7 @@ bool w_r8O(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer meth
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-        
+
     typedef double (*FuncToCall)(Il2CppObject* p1, const void* method);
     double ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<double>::toScript(apis, env, ret);
@@ -6109,10 +7132,10 @@ bool w_r8Oo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-        
+
     typedef double (*FuncToCall)(Il2CppObject* p1, Il2CppObject* p2, const void* method);
     double ret = ((FuncToCall)methodPointer)( p0, p1,  method);
 	int r = converter::Converter<double>::toScript(apis, env, ret);
@@ -6134,7 +7157,8 @@ bool w_r8S_i4i4i4i4u8_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethod
         if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_i4i4i4i4u8_* pp0 = DataTransfer::GetPointer<S_i4i4i4i4u8_>(apis, env, _sv0);
     S_i4i4i4i4u8_ p0 = pp0 ? *pp0 : S_i4i4i4i4u8_ {};
         
@@ -6159,7 +7183,8 @@ bool w_r8S_u8_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer 
         if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_u8_* pp0 = DataTransfer::GetPointer<S_u8_>(apis, env, _sv0);
     S_u8_ p0 = pp0 ? *pp0 : S_u8_ {};
         
@@ -6187,7 +7212,7 @@ bool w_r8b(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer meth
         
     // LuaValToCSVal P any
     bool p0 = converter::Converter<bool>::toCpp(apis, env, _sv0);
-        
+
     typedef double (*FuncToCall)(bool p1, const void* method);
     double ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<double>::toScript(apis, env, ret);
@@ -6212,7 +7237,7 @@ bool w_r8c(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer meth
         
     // LuaValToCSVal P any
     Il2CppChar p0 = converter::Converter<Il2CppChar>::toCpp(apis, env, _sv0);
-        
+
     typedef double (*FuncToCall)(Il2CppChar p1, const void* method);
     double ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<double>::toScript(apis, env, ret);
@@ -6237,7 +7262,7 @@ bool w_r8i1(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     int8_t p0 = converter::Converter<int8_t>::toCpp(apis, env, _sv0);
-        
+
     typedef double (*FuncToCall)(int8_t p1, const void* method);
     double ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<double>::toScript(apis, env, ret);
@@ -6262,7 +7287,7 @@ bool w_r8i2(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     int16_t p0 = converter::Converter<int16_t>::toCpp(apis, env, _sv0);
-        
+
     typedef double (*FuncToCall)(int16_t p1, const void* method);
     double ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<double>::toScript(apis, env, ret);
@@ -6287,7 +7312,7 @@ bool w_r8i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-        
+
     typedef double (*FuncToCall)(int32_t p1, const void* method);
     double ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<double>::toScript(apis, env, ret);
@@ -6312,7 +7337,7 @@ bool w_r8i8(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     int64_t p0 = converter::Converter<int64_t>::toCpp(apis, env, _sv0);
-        
+
     typedef double (*FuncToCall)(int64_t p1, const void* method);
     double ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<double>::toScript(apis, env, ret);
@@ -6337,7 +7362,7 @@ bool w_r8r4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     float p0 = converter::Converter<float>::toCpp(apis, env, _sv0);
-        
+
     typedef double (*FuncToCall)(float p1, const void* method);
     double ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<double>::toScript(apis, env, ret);
@@ -6362,7 +7387,7 @@ bool w_r8r8(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     double p0 = converter::Converter<double>::toCpp(apis, env, _sv0);
-        
+
     typedef double (*FuncToCall)(double p1, const void* method);
     double ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<double>::toScript(apis, env, ret);
@@ -6415,7 +7440,7 @@ bool w_r8so(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-        
+
     typedef double (*FuncToCall)(Il2CppString* p1, Il2CppObject* p2, const void* method);
     double ret = ((FuncToCall)methodPointer)( p0, p1,  method);
 	int r = converter::Converter<double>::toScript(apis, env, ret);
@@ -6460,7 +7485,7 @@ bool w_r8u1(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     uint8_t p0 = converter::Converter<uint8_t>::toCpp(apis, env, _sv0);
-        
+
     typedef double (*FuncToCall)(uint8_t p1, const void* method);
     double ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<double>::toScript(apis, env, ret);
@@ -6485,7 +7510,7 @@ bool w_r8u2(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     uint16_t p0 = converter::Converter<uint16_t>::toCpp(apis, env, _sv0);
-        
+
     typedef double (*FuncToCall)(uint16_t p1, const void* method);
     double ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<double>::toScript(apis, env, ret);
@@ -6510,7 +7535,7 @@ bool w_r8u4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     uint32_t p0 = converter::Converter<uint32_t>::toCpp(apis, env, _sv0);
-        
+
     typedef double (*FuncToCall)(uint32_t p1, const void* method);
     double ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<double>::toScript(apis, env, ret);
@@ -6535,7 +7560,7 @@ bool w_r8u8(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     uint64_t p0 = converter::Converter<uint64_t>::toCpp(apis, env, _sv0);
-        
+
     typedef double (*FuncToCall)(uint64_t p1, const void* method);
     double ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<double>::toScript(apis, env, ret);
@@ -6632,7 +7657,7 @@ bool w_sO(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer metho
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-        
+
     typedef Il2CppString* (*FuncToCall)(Il2CppObject* p1, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
@@ -6658,10 +7683,10 @@ bool w_sOO(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer meth
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-        
+
     typedef Il2CppString* (*FuncToCall)(Il2CppObject* p1, Il2CppObject* p2, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)( p0, p1,  method);
 	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
@@ -6689,13 +7714,13 @@ bool w_sOOO(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p2 = LuaValueToCSRef(apis, TIp2, env, _sv2);
-        
+
     typedef Il2CppString* (*FuncToCall)(Il2CppObject* p1, Il2CppObject* p2, Il2CppObject* p3, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)( p0, p1, p2,  method);
 	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
@@ -6725,16 +7750,16 @@ bool w_sOOOO(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p2 = LuaValueToCSRef(apis, TIp2, env, _sv2);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p3 = LuaValueToCSRef(apis, TIp3, env, _sv3);
-        
+
     typedef Il2CppString* (*FuncToCall)(Il2CppObject* p1, Il2CppObject* p2, Il2CppObject* p3, Il2CppObject* p4, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)( p0, p1, p2, p3,  method);
 	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
@@ -6762,10 +7787,10 @@ bool w_sOo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer meth
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-        
+
     typedef Il2CppString* (*FuncToCall)(Il2CppObject* p1, Il2CppObject* p2, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)( p0, p1,  method);
 	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
@@ -6818,7 +7843,8 @@ bool w_sS_S_p_i4_Di4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPo
         if (lua_args_len > 1 && !converter::Converter<int32_t>::accept(apis, env, _sv1))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_S_p_i4_* pp0 = DataTransfer::GetPointer<S_S_p_i4_>(apis, env, _sv0);
     S_S_p_i4_ p0 = pp0 ? *pp0 : S_S_p_i4_ {};
          // LuaValToCSVal primitive with default
@@ -6850,10 +7876,12 @@ bool w_sS_S_p_i4_S_S_p_i4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMe
         if (!DataTransfer::IsAssignable(apis, env, _sv1, TIp1, true))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_S_p_i4_* pp0 = DataTransfer::GetPointer<S_S_p_i4_>(apis, env, _sv0);
     S_S_p_i4_ p0 = pp0 ? *pp0 : S_S_p_i4_ {};
-             // LuaValToCSVal struct
+             
+    // LuaValToCSVal struct
     S_S_p_i4_* pp1 = DataTransfer::GetPointer<S_S_p_i4_>(apis, env, _sv1);
     S_S_p_i4_ p1 = pp1 ? *pp1 : S_S_p_i4_ {};
         
@@ -6887,13 +7915,16 @@ bool w_sS_S_p_i4_S_S_p_i4_S_S_p_i4_(struct pesapi_ffi* apis, MethodInfo* method,
         if (!DataTransfer::IsAssignable(apis, env, _sv2, TIp2, true))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_S_p_i4_* pp0 = DataTransfer::GetPointer<S_S_p_i4_>(apis, env, _sv0);
     S_S_p_i4_ p0 = pp0 ? *pp0 : S_S_p_i4_ {};
-             // LuaValToCSVal struct
+             
+    // LuaValToCSVal struct
     S_S_p_i4_* pp1 = DataTransfer::GetPointer<S_S_p_i4_>(apis, env, _sv1);
     S_S_p_i4_ p1 = pp1 ? *pp1 : S_S_p_i4_ {};
-             // LuaValToCSVal struct
+             
+    // LuaValToCSVal struct
     S_S_p_i4_* pp2 = DataTransfer::GetPointer<S_S_p_i4_>(apis, env, _sv2);
     S_S_p_i4_ p2 = pp2 ? *pp2 : S_S_p_i4_ {};
         
@@ -6919,7 +7950,8 @@ bool w_sS_i4i4i4i4u8_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodP
         if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_i4i4i4i4u8_* pp0 = DataTransfer::GetPointer<S_i4i4i4i4u8_>(apis, env, _sv0);
     S_i4i4i4i4u8_ p0 = pp0 ? *pp0 : S_i4i4i4i4u8_ {};
         
@@ -6949,13 +7981,14 @@ bool w_sS_i4i4i4i4u8_o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethod
         if (!DataTransfer::IsAssignable(apis, env, _sv1, TIp1, false))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_i4i4i4i4u8_* pp0 = DataTransfer::GetPointer<S_i4i4i4i4u8_>(apis, env, _sv0);
     S_i4i4i4i4u8_ p0 = pp0 ? *pp0 : S_i4i4i4i4u8_ {};
             
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-        
+
     typedef Il2CppString* (*FuncToCall)(struct S_i4i4i4i4u8_ p1, Il2CppObject* p2, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)( p0, p1,  method);
 	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
@@ -6978,7 +8011,8 @@ bool w_sS_r4r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPoi
         if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_r4r4r4r4_* pp0 = DataTransfer::GetPointer<S_r4r4r4r4_>(apis, env, _sv0);
     S_r4r4r4r4_ p0 = pp0 ? *pp0 : S_r4r4r4r4_ {};
         
@@ -7004,7 +8038,8 @@ bool w_sS_u8_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer m
         if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_u8_* pp0 = DataTransfer::GetPointer<S_u8_>(apis, env, _sv0);
     S_u8_ p0 = pp0 ? *pp0 : S_u8_ {};
         
@@ -7034,13 +8069,14 @@ bool w_sS_u8_o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer 
         if (!DataTransfer::IsAssignable(apis, env, _sv1, TIp1, false))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_u8_* pp0 = DataTransfer::GetPointer<S_u8_>(apis, env, _sv0);
     S_u8_ p0 = pp0 ? *pp0 : S_u8_ {};
             
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-        
+
     typedef Il2CppString* (*FuncToCall)(struct S_u8_ p1, Il2CppObject* p2, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)( p0, p1,  method);
 	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
@@ -7095,6 +8131,177 @@ bool w_sVs(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer meth
     value_scope.reserve = apis->get_return_num(info);
     return true;
 }
+// System.String ToBase64String(Byte[]) declare in System.Convert
+bool w_sa(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_sa");
+    AutoValueScope value_scope(apis, env);
+    auto TIret = wrapData->TypeInfos[0];
+    auto TIp0 = wrapData->TypeInfos[1];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    if (checkLuaArgument) {
+        if (lua_args_len != 1) 
+            return false;
+
+        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, false))
+            return false;        
+    }
+    
+    // LuaValToCSVal o/O
+    Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
+
+    typedef Il2CppString* (*FuncToCall)(Il2CppObject* p1, const void* method);
+    Il2CppString* ret = ((FuncToCall)methodPointer)( p0,  method);
+	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
+	apis->add_return(info, r);
+    value_scope.reserve = apis->get_return_num(info);
+    return true;
+}
+// System.String ToBase64String(Byte[], System.Base64FormattingOptions) declare in System.Convert
+bool w_sai4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_sai4");
+    AutoValueScope value_scope(apis, env);
+    auto TIret = wrapData->TypeInfos[0];
+    auto TIp0 = wrapData->TypeInfos[1];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    int _sv1 = apis->get_arg(info, 1);
+    if (checkLuaArgument) {
+        if (lua_args_len != 2) 
+            return false;
+
+        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, false))
+            return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv1))
+            return false;        
+    }
+    
+    // LuaValToCSVal o/O
+    Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
+        
+    // LuaValToCSVal P any
+    int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
+
+    typedef Il2CppString* (*FuncToCall)(Il2CppObject* p1, int32_t p2, const void* method);
+    Il2CppString* ret = ((FuncToCall)methodPointer)( p0, p1,  method);
+	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
+	apis->add_return(info, r);
+    value_scope.reserve = apis->get_return_num(info);
+    return true;
+}
+// System.String ToBase64String(Byte[], Int32, Int32) declare in System.Convert
+bool w_sai4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_sai4i4");
+    AutoValueScope value_scope(apis, env);
+    auto TIret = wrapData->TypeInfos[0];
+    auto TIp0 = wrapData->TypeInfos[1];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    int _sv1 = apis->get_arg(info, 1);
+    int _sv2 = apis->get_arg(info, 2);
+    if (checkLuaArgument) {
+        if (lua_args_len != 3) 
+            return false;
+
+        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, false))
+            return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv1))
+            return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv2))
+            return false;        
+    }
+    
+    // LuaValToCSVal o/O
+    Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
+        
+    // LuaValToCSVal P any
+    int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
+        
+    // LuaValToCSVal P any
+    int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
+
+    typedef Il2CppString* (*FuncToCall)(Il2CppObject* p1, int32_t p2, int32_t p3, const void* method);
+    Il2CppString* ret = ((FuncToCall)methodPointer)( p0, p1, p2,  method);
+	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
+	apis->add_return(info, r);
+    value_scope.reserve = apis->get_return_num(info);
+    return true;
+}
+// System.String ToBase64String(Byte[], Int32, Int32, System.Base64FormattingOptions) declare in System.Convert
+bool w_sai4i4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_sai4i4i4");
+    AutoValueScope value_scope(apis, env);
+    auto TIret = wrapData->TypeInfos[0];
+    auto TIp0 = wrapData->TypeInfos[1];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    int _sv1 = apis->get_arg(info, 1);
+    int _sv2 = apis->get_arg(info, 2);
+    int _sv3 = apis->get_arg(info, 3);
+    if (checkLuaArgument) {
+        if (lua_args_len != 4) 
+            return false;
+
+        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, false))
+            return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv1))
+            return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv2))
+            return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv3))
+            return false;        
+    }
+    
+    // LuaValToCSVal o/O
+    Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
+        
+    // LuaValToCSVal P any
+    int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
+        
+    // LuaValToCSVal P any
+    int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
+        
+    // LuaValToCSVal P any
+    int32_t p3 = converter::Converter<int32_t>::toCpp(apis, env, _sv3);
+
+    typedef Il2CppString* (*FuncToCall)(Il2CppObject* p1, int32_t p2, int32_t p3, int32_t p4, const void* method);
+    Il2CppString* ret = ((FuncToCall)methodPointer)( p0, p1, p2, p3,  method);
+	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
+	apis->add_return(info, r);
+    value_scope.reserve = apis->get_return_num(info);
+    return true;
+}
+// System.String SaveToFile(Byte[], System.String) declare in FileUtils
+bool w_sas(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_sas");
+    AutoValueScope value_scope(apis, env);
+    auto TIret = wrapData->TypeInfos[0];
+    auto TIp0 = wrapData->TypeInfos[1];
+    auto TIp1 = wrapData->TypeInfos[2];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    int _sv1 = apis->get_arg(info, 1);
+    if (checkLuaArgument) {
+        if (lua_args_len != 2) 
+            return false;
+
+        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, false))
+            return false;
+        if (!converter::Converter<Il2CppString*>::accept(apis, env, _sv1))
+            return false;        
+    }
+    
+    // LuaValToCSVal o/O
+    Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
+    // LuaValToCSVal s
+    Il2CppString* p1 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv1);
+    typedef Il2CppString* (*FuncToCall)(Il2CppObject* p1, Il2CppString* p2, const void* method);
+    Il2CppString* ret = ((FuncToCall)methodPointer)( p0, p1,  method);
+	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
+	apis->add_return(info, r);
+    value_scope.reserve = apis->get_return_num(info);
+    return true;
+}
 // System.String ToString(Boolean) declare in System.Convert
 bool w_sb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
     // PLog("Running w_sb");
@@ -7112,7 +8319,7 @@ bool w_sb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer metho
         
     // LuaValToCSVal P any
     bool p0 = converter::Converter<bool>::toCpp(apis, env, _sv0);
-        
+
     typedef Il2CppString* (*FuncToCall)(bool p1, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
@@ -7141,10 +8348,10 @@ bool w_sbo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer meth
         
     // LuaValToCSVal P any
     bool p0 = converter::Converter<bool>::toCpp(apis, env, _sv0);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-        
+
     typedef Il2CppString* (*FuncToCall)(bool p1, Il2CppObject* p2, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)( p0, p1,  method);
 	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
@@ -7173,7 +8380,7 @@ bool w_sbs(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer meth
         
     // LuaValToCSVal P any
     bool p0 = converter::Converter<bool>::toCpp(apis, env, _sv0);
-            // LuaValToCSVal s
+    // LuaValToCSVal s
     Il2CppString* p1 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv1);
     typedef Il2CppString* (*FuncToCall)(bool p1, Il2CppString* p2, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)( p0, p1,  method);
@@ -7199,7 +8406,7 @@ bool w_sc(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer metho
         
     // LuaValToCSVal P any
     Il2CppChar p0 = converter::Converter<Il2CppChar>::toCpp(apis, env, _sv0);
-        
+
     typedef Il2CppString* (*FuncToCall)(Il2CppChar p1, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
@@ -7226,7 +8433,7 @@ bool w_scVO(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     Il2CppChar p0 = converter::Converter<Il2CppChar>::toCpp(apis, env, _sv0);
-            // LuaValToCSVal ref params
+    // LuaValToCSVal ref params
     Il2CppArray* p1 = Params<void*>::PackRef(apis, env, info, TIp1, lua_args_len, 1);
             
     typedef Il2CppString* (*FuncToCall)(Il2CppChar p1, Il2CppArray* p2, const void* method);
@@ -7256,7 +8463,7 @@ bool w_scVs(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     Il2CppChar p0 = converter::Converter<Il2CppChar>::toCpp(apis, env, _sv0);
-             // LuaValToCSVal string params
+     // LuaValToCSVal string params
     Il2CppArray* p1 = Params<void*>::PackString(apis, env, info, TIp1, lua_args_len, 1);
             
     typedef Il2CppString* (*FuncToCall)(Il2CppChar p1, Il2CppArray* p2, const void* method);
@@ -7287,10 +8494,10 @@ bool w_sco(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer meth
         
     // LuaValToCSVal P any
     Il2CppChar p0 = converter::Converter<Il2CppChar>::toCpp(apis, env, _sv0);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-        
+
     typedef Il2CppString* (*FuncToCall)(Il2CppChar p1, Il2CppObject* p2, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)( p0, p1,  method);
 	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
@@ -7325,16 +8532,16 @@ bool w_scoi4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer 
         
     // LuaValToCSVal P any
     Il2CppChar p0 = converter::Converter<Il2CppChar>::toCpp(apis, env, _sv0);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-                
+        
     // LuaValToCSVal P any
     int32_t p3 = converter::Converter<int32_t>::toCpp(apis, env, _sv3);
-        
+
     typedef Il2CppString* (*FuncToCall)(Il2CppChar p1, Il2CppObject* p2, int32_t p3, int32_t p4, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)( p0, p1, p2, p3,  method);
 	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
@@ -7359,7 +8566,7 @@ bool w_si1(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer meth
         
     // LuaValToCSVal P any
     int8_t p0 = converter::Converter<int8_t>::toCpp(apis, env, _sv0);
-        
+
     typedef Il2CppString* (*FuncToCall)(int8_t p1, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
@@ -7388,10 +8595,10 @@ bool w_si1o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     int8_t p0 = converter::Converter<int8_t>::toCpp(apis, env, _sv0);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-        
+
     typedef Il2CppString* (*FuncToCall)(int8_t p1, Il2CppObject* p2, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)( p0, p1,  method);
 	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
@@ -7416,7 +8623,7 @@ bool w_si2(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer meth
         
     // LuaValToCSVal P any
     int16_t p0 = converter::Converter<int16_t>::toCpp(apis, env, _sv0);
-        
+
     typedef Il2CppString* (*FuncToCall)(int16_t p1, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
@@ -7444,10 +8651,10 @@ bool w_si2i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
         
     // LuaValToCSVal P any
     int16_t p0 = converter::Converter<int16_t>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-        
+
     typedef Il2CppString* (*FuncToCall)(int16_t p1, int32_t p2, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)( p0, p1,  method);
 	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
@@ -7476,10 +8683,10 @@ bool w_si2o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     int16_t p0 = converter::Converter<int16_t>::toCpp(apis, env, _sv0);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-        
+
     typedef Il2CppString* (*FuncToCall)(int16_t p1, Il2CppObject* p2, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)( p0, p1,  method);
 	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
@@ -7504,7 +8711,7 @@ bool w_si4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer meth
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-        
+
     typedef Il2CppString* (*FuncToCall)(int32_t p1, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
@@ -7532,7 +8739,7 @@ bool w_si4Di4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer m
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-         // LuaValToCSVal primitive with default
+ // LuaValToCSVal primitive with default
     int32_t p1 = OptionalParameter<int32_t>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 1);
             
     typedef Il2CppString* (*FuncToCall)(int32_t p1, int32_t p2, const void* method);
@@ -7561,7 +8768,7 @@ bool w_si4Tu4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer m
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-             
+     
     // LuaValToCSVal P primitive
     uint32_t up1 = 0;
     if (1 < lua_args_len)
@@ -7599,7 +8806,7 @@ bool w_si4Tu4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-             
+     
     // LuaValToCSVal P primitive
     uint32_t up1 = 0;
     if (1 < lua_args_len)
@@ -7608,7 +8815,7 @@ bool w_si4Tu4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer
         
     // LuaValToCSVal P any
     int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-        
+
     typedef Il2CppString* (*FuncToCall)(int32_t p1, void* p2, int32_t p3, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)( p0, p1, p2,  method);
 	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
@@ -7638,10 +8845,10 @@ bool w_si4b(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     bool p1 = converter::Converter<bool>::toCpp(apis, env, _sv1);
-        
+
     typedef Il2CppString* (*FuncToCall)(int32_t p1, bool p2, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)( p0, p1,  method);
 	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
@@ -7669,10 +8876,10 @@ bool w_si4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-        
+
     typedef Il2CppString* (*FuncToCall)(int32_t p1, int32_t p2, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)( p0, p1,  method);
 	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
@@ -7703,13 +8910,13 @@ bool w_si4i4b(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer m
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     bool p2 = converter::Converter<bool>::toCpp(apis, env, _sv2);
-        
+
     typedef Il2CppString* (*FuncToCall)(int32_t p1, int32_t p2, bool p3, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)( p0, p1, p2,  method);
 	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
@@ -7740,13 +8947,13 @@ bool w_si4i4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer 
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-        
+
     typedef Il2CppString* (*FuncToCall)(int32_t p1, int32_t p2, int32_t p3, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)( p0, p1, p2,  method);
 	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
@@ -7780,16 +8987,16 @@ bool w_si4i4i4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointe
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-                
+        
     // LuaValToCSVal P any
     int32_t p3 = converter::Converter<int32_t>::toCpp(apis, env, _sv3);
-        
+
     typedef Il2CppString* (*FuncToCall)(int32_t p1, int32_t p2, int32_t p3, int32_t p4, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)( p0, p1, p2, p3,  method);
 	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
@@ -7821,10 +9028,10 @@ bool w_si4i4s(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer m
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-            // LuaValToCSVal s
+    // LuaValToCSVal s
     Il2CppString* p2 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv2);
     typedef Il2CppString* (*FuncToCall)(int32_t p1, int32_t p2, Il2CppString* p3, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)( p0, p1, p2,  method);
@@ -7854,10 +9061,10 @@ bool w_si4o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-        
+
     typedef Il2CppString* (*FuncToCall)(int32_t p1, Il2CppObject* p2, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)( p0, p1,  method);
 	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
@@ -7882,7 +9089,7 @@ bool w_si8(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer meth
         
     // LuaValToCSVal P any
     int64_t p0 = converter::Converter<int64_t>::toCpp(apis, env, _sv0);
-        
+
     typedef Il2CppString* (*FuncToCall)(int64_t p1, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
@@ -7910,10 +9117,10 @@ bool w_si8i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
         
     // LuaValToCSVal P any
     int64_t p0 = converter::Converter<int64_t>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-        
+
     typedef Il2CppString* (*FuncToCall)(int64_t p1, int32_t p2, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)( p0, p1,  method);
 	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
@@ -7942,10 +9149,10 @@ bool w_si8o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     int64_t p0 = converter::Converter<int64_t>::toCpp(apis, env, _sv0);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-        
+
     typedef Il2CppString* (*FuncToCall)(int64_t p1, Il2CppObject* p2, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)( p0, p1,  method);
 	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
@@ -7974,7 +9181,7 @@ bool w_si8s(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     int64_t p0 = converter::Converter<int64_t>::toCpp(apis, env, _sv0);
-            // LuaValToCSVal s
+    // LuaValToCSVal s
     Il2CppString* p1 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv1);
     typedef Il2CppString* (*FuncToCall)(int64_t p1, Il2CppString* p2, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)( p0, p1,  method);
@@ -8001,7 +9208,7 @@ bool w_so(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer metho
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-        
+
     typedef Il2CppString* (*FuncToCall)(Il2CppObject* p1, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
@@ -8030,7 +9237,7 @@ bool w_soDi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-         // LuaValToCSVal primitive with default
+ // LuaValToCSVal primitive with default
     int32_t p1 = OptionalParameter<int32_t>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 1);
             
     typedef Il2CppString* (*FuncToCall)(Il2CppObject* p1, int32_t p2, const void* method);
@@ -8060,10 +9267,10 @@ bool w_soO(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer meth
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-        
+
     typedef Il2CppString* (*FuncToCall)(Il2CppObject* p1, Il2CppObject* p2, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)( p0, p1,  method);
 	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
@@ -8095,10 +9302,10 @@ bool w_soOs(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-            // LuaValToCSVal s
+    // LuaValToCSVal s
     Il2CppString* p2 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv2);
     typedef Il2CppString* (*FuncToCall)(Il2CppObject* p1, Il2CppObject* p2, Il2CppString* p3, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)( p0, p1, p2,  method);
@@ -8128,94 +9335,12 @@ bool w_soi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-        
+
     typedef Il2CppString* (*FuncToCall)(Il2CppObject* p1, int32_t p2, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)( p0, p1,  method);
-	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
-	apis->add_return(info, r);
-    value_scope.reserve = apis->get_return_num(info);
-    return true;
-}
-// System.String ToBase64String(Byte[], Int32, Int32) declare in System.Convert
-bool w_soi4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_soi4i4");
-    AutoValueScope value_scope(apis, env);
-    auto TIret = wrapData->TypeInfos[0];
-    auto TIp0 = wrapData->TypeInfos[1];
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    int _sv2 = apis->get_arg(info, 2);
-    if (checkLuaArgument) {
-        if (lua_args_len != 3) 
-            return false;
-
-        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, false))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv1))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv2))
-            return false;        
-    }
-    
-    // LuaValToCSVal o/O
-    Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-                
-    // LuaValToCSVal P any
-    int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-                
-    // LuaValToCSVal P any
-    int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-        
-    typedef Il2CppString* (*FuncToCall)(Il2CppObject* p1, int32_t p2, int32_t p3, const void* method);
-    Il2CppString* ret = ((FuncToCall)methodPointer)( p0, p1, p2,  method);
-	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
-	apis->add_return(info, r);
-    value_scope.reserve = apis->get_return_num(info);
-    return true;
-}
-// System.String ToBase64String(Byte[], Int32, Int32, System.Base64FormattingOptions) declare in System.Convert
-bool w_soi4i4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_soi4i4i4");
-    AutoValueScope value_scope(apis, env);
-    auto TIret = wrapData->TypeInfos[0];
-    auto TIp0 = wrapData->TypeInfos[1];
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    int _sv2 = apis->get_arg(info, 2);
-    int _sv3 = apis->get_arg(info, 3);
-    if (checkLuaArgument) {
-        if (lua_args_len != 4) 
-            return false;
-
-        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, false))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv1))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv2))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv3))
-            return false;        
-    }
-    
-    // LuaValToCSVal o/O
-    Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-                
-    // LuaValToCSVal P any
-    int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-                
-    // LuaValToCSVal P any
-    int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-                
-    // LuaValToCSVal P any
-    int32_t p3 = converter::Converter<int32_t>::toCpp(apis, env, _sv3);
-        
-    typedef Il2CppString* (*FuncToCall)(Il2CppObject* p1, int32_t p2, int32_t p3, int32_t p4, const void* method);
-    Il2CppString* ret = ((FuncToCall)methodPointer)( p0, p1, p2, p3,  method);
 	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
 	apis->add_return(info, r);
     value_scope.reserve = apis->get_return_num(info);
@@ -8243,10 +9368,10 @@ bool w_soo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer meth
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-        
+
     typedef Il2CppString* (*FuncToCall)(Il2CppObject* p1, Il2CppObject* p2, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)( p0, p1,  method);
 	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
@@ -8276,7 +9401,7 @@ bool w_sos(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer meth
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-            // LuaValToCSVal s
+    // LuaValToCSVal s
     Il2CppString* p1 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv1);
     typedef Il2CppString* (*FuncToCall)(Il2CppObject* p1, Il2CppString* p2, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)( p0, p1,  method);
@@ -8309,11 +9434,11 @@ bool w_sosO(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-            // LuaValToCSVal s
+    // LuaValToCSVal s
     Il2CppString* p1 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv1);    
     // LuaValToCSVal o/O
     Il2CppObject* p2 = LuaValueToCSRef(apis, TIp2, env, _sv2);
-        
+
     typedef Il2CppString* (*FuncToCall)(Il2CppObject* p1, Il2CppString* p2, Il2CppObject* p3, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)( p0, p1, p2,  method);
 	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
@@ -8347,14 +9472,14 @@ bool w_sosOO(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-            // LuaValToCSVal s
+    // LuaValToCSVal s
     Il2CppString* p1 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv1);    
     // LuaValToCSVal o/O
     Il2CppObject* p2 = LuaValueToCSRef(apis, TIp2, env, _sv2);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p3 = LuaValueToCSRef(apis, TIp3, env, _sv3);
-        
+
     typedef Il2CppString* (*FuncToCall)(Il2CppObject* p1, Il2CppString* p2, Il2CppObject* p3, Il2CppObject* p4, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)( p0, p1, p2, p3,  method);
 	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
@@ -8390,17 +9515,17 @@ bool w_sosOOO(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer m
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-            // LuaValToCSVal s
+    // LuaValToCSVal s
     Il2CppString* p1 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv1);    
     // LuaValToCSVal o/O
     Il2CppObject* p2 = LuaValueToCSRef(apis, TIp2, env, _sv2);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p3 = LuaValueToCSRef(apis, TIp3, env, _sv3);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p4 = LuaValueToCSRef(apis, TIp4, env, _sv4);
-        
+
     typedef Il2CppString* (*FuncToCall)(Il2CppObject* p1, Il2CppString* p2, Il2CppObject* p3, Il2CppObject* p4, Il2CppObject* p5, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)( p0, p1, p2, p3, p4,  method);
 	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
@@ -8432,7 +9557,7 @@ bool w_sosVO(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-            // LuaValToCSVal s
+    // LuaValToCSVal s
     Il2CppString* p1 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv1);    // LuaValToCSVal ref params
     Il2CppArray* p2 = Params<void*>::PackRef(apis, env, info, TIp2, lua_args_len, 2);
             
@@ -8459,8 +9584,8 @@ bool w_sp(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer metho
     }
         
     // LuaValToCSVal P any
-    void* p0 = DataTransfer::GetPointer<void>(apis, env, _sv0);
-        
+    void* p0 = DataTransfer::GetPointer(apis, env, _sv0);
+
     typedef Il2CppString* (*FuncToCall)(void* p1, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
@@ -8485,7 +9610,7 @@ bool w_sr4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer meth
         
     // LuaValToCSVal P any
     float p0 = converter::Converter<float>::toCpp(apis, env, _sv0);
-        
+
     typedef Il2CppString* (*FuncToCall)(float p1, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
@@ -8514,10 +9639,10 @@ bool w_sr4o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     float p0 = converter::Converter<float>::toCpp(apis, env, _sv0);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-        
+
     typedef Il2CppString* (*FuncToCall)(float p1, Il2CppObject* p2, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)( p0, p1,  method);
 	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
@@ -8542,7 +9667,7 @@ bool w_sr8(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer meth
         
     // LuaValToCSVal P any
     double p0 = converter::Converter<double>::toCpp(apis, env, _sv0);
-        
+
     typedef Il2CppString* (*FuncToCall)(double p1, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
@@ -8571,10 +9696,10 @@ bool w_sr8o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     double p0 = converter::Converter<double>::toCpp(apis, env, _sv0);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-        
+
     typedef Il2CppString* (*FuncToCall)(double p1, Il2CppObject* p2, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)( p0, p1,  method);
 	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
@@ -8685,7 +9810,7 @@ bool w_ssO(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer meth
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-        
+
     typedef Il2CppString* (*FuncToCall)(Il2CppString* p1, Il2CppObject* p2, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)( p0, p1,  method);
 	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
@@ -8716,10 +9841,10 @@ bool w_ssOO(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p2 = LuaValueToCSRef(apis, TIp2, env, _sv2);
-        
+
     typedef Il2CppString* (*FuncToCall)(Il2CppString* p1, Il2CppObject* p2, Il2CppObject* p3, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)( p0, p1, p2,  method);
 	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
@@ -8752,13 +9877,13 @@ bool w_ssOOO(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p2 = LuaValueToCSRef(apis, TIp2, env, _sv2);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p3 = LuaValueToCSRef(apis, TIp3, env, _sv3);
-        
+
     typedef Il2CppString* (*FuncToCall)(Il2CppString* p1, Il2CppObject* p2, Il2CppObject* p3, Il2CppObject* p4, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)( p0, p1, p2, p3,  method);
 	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
@@ -8845,7 +9970,7 @@ bool w_ssi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);        
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-        
+
     typedef Il2CppString* (*FuncToCall)(Il2CppString* p1, int32_t p2, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)( p0, p1,  method);
 	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
@@ -8876,7 +10001,7 @@ bool w_sso(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer meth
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-        
+
     typedef Il2CppString* (*FuncToCall)(Il2CppString* p1, Il2CppObject* p2, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)( p0, p1,  method);
 	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
@@ -8913,13 +10038,13 @@ bool w_ssoi4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer 
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-                
+        
     // LuaValToCSVal P any
     int32_t p3 = converter::Converter<int32_t>::toCpp(apis, env, _sv3);
-        
+
     typedef Il2CppString* (*FuncToCall)(Il2CppString* p1, Il2CppObject* p2, int32_t p3, int32_t p4, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)( p0, p1, p2, p3,  method);
 	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
@@ -8956,13 +10081,13 @@ bool w_ssou4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer 
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     uint32_t p2 = converter::Converter<uint32_t>::toCpp(apis, env, _sv2);
-                
+        
     // LuaValToCSVal P any
     int32_t p3 = converter::Converter<int32_t>::toCpp(apis, env, _sv3);
-        
+
     typedef Il2CppString* (*FuncToCall)(Il2CppString* p1, Il2CppObject* p2, uint32_t p3, int32_t p4, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)( p0, p1, p2, p3,  method);
 	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
@@ -9071,7 +10196,7 @@ bool w_ssso(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
     Il2CppString* p1 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv1);    
     // LuaValToCSVal o/O
     Il2CppObject* p2 = LuaValueToCSRef(apis, TIp2, env, _sv2);
-        
+
     typedef Il2CppString* (*FuncToCall)(Il2CppString* p1, Il2CppString* p2, Il2CppObject* p3, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)( p0, p1, p2,  method);
 	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
@@ -9110,10 +10235,10 @@ bool w_sssoi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer m
     Il2CppString* p1 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv1);    
     // LuaValToCSVal o/O
     Il2CppObject* p2 = LuaValueToCSRef(apis, TIp2, env, _sv2);
-                
+        
     // LuaValToCSVal P any
     int32_t p3 = converter::Converter<int32_t>::toCpp(apis, env, _sv3);
-        
+
     typedef Il2CppString* (*FuncToCall)(Il2CppString* p1, Il2CppString* p2, Il2CppObject* p3, int32_t p4, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)( p0, p1, p2, p3,  method);
 	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
@@ -9156,10 +10281,11 @@ bool w_sssoi4S_i8_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPoin
     Il2CppString* p1 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv1);    
     // LuaValToCSVal o/O
     Il2CppObject* p2 = LuaValueToCSRef(apis, TIp2, env, _sv2);
-                
+        
     // LuaValToCSVal P any
     int32_t p3 = converter::Converter<int32_t>::toCpp(apis, env, _sv3);
-             // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_i8_* pp4 = DataTransfer::GetPointer<S_i8_>(apis, env, _sv4);
     S_i8_ p4 = pp4 ? *pp4 : S_i8_ {};
         
@@ -9236,7 +10362,7 @@ bool w_ssssi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer m
     Il2CppString* p2 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv2);        
     // LuaValToCSVal P any
     int32_t p3 = converter::Converter<int32_t>::toCpp(apis, env, _sv3);
-        
+
     typedef Il2CppString* (*FuncToCall)(Il2CppString* p1, Il2CppString* p2, Il2CppString* p3, int32_t p4, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)( p0, p1, p2, p3,  method);
 	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
@@ -9280,7 +10406,8 @@ bool w_ssssi4S_i8_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPoin
     Il2CppString* p2 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv2);        
     // LuaValToCSVal P any
     int32_t p3 = converter::Converter<int32_t>::toCpp(apis, env, _sv3);
-             // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_i8_* pp4 = DataTransfer::GetPointer<S_i8_>(apis, env, _sv4);
     S_i8_ p4 = pp4 ? *pp4 : S_i8_ {};
         
@@ -9499,7 +10626,7 @@ bool w_ssu4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);        
     // LuaValToCSVal P any
     uint32_t p1 = converter::Converter<uint32_t>::toCpp(apis, env, _sv1);
-        
+
     typedef Il2CppString* (*FuncToCall)(Il2CppString* p1, uint32_t p2, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)( p0, p1,  method);
 	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
@@ -9532,7 +10659,7 @@ bool w_ssu4Di4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer 
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);        
     // LuaValToCSVal P any
     uint32_t p1 = converter::Converter<uint32_t>::toCpp(apis, env, _sv1);
-         // LuaValToCSVal primitive with default
+ // LuaValToCSVal primitive with default
     int32_t p2 = OptionalParameter<int32_t>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 2);
             
     typedef Il2CppString* (*FuncToCall)(Il2CppString* p1, uint32_t p2, int32_t p3, const void* method);
@@ -9567,10 +10694,10 @@ bool w_ssu4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer m
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);        
     // LuaValToCSVal P any
     uint32_t p1 = converter::Converter<uint32_t>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-        
+
     typedef Il2CppString* (*FuncToCall)(Il2CppString* p1, uint32_t p2, int32_t p3, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)( p0, p1, p2,  method);
 	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
@@ -9603,10 +10730,10 @@ bool w_ssu4u4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer m
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);        
     // LuaValToCSVal P any
     uint32_t p1 = converter::Converter<uint32_t>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     uint32_t p2 = converter::Converter<uint32_t>::toCpp(apis, env, _sv2);
-        
+
     typedef Il2CppString* (*FuncToCall)(Il2CppString* p1, uint32_t p2, uint32_t p3, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)( p0, p1, p2,  method);
 	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
@@ -9727,7 +10854,7 @@ bool w_stO(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer meth
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-        
+
     typedef Il2CppString* (*FuncToCall)(void*,Il2CppObject* p1, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)(self, p0,  method);
 	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
@@ -9777,7 +10904,7 @@ bool w_stc(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer meth
         
     // LuaValToCSVal P any
     Il2CppChar p0 = converter::Converter<Il2CppChar>::toCpp(apis, env, _sv0);
-        
+
     typedef Il2CppString* (*FuncToCall)(void*,Il2CppChar p1, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)(self, p0,  method);
 	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
@@ -9805,10 +10932,10 @@ bool w_stcc(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     Il2CppChar p0 = converter::Converter<Il2CppChar>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     Il2CppChar p1 = converter::Converter<Il2CppChar>::toCpp(apis, env, _sv1);
-        
+
     typedef Il2CppString* (*FuncToCall)(void*,Il2CppChar p1, Il2CppChar p2, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)(self, p0, p1,  method);
 	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
@@ -9833,7 +10960,7 @@ bool w_sti4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-        
+
     typedef Il2CppString* (*FuncToCall)(void*,int32_t p1, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)(self, p0,  method);
 	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
@@ -9861,10 +10988,10 @@ bool w_sti4c(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     Il2CppChar p1 = converter::Converter<Il2CppChar>::toCpp(apis, env, _sv1);
-        
+
     typedef Il2CppString* (*FuncToCall)(void*,int32_t p1, Il2CppChar p2, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)(self, p0, p1,  method);
 	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
@@ -9892,10 +11019,10 @@ bool w_sti4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer m
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-        
+
     typedef Il2CppString* (*FuncToCall)(void*,int32_t p1, int32_t p2, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)(self, p0, p1,  method);
 	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
@@ -9929,16 +11056,16 @@ bool w_sti4i4u4b(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointe
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     uint32_t p2 = converter::Converter<uint32_t>::toCpp(apis, env, _sv2);
-                
+        
     // LuaValToCSVal P any
     bool p3 = converter::Converter<bool>::toCpp(apis, env, _sv3);
-        
+
     typedef Il2CppString* (*FuncToCall)(void*,int32_t p1, int32_t p2, uint32_t p3, bool p4, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)(self, p0, p1, p2, p3,  method);
 	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
@@ -9967,7 +11094,7 @@ bool w_sti4s(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-            // LuaValToCSVal s
+    // LuaValToCSVal s
     Il2CppString* p1 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv1);
     typedef Il2CppString* (*FuncToCall)(void*,int32_t p1, Il2CppString* p2, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)(self, p0, p1,  method);
@@ -9996,10 +11123,10 @@ bool w_sti4u4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer m
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     uint32_t p1 = converter::Converter<uint32_t>::toCpp(apis, env, _sv1);
-        
+
     typedef Il2CppString* (*FuncToCall)(void*,int32_t p1, uint32_t p2, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)(self, p0, p1,  method);
 	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
@@ -10025,7 +11152,7 @@ bool w_sto(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer meth
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-        
+
     typedef Il2CppString* (*FuncToCall)(void*,Il2CppObject* p1, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)(self, p0,  method);
 	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
@@ -10180,7 +11307,7 @@ bool w_stsb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);        
     // LuaValToCSVal P any
     bool p1 = converter::Converter<bool>::toCpp(apis, env, _sv1);
-        
+
     typedef Il2CppString* (*FuncToCall)(void*,Il2CppString* p1, bool p2, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)(self, p0, p1,  method);
 	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
@@ -10214,7 +11341,7 @@ bool w_stsbDs(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer m
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);        
     // LuaValToCSVal P any
     bool p1 = converter::Converter<bool>::toCpp(apis, env, _sv1);
-            // LuaValToCSVal string with default
+    // LuaValToCSVal string with default
     Il2CppString* p2 = OptionalParameter<Il2CppString*>::GetString(apis, env, info, method, wrapData, lua_args_len, 2);
     typedef Il2CppString* (*FuncToCall)(void*,Il2CppString* p1, bool p2, Il2CppString* p3, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)(self, p0, p1, p2,  method);
@@ -10249,7 +11376,7 @@ bool w_stsbs(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);        
     // LuaValToCSVal P any
     bool p1 = converter::Converter<bool>::toCpp(apis, env, _sv1);
-            // LuaValToCSVal s
+    // LuaValToCSVal s
     Il2CppString* p2 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv2);
     typedef Il2CppString* (*FuncToCall)(void*,Il2CppString* p1, bool p2, Il2CppString* p3, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)(self, p0, p1, p2,  method);
@@ -10283,7 +11410,7 @@ bool w_stsi4Db(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer 
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);        
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-         // LuaValToCSVal primitive with default
+ // LuaValToCSVal primitive with default
     bool p2 = OptionalParameter<bool>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 2);
             
     typedef Il2CppString* (*FuncToCall)(void*,Il2CppString* p1, int32_t p2, bool p3, const void* method);
@@ -10318,10 +11445,10 @@ bool w_stsi4u4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer 
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);        
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     uint32_t p2 = converter::Converter<uint32_t>::toCpp(apis, env, _sv2);
-        
+
     typedef Il2CppString* (*FuncToCall)(void*,Il2CppString* p1, int32_t p2, uint32_t p3, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)(self, p0, p1, p2,  method);
 	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
@@ -10352,7 +11479,7 @@ bool w_stso(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-        
+
     typedef Il2CppString* (*FuncToCall)(void*,Il2CppString* p1, Il2CppObject* p2, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)(self, p0, p1,  method);
 	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
@@ -10386,10 +11513,10 @@ bool w_stsoi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer m
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-        
+
     typedef Il2CppString* (*FuncToCall)(void*,Il2CppString* p1, Il2CppObject* p2, int32_t p3, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)(self, p0, p1, p2,  method);
 	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
@@ -10426,13 +11553,13 @@ bool w_stsoi4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-                
+        
     // LuaValToCSVal P any
     int32_t p3 = converter::Converter<int32_t>::toCpp(apis, env, _sv3);
-        
+
     typedef Il2CppString* (*FuncToCall)(void*,Il2CppString* p1, Il2CppObject* p2, int32_t p3, int32_t p4, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)(self, p0, p1, p2, p3,  method);
 	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
@@ -10500,10 +11627,10 @@ bool w_stssbo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer m
     Il2CppString* p1 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv1);        
     // LuaValToCSVal P any
     bool p2 = converter::Converter<bool>::toCpp(apis, env, _sv2);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p3 = LuaValueToCSRef(apis, TIp3, env, _sv3);
-        
+
     typedef Il2CppString* (*FuncToCall)(void*,Il2CppString* p1, Il2CppString* p2, bool p3, Il2CppObject* p4, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)(self, p0, p1, p2, p3,  method);
 	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
@@ -10538,7 +11665,7 @@ bool w_stssi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer m
     Il2CppString* p1 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv1);        
     // LuaValToCSVal P any
     int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-        
+
     typedef Il2CppString* (*FuncToCall)(void*,Il2CppString* p1, Il2CppString* p2, int32_t p3, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)(self, p0, p1, p2,  method);
 	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
@@ -10576,10 +11703,10 @@ bool w_stssi4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer
     Il2CppString* p1 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv1);        
     // LuaValToCSVal P any
     int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-                
+        
     // LuaValToCSVal P any
     int32_t p3 = converter::Converter<int32_t>::toCpp(apis, env, _sv3);
-        
+
     typedef Il2CppString* (*FuncToCall)(void*,Il2CppString* p1, Il2CppString* p2, int32_t p3, int32_t p4, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)(self, p0, p1, p2, p3,  method);
 	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
@@ -10604,7 +11731,7 @@ bool w_stu4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     uint32_t p0 = converter::Converter<uint32_t>::toCpp(apis, env, _sv0);
-        
+
     typedef Il2CppString* (*FuncToCall)(void*,uint32_t p1, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)(self, p0,  method);
 	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
@@ -10632,10 +11759,10 @@ bool w_stu4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer m
         
     // LuaValToCSVal P any
     uint32_t p0 = converter::Converter<uint32_t>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-        
+
     typedef Il2CppString* (*FuncToCall)(void*,uint32_t p1, int32_t p2, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)(self, p0, p1,  method);
 	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
@@ -10660,7 +11787,7 @@ bool w_su1(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer meth
         
     // LuaValToCSVal P any
     uint8_t p0 = converter::Converter<uint8_t>::toCpp(apis, env, _sv0);
-        
+
     typedef Il2CppString* (*FuncToCall)(uint8_t p1, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
@@ -10688,10 +11815,10 @@ bool w_su1i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
         
     // LuaValToCSVal P any
     uint8_t p0 = converter::Converter<uint8_t>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-        
+
     typedef Il2CppString* (*FuncToCall)(uint8_t p1, int32_t p2, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)( p0, p1,  method);
 	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
@@ -10720,10 +11847,10 @@ bool w_su1o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     uint8_t p0 = converter::Converter<uint8_t>::toCpp(apis, env, _sv0);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-        
+
     typedef Il2CppString* (*FuncToCall)(uint8_t p1, Il2CppObject* p2, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)( p0, p1,  method);
 	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
@@ -10748,7 +11875,7 @@ bool w_su2(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer meth
         
     // LuaValToCSVal P any
     uint16_t p0 = converter::Converter<uint16_t>::toCpp(apis, env, _sv0);
-        
+
     typedef Il2CppString* (*FuncToCall)(uint16_t p1, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
@@ -10777,10 +11904,10 @@ bool w_su2o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     uint16_t p0 = converter::Converter<uint16_t>::toCpp(apis, env, _sv0);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-        
+
     typedef Il2CppString* (*FuncToCall)(uint16_t p1, Il2CppObject* p2, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)( p0, p1,  method);
 	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
@@ -10805,7 +11932,7 @@ bool w_su4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer meth
         
     // LuaValToCSVal P any
     uint32_t p0 = converter::Converter<uint32_t>::toCpp(apis, env, _sv0);
-        
+
     typedef Il2CppString* (*FuncToCall)(uint32_t p1, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
@@ -10833,10 +11960,10 @@ bool w_su4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
         
     // LuaValToCSVal P any
     uint32_t p0 = converter::Converter<uint32_t>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-        
+
     typedef Il2CppString* (*FuncToCall)(uint32_t p1, int32_t p2, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)( p0, p1,  method);
 	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
@@ -10867,13 +11994,13 @@ bool w_su4i4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer 
         
     // LuaValToCSVal P any
     uint32_t p0 = converter::Converter<uint32_t>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-        
+
     typedef Il2CppString* (*FuncToCall)(uint32_t p1, int32_t p2, int32_t p3, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)( p0, p1, p2,  method);
 	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
@@ -10902,10 +12029,10 @@ bool w_su4o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     uint32_t p0 = converter::Converter<uint32_t>::toCpp(apis, env, _sv0);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-        
+
     typedef Il2CppString* (*FuncToCall)(uint32_t p1, Il2CppObject* p2, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)( p0, p1,  method);
 	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
@@ -10933,10 +12060,10 @@ bool w_su4u4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
         
     // LuaValToCSVal P any
     uint32_t p0 = converter::Converter<uint32_t>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     uint32_t p1 = converter::Converter<uint32_t>::toCpp(apis, env, _sv1);
-        
+
     typedef Il2CppString* (*FuncToCall)(uint32_t p1, uint32_t p2, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)( p0, p1,  method);
 	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
@@ -10967,10 +12094,10 @@ bool w_su4u4Db(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer 
         
     // LuaValToCSVal P any
     uint32_t p0 = converter::Converter<uint32_t>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     uint32_t p1 = converter::Converter<uint32_t>::toCpp(apis, env, _sv1);
-         // LuaValToCSVal primitive with default
+ // LuaValToCSVal primitive with default
     bool p2 = OptionalParameter<bool>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 2);
             
     typedef Il2CppString* (*FuncToCall)(uint32_t p1, uint32_t p2, bool p3, const void* method);
@@ -10997,7 +12124,7 @@ bool w_su8(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer meth
         
     // LuaValToCSVal P any
     uint64_t p0 = converter::Converter<uint64_t>::toCpp(apis, env, _sv0);
-        
+
     typedef Il2CppString* (*FuncToCall)(uint64_t p1, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
@@ -11026,10 +12153,10 @@ bool w_su8o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     uint64_t p0 = converter::Converter<uint64_t>::toCpp(apis, env, _sv0);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-        
+
     typedef Il2CppString* (*FuncToCall)(uint64_t p1, Il2CppObject* p2, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)( p0, p1,  method);
 	int r = converter::Converter<Il2CppString*>::toScript(apis, env, ret);
@@ -11058,7 +12185,7 @@ bool w_su8s(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     uint64_t p0 = converter::Converter<uint64_t>::toCpp(apis, env, _sv0);
-            // LuaValToCSVal s
+    // LuaValToCSVal s
     Il2CppString* p1 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv1);
     typedef Il2CppString* (*FuncToCall)(uint64_t p1, Il2CppString* p2, const void* method);
     Il2CppString* ret = ((FuncToCall)methodPointer)( p0, p1,  method);
@@ -11102,7 +12229,7 @@ bool w_u1O(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer meth
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-        
+
     typedef uint8_t (*FuncToCall)(Il2CppObject* p1, const void* method);
     uint8_t ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<uint8_t>::toScript(apis, env, ret);
@@ -11129,10 +12256,10 @@ bool w_u1Oo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-        
+
     typedef uint8_t (*FuncToCall)(Il2CppObject* p1, Il2CppObject* p2, const void* method);
     uint8_t ret = ((FuncToCall)methodPointer)( p0, p1,  method);
 	int r = converter::Converter<uint8_t>::toScript(apis, env, ret);
@@ -11154,7 +12281,8 @@ bool w_u1S_i4i4i4i4u8_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethod
         if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_i4i4i4i4u8_* pp0 = DataTransfer::GetPointer<S_i4i4i4i4u8_>(apis, env, _sv0);
     S_i4i4i4i4u8_ p0 = pp0 ? *pp0 : S_i4i4i4i4u8_ {};
         
@@ -11179,7 +12307,8 @@ bool w_u1S_u8_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer 
         if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_u8_* pp0 = DataTransfer::GetPointer<S_u8_>(apis, env, _sv0);
     S_u8_ p0 = pp0 ? *pp0 : S_u8_ {};
         
@@ -11207,7 +12336,7 @@ bool w_u1b(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer meth
         
     // LuaValToCSVal P any
     bool p0 = converter::Converter<bool>::toCpp(apis, env, _sv0);
-        
+
     typedef uint8_t (*FuncToCall)(bool p1, const void* method);
     uint8_t ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<uint8_t>::toScript(apis, env, ret);
@@ -11232,7 +12361,7 @@ bool w_u1c(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer meth
         
     // LuaValToCSVal P any
     Il2CppChar p0 = converter::Converter<Il2CppChar>::toCpp(apis, env, _sv0);
-        
+
     typedef uint8_t (*FuncToCall)(Il2CppChar p1, const void* method);
     uint8_t ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<uint8_t>::toScript(apis, env, ret);
@@ -11257,7 +12386,7 @@ bool w_u1i1(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     int8_t p0 = converter::Converter<int8_t>::toCpp(apis, env, _sv0);
-        
+
     typedef uint8_t (*FuncToCall)(int8_t p1, const void* method);
     uint8_t ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<uint8_t>::toScript(apis, env, ret);
@@ -11282,7 +12411,7 @@ bool w_u1i2(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     int16_t p0 = converter::Converter<int16_t>::toCpp(apis, env, _sv0);
-        
+
     typedef uint8_t (*FuncToCall)(int16_t p1, const void* method);
     uint8_t ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<uint8_t>::toScript(apis, env, ret);
@@ -11307,7 +12436,7 @@ bool w_u1i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-        
+
     typedef uint8_t (*FuncToCall)(int32_t p1, const void* method);
     uint8_t ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<uint8_t>::toScript(apis, env, ret);
@@ -11332,7 +12461,7 @@ bool w_u1i8(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     int64_t p0 = converter::Converter<int64_t>::toCpp(apis, env, _sv0);
-        
+
     typedef uint8_t (*FuncToCall)(int64_t p1, const void* method);
     uint8_t ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<uint8_t>::toScript(apis, env, ret);
@@ -11357,7 +12486,7 @@ bool w_u1r4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     float p0 = converter::Converter<float>::toCpp(apis, env, _sv0);
-        
+
     typedef uint8_t (*FuncToCall)(float p1, const void* method);
     uint8_t ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<uint8_t>::toScript(apis, env, ret);
@@ -11382,7 +12511,7 @@ bool w_u1r8(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     double p0 = converter::Converter<double>::toCpp(apis, env, _sv0);
-        
+
     typedef uint8_t (*FuncToCall)(double p1, const void* method);
     uint8_t ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<uint8_t>::toScript(apis, env, ret);
@@ -11434,7 +12563,7 @@ bool w_u1si4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);        
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-        
+
     typedef uint8_t (*FuncToCall)(Il2CppString* p1, int32_t p2, const void* method);
     uint8_t ret = ((FuncToCall)methodPointer)( p0, p1,  method);
 	int r = converter::Converter<uint8_t>::toScript(apis, env, ret);
@@ -11464,7 +12593,7 @@ bool w_u1so(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-        
+
     typedef uint8_t (*FuncToCall)(Il2CppString* p1, Il2CppObject* p2, const void* method);
     uint8_t ret = ((FuncToCall)methodPointer)( p0, p1,  method);
 	int r = converter::Converter<uint8_t>::toScript(apis, env, ret);
@@ -11509,7 +12638,7 @@ bool w_u1u1(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     uint8_t p0 = converter::Converter<uint8_t>::toCpp(apis, env, _sv0);
-        
+
     typedef uint8_t (*FuncToCall)(uint8_t p1, const void* method);
     uint8_t ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<uint8_t>::toScript(apis, env, ret);
@@ -11534,7 +12663,7 @@ bool w_u1u2(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     uint16_t p0 = converter::Converter<uint16_t>::toCpp(apis, env, _sv0);
-        
+
     typedef uint8_t (*FuncToCall)(uint16_t p1, const void* method);
     uint8_t ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<uint8_t>::toScript(apis, env, ret);
@@ -11559,7 +12688,7 @@ bool w_u1u4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     uint32_t p0 = converter::Converter<uint32_t>::toCpp(apis, env, _sv0);
-        
+
     typedef uint8_t (*FuncToCall)(uint32_t p1, const void* method);
     uint8_t ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<uint8_t>::toScript(apis, env, ret);
@@ -11587,10 +12716,10 @@ bool w_u1u4u4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer m
         
     // LuaValToCSVal P any
     uint32_t p0 = converter::Converter<uint32_t>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     uint32_t p1 = converter::Converter<uint32_t>::toCpp(apis, env, _sv1);
-        
+
     typedef uint8_t (*FuncToCall)(uint32_t p1, uint32_t p2, const void* method);
     uint8_t ret = ((FuncToCall)methodPointer)( p0, p1,  method);
 	int r = converter::Converter<uint8_t>::toScript(apis, env, ret);
@@ -11615,7 +12744,7 @@ bool w_u1u8(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     uint64_t p0 = converter::Converter<uint64_t>::toCpp(apis, env, _sv0);
-        
+
     typedef uint8_t (*FuncToCall)(uint64_t p1, const void* method);
     uint8_t ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<uint8_t>::toScript(apis, env, ret);
@@ -11658,7 +12787,7 @@ bool w_u2O(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer meth
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-        
+
     typedef uint16_t (*FuncToCall)(Il2CppObject* p1, const void* method);
     uint16_t ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<uint16_t>::toScript(apis, env, ret);
@@ -11685,10 +12814,10 @@ bool w_u2Oo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-        
+
     typedef uint16_t (*FuncToCall)(Il2CppObject* p1, Il2CppObject* p2, const void* method);
     uint16_t ret = ((FuncToCall)methodPointer)( p0, p1,  method);
 	int r = converter::Converter<uint16_t>::toScript(apis, env, ret);
@@ -11710,7 +12839,8 @@ bool w_u2S_i4i4i4i4u8_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethod
         if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_i4i4i4i4u8_* pp0 = DataTransfer::GetPointer<S_i4i4i4i4u8_>(apis, env, _sv0);
     S_i4i4i4i4u8_ p0 = pp0 ? *pp0 : S_i4i4i4i4u8_ {};
         
@@ -11735,7 +12865,8 @@ bool w_u2S_u8_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer 
         if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_u8_* pp0 = DataTransfer::GetPointer<S_u8_>(apis, env, _sv0);
     S_u8_ p0 = pp0 ? *pp0 : S_u8_ {};
         
@@ -11763,7 +12894,7 @@ bool w_u2b(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer meth
         
     // LuaValToCSVal P any
     bool p0 = converter::Converter<bool>::toCpp(apis, env, _sv0);
-        
+
     typedef uint16_t (*FuncToCall)(bool p1, const void* method);
     uint16_t ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<uint16_t>::toScript(apis, env, ret);
@@ -11788,7 +12919,7 @@ bool w_u2c(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer meth
         
     // LuaValToCSVal P any
     Il2CppChar p0 = converter::Converter<Il2CppChar>::toCpp(apis, env, _sv0);
-        
+
     typedef uint16_t (*FuncToCall)(Il2CppChar p1, const void* method);
     uint16_t ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<uint16_t>::toScript(apis, env, ret);
@@ -11813,7 +12944,7 @@ bool w_u2i1(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     int8_t p0 = converter::Converter<int8_t>::toCpp(apis, env, _sv0);
-        
+
     typedef uint16_t (*FuncToCall)(int8_t p1, const void* method);
     uint16_t ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<uint16_t>::toScript(apis, env, ret);
@@ -11838,7 +12969,7 @@ bool w_u2i2(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     int16_t p0 = converter::Converter<int16_t>::toCpp(apis, env, _sv0);
-        
+
     typedef uint16_t (*FuncToCall)(int16_t p1, const void* method);
     uint16_t ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<uint16_t>::toScript(apis, env, ret);
@@ -11863,7 +12994,7 @@ bool w_u2i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-        
+
     typedef uint16_t (*FuncToCall)(int32_t p1, const void* method);
     uint16_t ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<uint16_t>::toScript(apis, env, ret);
@@ -11888,7 +13019,7 @@ bool w_u2i8(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     int64_t p0 = converter::Converter<int64_t>::toCpp(apis, env, _sv0);
-        
+
     typedef uint16_t (*FuncToCall)(int64_t p1, const void* method);
     uint16_t ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<uint16_t>::toScript(apis, env, ret);
@@ -11913,7 +13044,7 @@ bool w_u2r4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     float p0 = converter::Converter<float>::toCpp(apis, env, _sv0);
-        
+
     typedef uint16_t (*FuncToCall)(float p1, const void* method);
     uint16_t ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<uint16_t>::toScript(apis, env, ret);
@@ -11938,7 +13069,7 @@ bool w_u2r8(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     double p0 = converter::Converter<double>::toCpp(apis, env, _sv0);
-        
+
     typedef uint16_t (*FuncToCall)(double p1, const void* method);
     uint16_t ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<uint16_t>::toScript(apis, env, ret);
@@ -11990,7 +13121,7 @@ bool w_u2si4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);        
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-        
+
     typedef uint16_t (*FuncToCall)(Il2CppString* p1, int32_t p2, const void* method);
     uint16_t ret = ((FuncToCall)methodPointer)( p0, p1,  method);
 	int r = converter::Converter<uint16_t>::toScript(apis, env, ret);
@@ -12020,7 +13151,7 @@ bool w_u2so(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-        
+
     typedef uint16_t (*FuncToCall)(Il2CppString* p1, Il2CppObject* p2, const void* method);
     uint16_t ret = ((FuncToCall)methodPointer)( p0, p1,  method);
 	int r = converter::Converter<uint16_t>::toScript(apis, env, ret);
@@ -12045,7 +13176,7 @@ bool w_u2u1(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     uint8_t p0 = converter::Converter<uint8_t>::toCpp(apis, env, _sv0);
-        
+
     typedef uint16_t (*FuncToCall)(uint8_t p1, const void* method);
     uint16_t ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<uint16_t>::toScript(apis, env, ret);
@@ -12070,7 +13201,7 @@ bool w_u2u2(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     uint16_t p0 = converter::Converter<uint16_t>::toCpp(apis, env, _sv0);
-        
+
     typedef uint16_t (*FuncToCall)(uint16_t p1, const void* method);
     uint16_t ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<uint16_t>::toScript(apis, env, ret);
@@ -12095,7 +13226,7 @@ bool w_u2u4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     uint32_t p0 = converter::Converter<uint32_t>::toCpp(apis, env, _sv0);
-        
+
     typedef uint16_t (*FuncToCall)(uint32_t p1, const void* method);
     uint16_t ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<uint16_t>::toScript(apis, env, ret);
@@ -12120,7 +13251,7 @@ bool w_u2u8(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     uint64_t p0 = converter::Converter<uint64_t>::toCpp(apis, env, _sv0);
-        
+
     typedef uint16_t (*FuncToCall)(uint64_t p1, const void* method);
     uint16_t ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<uint16_t>::toScript(apis, env, ret);
@@ -12163,7 +13294,7 @@ bool w_u4O(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer meth
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-        
+
     typedef uint32_t (*FuncToCall)(Il2CppObject* p1, const void* method);
     uint32_t ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<uint32_t>::toScript(apis, env, ret);
@@ -12190,10 +13321,10 @@ bool w_u4Oo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-        
+
     typedef uint32_t (*FuncToCall)(Il2CppObject* p1, Il2CppObject* p2, const void* method);
     uint32_t ret = ((FuncToCall)methodPointer)( p0, p1,  method);
 	int r = converter::Converter<uint32_t>::toScript(apis, env, ret);
@@ -12215,7 +13346,8 @@ bool w_u4S_i4i4i4i4u8_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethod
         if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_i4i4i4i4u8_* pp0 = DataTransfer::GetPointer<S_i4i4i4i4u8_>(apis, env, _sv0);
     S_i4i4i4i4u8_ p0 = pp0 ? *pp0 : S_i4i4i4i4u8_ {};
         
@@ -12240,7 +13372,8 @@ bool w_u4S_u4o_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer
         if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_u4o_* pp0 = DataTransfer::GetPointer<S_u4o_>(apis, env, _sv0);
     S_u4o_ p0 = pp0 ? *pp0 : S_u4o_ {};
         
@@ -12265,7 +13398,8 @@ bool w_u4S_u8_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer 
         if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_u8_* pp0 = DataTransfer::GetPointer<S_u8_>(apis, env, _sv0);
     S_u8_ p0 = pp0 ? *pp0 : S_u8_ {};
         
@@ -12293,7 +13427,7 @@ bool w_u4b(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer meth
         
     // LuaValToCSVal P any
     bool p0 = converter::Converter<bool>::toCpp(apis, env, _sv0);
-        
+
     typedef uint32_t (*FuncToCall)(bool p1, const void* method);
     uint32_t ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<uint32_t>::toScript(apis, env, ret);
@@ -12318,7 +13452,7 @@ bool w_u4c(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer meth
         
     // LuaValToCSVal P any
     Il2CppChar p0 = converter::Converter<Il2CppChar>::toCpp(apis, env, _sv0);
-        
+
     typedef uint32_t (*FuncToCall)(Il2CppChar p1, const void* method);
     uint32_t ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<uint32_t>::toScript(apis, env, ret);
@@ -12343,7 +13477,7 @@ bool w_u4i1(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     int8_t p0 = converter::Converter<int8_t>::toCpp(apis, env, _sv0);
-        
+
     typedef uint32_t (*FuncToCall)(int8_t p1, const void* method);
     uint32_t ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<uint32_t>::toScript(apis, env, ret);
@@ -12368,7 +13502,7 @@ bool w_u4i2(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     int16_t p0 = converter::Converter<int16_t>::toCpp(apis, env, _sv0);
-        
+
     typedef uint32_t (*FuncToCall)(int16_t p1, const void* method);
     uint32_t ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<uint32_t>::toScript(apis, env, ret);
@@ -12393,7 +13527,7 @@ bool w_u4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-        
+
     typedef uint32_t (*FuncToCall)(int32_t p1, const void* method);
     uint32_t ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<uint32_t>::toScript(apis, env, ret);
@@ -12433,22 +13567,22 @@ bool w_u4i4i4i4i4i4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodP
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-                
+        
     // LuaValToCSVal P any
     int32_t p3 = converter::Converter<int32_t>::toCpp(apis, env, _sv3);
-                
+        
     // LuaValToCSVal P any
     int32_t p4 = converter::Converter<int32_t>::toCpp(apis, env, _sv4);
-                
+        
     // LuaValToCSVal P any
     int32_t p5 = converter::Converter<int32_t>::toCpp(apis, env, _sv5);
-        
+
     typedef uint32_t (*FuncToCall)(int32_t p1, int32_t p2, int32_t p3, int32_t p4, int32_t p5, int32_t p6, const void* method);
     uint32_t ret = ((FuncToCall)methodPointer)( p0, p1, p2, p3, p4, p5,  method);
 	int r = converter::Converter<uint32_t>::toScript(apis, env, ret);
@@ -12479,13 +13613,13 @@ bool w_u4i4u4u4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     uint32_t p1 = converter::Converter<uint32_t>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     uint32_t p2 = converter::Converter<uint32_t>::toCpp(apis, env, _sv2);
-        
+
     typedef uint32_t (*FuncToCall)(int32_t p1, uint32_t p2, uint32_t p3, const void* method);
     uint32_t ret = ((FuncToCall)methodPointer)( p0, p1, p2,  method);
 	int r = converter::Converter<uint32_t>::toScript(apis, env, ret);
@@ -12510,7 +13644,7 @@ bool w_u4i8(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     int64_t p0 = converter::Converter<int64_t>::toCpp(apis, env, _sv0);
-        
+
     typedef uint32_t (*FuncToCall)(int64_t p1, const void* method);
     uint32_t ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<uint32_t>::toScript(apis, env, ret);
@@ -12535,7 +13669,7 @@ bool w_u4o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer meth
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-        
+
     typedef uint32_t (*FuncToCall)(Il2CppObject* p1, const void* method);
     uint32_t ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<uint32_t>::toScript(apis, env, ret);
@@ -12569,16 +13703,16 @@ bool w_u4ou4oO(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer 
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     uint32_t p1 = converter::Converter<uint32_t>::toCpp(apis, env, _sv1);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p2 = LuaValueToCSRef(apis, TIp2, env, _sv2);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p3 = LuaValueToCSRef(apis, TIp3, env, _sv3);
-        
+
     typedef uint32_t (*FuncToCall)(Il2CppObject* p1, uint32_t p2, Il2CppObject* p3, Il2CppObject* p4, const void* method);
     uint32_t ret = ((FuncToCall)methodPointer)( p0, p1, p2, p3,  method);
 	int r = converter::Converter<uint32_t>::toScript(apis, env, ret);
@@ -12615,19 +13749,19 @@ bool w_u4ou4oOi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointe
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     uint32_t p1 = converter::Converter<uint32_t>::toCpp(apis, env, _sv1);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p2 = LuaValueToCSRef(apis, TIp2, env, _sv2);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p3 = LuaValueToCSRef(apis, TIp3, env, _sv3);
-                
+        
     // LuaValToCSVal P any
     int32_t p4 = converter::Converter<int32_t>::toCpp(apis, env, _sv4);
-        
+
     typedef uint32_t (*FuncToCall)(Il2CppObject* p1, uint32_t p2, Il2CppObject* p3, Il2CppObject* p4, int32_t p5, const void* method);
     uint32_t ret = ((FuncToCall)methodPointer)( p0, p1, p2, p3, p4,  method);
 	int r = converter::Converter<uint32_t>::toScript(apis, env, ret);
@@ -12653,11 +13787,11 @@ bool w_u4pi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
     }
         
     // LuaValToCSVal P any
-    void* p0 = DataTransfer::GetPointer<void>(apis, env, _sv0);
-                
+    void* p0 = DataTransfer::GetPointer(apis, env, _sv0);
+        
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-        
+
     typedef uint32_t (*FuncToCall)(void* p1, int32_t p2, const void* method);
     uint32_t ret = ((FuncToCall)methodPointer)( p0, p1,  method);
 	int r = converter::Converter<uint32_t>::toScript(apis, env, ret);
@@ -12682,7 +13816,7 @@ bool w_u4r4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     float p0 = converter::Converter<float>::toCpp(apis, env, _sv0);
-        
+
     typedef uint32_t (*FuncToCall)(float p1, const void* method);
     uint32_t ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<uint32_t>::toScript(apis, env, ret);
@@ -12707,7 +13841,7 @@ bool w_u4r8(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     double p0 = converter::Converter<double>::toCpp(apis, env, _sv0);
-        
+
     typedef uint32_t (*FuncToCall)(double p1, const void* method);
     uint32_t ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<uint32_t>::toScript(apis, env, ret);
@@ -12738,6 +13872,42 @@ bool w_u4s(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer meth
     value_scope.reserve = apis->get_return_num(info);
     return true;
 }
+// UInt32 ReadFile(System.String, Byte[], UInt32) declare in CFileManager
+bool w_u4sau4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_u4sau4");
+    AutoValueScope value_scope(apis, env);
+    auto TIp0 = wrapData->TypeInfos[0];
+    auto TIp1 = wrapData->TypeInfos[1];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    int _sv1 = apis->get_arg(info, 1);
+    int _sv2 = apis->get_arg(info, 2);
+    if (checkLuaArgument) {
+        if (lua_args_len != 3) 
+            return false;
+
+        if (!converter::Converter<Il2CppString*>::accept(apis, env, _sv0))
+            return false;
+        if (!DataTransfer::IsAssignable(apis, env, _sv1, TIp1, false))
+            return false;
+        if (!converter::Converter<uint32_t>::accept(apis, env, _sv2))
+            return false;        
+    }
+    // LuaValToCSVal s
+    Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);    
+    // LuaValToCSVal o/O
+    Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
+        
+    // LuaValToCSVal P any
+    uint32_t p2 = converter::Converter<uint32_t>::toCpp(apis, env, _sv2);
+
+    typedef uint32_t (*FuncToCall)(Il2CppString* p1, Il2CppObject* p2, uint32_t p3, const void* method);
+    uint32_t ret = ((FuncToCall)methodPointer)( p0, p1, p2,  method);
+	int r = converter::Converter<uint32_t>::toScript(apis, env, ret);
+	apis->add_return(info, r);
+    value_scope.reserve = apis->get_return_num(info);
+    return true;
+}
 // UInt32 ToUInt32(System.String, Int32) declare in System.Convert
 bool w_u4si4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
     // PLog("Running w_u4si4");
@@ -12759,7 +13929,7 @@ bool w_u4si4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);        
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-        
+
     typedef uint32_t (*FuncToCall)(Il2CppString* p1, int32_t p2, const void* method);
     uint32_t ret = ((FuncToCall)methodPointer)( p0, p1,  method);
 	int r = converter::Converter<uint32_t>::toScript(apis, env, ret);
@@ -12789,45 +13959,9 @@ bool w_u4so(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-        
+
     typedef uint32_t (*FuncToCall)(Il2CppString* p1, Il2CppObject* p2, const void* method);
     uint32_t ret = ((FuncToCall)methodPointer)( p0, p1,  method);
-	int r = converter::Converter<uint32_t>::toScript(apis, env, ret);
-	apis->add_return(info, r);
-    value_scope.reserve = apis->get_return_num(info);
-    return true;
-}
-// UInt32 ReadFile(System.String, Byte[], UInt32) declare in CFileManager
-bool w_u4sou4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_u4sou4");
-    AutoValueScope value_scope(apis, env);
-    auto TIp0 = wrapData->TypeInfos[0];
-    auto TIp1 = wrapData->TypeInfos[1];
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    int _sv2 = apis->get_arg(info, 2);
-    if (checkLuaArgument) {
-        if (lua_args_len != 3) 
-            return false;
-
-        if (!converter::Converter<Il2CppString*>::accept(apis, env, _sv0))
-            return false;
-        if (!DataTransfer::IsAssignable(apis, env, _sv1, TIp1, false))
-            return false;
-        if (!converter::Converter<uint32_t>::accept(apis, env, _sv2))
-            return false;        
-    }
-    // LuaValToCSVal s
-    Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);    
-    // LuaValToCSVal o/O
-    Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-                
-    // LuaValToCSVal P any
-    uint32_t p2 = converter::Converter<uint32_t>::toCpp(apis, env, _sv2);
-        
-    typedef uint32_t (*FuncToCall)(Il2CppString* p1, Il2CppObject* p2, uint32_t p3, const void* method);
-    uint32_t ret = ((FuncToCall)methodPointer)( p0, p1, p2,  method);
 	int r = converter::Converter<uint32_t>::toScript(apis, env, ret);
 	apis->add_return(info, r);
     value_scope.reserve = apis->get_return_num(info);
@@ -12864,16 +13998,16 @@ bool w_u4sou4oO(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     uint32_t p2 = converter::Converter<uint32_t>::toCpp(apis, env, _sv2);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p3 = LuaValueToCSRef(apis, TIp3, env, _sv3);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p4 = LuaValueToCSRef(apis, TIp4, env, _sv4);
-        
+
     typedef uint32_t (*FuncToCall)(Il2CppString* p1, Il2CppObject* p2, uint32_t p3, Il2CppObject* p4, Il2CppObject* p5, const void* method);
     uint32_t ret = ((FuncToCall)methodPointer)( p0, p1, p2, p3, p4,  method);
 	int r = converter::Converter<uint32_t>::toScript(apis, env, ret);
@@ -12919,22 +14053,22 @@ bool w_u4sou4oOu4o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPoin
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     uint32_t p2 = converter::Converter<uint32_t>::toCpp(apis, env, _sv2);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p3 = LuaValueToCSRef(apis, TIp3, env, _sv3);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p4 = LuaValueToCSRef(apis, TIp4, env, _sv4);
-                
+        
     // LuaValToCSVal P any
     uint32_t p5 = converter::Converter<uint32_t>::toCpp(apis, env, _sv5);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p6 = LuaValueToCSRef(apis, TIp6, env, _sv6);
-        
+
     typedef uint32_t (*FuncToCall)(Il2CppString* p1, Il2CppObject* p2, uint32_t p3, Il2CppObject* p4, Il2CppObject* p5, uint32_t p6, Il2CppObject* p7, const void* method);
     uint32_t ret = ((FuncToCall)methodPointer)( p0, p1, p2, p3, p4, p5, p6,  method);
 	int r = converter::Converter<uint32_t>::toScript(apis, env, ret);
@@ -12983,25 +14117,25 @@ bool w_u4sou4oOu4ou4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPo
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     uint32_t p2 = converter::Converter<uint32_t>::toCpp(apis, env, _sv2);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p3 = LuaValueToCSRef(apis, TIp3, env, _sv3);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p4 = LuaValueToCSRef(apis, TIp4, env, _sv4);
-                
+        
     // LuaValToCSVal P any
     uint32_t p5 = converter::Converter<uint32_t>::toCpp(apis, env, _sv5);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p6 = LuaValueToCSRef(apis, TIp6, env, _sv6);
-                
+        
     // LuaValToCSVal P any
     uint32_t p7 = converter::Converter<uint32_t>::toCpp(apis, env, _sv7);
-        
+
     typedef uint32_t (*FuncToCall)(Il2CppString* p1, Il2CppObject* p2, uint32_t p3, Il2CppObject* p4, Il2CppObject* p5, uint32_t p6, Il2CppObject* p7, uint32_t p8, const void* method);
     uint32_t ret = ((FuncToCall)methodPointer)( p0, p1, p2, p3, p4, p5, p6, p7,  method);
 	int r = converter::Converter<uint32_t>::toScript(apis, env, ret);
@@ -13010,8 +14144,8 @@ bool w_u4sou4oOu4ou4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPo
     return true;
 }
 // UInt32 CompressFile(System.String, System.String, Byte[], UInt32) declare in CFileManager
-bool w_u4ssou4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_u4ssou4");
+bool w_u4ssau4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_u4ssau4");
     AutoValueScope value_scope(apis, env);
     auto TIp0 = wrapData->TypeInfos[0];
     auto TIp1 = wrapData->TypeInfos[1];
@@ -13039,10 +14173,10 @@ bool w_u4ssou4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer 
     Il2CppString* p1 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv1);    
     // LuaValToCSVal o/O
     Il2CppObject* p2 = LuaValueToCSRef(apis, TIp2, env, _sv2);
-                
+        
     // LuaValToCSVal P any
     uint32_t p3 = converter::Converter<uint32_t>::toCpp(apis, env, _sv3);
-        
+
     typedef uint32_t (*FuncToCall)(Il2CppString* p1, Il2CppString* p2, Il2CppObject* p3, uint32_t p4, const void* method);
     uint32_t ret = ((FuncToCall)methodPointer)( p0, p1, p2, p3,  method);
 	int r = converter::Converter<uint32_t>::toScript(apis, env, ret);
@@ -13071,7 +14205,7 @@ bool w_u4su8(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);        
     // LuaValToCSVal P any
     uint64_t p1 = converter::Converter<uint64_t>::toCpp(apis, env, _sv1);
-        
+
     typedef uint32_t (*FuncToCall)(Il2CppString* p1, uint64_t p2, const void* method);
     uint32_t ret = ((FuncToCall)methodPointer)( p0, p1,  method);
 	int r = converter::Converter<uint32_t>::toScript(apis, env, ret);
@@ -13109,16 +14243,16 @@ bool w_u4su8u4oO(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointe
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);        
     // LuaValToCSVal P any
     uint64_t p1 = converter::Converter<uint64_t>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     uint32_t p2 = converter::Converter<uint32_t>::toCpp(apis, env, _sv2);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p3 = LuaValueToCSRef(apis, TIp3, env, _sv3);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p4 = LuaValueToCSRef(apis, TIp4, env, _sv4);
-        
+
     typedef uint32_t (*FuncToCall)(Il2CppString* p1, uint64_t p2, uint32_t p3, Il2CppObject* p4, Il2CppObject* p5, const void* method);
     uint32_t ret = ((FuncToCall)methodPointer)( p0, p1, p2, p3, p4,  method);
 	int r = converter::Converter<uint32_t>::toScript(apis, env, ret);
@@ -13163,22 +14297,22 @@ bool w_u4su8u4oOu4o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPoi
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);        
     // LuaValToCSVal P any
     uint64_t p1 = converter::Converter<uint64_t>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     uint32_t p2 = converter::Converter<uint32_t>::toCpp(apis, env, _sv2);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p3 = LuaValueToCSRef(apis, TIp3, env, _sv3);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p4 = LuaValueToCSRef(apis, TIp4, env, _sv4);
-                
+        
     // LuaValToCSVal P any
     uint32_t p5 = converter::Converter<uint32_t>::toCpp(apis, env, _sv5);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p6 = LuaValueToCSRef(apis, TIp6, env, _sv6);
-        
+
     typedef uint32_t (*FuncToCall)(Il2CppString* p1, uint64_t p2, uint32_t p3, Il2CppObject* p4, Il2CppObject* p5, uint32_t p6, Il2CppObject* p7, const void* method);
     uint32_t ret = ((FuncToCall)methodPointer)( p0, p1, p2, p3, p4, p5, p6,  method);
 	int r = converter::Converter<uint32_t>::toScript(apis, env, ret);
@@ -13226,25 +14360,25 @@ bool w_u4su8u4oOu4ou4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodP
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);        
     // LuaValToCSVal P any
     uint64_t p1 = converter::Converter<uint64_t>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     uint32_t p2 = converter::Converter<uint32_t>::toCpp(apis, env, _sv2);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p3 = LuaValueToCSRef(apis, TIp3, env, _sv3);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p4 = LuaValueToCSRef(apis, TIp4, env, _sv4);
-                
+        
     // LuaValToCSVal P any
     uint32_t p5 = converter::Converter<uint32_t>::toCpp(apis, env, _sv5);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p6 = LuaValueToCSRef(apis, TIp6, env, _sv6);
-                
+        
     // LuaValToCSVal P any
     uint32_t p7 = converter::Converter<uint32_t>::toCpp(apis, env, _sv7);
-        
+
     typedef uint32_t (*FuncToCall)(Il2CppString* p1, uint64_t p2, uint32_t p3, Il2CppObject* p4, Il2CppObject* p5, uint32_t p6, Il2CppObject* p7, uint32_t p8, const void* method);
     uint32_t ret = ((FuncToCall)methodPointer)( p0, p1, p2, p3, p4, p5, p6, p7,  method);
 	int r = converter::Converter<uint32_t>::toScript(apis, env, ret);
@@ -13313,7 +14447,7 @@ bool w_u4ti4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-        
+
     typedef uint32_t (*FuncToCall)(void*,int32_t p1, const void* method);
     uint32_t ret = ((FuncToCall)methodPointer)(self, p0,  method);
 	int r = converter::Converter<uint32_t>::toScript(apis, env, ret);
@@ -13341,7 +14475,7 @@ bool w_u4ti4Di4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-         // LuaValToCSVal primitive with default
+ // LuaValToCSVal primitive with default
     int32_t p1 = OptionalParameter<int32_t>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 1);
             
     typedef uint32_t (*FuncToCall)(void*,int32_t p1, int32_t p2, const void* method);
@@ -13374,10 +14508,10 @@ bool w_u4ti4i4Du4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPoint
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-         // LuaValToCSVal primitive with default
+ // LuaValToCSVal primitive with default
     uint32_t p2 = OptionalParameter<uint32_t>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 2);
             
     typedef uint32_t (*FuncToCall)(void*,int32_t p1, int32_t p2, uint32_t p3, const void* method);
@@ -13421,7 +14555,7 @@ bool w_u4ti4sDsDbDi4Do(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethod
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-            // LuaValToCSVal s
+    // LuaValToCSVal s
     Il2CppString* p1 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv1);    // LuaValToCSVal string with default
     Il2CppString* p2 = OptionalParameter<Il2CppString*>::GetString(apis, env, info, method, wrapData, lua_args_len, 2); // LuaValToCSVal primitive with default
     bool p3 = OptionalParameter<bool>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 3);
@@ -13431,6 +14565,31 @@ bool w_u4ti4sDsDbDi4Do(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethod
     Il2CppObject* p5 = OptionalParameter<Il2CppObject*>::GetRefType(apis, env, info, method, wrapData, lua_args_len, 5, TIp5);
     typedef uint32_t (*FuncToCall)(void*,int32_t p1, Il2CppString* p2, Il2CppString* p3, bool p4, int32_t p5, Il2CppObject* p6, const void* method);
     uint32_t ret = ((FuncToCall)methodPointer)(self, p0, p1, p2, p3, p4, p5,  method);
+	int r = converter::Converter<uint32_t>::toScript(apis, env, ret);
+	apis->add_return(info, r);
+    value_scope.reserve = apis->get_return_num(info);
+    return true;
+}
+// UInt32 AddNotice(Assets.Scripts.UI.GameBanner.Item.GameBannerNoticeItem) declare in Assets.Scripts.UI.GameBanner.Item.UIGameBannerNoticeGroup
+bool w_u4to(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_u4to");
+    AutoValueScope value_scope(apis, env);
+    auto TIp0 = wrapData->TypeInfos[0];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    if (checkLuaArgument) {
+        if (lua_args_len != 1) 
+            return false;
+
+        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, false))
+            return false;        
+    }
+    
+    // LuaValToCSVal o/O
+    Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
+
+    typedef uint32_t (*FuncToCall)(void*,Il2CppObject* p1, const void* method);
+    uint32_t ret = ((FuncToCall)methodPointer)(self, p0,  method);
 	int r = converter::Converter<uint32_t>::toScript(apis, env, ret);
 	apis->add_return(info, r);
     value_scope.reserve = apis->get_return_num(info);
@@ -13544,16 +14703,17 @@ bool w_u4tsS_u4o_obDi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethod
             return false;        
     }
     // LuaValToCSVal s
-    Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);     // LuaValToCSVal struct
+    Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);     
+    // LuaValToCSVal struct
     S_u4o_* pp1 = DataTransfer::GetPointer<S_u4o_>(apis, env, _sv1);
     S_u4o_ p1 = pp1 ? *pp1 : S_u4o_ {};
             
     // LuaValToCSVal o/O
     Il2CppObject* p2 = LuaValueToCSRef(apis, TIp2, env, _sv2);
-                
+        
     // LuaValToCSVal P any
     bool p3 = converter::Converter<bool>::toCpp(apis, env, _sv3);
-         // LuaValToCSVal primitive with default
+ // LuaValToCSVal primitive with default
     int32_t p4 = OptionalParameter<int32_t>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 4);
             
     typedef uint32_t (*FuncToCall)(void*,Il2CppString* p1, struct S_u4o_ p2, Il2CppObject* p3, bool p4, int32_t p5, const void* method);
@@ -13595,19 +14755,20 @@ bool w_u4tsS_u4o_obbDi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMetho
             return false;        
     }
     // LuaValToCSVal s
-    Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);     // LuaValToCSVal struct
+    Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);     
+    // LuaValToCSVal struct
     S_u4o_* pp1 = DataTransfer::GetPointer<S_u4o_>(apis, env, _sv1);
     S_u4o_ p1 = pp1 ? *pp1 : S_u4o_ {};
             
     // LuaValToCSVal o/O
     Il2CppObject* p2 = LuaValueToCSRef(apis, TIp2, env, _sv2);
-                
+        
     // LuaValToCSVal P any
     bool p3 = converter::Converter<bool>::toCpp(apis, env, _sv3);
-                
+        
     // LuaValToCSVal P any
     bool p4 = converter::Converter<bool>::toCpp(apis, env, _sv4);
-         // LuaValToCSVal primitive with default
+ // LuaValToCSVal primitive with default
     int32_t p5 = OptionalParameter<int32_t>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 5);
             
     typedef uint32_t (*FuncToCall)(void*,Il2CppString* p1, struct S_u4o_ p2, Il2CppObject* p3, bool p4, bool p5, int32_t p6, const void* method);
@@ -13651,19 +14812,19 @@ bool w_u4tsobu4oO(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPoint
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     bool p2 = converter::Converter<bool>::toCpp(apis, env, _sv2);
-                
+        
     // LuaValToCSVal P any
     uint32_t p3 = converter::Converter<uint32_t>::toCpp(apis, env, _sv3);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p4 = LuaValueToCSRef(apis, TIp4, env, _sv4);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p5 = LuaValueToCSRef(apis, TIp5, env, _sv5);
-        
+
     typedef uint32_t (*FuncToCall)(void*,Il2CppString* p1, Il2CppObject* p2, bool p3, uint32_t p4, Il2CppObject* p5, Il2CppObject* p6, const void* method);
     uint32_t ret = ((FuncToCall)methodPointer)(self, p0, p1, p2, p3, p4, p5,  method);
 	int r = converter::Converter<uint32_t>::toScript(apis, env, ret);
@@ -13702,16 +14863,16 @@ bool w_u4tsou4oO(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointe
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     uint32_t p2 = converter::Converter<uint32_t>::toCpp(apis, env, _sv2);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p3 = LuaValueToCSRef(apis, TIp3, env, _sv3);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p4 = LuaValueToCSRef(apis, TIp4, env, _sv4);
-        
+
     typedef uint32_t (*FuncToCall)(void*,Il2CppString* p1, Il2CppObject* p2, uint32_t p3, Il2CppObject* p4, Il2CppObject* p5, const void* method);
     uint32_t ret = ((FuncToCall)methodPointer)(self, p0, p1, p2, p3, p4,  method);
 	int r = converter::Converter<uint32_t>::toScript(apis, env, ret);
@@ -13746,13 +14907,13 @@ bool w_u4tsu4oO(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);        
     // LuaValToCSVal P any
     uint32_t p1 = converter::Converter<uint32_t>::toCpp(apis, env, _sv1);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p2 = LuaValueToCSRef(apis, TIp2, env, _sv2);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p3 = LuaValueToCSRef(apis, TIp3, env, _sv3);
-        
+
     typedef uint32_t (*FuncToCall)(void*,Il2CppString* p1, uint32_t p2, Il2CppObject* p3, Il2CppObject* p4, const void* method);
     uint32_t ret = ((FuncToCall)methodPointer)(self, p0, p1, p2, p3,  method);
 	int r = converter::Converter<uint32_t>::toScript(apis, env, ret);
@@ -13777,7 +14938,7 @@ bool w_u4tu4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
         
     // LuaValToCSVal P any
     uint32_t p0 = converter::Converter<uint32_t>::toCpp(apis, env, _sv0);
-        
+
     typedef uint32_t (*FuncToCall)(void*,uint32_t p1, const void* method);
     uint32_t ret = ((FuncToCall)methodPointer)(self, p0,  method);
 	int r = converter::Converter<uint32_t>::toScript(apis, env, ret);
@@ -13805,7 +14966,7 @@ bool w_u4tu4Di4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer
         
     // LuaValToCSVal P any
     uint32_t p0 = converter::Converter<uint32_t>::toCpp(apis, env, _sv0);
-         // LuaValToCSVal primitive with default
+ // LuaValToCSVal primitive with default
     int32_t p1 = OptionalParameter<int32_t>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 1);
             
     typedef uint32_t (*FuncToCall)(void*,uint32_t p1, int32_t p2, const void* method);
@@ -13838,7 +14999,7 @@ bool w_u4tu4DoDi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPoint
         
     // LuaValToCSVal P any
     uint32_t p0 = converter::Converter<uint32_t>::toCpp(apis, env, _sv0);
-            // LuaValToCSVal ref with default
+    // LuaValToCSVal ref with default
     Il2CppObject* p1 = OptionalParameter<Il2CppObject*>::GetRefType(apis, env, info, method, wrapData, lua_args_len, 1, TIp1); // LuaValToCSVal primitive with default
     int32_t p2 = OptionalParameter<int32_t>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 2);
             
@@ -13869,7 +15030,8 @@ bool w_u4tu4S_i4i4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPoi
         
     // LuaValToCSVal P any
     uint32_t p0 = converter::Converter<uint32_t>::toCpp(apis, env, _sv0);
-             // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_i4i4_* pp1 = DataTransfer::GetPointer<S_i4i4_>(apis, env, _sv1);
     S_i4i4_ p1 = pp1 ? *pp1 : S_i4i4_ {};
         
@@ -13900,10 +15062,10 @@ bool w_u4tu4o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer m
         
     // LuaValToCSVal P any
     uint32_t p0 = converter::Converter<uint32_t>::toCpp(apis, env, _sv0);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-        
+
     typedef uint32_t (*FuncToCall)(void*,uint32_t p1, Il2CppObject* p2, const void* method);
     uint32_t ret = ((FuncToCall)methodPointer)(self, p0, p1,  method);
 	int r = converter::Converter<uint32_t>::toScript(apis, env, ret);
@@ -13934,7 +15096,7 @@ bool w_u4tu4sDb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer
         
     // LuaValToCSVal P any
     uint32_t p0 = converter::Converter<uint32_t>::toCpp(apis, env, _sv0);
-            // LuaValToCSVal s
+    // LuaValToCSVal s
     Il2CppString* p1 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv1); // LuaValToCSVal primitive with default
     bool p2 = OptionalParameter<bool>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 2);
             
@@ -13968,10 +15130,10 @@ bool w_u4tu4u4Db(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointe
         
     // LuaValToCSVal P any
     uint32_t p0 = converter::Converter<uint32_t>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     uint32_t p1 = converter::Converter<uint32_t>::toCpp(apis, env, _sv1);
-         // LuaValToCSVal primitive with default
+ // LuaValToCSVal primitive with default
     bool p2 = OptionalParameter<bool>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 2);
             
     typedef uint32_t (*FuncToCall)(void*,uint32_t p1, uint32_t p2, bool p3, const void* method);
@@ -14004,13 +15166,13 @@ bool w_u4tu4u4b(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer
         
     // LuaValToCSVal P any
     uint32_t p0 = converter::Converter<uint32_t>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     uint32_t p1 = converter::Converter<uint32_t>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     bool p2 = converter::Converter<bool>::toCpp(apis, env, _sv2);
-        
+
     typedef uint32_t (*FuncToCall)(void*,uint32_t p1, uint32_t p2, bool p3, const void* method);
     uint32_t ret = ((FuncToCall)methodPointer)(self, p0, p1, p2,  method);
 	int r = converter::Converter<uint32_t>::toScript(apis, env, ret);
@@ -14044,16 +15206,16 @@ bool w_u4tu4u4bb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointe
         
     // LuaValToCSVal P any
     uint32_t p0 = converter::Converter<uint32_t>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     uint32_t p1 = converter::Converter<uint32_t>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     bool p2 = converter::Converter<bool>::toCpp(apis, env, _sv2);
-                
+        
     // LuaValToCSVal P any
     bool p3 = converter::Converter<bool>::toCpp(apis, env, _sv3);
-        
+
     typedef uint32_t (*FuncToCall)(void*,uint32_t p1, uint32_t p2, bool p3, bool p4, const void* method);
     uint32_t ret = ((FuncToCall)methodPointer)(self, p0, p1, p2, p3,  method);
 	int r = converter::Converter<uint32_t>::toScript(apis, env, ret);
@@ -14090,16 +15252,16 @@ bool w_u4tu4u4bu4Db(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPoi
         
     // LuaValToCSVal P any
     uint32_t p0 = converter::Converter<uint32_t>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     uint32_t p1 = converter::Converter<uint32_t>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     bool p2 = converter::Converter<bool>::toCpp(apis, env, _sv2);
-                
+        
     // LuaValToCSVal P any
     uint32_t p3 = converter::Converter<uint32_t>::toCpp(apis, env, _sv3);
-         // LuaValToCSVal primitive with default
+ // LuaValToCSVal primitive with default
     bool p4 = OptionalParameter<bool>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 4);
             
     typedef uint32_t (*FuncToCall)(void*,uint32_t p1, uint32_t p2, bool p3, uint32_t p4, bool p5, const void* method);
@@ -14126,7 +15288,7 @@ bool w_u4tu8(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
         
     // LuaValToCSVal P any
     uint64_t p0 = converter::Converter<uint64_t>::toCpp(apis, env, _sv0);
-        
+
     typedef uint32_t (*FuncToCall)(void*,uint64_t p1, const void* method);
     uint32_t ret = ((FuncToCall)methodPointer)(self, p0,  method);
 	int r = converter::Converter<uint32_t>::toScript(apis, env, ret);
@@ -14151,7 +15313,7 @@ bool w_u4u1(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     uint8_t p0 = converter::Converter<uint8_t>::toCpp(apis, env, _sv0);
-        
+
     typedef uint32_t (*FuncToCall)(uint8_t p1, const void* method);
     uint32_t ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<uint32_t>::toScript(apis, env, ret);
@@ -14176,7 +15338,7 @@ bool w_u4u2(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     uint16_t p0 = converter::Converter<uint16_t>::toCpp(apis, env, _sv0);
-        
+
     typedef uint32_t (*FuncToCall)(uint16_t p1, const void* method);
     uint32_t ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<uint32_t>::toScript(apis, env, ret);
@@ -14201,7 +15363,7 @@ bool w_u4u4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     uint32_t p0 = converter::Converter<uint32_t>::toCpp(apis, env, _sv0);
-        
+
     typedef uint32_t (*FuncToCall)(uint32_t p1, const void* method);
     uint32_t ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<uint32_t>::toScript(apis, env, ret);
@@ -14229,7 +15391,7 @@ bool w_u4u4Du4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer 
         
     // LuaValToCSVal P any
     uint32_t p0 = converter::Converter<uint32_t>::toCpp(apis, env, _sv0);
-         // LuaValToCSVal primitive with default
+ // LuaValToCSVal primitive with default
     uint32_t p1 = OptionalParameter<uint32_t>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 1);
             
     typedef uint32_t (*FuncToCall)(uint32_t p1, uint32_t p2, const void* method);
@@ -14259,10 +15421,10 @@ bool w_u4u4o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
         
     // LuaValToCSVal P any
     uint32_t p0 = converter::Converter<uint32_t>::toCpp(apis, env, _sv0);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-        
+
     typedef uint32_t (*FuncToCall)(uint32_t p1, Il2CppObject* p2, const void* method);
     uint32_t ret = ((FuncToCall)methodPointer)( p0, p1,  method);
 	int r = converter::Converter<uint32_t>::toScript(apis, env, ret);
@@ -14293,13 +15455,13 @@ bool w_u4u4ou4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer 
         
     // LuaValToCSVal P any
     uint32_t p0 = converter::Converter<uint32_t>::toCpp(apis, env, _sv0);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     uint32_t p2 = converter::Converter<uint32_t>::toCpp(apis, env, _sv2);
-        
+
     typedef uint32_t (*FuncToCall)(uint32_t p1, Il2CppObject* p2, uint32_t p3, const void* method);
     uint32_t ret = ((FuncToCall)methodPointer)( p0, p1, p2,  method);
 	int r = converter::Converter<uint32_t>::toScript(apis, env, ret);
@@ -14336,19 +15498,19 @@ bool w_u4u4ou4oO(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointe
         
     // LuaValToCSVal P any
     uint32_t p0 = converter::Converter<uint32_t>::toCpp(apis, env, _sv0);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     uint32_t p2 = converter::Converter<uint32_t>::toCpp(apis, env, _sv2);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p3 = LuaValueToCSRef(apis, TIp3, env, _sv3);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p4 = LuaValueToCSRef(apis, TIp4, env, _sv4);
-        
+
     typedef uint32_t (*FuncToCall)(uint32_t p1, Il2CppObject* p2, uint32_t p3, Il2CppObject* p4, Il2CppObject* p5, const void* method);
     uint32_t ret = ((FuncToCall)methodPointer)( p0, p1, p2, p3, p4,  method);
 	int r = converter::Converter<uint32_t>::toScript(apis, env, ret);
@@ -14392,25 +15554,25 @@ bool w_u4u4ou4oOu4o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPoi
         
     // LuaValToCSVal P any
     uint32_t p0 = converter::Converter<uint32_t>::toCpp(apis, env, _sv0);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     uint32_t p2 = converter::Converter<uint32_t>::toCpp(apis, env, _sv2);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p3 = LuaValueToCSRef(apis, TIp3, env, _sv3);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p4 = LuaValueToCSRef(apis, TIp4, env, _sv4);
-                
+        
     // LuaValToCSVal P any
     uint32_t p5 = converter::Converter<uint32_t>::toCpp(apis, env, _sv5);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p6 = LuaValueToCSRef(apis, TIp6, env, _sv6);
-        
+
     typedef uint32_t (*FuncToCall)(uint32_t p1, Il2CppObject* p2, uint32_t p3, Il2CppObject* p4, Il2CppObject* p5, uint32_t p6, Il2CppObject* p7, const void* method);
     uint32_t ret = ((FuncToCall)methodPointer)( p0, p1, p2, p3, p4, p5, p6,  method);
 	int r = converter::Converter<uint32_t>::toScript(apis, env, ret);
@@ -14457,28 +15619,28 @@ bool w_u4u4ou4oOu4ou4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodP
         
     // LuaValToCSVal P any
     uint32_t p0 = converter::Converter<uint32_t>::toCpp(apis, env, _sv0);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     uint32_t p2 = converter::Converter<uint32_t>::toCpp(apis, env, _sv2);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p3 = LuaValueToCSRef(apis, TIp3, env, _sv3);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p4 = LuaValueToCSRef(apis, TIp4, env, _sv4);
-                
+        
     // LuaValToCSVal P any
     uint32_t p5 = converter::Converter<uint32_t>::toCpp(apis, env, _sv5);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p6 = LuaValueToCSRef(apis, TIp6, env, _sv6);
-                
+        
     // LuaValToCSVal P any
     uint32_t p7 = converter::Converter<uint32_t>::toCpp(apis, env, _sv7);
-        
+
     typedef uint32_t (*FuncToCall)(uint32_t p1, Il2CppObject* p2, uint32_t p3, Il2CppObject* p4, Il2CppObject* p5, uint32_t p6, Il2CppObject* p7, uint32_t p8, const void* method);
     uint32_t ret = ((FuncToCall)methodPointer)( p0, p1, p2, p3, p4, p5, p6, p7,  method);
 	int r = converter::Converter<uint32_t>::toScript(apis, env, ret);
@@ -14512,16 +15674,16 @@ bool w_u4u4ou4u4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointe
         
     // LuaValToCSVal P any
     uint32_t p0 = converter::Converter<uint32_t>::toCpp(apis, env, _sv0);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     uint32_t p2 = converter::Converter<uint32_t>::toCpp(apis, env, _sv2);
-                
+        
     // LuaValToCSVal P any
     uint32_t p3 = converter::Converter<uint32_t>::toCpp(apis, env, _sv3);
-        
+
     typedef uint32_t (*FuncToCall)(uint32_t p1, Il2CppObject* p2, uint32_t p3, uint32_t p4, const void* method);
     uint32_t ret = ((FuncToCall)methodPointer)( p0, p1, p2, p3,  method);
 	int r = converter::Converter<uint32_t>::toScript(apis, env, ret);
@@ -14549,10 +15711,10 @@ bool w_u4u4u4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer m
         
     // LuaValToCSVal P any
     uint32_t p0 = converter::Converter<uint32_t>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     uint32_t p1 = converter::Converter<uint32_t>::toCpp(apis, env, _sv1);
-        
+
     typedef uint32_t (*FuncToCall)(uint32_t p1, uint32_t p2, const void* method);
     uint32_t ret = ((FuncToCall)methodPointer)( p0, p1,  method);
 	int r = converter::Converter<uint32_t>::toScript(apis, env, ret);
@@ -14580,10 +15742,10 @@ bool w_u4u4u8(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer m
         
     // LuaValToCSVal P any
     uint32_t p0 = converter::Converter<uint32_t>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     uint64_t p1 = converter::Converter<uint64_t>::toCpp(apis, env, _sv1);
-        
+
     typedef uint32_t (*FuncToCall)(uint32_t p1, uint64_t p2, const void* method);
     uint32_t ret = ((FuncToCall)methodPointer)( p0, p1,  method);
 	int r = converter::Converter<uint32_t>::toScript(apis, env, ret);
@@ -14619,19 +15781,19 @@ bool w_u4u4u8u4oO(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPoint
         
     // LuaValToCSVal P any
     uint32_t p0 = converter::Converter<uint32_t>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     uint64_t p1 = converter::Converter<uint64_t>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     uint32_t p2 = converter::Converter<uint32_t>::toCpp(apis, env, _sv2);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p3 = LuaValueToCSRef(apis, TIp3, env, _sv3);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p4 = LuaValueToCSRef(apis, TIp4, env, _sv4);
-        
+
     typedef uint32_t (*FuncToCall)(uint32_t p1, uint64_t p2, uint32_t p3, Il2CppObject* p4, Il2CppObject* p5, const void* method);
     uint32_t ret = ((FuncToCall)methodPointer)( p0, p1, p2, p3, p4,  method);
 	int r = converter::Converter<uint32_t>::toScript(apis, env, ret);
@@ -14674,25 +15836,25 @@ bool w_u4u4u8u4oOu4o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPo
         
     // LuaValToCSVal P any
     uint32_t p0 = converter::Converter<uint32_t>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     uint64_t p1 = converter::Converter<uint64_t>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     uint32_t p2 = converter::Converter<uint32_t>::toCpp(apis, env, _sv2);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p3 = LuaValueToCSRef(apis, TIp3, env, _sv3);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p4 = LuaValueToCSRef(apis, TIp4, env, _sv4);
-                
+        
     // LuaValToCSVal P any
     uint32_t p5 = converter::Converter<uint32_t>::toCpp(apis, env, _sv5);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p6 = LuaValueToCSRef(apis, TIp6, env, _sv6);
-        
+
     typedef uint32_t (*FuncToCall)(uint32_t p1, uint64_t p2, uint32_t p3, Il2CppObject* p4, Il2CppObject* p5, uint32_t p6, Il2CppObject* p7, const void* method);
     uint32_t ret = ((FuncToCall)methodPointer)( p0, p1, p2, p3, p4, p5, p6,  method);
 	int r = converter::Converter<uint32_t>::toScript(apis, env, ret);
@@ -14738,28 +15900,28 @@ bool w_u4u4u8u4oOu4ou4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethod
         
     // LuaValToCSVal P any
     uint32_t p0 = converter::Converter<uint32_t>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     uint64_t p1 = converter::Converter<uint64_t>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     uint32_t p2 = converter::Converter<uint32_t>::toCpp(apis, env, _sv2);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p3 = LuaValueToCSRef(apis, TIp3, env, _sv3);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p4 = LuaValueToCSRef(apis, TIp4, env, _sv4);
-                
+        
     // LuaValToCSVal P any
     uint32_t p5 = converter::Converter<uint32_t>::toCpp(apis, env, _sv5);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p6 = LuaValueToCSRef(apis, TIp6, env, _sv6);
-                
+        
     // LuaValToCSVal P any
     uint32_t p7 = converter::Converter<uint32_t>::toCpp(apis, env, _sv7);
-        
+
     typedef uint32_t (*FuncToCall)(uint32_t p1, uint64_t p2, uint32_t p3, Il2CppObject* p4, Il2CppObject* p5, uint32_t p6, Il2CppObject* p7, uint32_t p8, const void* method);
     uint32_t ret = ((FuncToCall)methodPointer)( p0, p1, p2, p3, p4, p5, p6, p7,  method);
 	int r = converter::Converter<uint32_t>::toScript(apis, env, ret);
@@ -14784,7 +15946,7 @@ bool w_u4u8(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     uint64_t p0 = converter::Converter<uint64_t>::toCpp(apis, env, _sv0);
-        
+
     typedef uint32_t (*FuncToCall)(uint64_t p1, const void* method);
     uint32_t ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<uint32_t>::toScript(apis, env, ret);
@@ -14827,7 +15989,7 @@ bool w_u8O(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer meth
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-        
+
     typedef uint64_t (*FuncToCall)(Il2CppObject* p1, const void* method);
     uint64_t ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<uint64_t>::toScript(apis, env, ret);
@@ -14854,10 +16016,10 @@ bool w_u8Oo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-        
+
     typedef uint64_t (*FuncToCall)(Il2CppObject* p1, Il2CppObject* p2, const void* method);
     uint64_t ret = ((FuncToCall)methodPointer)( p0, p1,  method);
 	int r = converter::Converter<uint64_t>::toScript(apis, env, ret);
@@ -14890,7 +16052,7 @@ bool w_u8Pu1i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer 
         
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-        
+
     typedef uint64_t (*FuncToCall)(uint8_t* p1, int32_t p2, const void* method);
     uint64_t ret = ((FuncToCall)methodPointer)( p0, p1,  method);
 	int r = converter::Converter<uint64_t>::toScript(apis, env, ret);
@@ -14914,7 +16076,8 @@ bool w_u8S_i4i4i4i4u8_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethod
         if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_i4i4i4i4u8_* pp0 = DataTransfer::GetPointer<S_i4i4i4i4u8_>(apis, env, _sv0);
     S_i4i4i4i4u8_ p0 = pp0 ? *pp0 : S_i4i4i4i4u8_ {};
         
@@ -14939,7 +16102,8 @@ bool w_u8S_u8_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer 
         if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_u8_* pp0 = DataTransfer::GetPointer<S_u8_>(apis, env, _sv0);
     S_u8_ p0 = pp0 ? *pp0 : S_u8_ {};
         
@@ -14967,7 +16131,7 @@ bool w_u8b(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer meth
         
     // LuaValToCSVal P any
     bool p0 = converter::Converter<bool>::toCpp(apis, env, _sv0);
-        
+
     typedef uint64_t (*FuncToCall)(bool p1, const void* method);
     uint64_t ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<uint64_t>::toScript(apis, env, ret);
@@ -14992,7 +16156,7 @@ bool w_u8c(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer meth
         
     // LuaValToCSVal P any
     Il2CppChar p0 = converter::Converter<Il2CppChar>::toCpp(apis, env, _sv0);
-        
+
     typedef uint64_t (*FuncToCall)(Il2CppChar p1, const void* method);
     uint64_t ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<uint64_t>::toScript(apis, env, ret);
@@ -15017,7 +16181,7 @@ bool w_u8i1(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     int8_t p0 = converter::Converter<int8_t>::toCpp(apis, env, _sv0);
-        
+
     typedef uint64_t (*FuncToCall)(int8_t p1, const void* method);
     uint64_t ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<uint64_t>::toScript(apis, env, ret);
@@ -15042,7 +16206,7 @@ bool w_u8i2(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     int16_t p0 = converter::Converter<int16_t>::toCpp(apis, env, _sv0);
-        
+
     typedef uint64_t (*FuncToCall)(int16_t p1, const void* method);
     uint64_t ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<uint64_t>::toScript(apis, env, ret);
@@ -15067,7 +16231,7 @@ bool w_u8i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-        
+
     typedef uint64_t (*FuncToCall)(int32_t p1, const void* method);
     uint64_t ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<uint64_t>::toScript(apis, env, ret);
@@ -15098,13 +16262,13 @@ bool w_u8i4i4u4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     uint32_t p2 = converter::Converter<uint32_t>::toCpp(apis, env, _sv2);
-        
+
     typedef uint64_t (*FuncToCall)(int32_t p1, int32_t p2, uint32_t p3, const void* method);
     uint64_t ret = ((FuncToCall)methodPointer)( p0, p1, p2,  method);
 	int r = converter::Converter<uint64_t>::toScript(apis, env, ret);
@@ -15129,7 +16293,7 @@ bool w_u8i8(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     int64_t p0 = converter::Converter<int64_t>::toCpp(apis, env, _sv0);
-        
+
     typedef uint64_t (*FuncToCall)(int64_t p1, const void* method);
     uint64_t ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<uint64_t>::toScript(apis, env, ret);
@@ -15154,7 +16318,7 @@ bool w_u8o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer meth
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-        
+
     typedef uint64_t (*FuncToCall)(Il2CppObject* p1, const void* method);
     uint64_t ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<uint64_t>::toScript(apis, env, ret);
@@ -15179,7 +16343,7 @@ bool w_u8r4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     float p0 = converter::Converter<float>::toCpp(apis, env, _sv0);
-        
+
     typedef uint64_t (*FuncToCall)(float p1, const void* method);
     uint64_t ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<uint64_t>::toScript(apis, env, ret);
@@ -15204,7 +16368,7 @@ bool w_u8r8(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     double p0 = converter::Converter<double>::toCpp(apis, env, _sv0);
-        
+
     typedef uint64_t (*FuncToCall)(double p1, const void* method);
     uint64_t ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<uint64_t>::toScript(apis, env, ret);
@@ -15256,7 +16420,7 @@ bool w_u8si4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);        
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-        
+
     typedef uint64_t (*FuncToCall)(Il2CppString* p1, int32_t p2, const void* method);
     uint64_t ret = ((FuncToCall)methodPointer)( p0, p1,  method);
 	int r = converter::Converter<uint64_t>::toScript(apis, env, ret);
@@ -15286,7 +16450,7 @@ bool w_u8so(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-        
+
     typedef uint64_t (*FuncToCall)(Il2CppString* p1, Il2CppObject* p2, const void* method);
     uint64_t ret = ((FuncToCall)methodPointer)( p0, p1,  method);
 	int r = converter::Converter<uint64_t>::toScript(apis, env, ret);
@@ -15315,7 +16479,7 @@ bool w_u8su4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);        
     // LuaValToCSVal P any
     uint32_t p1 = converter::Converter<uint32_t>::toCpp(apis, env, _sv1);
-        
+
     typedef uint64_t (*FuncToCall)(Il2CppString* p1, uint32_t p2, const void* method);
     uint64_t ret = ((FuncToCall)methodPointer)( p0, p1,  method);
 	int r = converter::Converter<uint64_t>::toScript(apis, env, ret);
@@ -15388,7 +16552,7 @@ bool w_u8tu4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
         
     // LuaValToCSVal P any
     uint32_t p0 = converter::Converter<uint32_t>::toCpp(apis, env, _sv0);
-        
+
     typedef uint64_t (*FuncToCall)(void*,uint32_t p1, const void* method);
     uint64_t ret = ((FuncToCall)methodPointer)(self, p0,  method);
 	int r = converter::Converter<uint64_t>::toScript(apis, env, ret);
@@ -15416,10 +16580,10 @@ bool w_u8tu4u4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer 
         
     // LuaValToCSVal P any
     uint32_t p0 = converter::Converter<uint32_t>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     uint32_t p1 = converter::Converter<uint32_t>::toCpp(apis, env, _sv1);
-        
+
     typedef uint64_t (*FuncToCall)(void*,uint32_t p1, uint32_t p2, const void* method);
     uint64_t ret = ((FuncToCall)methodPointer)(self, p0, p1,  method);
 	int r = converter::Converter<uint64_t>::toScript(apis, env, ret);
@@ -15444,7 +16608,7 @@ bool w_u8u1(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     uint8_t p0 = converter::Converter<uint8_t>::toCpp(apis, env, _sv0);
-        
+
     typedef uint64_t (*FuncToCall)(uint8_t p1, const void* method);
     uint64_t ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<uint64_t>::toScript(apis, env, ret);
@@ -15469,7 +16633,7 @@ bool w_u8u2(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     uint16_t p0 = converter::Converter<uint16_t>::toCpp(apis, env, _sv0);
-        
+
     typedef uint64_t (*FuncToCall)(uint16_t p1, const void* method);
     uint64_t ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<uint64_t>::toScript(apis, env, ret);
@@ -15494,7 +16658,7 @@ bool w_u8u4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     uint32_t p0 = converter::Converter<uint32_t>::toCpp(apis, env, _sv0);
-        
+
     typedef uint64_t (*FuncToCall)(uint32_t p1, const void* method);
     uint64_t ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<uint64_t>::toScript(apis, env, ret);
@@ -15522,10 +16686,10 @@ bool w_u8u4u4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer m
         
     // LuaValToCSVal P any
     uint32_t p0 = converter::Converter<uint32_t>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     uint32_t p1 = converter::Converter<uint32_t>::toCpp(apis, env, _sv1);
-        
+
     typedef uint64_t (*FuncToCall)(uint32_t p1, uint32_t p2, const void* method);
     uint64_t ret = ((FuncToCall)methodPointer)( p0, p1,  method);
 	int r = converter::Converter<uint64_t>::toScript(apis, env, ret);
@@ -15550,7 +16714,7 @@ bool w_u8u8(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     uint64_t p0 = converter::Converter<uint64_t>::toCpp(apis, env, _sv0);
-        
+
     typedef uint64_t (*FuncToCall)(uint64_t p1, const void* method);
     uint64_t ret = ((FuncToCall)methodPointer)( p0,  method);
 	int r = converter::Converter<uint64_t>::toScript(apis, env, ret);
@@ -15758,7 +16922,7 @@ bool w_vO(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer metho
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-        
+
     typedef void (*FuncToCall)(Il2CppObject* p1, const void* method);
     ((FuncToCall)methodPointer)( p0,  method);
     return true;
@@ -15881,8 +17045,8 @@ bool w_vPS_i4S_u8_r4S_r4r4r4_r4u4S_u8__(struct pesapi_ffi* apis, MethodInfo* met
     return true;
 }
 // Void NtfAgeChangeModelParam(ModelParamChangeData ByRef, Boolean) declare in SGC
-bool w_vPS_i4u4u4S_oS_u8_oor4_S_S_u8_ou1_S_u1S_r4r4r4_u1r4u1_S_S_u8_i4_S_u1S_u8_u1i4_S_i4i4i4i4__b(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vPS_i4u4u4S_oS_u8_oor4_S_S_u8_ou1_S_u1S_r4r4r4_u1r4u1_S_S_u8_i4_S_u1S_u8_u1i4_S_i4i4i4i4__b");
+bool w_vPS_i4u4u4S_oS_u8_oor4_S_S_u8_ou1_S_u1S_r4r4r4_u1r4u1_S_S_u8_i4_S_u1S_u8_u1i4_S_i4i4i4i4_u1i4_b(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_vPS_i4u4u4S_oS_u8_oor4_S_S_u8_ou1_S_u1S_r4r4r4_u1r4u1_S_S_u8_i4_S_u1S_u8_u1i4_S_i4i4i4i4_u1i4_b");
     AutoValueScope value_scope(apis, env);
     auto TIp0 = wrapData->TypeInfos[0];
     int lua_args_len = apis->get_args_len(info);
@@ -15898,8 +17062,8 @@ bool w_vPS_i4u4u4S_oS_u8_oor4_S_S_u8_ou1_S_u1S_r4r4r4_u1r4u1_S_S_u8_i4_S_u1S_u8_
     }
      
     // LuaValToCSVal Pstruct
-    S_i4u4u4S_oS_u8_oor4_S_S_u8_ou1_S_u1S_r4r4r4_u1r4u1_S_S_u8_i4_S_u1S_u8_u1i4_S_i4i4i4i4__* p0 = DataTransfer::GetPointer<S_i4u4u4S_oS_u8_oor4_S_S_u8_ou1_S_u1S_r4r4r4_u1r4u1_S_S_u8_i4_S_u1S_u8_u1i4_S_i4i4i4i4__>(apis, env, apis->unboxing(env, _sv0)); // valuetype ref
-    S_i4u4u4S_oS_u8_oor4_S_S_u8_ou1_S_u1S_r4r4r4_u1r4u1_S_S_u8_i4_S_u1S_u8_u1i4_S_i4i4i4i4__ up0;
+    S_i4u4u4S_oS_u8_oor4_S_S_u8_ou1_S_u1S_r4r4r4_u1r4u1_S_S_u8_i4_S_u1S_u8_u1i4_S_i4i4i4i4_u1i4_* p0 = DataTransfer::GetPointer<S_i4u4u4S_oS_u8_oor4_S_S_u8_ou1_S_u1S_r4r4r4_u1r4u1_S_S_u8_i4_S_u1S_u8_u1i4_S_i4i4i4i4_u1i4_>(apis, env, apis->unboxing(env, _sv0)); // valuetype ref
+    S_i4u4u4S_oS_u8_oor4_S_S_u8_ou1_S_u1S_r4r4r4_u1r4u1_S_S_u8_i4_S_u1S_u8_u1i4_S_i4i4i4i4_u1i4_ up0;
     if (!p0) {
         memset(&up0, 0, sizeof(p0));
         p0 = &up0;
@@ -15907,8 +17071,8 @@ bool w_vPS_i4u4u4S_oS_u8_oor4_S_S_u8_ou1_S_u1S_r4r4r4_u1r4u1_S_S_u8_i4_S_u1S_u8_
                 
     // LuaValToCSVal P any
     bool p1 = converter::Converter<bool>::toCpp(apis, env, _sv1);
-        
-    typedef void (*FuncToCall)(struct S_i4u4u4S_oS_u8_oor4_S_S_u8_ou1_S_u1S_r4r4r4_u1r4u1_S_S_u8_i4_S_u1S_u8_u1i4_S_i4i4i4i4__* p1, bool p2, const void* method);
+
+    typedef void (*FuncToCall)(struct S_i4u4u4S_oS_u8_oor4_S_S_u8_ou1_S_u1S_r4r4r4_u1r4u1_S_S_u8_i4_S_u1S_u8_u1i4_S_i4i4i4i4_u1i4_* p1, bool p2, const void* method);
     ((FuncToCall)methodPointer)( p0, p1,  method);                
     int ret0;
     if (p0 == &up0)
@@ -16042,6 +17206,45 @@ bool w_vPS_o_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer m
     value_scope.reserve = apis->get_return_num(info);
     return true;
 }
+// Void NtfProject8AuctionUnlockChange(Project8AuctionUnlockChange ByRef) declare in SGC
+bool w_vPS_oaoa_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_vPS_oaoa_");
+    AutoValueScope value_scope(apis, env);
+    auto TIp0 = wrapData->TypeInfos[0];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    if (checkLuaArgument) {
+        if (lua_args_len != 1) 
+            return false;
+
+        if (!apis->is_object(env, _sv0)) return false;        
+    }
+     
+    // LuaValToCSVal Pstruct
+    S_oaoa_* p0 = DataTransfer::GetPointer<S_oaoa_>(apis, env, apis->unboxing(env, _sv0)); // valuetype ref
+    S_oaoa_ up0;
+    if (!p0) {
+        memset(&up0, 0, sizeof(p0));
+        p0 = &up0;
+    }
+        
+    typedef void (*FuncToCall)(struct S_oaoa_* p1, const void* method);
+    ((FuncToCall)methodPointer)( p0,  method);                
+    int ret0;
+    if (p0 == &up0)
+    {
+        ret0 = DataTransfer::CopyValueType(apis, env, *p0, TIp0);    
+        apis->update_boxed_value(env, _sv0, ret0);
+    }
+    else
+    {
+        ret0 = apis->native_object_to_value(env, TIp0, p0, false);
+    }
+
+	apis->add_return(info, ret0);
+    value_scope.reserve = apis->get_return_num(info);
+    return true;
+}
 // Void NtfProject8RoundStatisticInfo(Project8RoundStatisticInfoList ByRef) declare in SGC
 bool w_vPS_oo_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
     // PLog("Running w_vPS_oo_");
@@ -16065,45 +17268,6 @@ bool w_vPS_oo_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer 
     }
         
     typedef void (*FuncToCall)(struct S_oo_* p1, const void* method);
-    ((FuncToCall)methodPointer)( p0,  method);                
-    int ret0;
-    if (p0 == &up0)
-    {
-        ret0 = DataTransfer::CopyValueType(apis, env, *p0, TIp0);    
-        apis->update_boxed_value(env, _sv0, ret0);
-    }
-    else
-    {
-        ret0 = apis->native_object_to_value(env, TIp0, p0, false);
-    }
-
-	apis->add_return(info, ret0);
-    value_scope.reserve = apis->get_return_num(info);
-    return true;
-}
-// Void NtfProject8AuctionUnlockChange(Project8AuctionUnlockChange ByRef) declare in SGC
-bool w_vPS_oooo_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vPS_oooo_");
-    AutoValueScope value_scope(apis, env);
-    auto TIp0 = wrapData->TypeInfos[0];
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    if (checkLuaArgument) {
-        if (lua_args_len != 1) 
-            return false;
-
-        if (!apis->is_object(env, _sv0)) return false;        
-    }
-     
-    // LuaValToCSVal Pstruct
-    S_oooo_* p0 = DataTransfer::GetPointer<S_oooo_>(apis, env, apis->unboxing(env, _sv0)); // valuetype ref
-    S_oooo_ up0;
-    if (!p0) {
-        memset(&up0, 0, sizeof(p0));
-        p0 = &up0;
-    }
-        
-    typedef void (*FuncToCall)(struct S_oooo_* p1, const void* method);
     ((FuncToCall)methodPointer)( p0,  method);                
     int ret0;
     if (p0 == &up0)
@@ -16450,7 +17614,7 @@ bool w_vPS_su4_b(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointe
                 
     // LuaValToCSVal P any
     bool p1 = converter::Converter<bool>::toCpp(apis, env, _sv1);
-        
+
     typedef void (*FuncToCall)(struct S_su4_* p1, bool p2, const void* method);
     ((FuncToCall)methodPointer)( p0, p1,  method);                
     int ret0;
@@ -16937,8 +18101,8 @@ bool w_vPS_u4i4i4i4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPo
     return true;
 }
 // Void NtfOSHPlayerEnergyChange(OSHPlayerEnergyChangeInfo ByRef) declare in SGC
-bool w_vPS_u4i4u1u4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vPS_u4i4u1u4_");
+bool w_vPS_u4i4u4i4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_vPS_u4i4u4i4_");
     AutoValueScope value_scope(apis, env);
     auto TIp0 = wrapData->TypeInfos[0];
     int lua_args_len = apis->get_args_len(info);
@@ -16951,14 +18115,14 @@ bool w_vPS_u4i4u1u4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPo
     }
      
     // LuaValToCSVal Pstruct
-    S_u4i4u1u4_* p0 = DataTransfer::GetPointer<S_u4i4u1u4_>(apis, env, apis->unboxing(env, _sv0)); // valuetype ref
-    S_u4i4u1u4_ up0;
+    S_u4i4u4i4_* p0 = DataTransfer::GetPointer<S_u4i4u4i4_>(apis, env, apis->unboxing(env, _sv0)); // valuetype ref
+    S_u4i4u4i4_ up0;
     if (!p0) {
         memset(&up0, 0, sizeof(p0));
         p0 = &up0;
     }
         
-    typedef void (*FuncToCall)(struct S_u4i4u1u4_* p1, const void* method);
+    typedef void (*FuncToCall)(struct S_u4i4u4i4_* p1, const void* method);
     ((FuncToCall)methodPointer)( p0,  method);                
     int ret0;
     if (p0 == &up0)
@@ -17158,7 +18322,7 @@ bool w_vPS_u4u1o_b(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPoin
                 
     // LuaValToCSVal P any
     bool p1 = converter::Converter<bool>::toCpp(apis, env, _sv1);
-        
+
     typedef void (*FuncToCall)(struct S_u4u1o_* p1, bool p2, const void* method);
     ((FuncToCall)methodPointer)( p0, p1,  method);                
     int ret0;
@@ -17800,6 +18964,33 @@ bool w_vPS_u4u4u4u4u4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethod
     value_scope.reserve = apis->get_return_num(info);
     return true;
 }
+// Void EndDeepSampleByIndex(Int32 ByRef) declare in Assets.Plugins.Perf.StatsLite
+bool w_vPi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_vPi4");
+    AutoValueScope value_scope(apis, env);
+
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    if (checkLuaArgument) {
+        if (lua_args_len != 1) 
+            return false;
+
+        if (!apis->is_object(env, _sv0)) return false;        
+    }
+     
+    // LuaValToCSVal P primitive
+    int32_t up0 = 0;
+    if (0 < lua_args_len)
+        up0 = converter::Converter<std::reference_wrapper<int32_t>>::toCpp(apis, env, _sv0);
+    int32_t* p0 = &up0;
+
+    typedef void (*FuncToCall)(int32_t* p1, const void* method);
+    ((FuncToCall)methodPointer)( p0,  method);
+	int ret0 = converter::Converter<int32_t>::toScript(apis, env, *p0);
+	apis->add_return(info, ret0);
+    value_scope.reserve = apis->get_return_num(info);
+    return true;
+}
 // Void Add(Assets.Scripts.GameLogic.SceneTriggerType ByRef, Assets.Scripts.GameLogic.SceneTriggerType[]) declare in Assets.Scripts.GameLogic.SceneInteractcs
 bool w_vPi4o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
     // PLog("Running w_vPi4o");
@@ -17825,7 +19016,7 @@ bool w_vPi4o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
     
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-        
+
     typedef void (*FuncToCall)(int32_t* p1, Il2CppObject* p2, const void* method);
     ((FuncToCall)methodPointer)( p0, p1,  method);
 	int ret0 = converter::Converter<int32_t>::toScript(apis, env, *p0);
@@ -17909,7 +19100,7 @@ bool w_vPu1i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer m
         
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-        
+
     typedef void (*FuncToCall)(uint8_t* p1, int32_t p2, const void* method);
     ((FuncToCall)methodPointer)( p0, p1,  method);
 	int ret0 = converter::Converter<uint8_t>::toScript(apis, env, *p0);
@@ -17942,7 +19133,7 @@ bool w_vPu1u4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer m
         
     // LuaValToCSVal P any
     uint32_t p1 = converter::Converter<uint32_t>::toCpp(apis, env, _sv1);
-        
+
     typedef void (*FuncToCall)(uint8_t* p1, uint32_t p2, const void* method);
     ((FuncToCall)methodPointer)( p0, p1,  method);
 	int ret0 = converter::Converter<uint8_t>::toScript(apis, env, *p0);
@@ -17990,7 +19181,8 @@ bool w_vS_i4i4i4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPoint
         if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_i4i4i4_* pp0 = DataTransfer::GetPointer<S_i4i4i4_>(apis, env, _sv0);
     S_i4i4i4_ p0 = pp0 ? *pp0 : S_i4i4i4_ {};
         
@@ -18011,7 +19203,8 @@ bool w_vS_r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer
         if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_r4r4_* pp0 = DataTransfer::GetPointer<S_r4r4_>(apis, env, _sv0);
     S_r4r4_ p0 = pp0 ? *pp0 : S_r4r4_ {};
         
@@ -18032,7 +19225,8 @@ bool w_vS_r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPoint
         if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_r4r4r4_* pp0 = DataTransfer::GetPointer<S_r4r4r4_>(apis, env, _sv0);
     S_r4r4r4_ p0 = pp0 ? *pp0 : S_r4r4r4_ {};
         
@@ -18072,16 +19266,20 @@ bool w_vS_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_Dr4Do(struct pesapi_ffi* apis, Metho
         if (lua_args_len > 5 && !DataTransfer::IsAssignable(apis, env, _sv5, TIp5, false))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_r4r4r4_* pp0 = DataTransfer::GetPointer<S_r4r4r4_>(apis, env, _sv0);
     S_r4r4r4_ p0 = pp0 ? *pp0 : S_r4r4r4_ {};
-             // LuaValToCSVal struct
+             
+    // LuaValToCSVal struct
     S_r4r4r4_* pp1 = DataTransfer::GetPointer<S_r4r4r4_>(apis, env, _sv1);
     S_r4r4r4_ p1 = pp1 ? *pp1 : S_r4r4r4_ {};
-             // LuaValToCSVal struct
+             
+    // LuaValToCSVal struct
     S_r4r4r4_* pp2 = DataTransfer::GetPointer<S_r4r4r4_>(apis, env, _sv2);
     S_r4r4r4_ p2 = pp2 ? *pp2 : S_r4r4r4_ {};
-             // LuaValToCSVal struct
+             
+    // LuaValToCSVal struct
     S_r4r4r4_* pp3 = DataTransfer::GetPointer<S_r4r4r4_>(apis, env, _sv3);
     S_r4r4r4_ p3 = pp3 ? *pp3 : S_r4r4r4_ {};
          // LuaValToCSVal primitive with default
@@ -18112,7 +19310,8 @@ bool w_vS_r4r4r4r4_Tr4Tr4Tr4(struct pesapi_ffi* apis, MethodInfo* method, Il2Cpp
         if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_r4r4r4r4_* pp0 = DataTransfer::GetPointer<S_r4r4r4r4_>(apis, env, _sv0);
     S_r4r4r4r4_ p0 = pp0 ? *pp0 : S_r4r4r4r4_ {};
              
@@ -18158,7 +19357,8 @@ bool w_vS_u4bbbi4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPoin
         if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_u4bbbi4_* pp0 = DataTransfer::GetPointer<S_u4bbbi4_>(apis, env, _sv0);
     S_u4bbbi4_ p0 = pp0 ? *pp0 : S_u4bbbi4_ {};
         
@@ -18179,7 +19379,8 @@ bool w_vS_u8_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer m
         if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_u8_* pp0 = DataTransfer::GetPointer<S_u8_>(apis, env, _sv0);
     S_u8_ p0 = pp0 ? *pp0 : S_u8_ {};
         
@@ -18188,8 +19389,8 @@ bool w_vS_u8_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer m
     return true;
 }
 // Void OnBluePrintBroadCastEventRouterEvent(StringId, BroadCastEventRouterParam ByRef) declare in SGC
-bool w_vS_u8_PS_o_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vS_u8_PS_o_");
+bool w_vS_u8_PS_a_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_vS_u8_PS_a_");
     AutoValueScope value_scope(apis, env);
     auto TIp0 = wrapData->TypeInfos[0];
     auto TIp1 = wrapData->TypeInfos[1];
@@ -18204,19 +19405,20 @@ bool w_vS_u8_PS_o_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPoin
             return false;
         if (!apis->is_object(env, _sv1)) return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_u8_* pp0 = DataTransfer::GetPointer<S_u8_>(apis, env, _sv0);
     S_u8_ p0 = pp0 ? *pp0 : S_u8_ {};
              
     // LuaValToCSVal Pstruct
-    S_o_* p1 = DataTransfer::GetPointer<S_o_>(apis, env, apis->unboxing(env, _sv1)); // valuetype ref
-    S_o_ up1;
+    S_a_* p1 = DataTransfer::GetPointer<S_a_>(apis, env, apis->unboxing(env, _sv1)); // valuetype ref
+    S_a_ up1;
     if (!p1) {
         memset(&up1, 0, sizeof(p1));
         p1 = &up1;
     }
         
-    typedef void (*FuncToCall)(struct S_u8_ p1, struct S_o_* p2, const void* method);
+    typedef void (*FuncToCall)(struct S_u8_ p1, struct S_a_* p2, const void* method);
     ((FuncToCall)methodPointer)( p0, p1,  method);                
     int ret1;
     if (p1 == &up1)
@@ -18249,13 +19451,14 @@ bool w_vS_u8_u4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer
         if (!converter::Converter<uint32_t>::accept(apis, env, _sv1))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_u8_* pp0 = DataTransfer::GetPointer<S_u8_>(apis, env, _sv0);
     S_u8_ p0 = pp0 ? *pp0 : S_u8_ {};
                 
     // LuaValToCSVal P any
     uint32_t p1 = converter::Converter<uint32_t>::toCpp(apis, env, _sv1);
-        
+
     typedef void (*FuncToCall)(struct S_u8_ p1, uint32_t p2, const void* method);
     ((FuncToCall)methodPointer)( p0, p1,  method);
     return true;
@@ -18304,19 +19507,21 @@ bool w_vTS_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_r4S_r4r4_S_r4r4_r4r4DS_i4r4_(struct 
                 
     // LuaValToCSVal P any
     float p1 = converter::Converter<float>::toCpp(apis, env, _sv1);
-             // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_r4r4_* pp2 = DataTransfer::GetPointer<S_r4r4_>(apis, env, _sv2);
     S_r4r4_ p2 = pp2 ? *pp2 : S_r4r4_ {};
-             // LuaValToCSVal struct
+             
+    // LuaValToCSVal struct
     S_r4r4_* pp3 = DataTransfer::GetPointer<S_r4r4_>(apis, env, _sv3);
     S_r4r4_ p3 = pp3 ? *pp3 : S_r4r4_ {};
                 
     // LuaValToCSVal P any
     float p4 = converter::Converter<float>::toCpp(apis, env, _sv4);
-                
+        
     // LuaValToCSVal P any
     float p5 = converter::Converter<float>::toCpp(apis, env, _sv5);
-            // LuaValToCSVal valuetype with default
+    // LuaValToCSVal valuetype with default
     S_i4r4_ p6 = OptionalParameter<S_i4r4_>::GetValueType(apis, env, info, method, wrapData, lua_args_len, 6);
             
     typedef void (*FuncToCall)(void* p1, float p2, struct S_r4r4_ p3, struct S_r4r4_ p4, float p5, float p6, struct S_i4r4_ p7, const void* method);
@@ -18388,7 +19593,7 @@ bool w_vb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer metho
         
     // LuaValToCSVal P any
     bool p0 = converter::Converter<bool>::toCpp(apis, env, _sv0);
-        
+
     typedef void (*FuncToCall)(bool p1, const void* method);
     ((FuncToCall)methodPointer)( p0,  method);
     return true;
@@ -18412,11 +19617,39 @@ bool w_vbS_u8_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer 
         
     // LuaValToCSVal P any
     bool p0 = converter::Converter<bool>::toCpp(apis, env, _sv0);
-             // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_u8_* pp1 = DataTransfer::GetPointer<S_u8_>(apis, env, _sv1);
     S_u8_ p1 = pp1 ? *pp1 : S_u8_ {};
         
     typedef void (*FuncToCall)(bool p1, struct S_u8_ p2, const void* method);
+    ((FuncToCall)methodPointer)( p0, p1,  method);
+    return true;
+}
+// Void StartRecordStats(Boolean, Boolean) declare in Assets.Scripts.Framework.PerfUtils
+bool w_vbb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_vbb");
+
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    int _sv1 = apis->get_arg(info, 1);
+    if (checkLuaArgument) {
+        if (lua_args_len != 2) 
+            return false;
+
+        if (!converter::Converter<bool>::accept(apis, env, _sv0))
+            return false;
+        if (!converter::Converter<bool>::accept(apis, env, _sv1))
+            return false;        
+    }
+        
+    // LuaValToCSVal P any
+    bool p0 = converter::Converter<bool>::toCpp(apis, env, _sv0);
+        
+    // LuaValToCSVal P any
+    bool p1 = converter::Converter<bool>::toCpp(apis, env, _sv1);
+
+    typedef void (*FuncToCall)(bool p1, bool p2, const void* method);
     ((FuncToCall)methodPointer)( p0, p1,  method);
     return true;
 }
@@ -18442,13 +19675,13 @@ bool w_vbbb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     bool p0 = converter::Converter<bool>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     bool p1 = converter::Converter<bool>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     bool p2 = converter::Converter<bool>::toCpp(apis, env, _sv2);
-        
+
     typedef void (*FuncToCall)(bool p1, bool p2, bool p3, const void* method);
     ((FuncToCall)methodPointer)( p0, p1, p2,  method);
     return true;
@@ -18472,10 +19705,10 @@ bool w_vbi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     bool p0 = converter::Converter<bool>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-        
+
     typedef void (*FuncToCall)(bool p1, int32_t p2, const void* method);
     ((FuncToCall)methodPointer)( p0, p1,  method);
     return true;
@@ -18499,10 +19732,10 @@ bool w_vbo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer meth
         
     // LuaValToCSVal P any
     bool p0 = converter::Converter<bool>::toCpp(apis, env, _sv0);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-        
+
     typedef void (*FuncToCall)(bool p1, Il2CppObject* p2, const void* method);
     ((FuncToCall)methodPointer)( p0, p1,  method);
     return true;
@@ -18529,15 +19762,131 @@ bool w_vbu8i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer m
         
     // LuaValToCSVal P any
     bool p0 = converter::Converter<bool>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     uint64_t p1 = converter::Converter<uint64_t>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-        
+
     typedef void (*FuncToCall)(bool p1, uint64_t p2, int32_t p3, const void* method);
     ((FuncToCall)methodPointer)( p0, p1, p2,  method);
+    return true;
+}
+// Void BeginDeepSample(Assets.Plugins.Perf.StatsSampleId) declare in Assets.Plugins.Perf.StatsLite
+bool w_vi2(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_vi2");
+
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    if (checkLuaArgument) {
+        if (lua_args_len != 1) 
+            return false;
+
+        if (!converter::Converter<int16_t>::accept(apis, env, _sv0))
+            return false;        
+    }
+        
+    // LuaValToCSVal P any
+    int16_t p0 = converter::Converter<int16_t>::toCpp(apis, env, _sv0);
+
+    typedef void (*FuncToCall)(int16_t p1, const void* method);
+    ((FuncToCall)methodPointer)( p0,  method);
+    return true;
+}
+// Void BeginDeepSample(Assets.Plugins.Perf.StatsSampleId, Int32 ByRef) declare in Assets.Plugins.Perf.StatsLite
+bool w_vi2Pi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_vi2Pi4");
+    AutoValueScope value_scope(apis, env);
+
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    int _sv1 = apis->get_arg(info, 1);
+    if (checkLuaArgument) {
+        if (lua_args_len != 2) 
+            return false;
+
+        if (!converter::Converter<int16_t>::accept(apis, env, _sv0))
+            return false;
+        if (!apis->is_object(env, _sv1)) return false;        
+    }
+        
+    // LuaValToCSVal P any
+    int16_t p0 = converter::Converter<int16_t>::toCpp(apis, env, _sv0);
+     
+    // LuaValToCSVal P primitive
+    int32_t up1 = 0;
+    if (1 < lua_args_len)
+        up1 = converter::Converter<std::reference_wrapper<int32_t>>::toCpp(apis, env, _sv1);
+    int32_t* p1 = &up1;
+
+    typedef void (*FuncToCall)(int16_t p1, int32_t* p2, const void* method);
+    ((FuncToCall)methodPointer)( p0, p1,  method);
+	int ret1 = converter::Converter<int32_t>::toScript(apis, env, *p1);
+	apis->add_return(info, ret1);
+    value_scope.reserve = apis->get_return_num(info);
+    return true;
+}
+// Void BeginDeepSample(Assets.Plugins.Perf.StatsSampleId, System.String) declare in Assets.Plugins.Perf.StatsLite
+bool w_vi2s(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_vi2s");
+    auto TIp1 = wrapData->TypeInfos[0];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    int _sv1 = apis->get_arg(info, 1);
+    if (checkLuaArgument) {
+        if (lua_args_len != 2) 
+            return false;
+
+        if (!converter::Converter<int16_t>::accept(apis, env, _sv0))
+            return false;
+        if (!converter::Converter<Il2CppString*>::accept(apis, env, _sv1))
+            return false;        
+    }
+        
+    // LuaValToCSVal P any
+    int16_t p0 = converter::Converter<int16_t>::toCpp(apis, env, _sv0);
+    // LuaValToCSVal s
+    Il2CppString* p1 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv1);
+    typedef void (*FuncToCall)(int16_t p1, Il2CppString* p2, const void* method);
+    ((FuncToCall)methodPointer)( p0, p1,  method);
+    return true;
+}
+// Void BeginDeepSample(Assets.Plugins.Perf.StatsSampleId, System.String, Int32 ByRef) declare in Assets.Plugins.Perf.StatsLite
+bool w_vi2sPi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_vi2sPi4");
+    AutoValueScope value_scope(apis, env);
+    auto TIp1 = wrapData->TypeInfos[0];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    int _sv1 = apis->get_arg(info, 1);
+    int _sv2 = apis->get_arg(info, 2);
+    if (checkLuaArgument) {
+        if (lua_args_len != 3) 
+            return false;
+
+        if (!converter::Converter<int16_t>::accept(apis, env, _sv0))
+            return false;
+        if (!converter::Converter<Il2CppString*>::accept(apis, env, _sv1))
+            return false;
+        if (!apis->is_object(env, _sv2)) return false;        
+    }
+        
+    // LuaValToCSVal P any
+    int16_t p0 = converter::Converter<int16_t>::toCpp(apis, env, _sv0);
+    // LuaValToCSVal s
+    Il2CppString* p1 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv1);     
+    // LuaValToCSVal P primitive
+    int32_t up2 = 0;
+    if (2 < lua_args_len)
+        up2 = converter::Converter<std::reference_wrapper<int32_t>>::toCpp(apis, env, _sv2);
+    int32_t* p2 = &up2;
+
+    typedef void (*FuncToCall)(int16_t p1, Il2CppString* p2, int32_t* p3, const void* method);
+    ((FuncToCall)methodPointer)( p0, p1, p2,  method);
+	int ret2 = converter::Converter<int32_t>::toScript(apis, env, *p2);
+	apis->add_return(info, ret2);
+    value_scope.reserve = apis->get_return_num(info);
     return true;
 }
 // Void Quit(Int32) declare in UnityEngine.Application
@@ -18556,7 +19905,7 @@ bool w_vi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer meth
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-        
+
     typedef void (*FuncToCall)(int32_t p1, const void* method);
     ((FuncToCall)methodPointer)( p0,  method);
     return true;
@@ -18580,7 +19929,7 @@ bool w_vi4Db(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-         // LuaValToCSVal primitive with default
+ // LuaValToCSVal primitive with default
     bool p1 = OptionalParameter<bool>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 1);
             
     typedef void (*FuncToCall)(int32_t p1, bool p2, const void* method);
@@ -18609,7 +19958,7 @@ bool w_vi4Di4Ds(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-         // LuaValToCSVal primitive with default
+ // LuaValToCSVal primitive with default
     int32_t p1 = OptionalParameter<int32_t>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 1);
                 // LuaValToCSVal string with default
     Il2CppString* p2 = OptionalParameter<Il2CppString*>::GetString(apis, env, info, method, wrapData, lua_args_len, 2);
@@ -18640,7 +19989,7 @@ bool w_vi4DsDs(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer 
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-            // LuaValToCSVal string with default
+    // LuaValToCSVal string with default
     Il2CppString* p1 = OptionalParameter<Il2CppString*>::GetString(apis, env, info, method, wrapData, lua_args_len, 1);    // LuaValToCSVal string with default
     Il2CppString* p2 = OptionalParameter<Il2CppString*>::GetString(apis, env, info, method, wrapData, lua_args_len, 2);
     typedef void (*FuncToCall)(int32_t p1, Il2CppString* p2, Il2CppString* p3, const void* method);
@@ -18664,10 +20013,10 @@ bool w_vi4O(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-        
+
     typedef void (*FuncToCall)(int32_t p1, Il2CppObject* p2, const void* method);
     ((FuncToCall)methodPointer)( p0, p1,  method);
     return true;
@@ -18691,7 +20040,7 @@ bool w_vi4PS_oo_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointe
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-             
+     
     // LuaValToCSVal Pstruct
     S_oo_* p1 = DataTransfer::GetPointer<S_oo_>(apis, env, apis->unboxing(env, _sv1)); // valuetype ref
     S_oo_ up1;
@@ -18736,7 +20085,8 @@ bool w_vi4S_r4r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodP
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-             // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_r4r4r4r4_* pp1 = DataTransfer::GetPointer<S_r4r4r4r4_>(apis, env, _sv1);
     S_r4r4r4r4_ p1 = pp1 ? *pp1 : S_r4r4r4r4_ {};
         
@@ -18763,7 +20113,8 @@ bool w_vi4S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_(struct pesapi_ffi* apis, MethodInf
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-             // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_* pp1 = DataTransfer::GetPointer<S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_>(apis, env, _sv1);
     S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_ p1 = pp1 ? *pp1 : S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_ {};
         
@@ -18791,7 +20142,7 @@ bool w_vi4Ti4Ti4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointe
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-             
+     
     // LuaValToCSVal P primitive
     int32_t up1 = 0;
     if (1 < lua_args_len)
@@ -18832,10 +20183,10 @@ bool w_vi4b(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     bool p1 = converter::Converter<bool>::toCpp(apis, env, _sv1);
-        
+
     typedef void (*FuncToCall)(int32_t p1, bool p2, const void* method);
     ((FuncToCall)methodPointer)( p0, p1,  method);
     return true;
@@ -18859,10 +20210,10 @@ bool w_vi4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-        
+
     typedef void (*FuncToCall)(int32_t p1, int32_t p2, const void* method);
     ((FuncToCall)methodPointer)( p0, p1,  method);
     return true;
@@ -18889,13 +20240,13 @@ bool w_vi4i4b(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer m
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     bool p2 = converter::Converter<bool>::toCpp(apis, env, _sv2);
-        
+
     typedef void (*FuncToCall)(int32_t p1, int32_t p2, bool p3, const void* method);
     ((FuncToCall)methodPointer)( p0, p1, p2,  method);
     return true;
@@ -18925,16 +20276,16 @@ bool w_vi4i4bb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer 
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     bool p2 = converter::Converter<bool>::toCpp(apis, env, _sv2);
-                
+        
     // LuaValToCSVal P any
     bool p3 = converter::Converter<bool>::toCpp(apis, env, _sv3);
-        
+
     typedef void (*FuncToCall)(int32_t p1, int32_t p2, bool p3, bool p4, const void* method);
     ((FuncToCall)methodPointer)( p0, p1, p2, p3,  method);
     return true;
@@ -18964,16 +20315,16 @@ bool w_vi4i4bi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     bool p2 = converter::Converter<bool>::toCpp(apis, env, _sv2);
-                
+        
     // LuaValToCSVal P any
     int32_t p3 = converter::Converter<int32_t>::toCpp(apis, env, _sv3);
-        
+
     typedef void (*FuncToCall)(int32_t p1, int32_t p2, bool p3, int32_t p4, const void* method);
     ((FuncToCall)methodPointer)( p0, p1, p2, p3,  method);
     return true;
@@ -19000,13 +20351,13 @@ bool w_vi4i4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer 
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-        
+
     typedef void (*FuncToCall)(int32_t p1, int32_t p2, int32_t p3, const void* method);
     ((FuncToCall)methodPointer)( p0, p1, p2,  method);
     return true;
@@ -19036,13 +20387,14 @@ bool w_vi4i4i4S_u4u4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodP
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-             // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_u4u4_* pp3 = DataTransfer::GetPointer<S_u4u4_>(apis, env, _sv3);
     S_u4u4_ p3 = pp3 ? *pp3 : S_u4u4_ {};
         
@@ -19075,16 +20427,16 @@ bool w_vi4i4i4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointe
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-                
+        
     // LuaValToCSVal P any
     int32_t p3 = converter::Converter<int32_t>::toCpp(apis, env, _sv3);
-        
+
     typedef void (*FuncToCall)(int32_t p1, int32_t p2, int32_t p3, int32_t p4, const void* method);
     ((FuncToCall)methodPointer)( p0, p1, p2, p3,  method);
     return true;
@@ -19117,19 +20469,19 @@ bool w_vi4i4i4i4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPoin
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-                
+        
     // LuaValToCSVal P any
     int32_t p3 = converter::Converter<int32_t>::toCpp(apis, env, _sv3);
-                
+        
     // LuaValToCSVal P any
     int32_t p4 = converter::Converter<int32_t>::toCpp(apis, env, _sv4);
-        
+
     typedef void (*FuncToCall)(int32_t p1, int32_t p2, int32_t p3, int32_t p4, int32_t p5, const void* method);
     ((FuncToCall)methodPointer)( p0, p1, p2, p3, p4,  method);
     return true;
@@ -19165,22 +20517,22 @@ bool w_vi4i4i4i4i4b(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPoi
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-                
+        
     // LuaValToCSVal P any
     int32_t p3 = converter::Converter<int32_t>::toCpp(apis, env, _sv3);
-                
+        
     // LuaValToCSVal P any
     int32_t p4 = converter::Converter<int32_t>::toCpp(apis, env, _sv4);
-                
+        
     // LuaValToCSVal P any
     bool p5 = converter::Converter<bool>::toCpp(apis, env, _sv5);
-        
+
     typedef void (*FuncToCall)(int32_t p1, int32_t p2, int32_t p3, int32_t p4, int32_t p5, bool p6, const void* method);
     ((FuncToCall)methodPointer)( p0, p1, p2, p3, p4, p5,  method);
     return true;
@@ -19219,22 +20571,22 @@ bool w_vi4i4i8i8i4bs(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPo
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     int64_t p2 = converter::Converter<int64_t>::toCpp(apis, env, _sv2);
-                
+        
     // LuaValToCSVal P any
     int64_t p3 = converter::Converter<int64_t>::toCpp(apis, env, _sv3);
-                
+        
     // LuaValToCSVal P any
     int32_t p4 = converter::Converter<int32_t>::toCpp(apis, env, _sv4);
-                
+        
     // LuaValToCSVal P any
     bool p5 = converter::Converter<bool>::toCpp(apis, env, _sv5);
-            // LuaValToCSVal s
+    // LuaValToCSVal s
     Il2CppString* p6 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv6);
     typedef void (*FuncToCall)(int32_t p1, int32_t p2, int64_t p3, int64_t p4, int32_t p5, bool p6, Il2CppString* p7, const void* method);
     ((FuncToCall)methodPointer)( p0, p1, p2, p3, p4, p5, p6,  method);
@@ -19262,13 +20614,13 @@ bool w_vi4i4o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer m
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p2 = LuaValueToCSRef(apis, TIp2, env, _sv2);
-        
+
     typedef void (*FuncToCall)(int32_t p1, int32_t p2, Il2CppObject* p3, const void* method);
     ((FuncToCall)methodPointer)( p0, p1, p2,  method);
     return true;
@@ -19307,22 +20659,22 @@ bool w_vi4i4oooo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointe
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p2 = LuaValueToCSRef(apis, TIp2, env, _sv2);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p3 = LuaValueToCSRef(apis, TIp3, env, _sv3);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p4 = LuaValueToCSRef(apis, TIp4, env, _sv4);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p5 = LuaValueToCSRef(apis, TIp5, env, _sv5);
-        
+
     typedef void (*FuncToCall)(int32_t p1, int32_t p2, Il2CppObject* p3, Il2CppObject* p4, Il2CppObject* p5, Il2CppObject* p6, const void* method);
     ((FuncToCall)methodPointer)( p0, p1, p2, p3, p4, p5,  method);
     return true;
@@ -19346,10 +20698,10 @@ bool w_vi4i8(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     int64_t p1 = converter::Converter<int64_t>::toCpp(apis, env, _sv1);
-        
+
     typedef void (*FuncToCall)(int32_t p1, int64_t p2, const void* method);
     ((FuncToCall)methodPointer)( p0, p1,  method);
     return true;
@@ -19373,10 +20725,10 @@ bool w_vi4o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-        
+
     typedef void (*FuncToCall)(int32_t p1, Il2CppObject* p2, const void* method);
     ((FuncToCall)methodPointer)( p0, p1,  method);
     return true;
@@ -19403,13 +20755,13 @@ bool w_vi4oi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer m
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-        
+
     typedef void (*FuncToCall)(int32_t p1, Il2CppObject* p2, int32_t p3, const void* method);
     ((FuncToCall)methodPointer)( p0, p1, p2,  method);
     return true;
@@ -19439,16 +20791,16 @@ bool w_vi4oi4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-                
+        
     // LuaValToCSVal P any
     int32_t p3 = converter::Converter<int32_t>::toCpp(apis, env, _sv3);
-        
+
     typedef void (*FuncToCall)(int32_t p1, Il2CppObject* p2, int32_t p3, int32_t p4, const void* method);
     ((FuncToCall)methodPointer)( p0, p1, p2, p3,  method);
     return true;
@@ -19472,10 +20824,10 @@ bool w_vi4r4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     float p1 = converter::Converter<float>::toCpp(apis, env, _sv1);
-        
+
     typedef void (*FuncToCall)(int32_t p1, float p2, const void* method);
     ((FuncToCall)methodPointer)( p0, p1,  method);
     return true;
@@ -19499,7 +20851,7 @@ bool w_vi4s(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-            // LuaValToCSVal s
+    // LuaValToCSVal s
     Il2CppString* p1 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv1);
     typedef void (*FuncToCall)(int32_t p1, Il2CppString* p2, const void* method);
     ((FuncToCall)methodPointer)( p0, p1,  method);
@@ -19526,7 +20878,7 @@ bool w_vi4sVO(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer m
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-            // LuaValToCSVal s
+    // LuaValToCSVal s
     Il2CppString* p1 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv1);    // LuaValToCSVal ref params
     Il2CppArray* p2 = Params<void*>::PackRef(apis, env, info, TIp2, lua_args_len, 2);
             
@@ -19556,11 +20908,11 @@ bool w_vi4sb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-            // LuaValToCSVal s
+    // LuaValToCSVal s
     Il2CppString* p1 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv1);        
     // LuaValToCSVal P any
     bool p2 = converter::Converter<bool>::toCpp(apis, env, _sv2);
-        
+
     typedef void (*FuncToCall)(int32_t p1, Il2CppString* p2, bool p3, const void* method);
     ((FuncToCall)methodPointer)( p0, p1, p2,  method);
     return true;
@@ -19591,11 +20943,11 @@ bool w_vi4si4PS_pi4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPo
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-            // LuaValToCSVal s
+    // LuaValToCSVal s
     Il2CppString* p1 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv1);        
     // LuaValToCSVal P any
     int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-             
+     
     // LuaValToCSVal Pstruct
     S_pi4_* p3 = DataTransfer::GetPointer<S_pi4_>(apis, env, apis->unboxing(env, _sv3)); // valuetype ref
     S_pi4_ up3;
@@ -19650,17 +21002,17 @@ bool w_vi4si4u4o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointe
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-            // LuaValToCSVal s
+    // LuaValToCSVal s
     Il2CppString* p1 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv1);        
     // LuaValToCSVal P any
     int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-                
+        
     // LuaValToCSVal P any
     uint32_t p3 = converter::Converter<uint32_t>::toCpp(apis, env, _sv3);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p4 = LuaValueToCSRef(apis, TIp4, env, _sv4);
-        
+
     typedef void (*FuncToCall)(int32_t p1, Il2CppString* p2, int32_t p3, uint32_t p4, Il2CppObject* p5, const void* method);
     ((FuncToCall)methodPointer)( p0, p1, p2, p3, p4,  method);
     return true;
@@ -19688,7 +21040,7 @@ bool w_vi4ss(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-            // LuaValToCSVal s
+    // LuaValToCSVal s
     Il2CppString* p1 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv1);    // LuaValToCSVal s
     Il2CppString* p2 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv2);
     typedef void (*FuncToCall)(int32_t p1, Il2CppString* p2, Il2CppString* p3, const void* method);
@@ -19722,7 +21074,7 @@ bool w_vi4sss(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer m
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-            // LuaValToCSVal s
+    // LuaValToCSVal s
     Il2CppString* p1 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv1);    // LuaValToCSVal s
     Il2CppString* p2 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv2);    // LuaValToCSVal s
     Il2CppString* p3 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv3);
@@ -19768,13 +21120,13 @@ bool w_vi4sssoDi4Ds(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPoi
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-            // LuaValToCSVal s
+    // LuaValToCSVal s
     Il2CppString* p1 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv1);    // LuaValToCSVal s
     Il2CppString* p2 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv2);    // LuaValToCSVal s
     Il2CppString* p3 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv3);    
     // LuaValToCSVal o/O
     Il2CppObject* p4 = LuaValueToCSRef(apis, TIp4, env, _sv4);
-         // LuaValToCSVal primitive with default
+ // LuaValToCSVal primitive with default
     int32_t p5 = OptionalParameter<int32_t>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 5);
                 // LuaValToCSVal string with default
     Il2CppString* p6 = OptionalParameter<Il2CppString*>::GetString(apis, env, info, method, wrapData, lua_args_len, 6);
@@ -19807,16 +21159,16 @@ bool w_vi4u1i4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointe
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     uint8_t p1 = converter::Converter<uint8_t>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-                
+        
     // LuaValToCSVal P any
     int32_t p3 = converter::Converter<int32_t>::toCpp(apis, env, _sv3);
-        
+
     typedef void (*FuncToCall)(int32_t p1, uint8_t p2, int32_t p3, int32_t p4, const void* method);
     ((FuncToCall)methodPointer)( p0, p1, p2, p3,  method);
     return true;
@@ -19840,10 +21192,10 @@ bool w_vi4u4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     uint32_t p1 = converter::Converter<uint32_t>::toCpp(apis, env, _sv1);
-        
+
     typedef void (*FuncToCall)(int32_t p1, uint32_t p2, const void* method);
     ((FuncToCall)methodPointer)( p0, p1,  method);
     return true;
@@ -19870,13 +21222,13 @@ bool w_vi4u4b(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer m
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     uint32_t p1 = converter::Converter<uint32_t>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     bool p2 = converter::Converter<bool>::toCpp(apis, env, _sv2);
-        
+
     typedef void (*FuncToCall)(int32_t p1, uint32_t p2, bool p3, const void* method);
     ((FuncToCall)methodPointer)( p0, p1, p2,  method);
     return true;
@@ -19903,13 +21255,13 @@ bool w_vi4u4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer 
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     uint32_t p1 = converter::Converter<uint32_t>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-        
+
     typedef void (*FuncToCall)(int32_t p1, uint32_t p2, int32_t p3, const void* method);
     ((FuncToCall)methodPointer)( p0, p1, p2,  method);
     return true;
@@ -19945,22 +21297,22 @@ bool w_vi4u4i4bbi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPoin
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     uint32_t p1 = converter::Converter<uint32_t>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-                
+        
     // LuaValToCSVal P any
     bool p3 = converter::Converter<bool>::toCpp(apis, env, _sv3);
-                
+        
     // LuaValToCSVal P any
     bool p4 = converter::Converter<bool>::toCpp(apis, env, _sv4);
-                
+        
     // LuaValToCSVal P any
     int32_t p5 = converter::Converter<int32_t>::toCpp(apis, env, _sv5);
-        
+
     typedef void (*FuncToCall)(int32_t p1, uint32_t p2, int32_t p3, bool p4, bool p5, int32_t p6, const void* method);
     ((FuncToCall)methodPointer)( p0, p1, p2, p3, p4, p5,  method);
     return true;
@@ -19990,16 +21342,16 @@ bool w_vi4u4i4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointe
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     uint32_t p1 = converter::Converter<uint32_t>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-                
+        
     // LuaValToCSVal P any
     int32_t p3 = converter::Converter<int32_t>::toCpp(apis, env, _sv3);
-        
+
     typedef void (*FuncToCall)(int32_t p1, uint32_t p2, int32_t p3, int32_t p4, const void* method);
     ((FuncToCall)methodPointer)( p0, p1, p2, p3,  method);
     return true;
@@ -20029,13 +21381,13 @@ bool w_vi4u4u4PS_u4u4u4u4u4u4S_u8_u1i4i4u1S_S_u8_u4u4u4u4u4u1u1u1u1_S_i4i4i4_S_r
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     uint32_t p1 = converter::Converter<uint32_t>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     uint32_t p2 = converter::Converter<uint32_t>::toCpp(apis, env, _sv2);
-             
+     
     // LuaValToCSVal Pstruct
     S_u4u4u4u4u4u4S_u8_u1i4i4u1S_S_u8_u4u4u4u4u4u1u1u1u1_S_i4i4i4_S_r4r4r4_S_r4r4r4r4_S_r4r4r4_r4r4r4u1u1u1u1u1u1u1u4u4u1u1u1u1S_r4r4r4_i4u4u4u4u4u1u1u1i4u1u1u4u4r4u4u1u1u1r4_* p3 = DataTransfer::GetPointer<S_u4u4u4u4u4u4S_u8_u1i4i4u1S_S_u8_u4u4u4u4u4u1u1u1u1_S_i4i4i4_S_r4r4r4_S_r4r4r4r4_S_r4r4r4_r4r4r4u1u1u1u1u1u1u1u4u4u1u1u1u1S_r4r4r4_i4u4u4u4u4u1u1u1i4u1u1u4u4r4u4u1u1u1r4_>(apis, env, apis->unboxing(env, _sv3)); // valuetype ref
     S_u4u4u4u4u4u4S_u8_u1i4i4u1S_S_u8_u4u4u4u4u4u1u1u1u1_S_i4i4i4_S_r4r4r4_S_r4r4r4r4_S_r4r4r4_r4r4r4u1u1u1u1u1u1u1u4u4u1u1u1u1S_r4r4r4_i4u4u4u4u4u1u1u1i4u1u1u4u4r4u4u1u1u1r4_ up3;
@@ -20086,16 +21438,16 @@ bool w_vi4u4u4u4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointe
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     uint32_t p1 = converter::Converter<uint32_t>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     uint32_t p2 = converter::Converter<uint32_t>::toCpp(apis, env, _sv2);
-                
+        
     // LuaValToCSVal P any
     uint32_t p3 = converter::Converter<uint32_t>::toCpp(apis, env, _sv3);
-        
+
     typedef void (*FuncToCall)(int32_t p1, uint32_t p2, uint32_t p3, uint32_t p4, const void* method);
     ((FuncToCall)methodPointer)( p0, p1, p2, p3,  method);
     return true;
@@ -20131,22 +21483,22 @@ bool w_vi4u4u4u4bu4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPoi
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     uint32_t p1 = converter::Converter<uint32_t>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     uint32_t p2 = converter::Converter<uint32_t>::toCpp(apis, env, _sv2);
-                
+        
     // LuaValToCSVal P any
     uint32_t p3 = converter::Converter<uint32_t>::toCpp(apis, env, _sv3);
-                
+        
     // LuaValToCSVal P any
     bool p4 = converter::Converter<bool>::toCpp(apis, env, _sv4);
-                
+        
     // LuaValToCSVal P any
     uint32_t p5 = converter::Converter<uint32_t>::toCpp(apis, env, _sv5);
-        
+
     typedef void (*FuncToCall)(int32_t p1, uint32_t p2, uint32_t p3, uint32_t p4, bool p5, uint32_t p6, const void* method);
     ((FuncToCall)methodPointer)( p0, p1, p2, p3, p4, p5,  method);
     return true;
@@ -20173,13 +21525,13 @@ bool w_vi4u8u8(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer 
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     uint64_t p1 = converter::Converter<uint64_t>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     uint64_t p2 = converter::Converter<uint64_t>::toCpp(apis, env, _sv2);
-        
+
     typedef void (*FuncToCall)(int32_t p1, uint64_t p2, uint64_t p3, const void* method);
     ((FuncToCall)methodPointer)( p0, p1, p2,  method);
     return true;
@@ -20209,13 +21561,13 @@ bool w_vi4u8u8s(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     uint64_t p1 = converter::Converter<uint64_t>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     uint64_t p2 = converter::Converter<uint64_t>::toCpp(apis, env, _sv2);
-            // LuaValToCSVal s
+    // LuaValToCSVal s
     Il2CppString* p3 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv3);
     typedef void (*FuncToCall)(int32_t p1, uint64_t p2, uint64_t p3, Il2CppString* p4, const void* method);
     ((FuncToCall)methodPointer)( p0, p1, p2, p3,  method);
@@ -20237,7 +21589,7 @@ bool w_vi8(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer meth
         
     // LuaValToCSVal P any
     int64_t p0 = converter::Converter<int64_t>::toCpp(apis, env, _sv0);
-        
+
     typedef void (*FuncToCall)(int64_t p1, const void* method);
     ((FuncToCall)methodPointer)( p0,  method);
     return true;
@@ -20261,10 +21613,10 @@ bool w_vi8i8(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
         
     // LuaValToCSVal P any
     int64_t p0 = converter::Converter<int64_t>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     int64_t p1 = converter::Converter<int64_t>::toCpp(apis, env, _sv1);
-        
+
     typedef void (*FuncToCall)(int64_t p1, int64_t p2, const void* method);
     ((FuncToCall)methodPointer)( p0, p1,  method);
     return true;
@@ -20291,10 +21643,10 @@ bool w_vi8i8s(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer m
         
     // LuaValToCSVal P any
     int64_t p0 = converter::Converter<int64_t>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     int64_t p1 = converter::Converter<int64_t>::toCpp(apis, env, _sv1);
-            // LuaValToCSVal s
+    // LuaValToCSVal s
     Il2CppString* p2 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv2);
     typedef void (*FuncToCall)(int64_t p1, int64_t p2, Il2CppString* p3, const void* method);
     ((FuncToCall)methodPointer)( p0, p1, p2,  method);
@@ -20316,7 +21668,7 @@ bool w_vo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer metho
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-        
+
     typedef void (*FuncToCall)(Il2CppObject* p1, const void* method);
     ((FuncToCall)methodPointer)( p0,  method);
     return true;
@@ -20343,7 +21695,7 @@ bool w_voDbDb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer m
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-         // LuaValToCSVal primitive with default
+ // LuaValToCSVal primitive with default
     bool p1 = OptionalParameter<bool>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 1);
              // LuaValToCSVal primitive with default
     bool p2 = OptionalParameter<bool>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 2);
@@ -20371,7 +21723,7 @@ bool w_voDr4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-         // LuaValToCSVal primitive with default
+ // LuaValToCSVal primitive with default
     float p1 = OptionalParameter<float>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 1);
             
     typedef void (*FuncToCall)(Il2CppObject* p1, float p2, const void* method);
@@ -20396,10 +21748,10 @@ bool w_voO(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer meth
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-        
+
     typedef void (*FuncToCall)(Il2CppObject* p1, Il2CppObject* p2, const void* method);
     ((FuncToCall)methodPointer)( p0, p1,  method);
     return true;
@@ -20424,7 +21776,7 @@ bool w_voPPu1(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer m
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-         
+ 
     // LuaValToCSVal P not primitive
     uint8_t** p1 = nullptr;
 
@@ -20459,13 +21811,13 @@ bool w_voPoo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-             // LuaValToCSVal Po/PO
+     // LuaValToCSVal Po/PO
     Il2CppObject* up1 = DataTransfer::GetPointer<Il2CppObject>(apis, env, apis->unboxing(env, _sv1)); // object ret
     Il2CppObject** p1 = &up1;
             
     // LuaValToCSVal o/O
     Il2CppObject* p2 = LuaValueToCSRef(apis, TIp2, env, _sv2);
-        
+
     typedef void (*FuncToCall)(Il2CppObject* p1, Il2CppObject** p2, Il2CppObject* p3, const void* method);
     ((FuncToCall)methodPointer)( p0, p1, p2,  method);
 	int ret1 = CSRefToLuaValue(apis, env, TIp1, *p1);
@@ -20497,10 +21849,12 @@ bool w_voS_r4r4_S_r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMetho
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-             // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_r4r4_* pp1 = DataTransfer::GetPointer<S_r4r4_>(apis, env, _sv1);
     S_r4r4_ p1 = pp1 ? *pp1 : S_r4r4_ {};
-             // LuaValToCSVal struct
+             
+    // LuaValToCSVal struct
     S_r4r4_* pp2 = DataTransfer::GetPointer<S_r4r4_>(apis, env, _sv2);
     S_r4r4_ p2 = pp2 ? *pp2 : S_r4r4_ {};
         
@@ -20508,7 +21862,41 @@ bool w_voS_r4r4_S_r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMetho
     ((FuncToCall)methodPointer)( p0, p1, p2,  method);
     return true;
 }
-// Void SetIndicatorStraight(UnityEngine.LineRenderer, UnityEngine.Vector3, UnityEngine.Vector3) declare in Assets.Scripts.Framework.UI.UIUtility
+// Void ChangeCustomMove(CMTweener, UnityEngine.Vector3, UnityEngine.Transform) declare in CMTweenerHelper
+bool w_voS_r4r4r4_Do(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_voS_r4r4r4_Do");
+    auto TIp0 = wrapData->TypeInfos[0];
+    auto TIp1 = wrapData->TypeInfos[1];
+    auto TIp2 = wrapData->TypeInfos[2];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    int _sv1 = apis->get_arg(info, 1);
+    int _sv2 = apis->get_arg(info, 2);
+    if (true) {
+        if (lua_args_len < 2 || lua_args_len > 3) 
+            return false;
+
+        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, false))
+            return false;
+        if (!DataTransfer::IsAssignable(apis, env, _sv1, TIp1, true))
+            return false;
+        if (lua_args_len > 2 && !DataTransfer::IsAssignable(apis, env, _sv2, TIp2, false))
+            return false;        
+    }
+    
+    // LuaValToCSVal o/O
+    Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
+     
+    // LuaValToCSVal struct
+    S_r4r4r4_* pp1 = DataTransfer::GetPointer<S_r4r4r4_>(apis, env, _sv1);
+    S_r4r4r4_ p1 = pp1 ? *pp1 : S_r4r4r4_ {};
+            // LuaValToCSVal ref with default
+    Il2CppObject* p2 = OptionalParameter<Il2CppObject*>::GetRefType(apis, env, info, method, wrapData, lua_args_len, 2, TIp2);
+    typedef void (*FuncToCall)(Il2CppObject* p1, struct S_r4r4r4_ p2, Il2CppObject* p3, const void* method);
+    ((FuncToCall)methodPointer)( p0, p1, p2,  method);
+    return true;
+}
+// Void ChangeCustomScale(CMTweener, UnityEngine.Vector3, UnityEngine.Vector3) declare in CMTweenerHelper
 bool w_voS_r4r4r4_S_r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
     // PLog("Running w_voS_r4r4r4_S_r4r4r4_");
     auto TIp0 = wrapData->TypeInfos[0];
@@ -20532,10 +21920,12 @@ bool w_voS_r4r4r4_S_r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppM
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-             // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_r4r4r4_* pp1 = DataTransfer::GetPointer<S_r4r4r4_>(apis, env, _sv1);
     S_r4r4r4_ p1 = pp1 ? *pp1 : S_r4r4r4_ {};
-             // LuaValToCSVal struct
+             
+    // LuaValToCSVal struct
     S_r4r4r4_* pp2 = DataTransfer::GetPointer<S_r4r4r4_>(apis, env, _sv2);
     S_r4r4r4_ p2 = pp2 ? *pp2 : S_r4r4r4_ {};
         
@@ -20576,10 +21966,12 @@ bool w_voS_r4r4r4_S_r4r4r4_Dr4Dr4Di4(struct pesapi_ffi* apis, MethodInfo* method
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-             // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_r4r4r4_* pp1 = DataTransfer::GetPointer<S_r4r4r4_>(apis, env, _sv1);
     S_r4r4r4_ p1 = pp1 ? *pp1 : S_r4r4r4_ {};
-             // LuaValToCSVal struct
+             
+    // LuaValToCSVal struct
     S_r4r4r4_* pp2 = DataTransfer::GetPointer<S_r4r4r4_>(apis, env, _sv2);
     S_r4r4r4_ p2 = pp2 ? *pp2 : S_r4r4r4_ {};
          // LuaValToCSVal primitive with default
@@ -20617,7 +22009,8 @@ bool w_voS_r4r4r4r4_Ds(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethod
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-             // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_r4r4r4r4_* pp1 = DataTransfer::GetPointer<S_r4r4r4r4_>(apis, env, _sv1);
     S_r4r4r4r4_ p1 = pp1 ? *pp1 : S_r4r4r4r4_ {};
             // LuaValToCSVal string with default
@@ -20649,13 +22042,14 @@ bool w_voS_r4r4r4r4_r4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethod
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-             // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_r4r4r4r4_* pp1 = DataTransfer::GetPointer<S_r4r4r4r4_>(apis, env, _sv1);
     S_r4r4r4r4_ p1 = pp1 ? *pp1 : S_r4r4r4r4_ {};
                 
     // LuaValToCSVal P any
     float p2 = converter::Converter<float>::toCpp(apis, env, _sv2);
-        
+
     typedef void (*FuncToCall)(Il2CppObject* p1, struct S_r4r4r4r4_ p2, float p3, const void* method);
     ((FuncToCall)methodPointer)( p0, p1, p2,  method);
     return true;
@@ -20679,10 +22073,10 @@ bool w_vob(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer meth
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     bool p1 = converter::Converter<bool>::toCpp(apis, env, _sv1);
-        
+
     typedef void (*FuncToCall)(Il2CppObject* p1, bool p2, const void* method);
     ((FuncToCall)methodPointer)( p0, p1,  method);
     return true;
@@ -20709,13 +22103,13 @@ bool w_vobb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     bool p1 = converter::Converter<bool>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     bool p2 = converter::Converter<bool>::toCpp(apis, env, _sv2);
-        
+
     typedef void (*FuncToCall)(Il2CppObject* p1, bool p2, bool p3, const void* method);
     ((FuncToCall)methodPointer)( p0, p1, p2,  method);
     return true;
@@ -20739,10 +22133,10 @@ bool w_voi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-        
+
     typedef void (*FuncToCall)(Il2CppObject* p1, int32_t p2, const void* method);
     ((FuncToCall)methodPointer)( p0, p1,  method);
     return true;
@@ -20769,10 +22163,10 @@ bool w_voi4Db(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer m
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-         // LuaValToCSVal primitive with default
+ // LuaValToCSVal primitive with default
     bool p2 = OptionalParameter<bool>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 2);
             
     typedef void (*FuncToCall)(Il2CppObject* p1, int32_t p2, bool p3, const void* method);
@@ -20804,16 +22198,16 @@ bool w_voi4bb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer m
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     bool p2 = converter::Converter<bool>::toCpp(apis, env, _sv2);
-                
+        
     // LuaValToCSVal P any
     bool p3 = converter::Converter<bool>::toCpp(apis, env, _sv3);
-        
+
     typedef void (*FuncToCall)(Il2CppObject* p1, int32_t p2, bool p3, bool p4, const void* method);
     ((FuncToCall)methodPointer)( p0, p1, p2, p3,  method);
     return true;
@@ -20840,13 +22234,13 @@ bool w_voi4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer m
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-        
+
     typedef void (*FuncToCall)(Il2CppObject* p1, int32_t p2, int32_t p3, const void* method);
     ((FuncToCall)methodPointer)( p0, p1, p2,  method);
     return true;
@@ -20876,16 +22270,16 @@ bool w_voi4i4b(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer 
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-                
+        
     // LuaValToCSVal P any
     bool p3 = converter::Converter<bool>::toCpp(apis, env, _sv3);
-        
+
     typedef void (*FuncToCall)(Il2CppObject* p1, int32_t p2, int32_t p3, bool p4, const void* method);
     ((FuncToCall)methodPointer)( p0, p1, p2, p3,  method);
     return true;
@@ -20916,16 +22310,16 @@ bool w_voi4i4o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer 
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p3 = LuaValueToCSRef(apis, TIp3, env, _sv3);
-        
+
     typedef void (*FuncToCall)(Il2CppObject* p1, int32_t p2, int32_t p3, Il2CppObject* p4, const void* method);
     ((FuncToCall)methodPointer)( p0, p1, p2, p3,  method);
     return true;
@@ -20953,13 +22347,13 @@ bool w_voi4o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p2 = LuaValueToCSRef(apis, TIp2, env, _sv2);
-        
+
     typedef void (*FuncToCall)(Il2CppObject* p1, int32_t p2, Il2CppObject* p3, const void* method);
     ((FuncToCall)methodPointer)( p0, p1, p2,  method);
     return true;
@@ -20993,19 +22387,19 @@ bool w_voi4oi4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointe
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p2 = LuaValueToCSRef(apis, TIp2, env, _sv2);
-                
+        
     // LuaValToCSVal P any
     int32_t p3 = converter::Converter<int32_t>::toCpp(apis, env, _sv3);
-                
+        
     // LuaValToCSVal P any
     int32_t p4 = converter::Converter<int32_t>::toCpp(apis, env, _sv4);
-        
+
     typedef void (*FuncToCall)(Il2CppObject* p1, int32_t p2, Il2CppObject* p3, int32_t p4, int32_t p5, const void* method);
     ((FuncToCall)methodPointer)( p0, p1, p2, p3, p4,  method);
     return true;
@@ -21033,10 +22427,10 @@ bool w_voi4s(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-            // LuaValToCSVal s
+    // LuaValToCSVal s
     Il2CppString* p2 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv2);
     typedef void (*FuncToCall)(Il2CppObject* p1, int32_t p2, Il2CppString* p3, const void* method);
     ((FuncToCall)methodPointer)( p0, p1, p2,  method);
@@ -21071,19 +22465,19 @@ bool w_voi8oi8i8(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointe
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     int64_t p1 = converter::Converter<int64_t>::toCpp(apis, env, _sv1);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p2 = LuaValueToCSRef(apis, TIp2, env, _sv2);
-                
+        
     // LuaValToCSVal P any
     int64_t p3 = converter::Converter<int64_t>::toCpp(apis, env, _sv3);
-                
+        
     // LuaValToCSVal P any
     int64_t p4 = converter::Converter<int64_t>::toCpp(apis, env, _sv4);
-        
+
     typedef void (*FuncToCall)(Il2CppObject* p1, int64_t p2, Il2CppObject* p3, int64_t p4, int64_t p5, const void* method);
     ((FuncToCall)methodPointer)( p0, p1, p2, p3, p4,  method);
     return true;
@@ -21108,10 +22502,10 @@ bool w_voo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer meth
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-        
+
     typedef void (*FuncToCall)(Il2CppObject* p1, Il2CppObject* p2, const void* method);
     ((FuncToCall)methodPointer)( p0, p1,  method);
     return true;
@@ -21139,10 +22533,10 @@ bool w_vooDi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer m
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-         // LuaValToCSVal primitive with default
+ // LuaValToCSVal primitive with default
     int32_t p2 = OptionalParameter<int32_t>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 2);
             
     typedef void (*FuncToCall)(Il2CppObject* p1, Il2CppObject* p2, int32_t p3, const void* method);
@@ -21172,10 +22566,10 @@ bool w_vooDr4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer m
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-         // LuaValToCSVal primitive with default
+ // LuaValToCSVal primitive with default
     float p2 = OptionalParameter<float>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 2);
             
     typedef void (*FuncToCall)(Il2CppObject* p1, Il2CppObject* p2, float p3, const void* method);
@@ -21205,13 +22599,13 @@ bool w_vooi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-        
+
     typedef void (*FuncToCall)(Il2CppObject* p1, Il2CppObject* p2, int32_t p3, const void* method);
     ((FuncToCall)methodPointer)( p0, p1, p2,  method);
     return true;
@@ -21242,16 +22636,16 @@ bool w_vooi4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer 
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-                
+        
     // LuaValToCSVal P any
     int32_t p3 = converter::Converter<int32_t>::toCpp(apis, env, _sv3);
-        
+
     typedef void (*FuncToCall)(Il2CppObject* p1, Il2CppObject* p2, int32_t p3, int32_t p4, const void* method);
     ((FuncToCall)methodPointer)( p0, p1, p2, p3,  method);
     return true;
@@ -21286,19 +22680,19 @@ bool w_vooi4i4o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-                
+        
     // LuaValToCSVal P any
     int32_t p3 = converter::Converter<int32_t>::toCpp(apis, env, _sv3);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p4 = LuaValueToCSRef(apis, TIp4, env, _sv4);
-        
+
     typedef void (*FuncToCall)(Il2CppObject* p1, Il2CppObject* p2, int32_t p3, int32_t p4, Il2CppObject* p5, const void* method);
     ((FuncToCall)methodPointer)( p0, p1, p2, p3, p4,  method);
     return true;
@@ -21326,13 +22720,13 @@ bool w_vooi8(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     int64_t p2 = converter::Converter<int64_t>::toCpp(apis, env, _sv2);
-        
+
     typedef void (*FuncToCall)(Il2CppObject* p1, Il2CppObject* p2, int64_t p3, const void* method);
     ((FuncToCall)methodPointer)( p0, p1, p2,  method);
     return true;
@@ -21361,13 +22755,13 @@ bool w_vooo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p2 = LuaValueToCSRef(apis, TIp2, env, _sv2);
-        
+
     typedef void (*FuncToCall)(Il2CppObject* p1, Il2CppObject* p2, Il2CppObject* p3, const void* method);
     ((FuncToCall)methodPointer)( p0, p1, p2,  method);
     return true;
@@ -21412,25 +22806,25 @@ bool w_vooooooo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p2 = LuaValueToCSRef(apis, TIp2, env, _sv2);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p3 = LuaValueToCSRef(apis, TIp3, env, _sv3);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p4 = LuaValueToCSRef(apis, TIp4, env, _sv4);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p5 = LuaValueToCSRef(apis, TIp5, env, _sv5);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p6 = LuaValueToCSRef(apis, TIp6, env, _sv6);
-        
+
     typedef void (*FuncToCall)(Il2CppObject* p1, Il2CppObject* p2, Il2CppObject* p3, Il2CppObject* p4, Il2CppObject* p5, Il2CppObject* p6, Il2CppObject* p7, const void* method);
     ((FuncToCall)methodPointer)( p0, p1, p2, p3, p4, p5, p6,  method);
     return true;
@@ -21463,13 +22857,13 @@ bool w_vooos(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p2 = LuaValueToCSRef(apis, TIp2, env, _sv2);
-            // LuaValToCSVal s
+    // LuaValToCSVal s
     Il2CppString* p3 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv3);
     typedef void (*FuncToCall)(Il2CppObject* p1, Il2CppObject* p2, Il2CppObject* p3, Il2CppString* p4, const void* method);
     ((FuncToCall)methodPointer)( p0, p1, p2, p3,  method);
@@ -21498,13 +22892,13 @@ bool w_voor4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     float p2 = converter::Converter<float>::toCpp(apis, env, _sv2);
-        
+
     typedef void (*FuncToCall)(Il2CppObject* p1, Il2CppObject* p2, float p3, const void* method);
     ((FuncToCall)methodPointer)( p0, p1, p2,  method);
     return true;
@@ -21533,10 +22927,10 @@ bool w_voos(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-            // LuaValToCSVal s
+    // LuaValToCSVal s
     Il2CppString* p2 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv2);
     typedef void (*FuncToCall)(Il2CppObject* p1, Il2CppObject* p2, Il2CppString* p3, const void* method);
     ((FuncToCall)methodPointer)( p0, p1, p2,  method);
@@ -21561,10 +22955,10 @@ bool w_vor4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     float p1 = converter::Converter<float>::toCpp(apis, env, _sv1);
-        
+
     typedef void (*FuncToCall)(Il2CppObject* p1, float p2, const void* method);
     ((FuncToCall)methodPointer)( p0, p1,  method);
     return true;
@@ -21592,10 +22986,10 @@ bool w_vor4PS_r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPoi
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     float p1 = converter::Converter<float>::toCpp(apis, env, _sv1);
-             
+     
     // LuaValToCSVal Pstruct
     S_r4r4_* p2 = DataTransfer::GetPointer<S_r4r4_>(apis, env, apis->unboxing(env, _sv2)); // valuetype ref
     S_r4r4_ up2;
@@ -21645,10 +23039,10 @@ bool w_vor4Tr4Tr4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPoint
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     float p1 = converter::Converter<float>::toCpp(apis, env, _sv1);
-             
+     
     // LuaValToCSVal P primitive
     float up2 = 0;
     if (2 < lua_args_len)
@@ -21668,6 +23062,39 @@ bool w_vor4Tr4Tr4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPoint
 	apis->add_return(info, ret2);
 	apis->add_return(info, ret3);
     value_scope.reserve = apis->get_return_num(info);
+    return true;
+}
+// Void ChangeCustomAlpha(CMTweener, Single, Single) declare in CMTweenerHelper
+bool w_vor4r4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_vor4r4");
+    auto TIp0 = wrapData->TypeInfos[0];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    int _sv1 = apis->get_arg(info, 1);
+    int _sv2 = apis->get_arg(info, 2);
+    if (checkLuaArgument) {
+        if (lua_args_len != 3) 
+            return false;
+
+        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, false))
+            return false;
+        if (!converter::Converter<float>::accept(apis, env, _sv1))
+            return false;
+        if (!converter::Converter<float>::accept(apis, env, _sv2))
+            return false;        
+    }
+    
+    // LuaValToCSVal o/O
+    Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
+        
+    // LuaValToCSVal P any
+    float p1 = converter::Converter<float>::toCpp(apis, env, _sv1);
+        
+    // LuaValToCSVal P any
+    float p2 = converter::Converter<float>::toCpp(apis, env, _sv2);
+
+    typedef void (*FuncToCall)(Il2CppObject* p1, float p2, float p3, const void* method);
+    ((FuncToCall)methodPointer)( p0, p1, p2,  method);
     return true;
 }
 // Void SetRendererFloatStandState(UnityEngine.GameObject, Single, Single, Single) declare in Utility
@@ -21695,16 +23122,16 @@ bool w_vor4r4r4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     float p1 = converter::Converter<float>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     float p2 = converter::Converter<float>::toCpp(apis, env, _sv2);
-                
+        
     // LuaValToCSVal P any
     float p3 = converter::Converter<float>::toCpp(apis, env, _sv3);
-        
+
     typedef void (*FuncToCall)(Il2CppObject* p1, float p2, float p3, float p4, const void* method);
     ((FuncToCall)methodPointer)( p0, p1, p2, p3,  method);
     return true;
@@ -21729,7 +23156,7 @@ bool w_vos(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer meth
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-            // LuaValToCSVal s
+    // LuaValToCSVal s
     Il2CppString* p1 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv1);
     typedef void (*FuncToCall)(Il2CppObject* p1, Il2CppString* p2, const void* method);
     ((FuncToCall)methodPointer)( p0, p1,  method);
@@ -21758,11 +23185,11 @@ bool w_vosr4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-            // LuaValToCSVal s
+    // LuaValToCSVal s
     Il2CppString* p1 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv1);        
     // LuaValToCSVal P any
     float p2 = converter::Converter<float>::toCpp(apis, env, _sv2);
-        
+
     typedef void (*FuncToCall)(Il2CppObject* p1, Il2CppString* p2, float p3, const void* method);
     ((FuncToCall)methodPointer)( p0, p1, p2,  method);
     return true;
@@ -21786,10 +23213,10 @@ bool w_vou4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     uint32_t p1 = converter::Converter<uint32_t>::toCpp(apis, env, _sv1);
-        
+
     typedef void (*FuncToCall)(Il2CppObject* p1, uint32_t p2, const void* method);
     ((FuncToCall)methodPointer)( p0, p1,  method);
     return true;
@@ -21813,10 +23240,10 @@ bool w_vou8(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     uint64_t p1 = converter::Converter<uint64_t>::toCpp(apis, env, _sv1);
-        
+
     typedef void (*FuncToCall)(Il2CppObject* p1, uint64_t p2, const void* method);
     ((FuncToCall)methodPointer)( p0, p1,  method);
     return true;
@@ -21841,14 +23268,14 @@ bool w_vppi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
     }
         
     // LuaValToCSVal P any
-    void* p0 = DataTransfer::GetPointer<void>(apis, env, _sv0);
-                
+    void* p0 = DataTransfer::GetPointer(apis, env, _sv0);
+        
     // LuaValToCSVal P any
-    void* p1 = DataTransfer::GetPointer<void>(apis, env, _sv1);
-                
+    void* p1 = DataTransfer::GetPointer(apis, env, _sv1);
+        
     // LuaValToCSVal P any
     int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-        
+
     typedef void (*FuncToCall)(void* p1, void* p2, int32_t p3, const void* method);
     ((FuncToCall)methodPointer)( p0, p1, p2,  method);
     return true;
@@ -21869,7 +23296,7 @@ bool w_vr4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer meth
         
     // LuaValToCSVal P any
     float p0 = converter::Converter<float>::toCpp(apis, env, _sv0);
-        
+
     typedef void (*FuncToCall)(float p1, const void* method);
     ((FuncToCall)methodPointer)( p0,  method);
     return true;
@@ -21893,10 +23320,10 @@ bool w_vr4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
         
     // LuaValToCSVal P any
     float p0 = converter::Converter<float>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-        
+
     typedef void (*FuncToCall)(float p1, int32_t p2, const void* method);
     ((FuncToCall)methodPointer)( p0, p1,  method);
     return true;
@@ -21932,22 +23359,22 @@ bool w_vr4r4r4r4r4r4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPo
         
     // LuaValToCSVal P any
     float p0 = converter::Converter<float>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     float p1 = converter::Converter<float>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     float p2 = converter::Converter<float>::toCpp(apis, env, _sv2);
-                
+        
     // LuaValToCSVal P any
     float p3 = converter::Converter<float>::toCpp(apis, env, _sv3);
-                
+        
     // LuaValToCSVal P any
     float p4 = converter::Converter<float>::toCpp(apis, env, _sv4);
-                
+        
     // LuaValToCSVal P any
     float p5 = converter::Converter<float>::toCpp(apis, env, _sv5);
-        
+
     typedef void (*FuncToCall)(float p1, float p2, float p3, float p4, float p5, float p6, const void* method);
     ((FuncToCall)methodPointer)( p0, p1, p2, p3, p4, p5,  method);
     return true;
@@ -21995,7 +23422,41 @@ bool w_vsDb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
     ((FuncToCall)methodPointer)( p0, p1,  method);
     return true;
 }
-// Void PreloadSceneVFX(System.String, SceneLevelDefine) declare in Preload.Preloader
+// Void StartRecord(System.String, Boolean, Boolean, Boolean) declare in Assets.Plugins.Perf.StatsLite
+bool w_vsDbDbDb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_vsDbDbDb");
+    auto TIp0 = wrapData->TypeInfos[0];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    int _sv1 = apis->get_arg(info, 1);
+    int _sv2 = apis->get_arg(info, 2);
+    int _sv3 = apis->get_arg(info, 3);
+    if (true) {
+        if (lua_args_len < 1 || lua_args_len > 4) 
+            return false;
+
+        if (!converter::Converter<Il2CppString*>::accept(apis, env, _sv0))
+            return false;
+        if (lua_args_len > 1 && !converter::Converter<bool>::accept(apis, env, _sv1))
+            return false;
+        if (lua_args_len > 2 && !converter::Converter<bool>::accept(apis, env, _sv2))
+            return false;
+        if (lua_args_len > 3 && !converter::Converter<bool>::accept(apis, env, _sv3))
+            return false;        
+    }
+    // LuaValToCSVal s
+    Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0); // LuaValToCSVal primitive with default
+    bool p1 = OptionalParameter<bool>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 1);
+             // LuaValToCSVal primitive with default
+    bool p2 = OptionalParameter<bool>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 2);
+             // LuaValToCSVal primitive with default
+    bool p3 = OptionalParameter<bool>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 3);
+            
+    typedef void (*FuncToCall)(Il2CppString* p1, bool p2, bool p3, bool p4, const void* method);
+    ((FuncToCall)methodPointer)( p0, p1, p2, p3,  method);
+    return true;
+}
+// Void PreloadSceneVFX(System.String, SceneLevelDefine) declare in Assets.Scripts.GameLogic.Project8PreLoadConfigService
 bool w_vsDi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
     // PLog("Running w_vsDi4");
     auto TIp0 = wrapData->TypeInfos[0];
@@ -22165,8 +23626,8 @@ bool w_vsPPu1(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer m
     return true;
 }
 // Void StringToUTF8Bytes(System.String, Byte[] ByRef) declare in StringHelper
-bool w_vsPo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vsPo");
+bool w_vsPa(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_vsPa");
     AutoValueScope value_scope(apis, env);
     auto TIp0 = wrapData->TypeInfos[0];
     auto TIp1 = wrapData->TypeInfos[1];
@@ -22211,7 +23672,8 @@ bool w_vsS_r4r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPo
             return false;        
     }
     // LuaValToCSVal s
-    Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);     // LuaValToCSVal struct
+    Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);     
+    // LuaValToCSVal struct
     S_r4r4r4r4_* pp1 = DataTransfer::GetPointer<S_r4r4r4r4_>(apis, env, _sv1);
     S_r4r4r4r4_ p1 = pp1 ? *pp1 : S_r4r4r4r4_ {};
         
@@ -22237,7 +23699,8 @@ bool w_vsS_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_(struct pesapi_ffi* apis, MethodInfo
             return false;        
     }
     // LuaValToCSVal s
-    Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);     // LuaValToCSVal struct
+    Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);     
+    // LuaValToCSVal struct
     S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_* pp1 = DataTransfer::GetPointer<S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_>(apis, env, _sv1);
     S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_ p1 = pp1 ? *pp1 : S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_ {};
         
@@ -22263,7 +23726,8 @@ bool w_vsS_u8_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer 
             return false;        
     }
     // LuaValToCSVal s
-    Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);     // LuaValToCSVal struct
+    Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);     
+    // LuaValToCSVal struct
     S_u8_* pp1 = DataTransfer::GetPointer<S_u8_>(apis, env, _sv1);
     S_u8_ p1 = pp1 ? *pp1 : S_u8_ {};
         
@@ -22289,7 +23753,8 @@ bool w_vsS_u8u8_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointe
             return false;        
     }
     // LuaValToCSVal s
-    Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);     // LuaValToCSVal struct
+    Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);     
+    // LuaValToCSVal struct
     S_u8u8_* pp1 = DataTransfer::GetPointer<S_u8u8_>(apis, env, _sv1);
     S_u8u8_ p1 = pp1 ? *pp1 : S_u8u8_ {};
         
@@ -22320,6 +23785,32 @@ bool w_vsVO(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
     ((FuncToCall)methodPointer)( p0, p1,  method);
     return true;
 }
+// Void WriteAllBytes(System.String, Byte[]) declare in System.IO.File
+bool w_vsa(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_vsa");
+    auto TIp0 = wrapData->TypeInfos[0];
+    auto TIp1 = wrapData->TypeInfos[1];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    int _sv1 = apis->get_arg(info, 1);
+    if (checkLuaArgument) {
+        if (lua_args_len != 2) 
+            return false;
+
+        if (!converter::Converter<Il2CppString*>::accept(apis, env, _sv0))
+            return false;
+        if (!DataTransfer::IsAssignable(apis, env, _sv1, TIp1, false))
+            return false;        
+    }
+    // LuaValToCSVal s
+    Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);    
+    // LuaValToCSVal o/O
+    Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
+
+    typedef void (*FuncToCall)(Il2CppString* p1, Il2CppObject* p2, const void* method);
+    ((FuncToCall)methodPointer)( p0, p1,  method);
+    return true;
+}
 // Void Delete(System.String, Boolean) declare in System.IO.Directory
 bool w_vsb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
     // PLog("Running w_vsb");
@@ -22340,7 +23831,7 @@ bool w_vsb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer meth
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);        
     // LuaValToCSVal P any
     bool p1 = converter::Converter<bool>::toCpp(apis, env, _sv1);
-        
+
     typedef void (*FuncToCall)(Il2CppString* p1, bool p2, const void* method);
     ((FuncToCall)methodPointer)( p0, p1,  method);
     return true;
@@ -22369,7 +23860,7 @@ bool w_vsbDo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);        
     // LuaValToCSVal P any
     bool p1 = converter::Converter<bool>::toCpp(apis, env, _sv1);
-            // LuaValToCSVal ref with default
+    // LuaValToCSVal ref with default
     Il2CppObject* p2 = OptionalParameter<Il2CppObject*>::GetRefType(apis, env, info, method, wrapData, lua_args_len, 2, TIp2);
     typedef void (*FuncToCall)(Il2CppString* p1, bool p2, Il2CppObject* p3, const void* method);
     ((FuncToCall)methodPointer)( p0, p1, p2,  method);
@@ -22398,10 +23889,10 @@ bool w_vsbi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);        
     // LuaValToCSVal P any
     bool p1 = converter::Converter<bool>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-        
+
     typedef void (*FuncToCall)(Il2CppString* p1, bool p2, int32_t p3, const void* method);
     ((FuncToCall)methodPointer)( p0, p1, p2,  method);
     return true;
@@ -22432,13 +23923,13 @@ bool w_vsbi4b(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer m
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);        
     // LuaValToCSVal P any
     bool p1 = converter::Converter<bool>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-                
+        
     // LuaValToCSVal P any
     bool p3 = converter::Converter<bool>::toCpp(apis, env, _sv3);
-        
+
     typedef void (*FuncToCall)(Il2CppString* p1, bool p2, int32_t p3, bool p4, const void* method);
     ((FuncToCall)methodPointer)( p0, p1, p2, p3,  method);
     return true;
@@ -22475,19 +23966,19 @@ bool w_vsbi4bbi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointe
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);        
     // LuaValToCSVal P any
     bool p1 = converter::Converter<bool>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-                
+        
     // LuaValToCSVal P any
     bool p3 = converter::Converter<bool>::toCpp(apis, env, _sv3);
-                
+        
     // LuaValToCSVal P any
     bool p4 = converter::Converter<bool>::toCpp(apis, env, _sv4);
-                
+        
     // LuaValToCSVal P any
     int32_t p5 = converter::Converter<int32_t>::toCpp(apis, env, _sv5);
-        
+
     typedef void (*FuncToCall)(Il2CppString* p1, bool p2, int32_t p3, bool p4, bool p5, int32_t p6, const void* method);
     ((FuncToCall)methodPointer)( p0, p1, p2, p3, p4, p5,  method);
     return true;
@@ -22528,19 +24019,19 @@ bool w_vsbi4bbi4s(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPoint
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);        
     // LuaValToCSVal P any
     bool p1 = converter::Converter<bool>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-                
+        
     // LuaValToCSVal P any
     bool p3 = converter::Converter<bool>::toCpp(apis, env, _sv3);
-                
+        
     // LuaValToCSVal P any
     bool p4 = converter::Converter<bool>::toCpp(apis, env, _sv4);
-                
+        
     // LuaValToCSVal P any
     int32_t p5 = converter::Converter<int32_t>::toCpp(apis, env, _sv5);
-            // LuaValToCSVal s
+    // LuaValToCSVal s
     Il2CppString* p6 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv6);
     typedef void (*FuncToCall)(Il2CppString* p1, bool p2, int32_t p3, bool p4, bool p5, int32_t p6, Il2CppString* p7, const void* method);
     ((FuncToCall)methodPointer)( p0, p1, p2, p3, p4, p5, p6,  method);
@@ -22566,7 +24057,7 @@ bool w_vsi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);        
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-        
+
     typedef void (*FuncToCall)(Il2CppString* p1, int32_t p2, const void* method);
     ((FuncToCall)methodPointer)( p0, p1,  method);
     return true;
@@ -22600,16 +24091,16 @@ bool w_vsi4i4i4b(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointe
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);        
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-                
+        
     // LuaValToCSVal P any
     int32_t p3 = converter::Converter<int32_t>::toCpp(apis, env, _sv3);
-                
+        
     // LuaValToCSVal P any
     bool p4 = converter::Converter<bool>::toCpp(apis, env, _sv4);
-        
+
     typedef void (*FuncToCall)(Il2CppString* p1, int32_t p2, int32_t p3, int32_t p4, bool p5, const void* method);
     ((FuncToCall)methodPointer)( p0, p1, p2, p3, p4,  method);
     return true;
@@ -22654,21 +24145,21 @@ bool w_vsi4i4i4ssbb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPoi
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);        
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-                
+        
     // LuaValToCSVal P any
     int32_t p3 = converter::Converter<int32_t>::toCpp(apis, env, _sv3);
-            // LuaValToCSVal s
+    // LuaValToCSVal s
     Il2CppString* p4 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv4);    // LuaValToCSVal s
     Il2CppString* p5 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv5);        
     // LuaValToCSVal P any
     bool p6 = converter::Converter<bool>::toCpp(apis, env, _sv6);
-                
+        
     // LuaValToCSVal P any
     bool p7 = converter::Converter<bool>::toCpp(apis, env, _sv7);
-        
+
     typedef void (*FuncToCall)(Il2CppString* p1, int32_t p2, int32_t p3, int32_t p4, Il2CppString* p5, Il2CppString* p6, bool p7, bool p8, const void* method);
     ((FuncToCall)methodPointer)( p0, p1, p2, p3, p4, p5, p6, p7,  method);
     return true;
@@ -22716,20 +24207,20 @@ bool w_vsi4i4si4i4i4sDi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMeth
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);        
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-            // LuaValToCSVal s
+    // LuaValToCSVal s
     Il2CppString* p3 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv3);        
     // LuaValToCSVal P any
     int32_t p4 = converter::Converter<int32_t>::toCpp(apis, env, _sv4);
-                
+        
     // LuaValToCSVal P any
     int32_t p5 = converter::Converter<int32_t>::toCpp(apis, env, _sv5);
-                
+        
     // LuaValToCSVal P any
     int32_t p6 = converter::Converter<int32_t>::toCpp(apis, env, _sv6);
-            // LuaValToCSVal s
+    // LuaValToCSVal s
     Il2CppString* p7 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv7); // LuaValToCSVal primitive with default
     int32_t p8 = OptionalParameter<int32_t>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 8);
             
@@ -22777,17 +24268,17 @@ bool w_vsi4i4si4i4sDi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethod
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);        
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-            // LuaValToCSVal s
+    // LuaValToCSVal s
     Il2CppString* p3 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv3);        
     // LuaValToCSVal P any
     int32_t p4 = converter::Converter<int32_t>::toCpp(apis, env, _sv4);
-                
+        
     // LuaValToCSVal P any
     int32_t p5 = converter::Converter<int32_t>::toCpp(apis, env, _sv5);
-            // LuaValToCSVal s
+    // LuaValToCSVal s
     Il2CppString* p6 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv6); // LuaValToCSVal primitive with default
     int32_t p7 = OptionalParameter<int32_t>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 7);
             
@@ -22819,7 +24310,7 @@ bool w_vsi4s(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);        
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-            // LuaValToCSVal s
+    // LuaValToCSVal s
     Il2CppString* p2 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv2);
     typedef void (*FuncToCall)(Il2CppString* p1, int32_t p2, Il2CppString* p3, const void* method);
     ((FuncToCall)methodPointer)( p0, p1, p2,  method);
@@ -22852,11 +24343,11 @@ bool w_vsi4si4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer 
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);        
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-            // LuaValToCSVal s
+    // LuaValToCSVal s
     Il2CppString* p2 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv2);        
     // LuaValToCSVal P any
     int32_t p3 = converter::Converter<int32_t>::toCpp(apis, env, _sv3);
-        
+
     typedef void (*FuncToCall)(Il2CppString* p1, int32_t p2, Il2CppString* p3, int32_t p4, const void* method);
     ((FuncToCall)methodPointer)( p0, p1, p2, p3,  method);
     return true;
@@ -22881,7 +24372,7 @@ bool w_vsi8(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);        
     // LuaValToCSVal P any
     int64_t p1 = converter::Converter<int64_t>::toCpp(apis, env, _sv1);
-        
+
     typedef void (*FuncToCall)(Il2CppString* p1, int64_t p2, const void* method);
     ((FuncToCall)methodPointer)( p0, p1,  method);
     return true;
@@ -22907,7 +24398,7 @@ bool w_vso(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer meth
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-        
+
     typedef void (*FuncToCall)(Il2CppString* p1, Il2CppObject* p2, const void* method);
     ((FuncToCall)methodPointer)( p0, p1,  method);
     return true;
@@ -22937,7 +24428,7 @@ bool w_vsoDs(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-            // LuaValToCSVal string with default
+    // LuaValToCSVal string with default
     Il2CppString* p2 = OptionalParameter<Il2CppString*>::GetString(apis, env, info, method, wrapData, lua_args_len, 2);
     typedef void (*FuncToCall)(Il2CppString* p1, Il2CppObject* p2, Il2CppString* p3, const void* method);
     ((FuncToCall)methodPointer)( p0, p1, p2,  method);
@@ -22967,10 +24458,10 @@ bool w_vsoi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-        
+
     typedef void (*FuncToCall)(Il2CppString* p1, Il2CppObject* p2, int32_t p3, const void* method);
     ((FuncToCall)methodPointer)( p0, p1, p2,  method);
     return true;
@@ -23002,13 +24493,13 @@ bool w_vsoi4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer 
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-                
+        
     // LuaValToCSVal P any
     int32_t p3 = converter::Converter<int32_t>::toCpp(apis, env, _sv3);
-        
+
     typedef void (*FuncToCall)(Il2CppString* p1, Il2CppObject* p2, int32_t p3, int32_t p4, const void* method);
     ((FuncToCall)methodPointer)( p0, p1, p2, p3,  method);
     return true;
@@ -23038,10 +24529,10 @@ bool w_vsoo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p2 = LuaValueToCSRef(apis, TIp2, env, _sv2);
-        
+
     typedef void (*FuncToCall)(Il2CppString* p1, Il2CppObject* p2, Il2CppObject* p3, const void* method);
     ((FuncToCall)methodPointer)( p0, p1, p2,  method);
     return true;
@@ -23066,7 +24557,7 @@ bool w_vsr4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);        
     // LuaValToCSVal P any
     float p1 = converter::Converter<float>::toCpp(apis, env, _sv1);
-        
+
     typedef void (*FuncToCall)(Il2CppString* p1, float p2, const void* method);
     ((FuncToCall)methodPointer)( p0, p1,  method);
     return true;
@@ -23181,6 +24672,49 @@ bool w_vssVO(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
     ((FuncToCall)methodPointer)( p0, p1, p2,  method);
     return true;
 }
+// Void DecompressFile(System.String, System.String, Byte[], UInt32, UInt32) declare in CFileManager
+bool w_vssau4u4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_vssau4u4");
+    auto TIp0 = wrapData->TypeInfos[0];
+    auto TIp1 = wrapData->TypeInfos[1];
+    auto TIp2 = wrapData->TypeInfos[2];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    int _sv1 = apis->get_arg(info, 1);
+    int _sv2 = apis->get_arg(info, 2);
+    int _sv3 = apis->get_arg(info, 3);
+    int _sv4 = apis->get_arg(info, 4);
+    if (checkLuaArgument) {
+        if (lua_args_len != 5) 
+            return false;
+
+        if (!converter::Converter<Il2CppString*>::accept(apis, env, _sv0))
+            return false;
+        if (!converter::Converter<Il2CppString*>::accept(apis, env, _sv1))
+            return false;
+        if (!DataTransfer::IsAssignable(apis, env, _sv2, TIp2, false))
+            return false;
+        if (!converter::Converter<uint32_t>::accept(apis, env, _sv3))
+            return false;
+        if (!converter::Converter<uint32_t>::accept(apis, env, _sv4))
+            return false;        
+    }
+    // LuaValToCSVal s
+    Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);    // LuaValToCSVal s
+    Il2CppString* p1 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv1);    
+    // LuaValToCSVal o/O
+    Il2CppObject* p2 = LuaValueToCSRef(apis, TIp2, env, _sv2);
+        
+    // LuaValToCSVal P any
+    uint32_t p3 = converter::Converter<uint32_t>::toCpp(apis, env, _sv3);
+        
+    // LuaValToCSVal P any
+    uint32_t p4 = converter::Converter<uint32_t>::toCpp(apis, env, _sv4);
+
+    typedef void (*FuncToCall)(Il2CppString* p1, Il2CppString* p2, Il2CppObject* p3, uint32_t p4, uint32_t p5, const void* method);
+    ((FuncToCall)methodPointer)( p0, p1, p2, p3, p4,  method);
+    return true;
+}
 // Void Copy(System.String, System.String, Boolean) declare in System.IO.File
 bool w_vssb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
     // PLog("Running w_vssb");
@@ -23206,7 +24740,7 @@ bool w_vssb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
     Il2CppString* p1 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv1);        
     // LuaValToCSVal P any
     bool p2 = converter::Converter<bool>::toCpp(apis, env, _sv2);
-        
+
     typedef void (*FuncToCall)(Il2CppString* p1, Il2CppString* p2, bool p3, const void* method);
     ((FuncToCall)methodPointer)( p0, p1, p2,  method);
     return true;
@@ -23239,7 +24773,7 @@ bool w_vssi4Du4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer
     Il2CppString* p1 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv1);        
     // LuaValToCSVal P any
     int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-         // LuaValToCSVal primitive with default
+ // LuaValToCSVal primitive with default
     uint32_t p3 = OptionalParameter<uint32_t>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 3);
             
     typedef void (*FuncToCall)(Il2CppString* p1, Il2CppString* p2, int32_t p3, uint32_t p4, const void* method);
@@ -23277,10 +24811,10 @@ bool w_vssi4i4Du4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPoint
     Il2CppString* p1 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv1);        
     // LuaValToCSVal P any
     int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-                
+        
     // LuaValToCSVal P any
     int32_t p3 = converter::Converter<int32_t>::toCpp(apis, env, _sv3);
-         // LuaValToCSVal primitive with default
+ // LuaValToCSVal primitive with default
     uint32_t p4 = OptionalParameter<uint32_t>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 4);
             
     typedef void (*FuncToCall)(Il2CppString* p1, Il2CppString* p2, int32_t p3, int32_t p4, uint32_t p5, const void* method);
@@ -23318,13 +24852,13 @@ bool w_vssi4i4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointe
     Il2CppString* p1 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv1);        
     // LuaValToCSVal P any
     int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-                
+        
     // LuaValToCSVal P any
     int32_t p3 = converter::Converter<int32_t>::toCpp(apis, env, _sv3);
-                
+        
     // LuaValToCSVal P any
     int32_t p4 = converter::Converter<int32_t>::toCpp(apis, env, _sv4);
-        
+
     typedef void (*FuncToCall)(Il2CppString* p1, Il2CppString* p2, int32_t p3, int32_t p4, int32_t p5, const void* method);
     ((FuncToCall)methodPointer)( p0, p1, p2, p3, p4,  method);
     return true;
@@ -23363,13 +24897,13 @@ bool w_vssi4i4i4Du4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPoi
     Il2CppString* p1 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv1);        
     // LuaValToCSVal P any
     int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-                
+        
     // LuaValToCSVal P any
     int32_t p3 = converter::Converter<int32_t>::toCpp(apis, env, _sv3);
-                
+        
     // LuaValToCSVal P any
     int32_t p4 = converter::Converter<int32_t>::toCpp(apis, env, _sv4);
-         // LuaValToCSVal primitive with default
+ // LuaValToCSVal primitive with default
     uint32_t p5 = OptionalParameter<uint32_t>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 5);
             
     typedef void (*FuncToCall)(Il2CppString* p1, Il2CppString* p2, int32_t p3, int32_t p4, int32_t p5, uint32_t p6, const void* method);
@@ -23410,16 +24944,16 @@ bool w_vssi4i4i4b(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPoint
     Il2CppString* p1 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv1);        
     // LuaValToCSVal P any
     int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-                
+        
     // LuaValToCSVal P any
     int32_t p3 = converter::Converter<int32_t>::toCpp(apis, env, _sv3);
-                
+        
     // LuaValToCSVal P any
     int32_t p4 = converter::Converter<int32_t>::toCpp(apis, env, _sv4);
-                
+        
     // LuaValToCSVal P any
     bool p5 = converter::Converter<bool>::toCpp(apis, env, _sv5);
-        
+
     typedef void (*FuncToCall)(Il2CppString* p1, Il2CppString* p2, int32_t p3, int32_t p4, int32_t p5, bool p6, const void* method);
     ((FuncToCall)methodPointer)( p0, p1, p2, p3, p4, p5,  method);
     return true;
@@ -23450,52 +24984,9 @@ bool w_vsso(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
     Il2CppString* p1 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv1);    
     // LuaValToCSVal o/O
     Il2CppObject* p2 = LuaValueToCSRef(apis, TIp2, env, _sv2);
-        
+
     typedef void (*FuncToCall)(Il2CppString* p1, Il2CppString* p2, Il2CppObject* p3, const void* method);
     ((FuncToCall)methodPointer)( p0, p1, p2,  method);
-    return true;
-}
-// Void DecompressFile(System.String, System.String, Byte[], UInt32, UInt32) declare in CFileManager
-bool w_vssou4u4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vssou4u4");
-    auto TIp0 = wrapData->TypeInfos[0];
-    auto TIp1 = wrapData->TypeInfos[1];
-    auto TIp2 = wrapData->TypeInfos[2];
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    int _sv2 = apis->get_arg(info, 2);
-    int _sv3 = apis->get_arg(info, 3);
-    int _sv4 = apis->get_arg(info, 4);
-    if (checkLuaArgument) {
-        if (lua_args_len != 5) 
-            return false;
-
-        if (!converter::Converter<Il2CppString*>::accept(apis, env, _sv0))
-            return false;
-        if (!converter::Converter<Il2CppString*>::accept(apis, env, _sv1))
-            return false;
-        if (!DataTransfer::IsAssignable(apis, env, _sv2, TIp2, false))
-            return false;
-        if (!converter::Converter<uint32_t>::accept(apis, env, _sv3))
-            return false;
-        if (!converter::Converter<uint32_t>::accept(apis, env, _sv4))
-            return false;        
-    }
-    // LuaValToCSVal s
-    Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);    // LuaValToCSVal s
-    Il2CppString* p1 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv1);    
-    // LuaValToCSVal o/O
-    Il2CppObject* p2 = LuaValueToCSRef(apis, TIp2, env, _sv2);
-                
-    // LuaValToCSVal P any
-    uint32_t p3 = converter::Converter<uint32_t>::toCpp(apis, env, _sv3);
-                
-    // LuaValToCSVal P any
-    uint32_t p4 = converter::Converter<uint32_t>::toCpp(apis, env, _sv4);
-        
-    typedef void (*FuncToCall)(Il2CppString* p1, Il2CppString* p2, Il2CppObject* p3, uint32_t p4, uint32_t p5, const void* method);
-    ((FuncToCall)methodPointer)( p0, p1, p2, p3, p4,  method);
     return true;
 }
 // Void PostValueF(System.String, System.String, Single, UInt32) declare in GCloud.GPM.GPMAgent
@@ -23526,7 +25017,7 @@ bool w_vssr4Du4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer
     Il2CppString* p1 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv1);        
     // LuaValToCSVal P any
     float p2 = converter::Converter<float>::toCpp(apis, env, _sv2);
-         // LuaValToCSVal primitive with default
+ // LuaValToCSVal primitive with default
     uint32_t p3 = OptionalParameter<uint32_t>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 3);
             
     typedef void (*FuncToCall)(Il2CppString* p1, Il2CppString* p2, float p3, uint32_t p4, const void* method);
@@ -23564,10 +25055,10 @@ bool w_vssr4r4Du4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPoint
     Il2CppString* p1 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv1);        
     // LuaValToCSVal P any
     float p2 = converter::Converter<float>::toCpp(apis, env, _sv2);
-                
+        
     // LuaValToCSVal P any
     float p3 = converter::Converter<float>::toCpp(apis, env, _sv3);
-         // LuaValToCSVal primitive with default
+ // LuaValToCSVal primitive with default
     uint32_t p4 = OptionalParameter<uint32_t>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 4);
             
     typedef void (*FuncToCall)(Il2CppString* p1, Il2CppString* p2, float p3, float p4, uint32_t p5, const void* method);
@@ -23608,13 +25099,13 @@ bool w_vssr4r4r4Du4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPoi
     Il2CppString* p1 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv1);        
     // LuaValToCSVal P any
     float p2 = converter::Converter<float>::toCpp(apis, env, _sv2);
-                
+        
     // LuaValToCSVal P any
     float p3 = converter::Converter<float>::toCpp(apis, env, _sv3);
-                
+        
     // LuaValToCSVal P any
     float p4 = converter::Converter<float>::toCpp(apis, env, _sv4);
-         // LuaValToCSVal primitive with default
+ // LuaValToCSVal primitive with default
     uint32_t p5 = OptionalParameter<uint32_t>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 5);
             
     typedef void (*FuncToCall)(Il2CppString* p1, Il2CppString* p2, float p3, float p4, float p5, uint32_t p6, const void* method);
@@ -23664,22 +25155,22 @@ bool w_vssr4r4r4r4r4r4Du4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMet
     Il2CppString* p1 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv1);        
     // LuaValToCSVal P any
     float p2 = converter::Converter<float>::toCpp(apis, env, _sv2);
-                
+        
     // LuaValToCSVal P any
     float p3 = converter::Converter<float>::toCpp(apis, env, _sv3);
-                
+        
     // LuaValToCSVal P any
     float p4 = converter::Converter<float>::toCpp(apis, env, _sv4);
-                
+        
     // LuaValToCSVal P any
     float p5 = converter::Converter<float>::toCpp(apis, env, _sv5);
-                
+        
     // LuaValToCSVal P any
     float p6 = converter::Converter<float>::toCpp(apis, env, _sv6);
-                
+        
     // LuaValToCSVal P any
     float p7 = converter::Converter<float>::toCpp(apis, env, _sv7);
-         // LuaValToCSVal primitive with default
+ // LuaValToCSVal primitive with default
     uint32_t p8 = OptionalParameter<uint32_t>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 8);
             
     typedef void (*FuncToCall)(Il2CppString* p1, Il2CppString* p2, float p3, float p4, float p5, float p6, float p7, float p8, uint32_t p9, const void* method);
@@ -23779,7 +25270,7 @@ bool w_vsssb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
     Il2CppString* p2 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv2);        
     // LuaValToCSVal P any
     bool p3 = converter::Converter<bool>::toCpp(apis, env, _sv3);
-        
+
     typedef void (*FuncToCall)(Il2CppString* p1, Il2CppString* p2, Il2CppString* p3, bool p4, const void* method);
     ((FuncToCall)methodPointer)( p0, p1, p2, p3,  method);
     return true;
@@ -23814,14 +25305,14 @@ bool w_vsssi8(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer m
     Il2CppString* p2 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv2);        
     // LuaValToCSVal P any
     int64_t p3 = converter::Converter<int64_t>::toCpp(apis, env, _sv3);
-        
+
     typedef void (*FuncToCall)(Il2CppString* p1, Il2CppString* p2, Il2CppString* p3, int64_t p4, const void* method);
     ((FuncToCall)methodPointer)( p0, p1, p2, p3,  method);
     return true;
 }
 // Void EncryptFile(System.String, System.String, System.String, System.String, Byte[], UInt32) declare in CFileManager
-bool w_vssssou4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vssssou4");
+bool w_vssssau4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_vssssau4");
     auto TIp0 = wrapData->TypeInfos[0];
     auto TIp1 = wrapData->TypeInfos[1];
     auto TIp2 = wrapData->TypeInfos[2];
@@ -23858,10 +25349,10 @@ bool w_vssssou4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer
     Il2CppString* p3 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv3);    
     // LuaValToCSVal o/O
     Il2CppObject* p4 = LuaValueToCSRef(apis, TIp4, env, _sv4);
-                
+        
     // LuaValToCSVal P any
     uint32_t p5 = converter::Converter<uint32_t>::toCpp(apis, env, _sv5);
-        
+
     typedef void (*FuncToCall)(Il2CppString* p1, Il2CppString* p2, Il2CppString* p3, Il2CppString* p4, Il2CppObject* p5, uint32_t p6, const void* method);
     ((FuncToCall)methodPointer)( p0, p1, p2, p3, p4, p5,  method);
     return true;
@@ -23886,7 +25377,7 @@ bool w_vsu4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);        
     // LuaValToCSVal P any
     uint32_t p1 = converter::Converter<uint32_t>::toCpp(apis, env, _sv1);
-        
+
     typedef void (*FuncToCall)(Il2CppString* p1, uint32_t p2, const void* method);
     ((FuncToCall)methodPointer)( p0, p1,  method);
     return true;
@@ -23914,10 +25405,10 @@ bool w_vsu4u4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer m
     Il2CppString* p0 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv0);        
     // LuaValToCSVal P any
     uint32_t p1 = converter::Converter<uint32_t>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     uint32_t p2 = converter::Converter<uint32_t>::toCpp(apis, env, _sv2);
-        
+
     typedef void (*FuncToCall)(Il2CppString* p1, uint32_t p2, uint32_t p3, const void* method);
     ((FuncToCall)methodPointer)( p0, p1, p2,  method);
     return true;
@@ -24323,7 +25814,7 @@ bool w_vtO(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer meth
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-        
+
     typedef void (*FuncToCall)(void*,Il2CppObject* p1, const void* method);
     ((FuncToCall)methodPointer)(self, p0,  method);
     return true;
@@ -24345,7 +25836,7 @@ bool w_vtODb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-         // LuaValToCSVal primitive with default
+ // LuaValToCSVal primitive with default
     bool p1 = OptionalParameter<bool>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 1);
             
     typedef void (*FuncToCall)(void*,Il2CppObject* p1, bool p2, const void* method);
@@ -24368,10 +25859,10 @@ bool w_vtOO(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-        
+
     typedef void (*FuncToCall)(void*,Il2CppObject* p1, Il2CppObject* p2, const void* method);
     ((FuncToCall)methodPointer)(self, p0, p1,  method);
     return true;
@@ -24396,13 +25887,13 @@ bool w_vtOOo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p2 = LuaValueToCSRef(apis, TIp2, env, _sv2);
-        
+
     typedef void (*FuncToCall)(void*,Il2CppObject* p1, Il2CppObject* p2, Il2CppObject* p3, const void* method);
     ((FuncToCall)methodPointer)(self, p0, p1, p2,  method);
     return true;
@@ -24424,7 +25915,7 @@ bool w_vtOVi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer m
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-             
+     
     // LuaValToCSVal primitive params
     Il2CppArray* p1 = Params<int32_t>::PackPrimitive(apis, env, info, TIp1, lua_args_len, 1);
 
@@ -24449,7 +25940,7 @@ bool w_vtOVi8(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer m
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-             
+     
     // LuaValToCSVal primitive params
     Il2CppArray* p1 = Params<int64_t>::PackPrimitive(apis, env, info, TIp1, lua_args_len, 1);
 
@@ -24474,10 +25965,10 @@ bool w_vtOi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-        
+
     typedef void (*FuncToCall)(void*,Il2CppObject* p1, int32_t p2, const void* method);
     ((FuncToCall)methodPointer)(self, p0, p1,  method);
     return true;
@@ -24502,13 +25993,13 @@ bool w_vtOi4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer 
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-        
+
     typedef void (*FuncToCall)(void*,Il2CppObject* p1, int32_t p2, int32_t p3, const void* method);
     ((FuncToCall)methodPointer)(self, p0, p1, p2,  method);
     return true;
@@ -24536,16 +26027,16 @@ bool w_vtOi4i4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointe
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-                
+        
     // LuaValToCSVal P any
     int32_t p3 = converter::Converter<int32_t>::toCpp(apis, env, _sv3);
-        
+
     typedef void (*FuncToCall)(void*,Il2CppObject* p1, int32_t p2, int32_t p3, int32_t p4, const void* method);
     ((FuncToCall)methodPointer)(self, p0, p1, p2, p3,  method);
     return true;
@@ -24567,10 +26058,10 @@ bool w_vtOi8(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     int64_t p1 = converter::Converter<int64_t>::toCpp(apis, env, _sv1);
-        
+
     typedef void (*FuncToCall)(void*,Il2CppObject* p1, int64_t p2, const void* method);
     ((FuncToCall)methodPointer)(self, p0, p1,  method);
     return true;
@@ -24595,13 +26086,13 @@ bool w_vtOi8i8(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer 
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     int64_t p1 = converter::Converter<int64_t>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     int64_t p2 = converter::Converter<int64_t>::toCpp(apis, env, _sv2);
-        
+
     typedef void (*FuncToCall)(void*,Il2CppObject* p1, int64_t p2, int64_t p3, const void* method);
     ((FuncToCall)methodPointer)(self, p0, p1, p2,  method);
     return true;
@@ -24629,16 +26120,16 @@ bool w_vtOi8i8i8(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointe
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     int64_t p1 = converter::Converter<int64_t>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     int64_t p2 = converter::Converter<int64_t>::toCpp(apis, env, _sv2);
-                
+        
     // LuaValToCSVal P any
     int64_t p3 = converter::Converter<int64_t>::toCpp(apis, env, _sv3);
-        
+
     typedef void (*FuncToCall)(void*,Il2CppObject* p1, int64_t p2, int64_t p3, int64_t p4, const void* method);
     ((FuncToCall)methodPointer)(self, p0, p1, p2, p3,  method);
     return true;
@@ -24661,10 +26152,10 @@ bool w_vtOo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-        
+
     typedef void (*FuncToCall)(void*,Il2CppObject* p1, Il2CppObject* p2, const void* method);
     ((FuncToCall)methodPointer)(self, p0, p1,  method);
     return true;
@@ -24691,13 +26182,13 @@ bool w_vtOoo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p2 = LuaValueToCSRef(apis, TIp2, env, _sv2);
-        
+
     typedef void (*FuncToCall)(void*,Il2CppObject* p1, Il2CppObject* p2, Il2CppObject* p3, const void* method);
     ((FuncToCall)methodPointer)(self, p0, p1, p2,  method);
     return true;
@@ -24733,19 +26224,20 @@ bool w_vtOooObS_r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMetho
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p2 = LuaValueToCSRef(apis, TIp2, env, _sv2);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p3 = LuaValueToCSRef(apis, TIp3, env, _sv3);
-                
+        
     // LuaValToCSVal P any
     bool p4 = converter::Converter<bool>::toCpp(apis, env, _sv4);
-             // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_r4r4r4_* pp5 = DataTransfer::GetPointer<S_r4r4r4_>(apis, env, _sv5);
     S_r4r4r4_ p5 = pp5 ? *pp5 : S_r4r4r4_ {};
         
@@ -24784,22 +26276,22 @@ bool w_vtOooObo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p2 = LuaValueToCSRef(apis, TIp2, env, _sv2);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p3 = LuaValueToCSRef(apis, TIp3, env, _sv3);
-                
+        
     // LuaValToCSVal P any
     bool p4 = converter::Converter<bool>::toCpp(apis, env, _sv4);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p5 = LuaValueToCSRef(apis, TIp5, env, _sv5);
-        
+
     typedef void (*FuncToCall)(void*,Il2CppObject* p1, Il2CppObject* p2, Il2CppObject* p3, Il2CppObject* p4, bool p5, Il2CppObject* p6, const void* method);
     ((FuncToCall)methodPointer)(self, p0, p1, p2, p3, p4, p5,  method);
     return true;
@@ -24839,22 +26331,23 @@ bool w_vtOooOboS_r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMeth
     
     // LuaValToCSVal o/O
     Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p2 = LuaValueToCSRef(apis, TIp2, env, _sv2);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p3 = LuaValueToCSRef(apis, TIp3, env, _sv3);
-                
+        
     // LuaValToCSVal P any
     bool p4 = converter::Converter<bool>::toCpp(apis, env, _sv4);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p5 = LuaValueToCSRef(apis, TIp5, env, _sv5);
-             // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_r4r4r4_* pp6 = DataTransfer::GetPointer<S_r4r4r4_>(apis, env, _sv6);
     S_r4r4r4_ p6 = pp6 ? *pp6 : S_r4r4r4_ {};
         
@@ -25057,7 +26550,7 @@ bool w_vtPS_S_p_su4_b(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodP
                 
     // LuaValToCSVal P any
     bool p1 = converter::Converter<bool>::toCpp(apis, env, _sv1);
-        
+
     typedef void (*FuncToCall)(void*,struct S_S_p_su4_* p1, bool p2, const void* method);
     ((FuncToCall)methodPointer)(self, p0, p1,  method);                
     int ret0;
@@ -25162,10 +26655,10 @@ bool w_vtPS_S_r4r4r4_S_r4r4r4_S_r4r4r4_r4_or4DoDb(struct pesapi_ffi* apis, Metho
             
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     float p2 = converter::Converter<float>::toCpp(apis, env, _sv2);
-            // LuaValToCSVal ref with default
+    // LuaValToCSVal ref with default
     Il2CppObject* p3 = OptionalParameter<Il2CppObject*>::GetRefType(apis, env, info, method, wrapData, lua_args_len, 3, TIp3); // LuaValToCSVal primitive with default
     bool p4 = OptionalParameter<bool>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 4);
             
@@ -25445,22 +26938,22 @@ bool w_vtPS_i4i4i4_PS_i4i4i4_PS_i4i4i4_i4i4i4i4i4i4(struct pesapi_ffi* apis, Met
                 
     // LuaValToCSVal P any
     int32_t p3 = converter::Converter<int32_t>::toCpp(apis, env, _sv3);
-                
+        
     // LuaValToCSVal P any
     int32_t p4 = converter::Converter<int32_t>::toCpp(apis, env, _sv4);
-                
+        
     // LuaValToCSVal P any
     int32_t p5 = converter::Converter<int32_t>::toCpp(apis, env, _sv5);
-                
+        
     // LuaValToCSVal P any
     int32_t p6 = converter::Converter<int32_t>::toCpp(apis, env, _sv6);
-                
+        
     // LuaValToCSVal P any
     int32_t p7 = converter::Converter<int32_t>::toCpp(apis, env, _sv7);
-                
+        
     // LuaValToCSVal P any
     int32_t p8 = converter::Converter<int32_t>::toCpp(apis, env, _sv8);
-        
+
     typedef void (*FuncToCall)(void*,struct S_i4i4i4_* p1, struct S_i4i4i4_* p2, struct S_i4i4i4_* p3, int32_t p4, int32_t p5, int32_t p6, int32_t p7, int32_t p8, int32_t p9, const void* method);
     ((FuncToCall)methodPointer)(self, p0, p1, p2, p3, p4, p5, p6, p7, p8,  method);                
     int ret0;
@@ -25860,6 +27353,90 @@ bool w_vtPS_r4r4r4_PS_i4i4i4_PS_r4r4r4r4_(struct pesapi_ffi* apis, MethodInfo* m
     value_scope.reserve = apis->get_return_num(info);
     return true;
 }
+// Void EnableKeyword(UnityEngine.Rendering.GlobalKeyword ByRef) declare in UnityEngine.Rendering.CommandBuffer
+bool w_vtPS_su4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_vtPS_su4_");
+    AutoValueScope value_scope(apis, env);
+    auto TIp0 = wrapData->TypeInfos[0];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    if (checkLuaArgument) {
+        if (lua_args_len != 1) 
+            return false;
+
+        if (!apis->is_object(env, _sv0)) return false;        
+    }
+     
+    // LuaValToCSVal Pstruct
+    S_su4_* p0 = DataTransfer::GetPointer<S_su4_>(apis, env, apis->unboxing(env, _sv0)); // valuetype ref
+    S_su4_ up0;
+    if (!p0) {
+        memset(&up0, 0, sizeof(p0));
+        p0 = &up0;
+    }
+        
+    typedef void (*FuncToCall)(void*,struct S_su4_* p1, const void* method);
+    ((FuncToCall)methodPointer)(self, p0,  method);                
+    int ret0;
+    if (p0 == &up0)
+    {
+        ret0 = DataTransfer::CopyValueType(apis, env, *p0, TIp0);    
+        apis->update_boxed_value(env, _sv0, ret0);
+    }
+    else
+    {
+        ret0 = apis->native_object_to_value(env, TIp0, p0, false);
+    }
+
+	apis->add_return(info, ret0);
+    value_scope.reserve = apis->get_return_num(info);
+    return true;
+}
+// Void SetKeyword(UnityEngine.Rendering.GlobalKeyword ByRef, Boolean) declare in UnityEngine.Rendering.CommandBuffer
+bool w_vtPS_su4_b(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_vtPS_su4_b");
+    AutoValueScope value_scope(apis, env);
+    auto TIp0 = wrapData->TypeInfos[0];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    int _sv1 = apis->get_arg(info, 1);
+    if (checkLuaArgument) {
+        if (lua_args_len != 2) 
+            return false;
+
+        if (!apis->is_object(env, _sv0)) return false;
+        if (!converter::Converter<bool>::accept(apis, env, _sv1))
+            return false;        
+    }
+     
+    // LuaValToCSVal Pstruct
+    S_su4_* p0 = DataTransfer::GetPointer<S_su4_>(apis, env, apis->unboxing(env, _sv0)); // valuetype ref
+    S_su4_ up0;
+    if (!p0) {
+        memset(&up0, 0, sizeof(p0));
+        p0 = &up0;
+    }
+                
+    // LuaValToCSVal P any
+    bool p1 = converter::Converter<bool>::toCpp(apis, env, _sv1);
+
+    typedef void (*FuncToCall)(void*,struct S_su4_* p1, bool p2, const void* method);
+    ((FuncToCall)methodPointer)(self, p0, p1,  method);                
+    int ret0;
+    if (p0 == &up0)
+    {
+        ret0 = DataTransfer::CopyValueType(apis, env, *p0, TIp0);    
+        apis->update_boxed_value(env, _sv0, ret0);
+    }
+    else
+    {
+        ret0 = apis->native_object_to_value(env, TIp0, p0, false);
+    }
+
+	apis->add_return(info, ret0);
+    value_scope.reserve = apis->get_return_num(info);
+    return true;
+}
 // Void SetGoldInfo(stGoldDetailInfo ByRef) declare in Assets.Scripts.GameSystem.PlayerStatisticData
 bool w_vtPS_u1u1u1u1u1u1ooo_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
     // PLog("Running w_vtPS_u1u1u1u1u1u1ooo_");
@@ -26043,7 +27620,7 @@ bool w_vtPS_u4S_i4i4i4_S_r4r4r4_i4S_r4r4r4r4_u4u1_u4(struct pesapi_ffi* apis, Me
                 
     // LuaValToCSVal P any
     uint32_t p1 = converter::Converter<uint32_t>::toCpp(apis, env, _sv1);
-        
+
     typedef void (*FuncToCall)(void*,struct S_u4S_i4i4i4_S_r4r4r4_i4S_r4r4r4r4_u4u1_* p1, uint32_t p2, const void* method);
     ((FuncToCall)methodPointer)(self, p0, p1,  method);                
     int ret0;
@@ -26170,7 +27747,8 @@ bool w_vtPS_u4o_i4S_u4o_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMeth
                 
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-             // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_u4o_* pp2 = DataTransfer::GetPointer<S_u4o_>(apis, env, _sv2);
     S_u4o_ p2 = pp2 ? *pp2 : S_u4o_ {};
         
@@ -26292,45 +27870,6 @@ bool w_vtPS_u4u4i4i4i4i4u4u1u1u4i4i4i4i4u1u4S_i4i4i4_i4u1_(struct pesapi_ffi* ap
     }
         
     typedef void (*FuncToCall)(void*,struct S_u4u4i4i4i4i4u4u1u1u4i4i4i4i4u1u4S_i4i4i4_i4u1_* p1, const void* method);
-    ((FuncToCall)methodPointer)(self, p0,  method);                
-    int ret0;
-    if (p0 == &up0)
-    {
-        ret0 = DataTransfer::CopyValueType(apis, env, *p0, TIp0);    
-        apis->update_boxed_value(env, _sv0, ret0);
-    }
-    else
-    {
-        ret0 = apis->native_object_to_value(env, TIp0, p0, false);
-    }
-
-	apis->add_return(info, ret0);
-    value_scope.reserve = apis->get_return_num(info);
-    return true;
-}
-// Void OnActorLevelGradientChange(ActorLevelGradientData ByRef) declare in Assets.Scripts.GameSystem.BattleFloatTextManager
-bool w_vtPS_u4u4i4i4i4u1_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vtPS_u4u4i4i4i4u1_");
-    AutoValueScope value_scope(apis, env);
-    auto TIp0 = wrapData->TypeInfos[0];
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    if (checkLuaArgument) {
-        if (lua_args_len != 1) 
-            return false;
-
-        if (!apis->is_object(env, _sv0)) return false;        
-    }
-     
-    // LuaValToCSVal Pstruct
-    S_u4u4i4i4i4u1_* p0 = DataTransfer::GetPointer<S_u4u4i4i4i4u1_>(apis, env, apis->unboxing(env, _sv0)); // valuetype ref
-    S_u4u4i4i4i4u1_ up0;
-    if (!p0) {
-        memset(&up0, 0, sizeof(p0));
-        p0 = &up0;
-    }
-        
-    typedef void (*FuncToCall)(void*,struct S_u4u4i4i4i4u1_* p1, const void* method);
     ((FuncToCall)methodPointer)(self, p0,  method);                
     int ret0;
     if (p0 == &up0)
@@ -26569,7 +28108,7 @@ bool w_vtPS_u4u4u4u4u4u4u4u4u4u4_u4(struct pesapi_ffi* apis, MethodInfo* method,
                 
     // LuaValToCSVal P any
     uint32_t p1 = converter::Converter<uint32_t>::toCpp(apis, env, _sv1);
-        
+
     typedef void (*FuncToCall)(void*,struct S_u4u4u4u4u4u4u4u4u4u4_* p1, uint32_t p2, const void* method);
     ((FuncToCall)methodPointer)(self, p0, p1,  method);                
     int ret0;
@@ -26642,10 +28181,10 @@ bool w_vtPci4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer
         
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-        
+
     typedef void (*FuncToCall)(void*,Il2CppChar* p1, int32_t p2, int32_t p3, const void* method);
     ((FuncToCall)methodPointer)(self, p0, p1, p2,  method);
 	int ret0 = converter::Converter<Il2CppChar>::toScript(apis, env, *p0);
@@ -26708,10 +28247,10 @@ bool w_vtPi1i4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointe
         
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-        
+
     typedef void (*FuncToCall)(void*,int8_t* p1, int32_t p2, int32_t p3, const void* method);
     ((FuncToCall)methodPointer)(self, p0, p1, p2,  method);
 	int ret0 = converter::Converter<int8_t>::toScript(apis, env, *p0);
@@ -26750,13 +28289,13 @@ bool w_vtPi1i4i4o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPoint
         
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p3 = LuaValueToCSRef(apis, TIp3, env, _sv3);
-        
+
     typedef void (*FuncToCall)(void*,int8_t* p1, int32_t p2, int32_t p3, Il2CppObject* p4, const void* method);
     ((FuncToCall)methodPointer)(self, p0, p1, p2, p3,  method);
 	int ret0 = converter::Converter<int8_t>::toScript(apis, env, *p0);
@@ -26858,7 +28397,7 @@ bool w_vtPr4r4PS_S_S_r4r4r4_S_r4r4r4_S_r4r4r4__S_r4r4r4i4__PS_S_S_r4r4r4_S_r4r4r
         
     // LuaValToCSVal P any
     float p1 = converter::Converter<float>::toCpp(apis, env, _sv1);
-             
+     
     // LuaValToCSVal Pstruct
     S_S_S_r4r4r4_S_r4r4r4_S_r4r4r4__S_r4r4r4i4__* p2 = DataTransfer::GetPointer<S_S_S_r4r4r4_S_r4r4r4_S_r4r4r4__S_r4r4r4i4__>(apis, env, apis->unboxing(env, _sv2)); // valuetype ref
     S_S_S_r4r4r4_S_r4r4r4_S_r4r4r4__S_r4r4r4i4__ up2;
@@ -26939,7 +28478,8 @@ bool w_vtS_Pu1i4i4i4i4S_pi4i4__(struct pesapi_ffi* apis, MethodInfo* method, Il2
         if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_Pu1i4i4i4i4S_pi4i4__* pp0 = DataTransfer::GetPointer<S_Pu1i4i4i4i4S_pi4i4__>(apis, env, _sv0);
     S_Pu1i4i4i4i4S_pi4i4__ p0 = pp0 ? *pp0 : S_Pu1i4i4i4i4S_pi4i4__ {};
         
@@ -26960,12 +28500,103 @@ bool w_vtS_Pvi4i4i4S_pi4i4_i4_(struct pesapi_ffi* apis, MethodInfo* method, Il2C
         if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_Pvi4i4i4S_pi4i4_i4_* pp0 = DataTransfer::GetPointer<S_Pvi4i4i4S_pi4i4_i4_>(apis, env, _sv0);
     S_Pvi4i4i4S_pi4i4_i4_ p0 = pp0 ? *pp0 : S_Pvi4i4i4S_pi4i4_i4_ {};
         
     typedef void (*FuncToCall)(void*,struct S_Pvi4i4i4S_pi4i4_i4_ p1, const void* method);
     ((FuncToCall)methodPointer)(self, p0,  method);
+    return true;
+}
+// Void SetParticles(Unity.Collections.NativeArray`1[UnityEngine.ParticleSystem+Particle], Int32) declare in UnityEngine.ParticleSystem
+bool w_vtS_Pvi4i4i4S_pi4i4_i4_i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_vtS_Pvi4i4i4S_pi4i4_i4_i4");
+    auto TIp0 = wrapData->TypeInfos[0];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    int _sv1 = apis->get_arg(info, 1);
+    if (checkLuaArgument) {
+        if (lua_args_len != 2) 
+            return false;
+
+        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
+            return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv1))
+            return false;        
+    }
+     
+    // LuaValToCSVal struct
+    S_Pvi4i4i4S_pi4i4_i4_* pp0 = DataTransfer::GetPointer<S_Pvi4i4i4S_pi4i4_i4_>(apis, env, _sv0);
+    S_Pvi4i4i4S_pi4i4_i4_ p0 = pp0 ? *pp0 : S_Pvi4i4i4S_pi4i4_i4_ {};
+                
+    // LuaValToCSVal P any
+    int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
+
+    typedef void (*FuncToCall)(void*,struct S_Pvi4i4i4S_pi4i4_i4_ p1, int32_t p2, const void* method);
+    ((FuncToCall)methodPointer)(self, p0, p1,  method);
+    return true;
+}
+// Void SetParticles(Unity.Collections.NativeArray`1[UnityEngine.ParticleSystem+Particle], Int32, Int32) declare in UnityEngine.ParticleSystem
+bool w_vtS_Pvi4i4i4S_pi4i4_i4_i4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_vtS_Pvi4i4i4S_pi4i4_i4_i4i4");
+    auto TIp0 = wrapData->TypeInfos[0];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    int _sv1 = apis->get_arg(info, 1);
+    int _sv2 = apis->get_arg(info, 2);
+    if (checkLuaArgument) {
+        if (lua_args_len != 3) 
+            return false;
+
+        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
+            return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv1))
+            return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv2))
+            return false;        
+    }
+     
+    // LuaValToCSVal struct
+    S_Pvi4i4i4S_pi4i4_i4_* pp0 = DataTransfer::GetPointer<S_Pvi4i4i4S_pi4i4_i4_>(apis, env, _sv0);
+    S_Pvi4i4i4S_pi4i4_i4_ p0 = pp0 ? *pp0 : S_Pvi4i4i4S_pi4i4_i4_ {};
+                
+    // LuaValToCSVal P any
+    int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
+        
+    // LuaValToCSVal P any
+    int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
+
+    typedef void (*FuncToCall)(void*,struct S_Pvi4i4i4S_pi4i4_i4_ p1, int32_t p2, int32_t p3, const void* method);
+    ((FuncToCall)methodPointer)(self, p0, p1, p2,  method);
+    return true;
+}
+// Void Emit(EmitParams, Int32) declare in UnityEngine.ParticleSystem
+bool w_vtS_S_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_i4u1u1u1u1_u4u4r4r4i4r4r4u4_bbbbbbbbbbb_i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_vtS_S_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_i4u1u1u1u1_u4u4r4r4i4r4r4u4_bbbbbbbbbbb_i4");
+    auto TIp0 = wrapData->TypeInfos[0];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    int _sv1 = apis->get_arg(info, 1);
+    if (checkLuaArgument) {
+        if (lua_args_len != 2) 
+            return false;
+
+        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
+            return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv1))
+            return false;        
+    }
+     
+    // LuaValToCSVal struct
+    S_S_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_i4u1u1u1u1_u4u4r4r4i4r4r4u4_bbbbbbbbbbb_* pp0 = DataTransfer::GetPointer<S_S_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_i4u1u1u1u1_u4u4r4r4i4r4r4u4_bbbbbbbbbbb_>(apis, env, _sv0);
+    S_S_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_i4u1u1u1u1_u4u4r4r4i4r4r4u4_bbbbbbbbbbb_ p0 = pp0 ? *pp0 : S_S_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_i4u1u1u1u1_u4u4r4r4i4r4r4u4_bbbbbbbbbbb_ {};
+                
+    // LuaValToCSVal P any
+    int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
+
+    typedef void (*FuncToCall)(void*,struct S_S_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_i4u1u1u1u1_u4u4r4r4i4r4r4u4_bbbbbbbbbbb_ p1, int32_t p2, const void* method);
+    ((FuncToCall)methodPointer)(self, p0, p1,  method);
     return true;
 }
 // Void TransformDirections(System.Span`1[UnityEngine.Vector3]) declare in UnityEngine.Transform
@@ -26981,7 +28612,8 @@ bool w_vtS_S_p_i4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPoin
         if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_S_p_i4_* pp0 = DataTransfer::GetPointer<S_S_p_i4_>(apis, env, _sv0);
     S_S_p_i4_ p0 = pp0 ? *pp0 : S_S_p_i4_ {};
         
@@ -27006,10 +28638,12 @@ bool w_vtS_S_p_i4_S_S_p_i4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppM
         if (!DataTransfer::IsAssignable(apis, env, _sv1, TIp1, true))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_S_p_i4_* pp0 = DataTransfer::GetPointer<S_S_p_i4_>(apis, env, _sv0);
     S_S_p_i4_ p0 = pp0 ? *pp0 : S_S_p_i4_ {};
-             // LuaValToCSVal struct
+             
+    // LuaValToCSVal struct
     S_S_p_i4_* pp1 = DataTransfer::GetPointer<S_S_p_i4_>(apis, env, _sv1);
     S_S_p_i4_ p1 = pp1 ? *pp1 : S_S_p_i4_ {};
         
@@ -27032,13 +28666,14 @@ bool w_vtS_S_p_pp_O(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPoi
         if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_S_p_pp_* pp0 = DataTransfer::GetPointer<S_S_p_pp_>(apis, env, _sv0);
     S_S_p_pp_ p0 = pp0 ? *pp0 : S_S_p_pp_ {};
             
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-        
+
     typedef void (*FuncToCall)(void*,struct S_S_p_pp_ p1, Il2CppObject* p2, const void* method);
     ((FuncToCall)methodPointer)(self, p0, p1,  method);
     return true;
@@ -27056,11 +28691,34 @@ bool w_vtS_S_r4r4_r4S_r4r4__(struct pesapi_ffi* apis, MethodInfo* method, Il2Cpp
         if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_S_r4r4_r4S_r4r4__* pp0 = DataTransfer::GetPointer<S_S_r4r4_r4S_r4r4__>(apis, env, _sv0);
     S_S_r4r4_r4S_r4r4__ p0 = pp0 ? *pp0 : S_S_r4r4_r4S_r4r4__ {};
         
     typedef void (*FuncToCall)(void*,struct S_S_r4r4_r4S_r4r4__ p1, const void* method);
+    ((FuncToCall)methodPointer)(self, p0,  method);
+    return true;
+}
+// Void Emit(Particle) declare in UnityEngine.ParticleSystem
+bool w_vtS_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_i4u1u1u1u1_u4u4r4r4i4r4r4u4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_vtS_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_i4u1u1u1u1_u4u4r4r4i4r4r4u4_");
+    auto TIp0 = wrapData->TypeInfos[0];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    if (checkLuaArgument) {
+        if (lua_args_len != 1) 
+            return false;
+
+        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
+            return false;        
+    }
+     
+    // LuaValToCSVal struct
+    S_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_i4u1u1u1u1_u4u4r4r4i4r4r4u4_* pp0 = DataTransfer::GetPointer<S_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_i4u1u1u1u1_u4u4r4r4i4r4r4u4_>(apis, env, _sv0);
+    S_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_i4u1u1u1u1_u4u4r4r4i4r4r4u4_ p0 = pp0 ? *pp0 : S_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_i4u1u1u1u1_u4u4r4r4i4r4r4u4_ {};
+        
+    typedef void (*FuncToCall)(void*,struct S_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_i4u1u1u1u1_u4u4r4r4i4r4r4u4_ p1, const void* method);
     ((FuncToCall)methodPointer)(self, p0,  method);
     return true;
 }
@@ -27077,12 +28735,63 @@ bool w_vtS_S_r4r4r4_S_r4r4r4__(struct pesapi_ffi* apis, MethodInfo* method, Il2C
         if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_S_r4r4r4_S_r4r4r4__* pp0 = DataTransfer::GetPointer<S_S_r4r4r4_S_r4r4r4__>(apis, env, _sv0);
     S_S_r4r4r4_S_r4r4r4__ p0 = pp0 ? *pp0 : S_S_r4r4r4_S_r4r4r4__ {};
         
     typedef void (*FuncToCall)(void*,struct S_S_r4r4r4_S_r4r4r4__ p1, const void* method);
     ((FuncToCall)methodPointer)(self, p0,  method);
+    return true;
+}
+// Void WaitOnGPUFence(UnityEngine.Rendering.GPUFence) declare in UnityEngine.Rendering.CommandBuffer
+bool w_vtS__(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_vtS__");
+    auto TIp0 = wrapData->TypeInfos[0];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    if (checkLuaArgument) {
+        if (lua_args_len != 1) 
+            return false;
+
+        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
+            return false;        
+    }
+     
+    // LuaValToCSVal struct
+    S__* pp0 = DataTransfer::GetPointer<S__>(apis, env, _sv0);
+    S__ p0 = pp0 ? *pp0 : S__ {};
+        
+    typedef void (*FuncToCall)(void*,struct S__ p1, const void* method);
+    ((FuncToCall)methodPointer)(self, p0,  method);
+    return true;
+}
+// Void WaitOnGPUFence(UnityEngine.Rendering.GPUFence, UnityEngine.Rendering.SynchronisationStage) declare in UnityEngine.Rendering.CommandBuffer
+bool w_vtS__i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_vtS__i4");
+    auto TIp0 = wrapData->TypeInfos[0];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    int _sv1 = apis->get_arg(info, 1);
+    if (checkLuaArgument) {
+        if (lua_args_len != 2) 
+            return false;
+
+        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
+            return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv1))
+            return false;        
+    }
+     
+    // LuaValToCSVal struct
+    S__* pp0 = DataTransfer::GetPointer<S__>(apis, env, _sv0);
+    S__ p0 = pp0 ? *pp0 : S__ {};
+                
+    // LuaValToCSVal P any
+    int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
+
+    typedef void (*FuncToCall)(void*,struct S__ p1, int32_t p2, const void* method);
+    ((FuncToCall)methodPointer)(self, p0, p1,  method);
     return true;
 }
 // Void set_scene(UnityEngine.SceneManagement.Scene) declare in UnityEngine.Camera
@@ -27098,7 +28807,8 @@ bool w_vtS_i4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer 
         if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_i4_* pp0 = DataTransfer::GetPointer<S_i4_>(apis, env, _sv0);
     S_i4_ p0 = pp0 ? *pp0 : S_i4_ {};
         
@@ -27119,7 +28829,8 @@ bool w_vtS_i4i4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointe
         if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_i4i4_* pp0 = DataTransfer::GetPointer<S_i4i4_>(apis, env, _sv0);
     S_i4i4_ p0 = pp0 ? *pp0 : S_i4i4_ {};
         
@@ -27150,19 +28861,21 @@ bool w_vtS_i4i4_S_i4i4_bb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMet
         if (!converter::Converter<bool>::accept(apis, env, _sv3))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_i4i4_* pp0 = DataTransfer::GetPointer<S_i4i4_>(apis, env, _sv0);
     S_i4i4_ p0 = pp0 ? *pp0 : S_i4i4_ {};
-             // LuaValToCSVal struct
+             
+    // LuaValToCSVal struct
     S_i4i4_* pp1 = DataTransfer::GetPointer<S_i4i4_>(apis, env, _sv1);
     S_i4i4_ p1 = pp1 ? *pp1 : S_i4i4_ {};
                 
     // LuaValToCSVal P any
     bool p2 = converter::Converter<bool>::toCpp(apis, env, _sv2);
-                
+        
     // LuaValToCSVal P any
     bool p3 = converter::Converter<bool>::toCpp(apis, env, _sv3);
-        
+
     typedef void (*FuncToCall)(void*,struct S_i4i4_ p1, struct S_i4i4_ p2, bool p3, bool p4, const void* method);
     ((FuncToCall)methodPointer)(self, p0, p1, p2, p3,  method);
     return true;
@@ -27183,13 +28896,14 @@ bool w_vtS_i4i4_b(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPoint
         if (!converter::Converter<bool>::accept(apis, env, _sv1))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_i4i4_* pp0 = DataTransfer::GetPointer<S_i4i4_>(apis, env, _sv0);
     S_i4i4_ p0 = pp0 ? *pp0 : S_i4i4_ {};
                 
     // LuaValToCSVal P any
     bool p1 = converter::Converter<bool>::toCpp(apis, env, _sv1);
-        
+
     typedef void (*FuncToCall)(void*,struct S_i4i4_ p1, bool p2, const void* method);
     ((FuncToCall)methodPointer)(self, p0, p1,  method);
     return true;
@@ -27213,16 +28927,17 @@ bool w_vtS_i4i4_bb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPoin
         if (!converter::Converter<bool>::accept(apis, env, _sv2))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_i4i4_* pp0 = DataTransfer::GetPointer<S_i4i4_>(apis, env, _sv0);
     S_i4i4_ p0 = pp0 ? *pp0 : S_i4i4_ {};
                 
     // LuaValToCSVal P any
     bool p1 = converter::Converter<bool>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     bool p2 = converter::Converter<bool>::toCpp(apis, env, _sv2);
-        
+
     typedef void (*FuncToCall)(void*,struct S_i4i4_ p1, bool p2, bool p3, const void* method);
     ((FuncToCall)methodPointer)(self, p0, p1, p2,  method);
     return true;
@@ -27244,13 +28959,14 @@ bool w_vtS_i4i4_o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPoint
         if (!DataTransfer::IsAssignable(apis, env, _sv1, TIp1, false))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_i4i4_* pp0 = DataTransfer::GetPointer<S_i4i4_>(apis, env, _sv0);
     S_i4i4_ p0 = pp0 ? *pp0 : S_i4i4_ {};
             
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-        
+
     typedef void (*FuncToCall)(void*,struct S_i4i4_ p1, Il2CppObject* p2, const void* method);
     ((FuncToCall)methodPointer)(self, p0, p1,  method);
     return true;
@@ -27268,11 +28984,34 @@ bool w_vtS_i4i4i4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPoin
         if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_i4i4i4_* pp0 = DataTransfer::GetPointer<S_i4i4i4_>(apis, env, _sv0);
     S_i4i4i4_ p0 = pp0 ? *pp0 : S_i4i4i4_ {};
         
     typedef void (*FuncToCall)(void*,struct S_i4i4i4_ p1, const void* method);
+    ((FuncToCall)methodPointer)(self, p0,  method);
+    return true;
+}
+// Void DrawOcclusionMesh(UnityEngine.RectInt) declare in UnityEngine.Rendering.CommandBuffer
+bool w_vtS_i4i4i4i4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_vtS_i4i4i4i4_");
+    auto TIp0 = wrapData->TypeInfos[0];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    if (checkLuaArgument) {
+        if (lua_args_len != 1) 
+            return false;
+
+        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
+            return false;        
+    }
+     
+    // LuaValToCSVal struct
+    S_i4i4i4i4_* pp0 = DataTransfer::GetPointer<S_i4i4i4i4_>(apis, env, _sv0);
+    S_i4i4i4i4_ p0 = pp0 ? *pp0 : S_i4i4i4i4_ {};
+        
+    typedef void (*FuncToCall)(void*,struct S_i4i4i4i4_ p1, const void* method);
     ((FuncToCall)methodPointer)(self, p0,  method);
     return true;
 }
@@ -27289,7 +29028,8 @@ bool w_vtS_i4i4i4i4b_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodP
         if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_i4i4i4i4b_* pp0 = DataTransfer::GetPointer<S_i4i4i4i4b_>(apis, env, _sv0);
     S_i4i4i4i4b_ p0 = pp0 ? *pp0 : S_i4i4i4i4b_ {};
         
@@ -27310,12 +29050,822 @@ bool w_vtS_i4i4i4i4i4i4i4i4i4i4i4i4i4_(struct pesapi_ffi* apis, MethodInfo* meth
         if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_i4i4i4i4i4i4i4i4i4i4i4i4i4_* pp0 = DataTransfer::GetPointer<S_i4i4i4i4i4i4i4i4i4i4i4i4i4_>(apis, env, _sv0);
     S_i4i4i4i4i4i4i4i4i4i4i4i4i4_ p0 = pp0 ? *pp0 : S_i4i4i4i4i4i4i4i4i4i4i4i4i4_ {};
         
     typedef void (*FuncToCall)(void*,struct S_i4i4i4i4i4i4i4i4i4i4i4i4i4_ p1, const void* method);
     ((FuncToCall)methodPointer)(self, p0,  method);
+    return true;
+}
+// Void IncrementUpdateCount(UnityEngine.Rendering.RenderTargetIdentifier) declare in UnityEngine.Rendering.CommandBuffer
+bool w_vtS_i4i4i4pi4i4i4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_vtS_i4i4i4pi4i4i4_");
+    auto TIp0 = wrapData->TypeInfos[0];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    if (checkLuaArgument) {
+        if (lua_args_len != 1) 
+            return false;
+
+        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
+            return false;        
+    }
+     
+    // LuaValToCSVal struct
+    S_i4i4i4pi4i4i4_* pp0 = DataTransfer::GetPointer<S_i4i4i4pi4i4i4_>(apis, env, _sv0);
+    S_i4i4i4pi4i4i4_ p0 = pp0 ? *pp0 : S_i4i4i4pi4i4i4_ {};
+        
+    typedef void (*FuncToCall)(void*,struct S_i4i4i4pi4i4i4_ p1, const void* method);
+    ((FuncToCall)methodPointer)(self, p0,  method);
+    return true;
+}
+// Void ConvertTexture(UnityEngine.Rendering.RenderTargetIdentifier, UnityEngine.Rendering.RenderTargetIdentifier) declare in UnityEngine.Rendering.CommandBuffer
+bool w_vtS_i4i4i4pi4i4i4_S_i4i4i4pi4i4i4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_vtS_i4i4i4pi4i4i4_S_i4i4i4pi4i4i4_");
+    auto TIp0 = wrapData->TypeInfos[0];
+    auto TIp1 = wrapData->TypeInfos[1];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    int _sv1 = apis->get_arg(info, 1);
+    if (checkLuaArgument) {
+        if (lua_args_len != 2) 
+            return false;
+
+        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
+            return false;
+        if (!DataTransfer::IsAssignable(apis, env, _sv1, TIp1, true))
+            return false;        
+    }
+     
+    // LuaValToCSVal struct
+    S_i4i4i4pi4i4i4_* pp0 = DataTransfer::GetPointer<S_i4i4i4pi4i4i4_>(apis, env, _sv0);
+    S_i4i4i4pi4i4i4_ p0 = pp0 ? *pp0 : S_i4i4i4pi4i4i4_ {};
+             
+    // LuaValToCSVal struct
+    S_i4i4i4pi4i4i4_* pp1 = DataTransfer::GetPointer<S_i4i4i4pi4i4i4_>(apis, env, _sv1);
+    S_i4i4i4pi4i4i4_ p1 = pp1 ? *pp1 : S_i4i4i4pi4i4i4_ {};
+        
+    typedef void (*FuncToCall)(void*,struct S_i4i4i4pi4i4i4_ p1, struct S_i4i4i4pi4i4i4_ p2, const void* method);
+    ((FuncToCall)methodPointer)(self, p0, p1,  method);
+    return true;
+}
+// Void Blit(UnityEngine.Rendering.RenderTargetIdentifier, UnityEngine.Rendering.RenderTargetIdentifier, UnityEngine.Vector2, UnityEngine.Vector2) declare in UnityEngine.Rendering.CommandBuffer
+bool w_vtS_i4i4i4pi4i4i4_S_i4i4i4pi4i4i4_S_r4r4_S_r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_vtS_i4i4i4pi4i4i4_S_i4i4i4pi4i4i4_S_r4r4_S_r4r4_");
+    auto TIp0 = wrapData->TypeInfos[0];
+    auto TIp1 = wrapData->TypeInfos[1];
+    auto TIp2 = wrapData->TypeInfos[2];
+    auto TIp3 = wrapData->TypeInfos[3];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    int _sv1 = apis->get_arg(info, 1);
+    int _sv2 = apis->get_arg(info, 2);
+    int _sv3 = apis->get_arg(info, 3);
+    if (checkLuaArgument) {
+        if (lua_args_len != 4) 
+            return false;
+
+        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
+            return false;
+        if (!DataTransfer::IsAssignable(apis, env, _sv1, TIp1, true))
+            return false;
+        if (!DataTransfer::IsAssignable(apis, env, _sv2, TIp2, true))
+            return false;
+        if (!DataTransfer::IsAssignable(apis, env, _sv3, TIp3, true))
+            return false;        
+    }
+     
+    // LuaValToCSVal struct
+    S_i4i4i4pi4i4i4_* pp0 = DataTransfer::GetPointer<S_i4i4i4pi4i4i4_>(apis, env, _sv0);
+    S_i4i4i4pi4i4i4_ p0 = pp0 ? *pp0 : S_i4i4i4pi4i4i4_ {};
+             
+    // LuaValToCSVal struct
+    S_i4i4i4pi4i4i4_* pp1 = DataTransfer::GetPointer<S_i4i4i4pi4i4i4_>(apis, env, _sv1);
+    S_i4i4i4pi4i4i4_ p1 = pp1 ? *pp1 : S_i4i4i4pi4i4i4_ {};
+             
+    // LuaValToCSVal struct
+    S_r4r4_* pp2 = DataTransfer::GetPointer<S_r4r4_>(apis, env, _sv2);
+    S_r4r4_ p2 = pp2 ? *pp2 : S_r4r4_ {};
+             
+    // LuaValToCSVal struct
+    S_r4r4_* pp3 = DataTransfer::GetPointer<S_r4r4_>(apis, env, _sv3);
+    S_r4r4_ p3 = pp3 ? *pp3 : S_r4r4_ {};
+        
+    typedef void (*FuncToCall)(void*,struct S_i4i4i4pi4i4i4_ p1, struct S_i4i4i4pi4i4i4_ p2, struct S_r4r4_ p3, struct S_r4r4_ p4, const void* method);
+    ((FuncToCall)methodPointer)(self, p0, p1, p2, p3,  method);
+    return true;
+}
+// Void Blit(UnityEngine.Rendering.RenderTargetIdentifier, UnityEngine.Rendering.RenderTargetIdentifier, UnityEngine.Vector2, UnityEngine.Vector2, Int32, Int32) declare in UnityEngine.Rendering.CommandBuffer
+bool w_vtS_i4i4i4pi4i4i4_S_i4i4i4pi4i4i4_S_r4r4_S_r4r4_i4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_vtS_i4i4i4pi4i4i4_S_i4i4i4pi4i4i4_S_r4r4_S_r4r4_i4i4");
+    auto TIp0 = wrapData->TypeInfos[0];
+    auto TIp1 = wrapData->TypeInfos[1];
+    auto TIp2 = wrapData->TypeInfos[2];
+    auto TIp3 = wrapData->TypeInfos[3];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    int _sv1 = apis->get_arg(info, 1);
+    int _sv2 = apis->get_arg(info, 2);
+    int _sv3 = apis->get_arg(info, 3);
+    int _sv4 = apis->get_arg(info, 4);
+    int _sv5 = apis->get_arg(info, 5);
+    if (checkLuaArgument) {
+        if (lua_args_len != 6) 
+            return false;
+
+        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
+            return false;
+        if (!DataTransfer::IsAssignable(apis, env, _sv1, TIp1, true))
+            return false;
+        if (!DataTransfer::IsAssignable(apis, env, _sv2, TIp2, true))
+            return false;
+        if (!DataTransfer::IsAssignable(apis, env, _sv3, TIp3, true))
+            return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv4))
+            return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv5))
+            return false;        
+    }
+     
+    // LuaValToCSVal struct
+    S_i4i4i4pi4i4i4_* pp0 = DataTransfer::GetPointer<S_i4i4i4pi4i4i4_>(apis, env, _sv0);
+    S_i4i4i4pi4i4i4_ p0 = pp0 ? *pp0 : S_i4i4i4pi4i4i4_ {};
+             
+    // LuaValToCSVal struct
+    S_i4i4i4pi4i4i4_* pp1 = DataTransfer::GetPointer<S_i4i4i4pi4i4i4_>(apis, env, _sv1);
+    S_i4i4i4pi4i4i4_ p1 = pp1 ? *pp1 : S_i4i4i4pi4i4i4_ {};
+             
+    // LuaValToCSVal struct
+    S_r4r4_* pp2 = DataTransfer::GetPointer<S_r4r4_>(apis, env, _sv2);
+    S_r4r4_ p2 = pp2 ? *pp2 : S_r4r4_ {};
+             
+    // LuaValToCSVal struct
+    S_r4r4_* pp3 = DataTransfer::GetPointer<S_r4r4_>(apis, env, _sv3);
+    S_r4r4_ p3 = pp3 ? *pp3 : S_r4r4_ {};
+                
+    // LuaValToCSVal P any
+    int32_t p4 = converter::Converter<int32_t>::toCpp(apis, env, _sv4);
+        
+    // LuaValToCSVal P any
+    int32_t p5 = converter::Converter<int32_t>::toCpp(apis, env, _sv5);
+
+    typedef void (*FuncToCall)(void*,struct S_i4i4i4pi4i4i4_ p1, struct S_i4i4i4pi4i4i4_ p2, struct S_r4r4_ p3, struct S_r4r4_ p4, int32_t p5, int32_t p6, const void* method);
+    ((FuncToCall)methodPointer)(self, p0, p1, p2, p3, p4, p5,  method);
+    return true;
+}
+// Void SetRenderTarget(UnityEngine.Rendering.RenderTargetIdentifier, UnityEngine.Rendering.RenderTargetIdentifier, Int32) declare in UnityEngine.Rendering.CommandBuffer
+bool w_vtS_i4i4i4pi4i4i4_S_i4i4i4pi4i4i4_i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_vtS_i4i4i4pi4i4i4_S_i4i4i4pi4i4i4_i4");
+    auto TIp0 = wrapData->TypeInfos[0];
+    auto TIp1 = wrapData->TypeInfos[1];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    int _sv1 = apis->get_arg(info, 1);
+    int _sv2 = apis->get_arg(info, 2);
+    if (checkLuaArgument) {
+        if (lua_args_len != 3) 
+            return false;
+
+        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
+            return false;
+        if (!DataTransfer::IsAssignable(apis, env, _sv1, TIp1, true))
+            return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv2))
+            return false;        
+    }
+     
+    // LuaValToCSVal struct
+    S_i4i4i4pi4i4i4_* pp0 = DataTransfer::GetPointer<S_i4i4i4pi4i4i4_>(apis, env, _sv0);
+    S_i4i4i4pi4i4i4_ p0 = pp0 ? *pp0 : S_i4i4i4pi4i4i4_ {};
+             
+    // LuaValToCSVal struct
+    S_i4i4i4pi4i4i4_* pp1 = DataTransfer::GetPointer<S_i4i4i4pi4i4i4_>(apis, env, _sv1);
+    S_i4i4i4pi4i4i4_ p1 = pp1 ? *pp1 : S_i4i4i4pi4i4i4_ {};
+                
+    // LuaValToCSVal P any
+    int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
+
+    typedef void (*FuncToCall)(void*,struct S_i4i4i4pi4i4i4_ p1, struct S_i4i4i4pi4i4i4_ p2, int32_t p3, const void* method);
+    ((FuncToCall)methodPointer)(self, p0, p1, p2,  method);
+    return true;
+}
+// Void SetRenderTarget(UnityEngine.Rendering.RenderTargetIdentifier, UnityEngine.Rendering.RenderTargetIdentifier, Int32, UnityEngine.CubemapFace) declare in UnityEngine.Rendering.CommandBuffer
+bool w_vtS_i4i4i4pi4i4i4_S_i4i4i4pi4i4i4_i4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_vtS_i4i4i4pi4i4i4_S_i4i4i4pi4i4i4_i4i4");
+    auto TIp0 = wrapData->TypeInfos[0];
+    auto TIp1 = wrapData->TypeInfos[1];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    int _sv1 = apis->get_arg(info, 1);
+    int _sv2 = apis->get_arg(info, 2);
+    int _sv3 = apis->get_arg(info, 3);
+    if (checkLuaArgument) {
+        if (lua_args_len != 4) 
+            return false;
+
+        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
+            return false;
+        if (!DataTransfer::IsAssignable(apis, env, _sv1, TIp1, true))
+            return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv2))
+            return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv3))
+            return false;        
+    }
+     
+    // LuaValToCSVal struct
+    S_i4i4i4pi4i4i4_* pp0 = DataTransfer::GetPointer<S_i4i4i4pi4i4i4_>(apis, env, _sv0);
+    S_i4i4i4pi4i4i4_ p0 = pp0 ? *pp0 : S_i4i4i4pi4i4i4_ {};
+             
+    // LuaValToCSVal struct
+    S_i4i4i4pi4i4i4_* pp1 = DataTransfer::GetPointer<S_i4i4i4pi4i4i4_>(apis, env, _sv1);
+    S_i4i4i4pi4i4i4_ p1 = pp1 ? *pp1 : S_i4i4i4pi4i4i4_ {};
+                
+    // LuaValToCSVal P any
+    int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
+        
+    // LuaValToCSVal P any
+    int32_t p3 = converter::Converter<int32_t>::toCpp(apis, env, _sv3);
+
+    typedef void (*FuncToCall)(void*,struct S_i4i4i4pi4i4i4_ p1, struct S_i4i4i4pi4i4i4_ p2, int32_t p3, int32_t p4, const void* method);
+    ((FuncToCall)methodPointer)(self, p0, p1, p2, p3,  method);
+    return true;
+}
+// Void SetRenderTarget(UnityEngine.Rendering.RenderTargetIdentifier, UnityEngine.Rendering.RenderTargetIdentifier, Int32, UnityEngine.CubemapFace, Int32) declare in UnityEngine.Rendering.CommandBuffer
+bool w_vtS_i4i4i4pi4i4i4_S_i4i4i4pi4i4i4_i4i4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_vtS_i4i4i4pi4i4i4_S_i4i4i4pi4i4i4_i4i4i4");
+    auto TIp0 = wrapData->TypeInfos[0];
+    auto TIp1 = wrapData->TypeInfos[1];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    int _sv1 = apis->get_arg(info, 1);
+    int _sv2 = apis->get_arg(info, 2);
+    int _sv3 = apis->get_arg(info, 3);
+    int _sv4 = apis->get_arg(info, 4);
+    if (checkLuaArgument) {
+        if (lua_args_len != 5) 
+            return false;
+
+        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
+            return false;
+        if (!DataTransfer::IsAssignable(apis, env, _sv1, TIp1, true))
+            return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv2))
+            return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv3))
+            return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv4))
+            return false;        
+    }
+     
+    // LuaValToCSVal struct
+    S_i4i4i4pi4i4i4_* pp0 = DataTransfer::GetPointer<S_i4i4i4pi4i4i4_>(apis, env, _sv0);
+    S_i4i4i4pi4i4i4_ p0 = pp0 ? *pp0 : S_i4i4i4pi4i4i4_ {};
+             
+    // LuaValToCSVal struct
+    S_i4i4i4pi4i4i4_* pp1 = DataTransfer::GetPointer<S_i4i4i4pi4i4i4_>(apis, env, _sv1);
+    S_i4i4i4pi4i4i4_ p1 = pp1 ? *pp1 : S_i4i4i4pi4i4i4_ {};
+                
+    // LuaValToCSVal P any
+    int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
+        
+    // LuaValToCSVal P any
+    int32_t p3 = converter::Converter<int32_t>::toCpp(apis, env, _sv3);
+        
+    // LuaValToCSVal P any
+    int32_t p4 = converter::Converter<int32_t>::toCpp(apis, env, _sv4);
+
+    typedef void (*FuncToCall)(void*,struct S_i4i4i4pi4i4i4_ p1, struct S_i4i4i4pi4i4i4_ p2, int32_t p3, int32_t p4, int32_t p5, const void* method);
+    ((FuncToCall)methodPointer)(self, p0, p1, p2, p3, p4,  method);
+    return true;
+}
+// Void Blit(UnityEngine.Rendering.RenderTargetIdentifier, UnityEngine.Rendering.RenderTargetIdentifier, UnityEngine.Material) declare in UnityEngine.Rendering.CommandBuffer
+bool w_vtS_i4i4i4pi4i4i4_S_i4i4i4pi4i4i4_o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_vtS_i4i4i4pi4i4i4_S_i4i4i4pi4i4i4_o");
+    auto TIp0 = wrapData->TypeInfos[0];
+    auto TIp1 = wrapData->TypeInfos[1];
+    auto TIp2 = wrapData->TypeInfos[2];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    int _sv1 = apis->get_arg(info, 1);
+    int _sv2 = apis->get_arg(info, 2);
+    if (checkLuaArgument) {
+        if (lua_args_len != 3) 
+            return false;
+
+        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
+            return false;
+        if (!DataTransfer::IsAssignable(apis, env, _sv1, TIp1, true))
+            return false;
+        if (!DataTransfer::IsAssignable(apis, env, _sv2, TIp2, false))
+            return false;        
+    }
+     
+    // LuaValToCSVal struct
+    S_i4i4i4pi4i4i4_* pp0 = DataTransfer::GetPointer<S_i4i4i4pi4i4i4_>(apis, env, _sv0);
+    S_i4i4i4pi4i4i4_ p0 = pp0 ? *pp0 : S_i4i4i4pi4i4i4_ {};
+             
+    // LuaValToCSVal struct
+    S_i4i4i4pi4i4i4_* pp1 = DataTransfer::GetPointer<S_i4i4i4pi4i4i4_>(apis, env, _sv1);
+    S_i4i4i4pi4i4i4_ p1 = pp1 ? *pp1 : S_i4i4i4pi4i4i4_ {};
+            
+    // LuaValToCSVal o/O
+    Il2CppObject* p2 = LuaValueToCSRef(apis, TIp2, env, _sv2);
+
+    typedef void (*FuncToCall)(void*,struct S_i4i4i4pi4i4i4_ p1, struct S_i4i4i4pi4i4i4_ p2, Il2CppObject* p3, const void* method);
+    ((FuncToCall)methodPointer)(self, p0, p1, p2,  method);
+    return true;
+}
+// Void Blit(UnityEngine.Rendering.RenderTargetIdentifier, UnityEngine.Rendering.RenderTargetIdentifier, UnityEngine.Material, Int32) declare in UnityEngine.Rendering.CommandBuffer
+bool w_vtS_i4i4i4pi4i4i4_S_i4i4i4pi4i4i4_oi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_vtS_i4i4i4pi4i4i4_S_i4i4i4pi4i4i4_oi4");
+    auto TIp0 = wrapData->TypeInfos[0];
+    auto TIp1 = wrapData->TypeInfos[1];
+    auto TIp2 = wrapData->TypeInfos[2];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    int _sv1 = apis->get_arg(info, 1);
+    int _sv2 = apis->get_arg(info, 2);
+    int _sv3 = apis->get_arg(info, 3);
+    if (checkLuaArgument) {
+        if (lua_args_len != 4) 
+            return false;
+
+        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
+            return false;
+        if (!DataTransfer::IsAssignable(apis, env, _sv1, TIp1, true))
+            return false;
+        if (!DataTransfer::IsAssignable(apis, env, _sv2, TIp2, false))
+            return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv3))
+            return false;        
+    }
+     
+    // LuaValToCSVal struct
+    S_i4i4i4pi4i4i4_* pp0 = DataTransfer::GetPointer<S_i4i4i4pi4i4i4_>(apis, env, _sv0);
+    S_i4i4i4pi4i4i4_ p0 = pp0 ? *pp0 : S_i4i4i4pi4i4i4_ {};
+             
+    // LuaValToCSVal struct
+    S_i4i4i4pi4i4i4_* pp1 = DataTransfer::GetPointer<S_i4i4i4pi4i4i4_>(apis, env, _sv1);
+    S_i4i4i4pi4i4i4_ p1 = pp1 ? *pp1 : S_i4i4i4pi4i4i4_ {};
+            
+    // LuaValToCSVal o/O
+    Il2CppObject* p2 = LuaValueToCSRef(apis, TIp2, env, _sv2);
+        
+    // LuaValToCSVal P any
+    int32_t p3 = converter::Converter<int32_t>::toCpp(apis, env, _sv3);
+
+    typedef void (*FuncToCall)(void*,struct S_i4i4i4pi4i4i4_ p1, struct S_i4i4i4pi4i4i4_ p2, Il2CppObject* p3, int32_t p4, const void* method);
+    ((FuncToCall)methodPointer)(self, p0, p1, p2, p3,  method);
+    return true;
+}
+// Void Blit(UnityEngine.Rendering.RenderTargetIdentifier, UnityEngine.Rendering.RenderTargetIdentifier, UnityEngine.Material, Int32, Int32) declare in UnityEngine.Rendering.CommandBuffer
+bool w_vtS_i4i4i4pi4i4i4_S_i4i4i4pi4i4i4_oi4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_vtS_i4i4i4pi4i4i4_S_i4i4i4pi4i4i4_oi4i4");
+    auto TIp0 = wrapData->TypeInfos[0];
+    auto TIp1 = wrapData->TypeInfos[1];
+    auto TIp2 = wrapData->TypeInfos[2];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    int _sv1 = apis->get_arg(info, 1);
+    int _sv2 = apis->get_arg(info, 2);
+    int _sv3 = apis->get_arg(info, 3);
+    int _sv4 = apis->get_arg(info, 4);
+    if (checkLuaArgument) {
+        if (lua_args_len != 5) 
+            return false;
+
+        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
+            return false;
+        if (!DataTransfer::IsAssignable(apis, env, _sv1, TIp1, true))
+            return false;
+        if (!DataTransfer::IsAssignable(apis, env, _sv2, TIp2, false))
+            return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv3))
+            return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv4))
+            return false;        
+    }
+     
+    // LuaValToCSVal struct
+    S_i4i4i4pi4i4i4_* pp0 = DataTransfer::GetPointer<S_i4i4i4pi4i4i4_>(apis, env, _sv0);
+    S_i4i4i4pi4i4i4_ p0 = pp0 ? *pp0 : S_i4i4i4pi4i4i4_ {};
+             
+    // LuaValToCSVal struct
+    S_i4i4i4pi4i4i4_* pp1 = DataTransfer::GetPointer<S_i4i4i4pi4i4i4_>(apis, env, _sv1);
+    S_i4i4i4pi4i4i4_ p1 = pp1 ? *pp1 : S_i4i4i4pi4i4i4_ {};
+            
+    // LuaValToCSVal o/O
+    Il2CppObject* p2 = LuaValueToCSRef(apis, TIp2, env, _sv2);
+        
+    // LuaValToCSVal P any
+    int32_t p3 = converter::Converter<int32_t>::toCpp(apis, env, _sv3);
+        
+    // LuaValToCSVal P any
+    int32_t p4 = converter::Converter<int32_t>::toCpp(apis, env, _sv4);
+
+    typedef void (*FuncToCall)(void*,struct S_i4i4i4pi4i4i4_ p1, struct S_i4i4i4pi4i4i4_ p2, Il2CppObject* p3, int32_t p4, int32_t p5, const void* method);
+    ((FuncToCall)methodPointer)(self, p0, p1, p2, p3, p4,  method);
+    return true;
+}
+// Void SetRenderTarget(UnityEngine.Rendering.RenderTargetIdentifier, Int32) declare in UnityEngine.Rendering.CommandBuffer
+bool w_vtS_i4i4i4pi4i4i4_i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_vtS_i4i4i4pi4i4i4_i4");
+    auto TIp0 = wrapData->TypeInfos[0];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    int _sv1 = apis->get_arg(info, 1);
+    if (checkLuaArgument) {
+        if (lua_args_len != 2) 
+            return false;
+
+        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
+            return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv1))
+            return false;        
+    }
+     
+    // LuaValToCSVal struct
+    S_i4i4i4pi4i4i4_* pp0 = DataTransfer::GetPointer<S_i4i4i4pi4i4i4_>(apis, env, _sv0);
+    S_i4i4i4pi4i4i4_ p0 = pp0 ? *pp0 : S_i4i4i4pi4i4i4_ {};
+                
+    // LuaValToCSVal P any
+    int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
+
+    typedef void (*FuncToCall)(void*,struct S_i4i4i4pi4i4i4_ p1, int32_t p2, const void* method);
+    ((FuncToCall)methodPointer)(self, p0, p1,  method);
+    return true;
+}
+// Void ConvertTexture(UnityEngine.Rendering.RenderTargetIdentifier, Int32, UnityEngine.Rendering.RenderTargetIdentifier, Int32) declare in UnityEngine.Rendering.CommandBuffer
+bool w_vtS_i4i4i4pi4i4i4_i4S_i4i4i4pi4i4i4_i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_vtS_i4i4i4pi4i4i4_i4S_i4i4i4pi4i4i4_i4");
+    auto TIp0 = wrapData->TypeInfos[0];
+    auto TIp2 = wrapData->TypeInfos[1];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    int _sv1 = apis->get_arg(info, 1);
+    int _sv2 = apis->get_arg(info, 2);
+    int _sv3 = apis->get_arg(info, 3);
+    if (checkLuaArgument) {
+        if (lua_args_len != 4) 
+            return false;
+
+        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
+            return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv1))
+            return false;
+        if (!DataTransfer::IsAssignable(apis, env, _sv2, TIp2, true))
+            return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv3))
+            return false;        
+    }
+     
+    // LuaValToCSVal struct
+    S_i4i4i4pi4i4i4_* pp0 = DataTransfer::GetPointer<S_i4i4i4pi4i4i4_>(apis, env, _sv0);
+    S_i4i4i4pi4i4i4_ p0 = pp0 ? *pp0 : S_i4i4i4pi4i4i4_ {};
+                
+    // LuaValToCSVal P any
+    int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
+     
+    // LuaValToCSVal struct
+    S_i4i4i4pi4i4i4_* pp2 = DataTransfer::GetPointer<S_i4i4i4pi4i4i4_>(apis, env, _sv2);
+    S_i4i4i4pi4i4i4_ p2 = pp2 ? *pp2 : S_i4i4i4pi4i4i4_ {};
+                
+    // LuaValToCSVal P any
+    int32_t p3 = converter::Converter<int32_t>::toCpp(apis, env, _sv3);
+
+    typedef void (*FuncToCall)(void*,struct S_i4i4i4pi4i4i4_ p1, int32_t p2, struct S_i4i4i4pi4i4i4_ p3, int32_t p4, const void* method);
+    ((FuncToCall)methodPointer)(self, p0, p1, p2, p3,  method);
+    return true;
+}
+// Void SetRenderTarget(UnityEngine.Rendering.RenderTargetIdentifier, UnityEngine.Rendering.RenderBufferLoadAction, UnityEngine.Rendering.RenderBufferStoreAction) declare in UnityEngine.Rendering.CommandBuffer
+bool w_vtS_i4i4i4pi4i4i4_i4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_vtS_i4i4i4pi4i4i4_i4i4");
+    auto TIp0 = wrapData->TypeInfos[0];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    int _sv1 = apis->get_arg(info, 1);
+    int _sv2 = apis->get_arg(info, 2);
+    if (checkLuaArgument) {
+        if (lua_args_len != 3) 
+            return false;
+
+        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
+            return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv1))
+            return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv2))
+            return false;        
+    }
+     
+    // LuaValToCSVal struct
+    S_i4i4i4pi4i4i4_* pp0 = DataTransfer::GetPointer<S_i4i4i4pi4i4i4_>(apis, env, _sv0);
+    S_i4i4i4pi4i4i4_ p0 = pp0 ? *pp0 : S_i4i4i4pi4i4i4_ {};
+                
+    // LuaValToCSVal P any
+    int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
+        
+    // LuaValToCSVal P any
+    int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
+
+    typedef void (*FuncToCall)(void*,struct S_i4i4i4pi4i4i4_ p1, int32_t p2, int32_t p3, const void* method);
+    ((FuncToCall)methodPointer)(self, p0, p1, p2,  method);
+    return true;
+}
+// Void SetRenderTarget(UnityEngine.Rendering.RenderTargetIdentifier, UnityEngine.Rendering.RenderBufferLoadAction, UnityEngine.Rendering.RenderBufferStoreAction, UnityEngine.Rendering.RenderTargetIdentifier, UnityEngine.Rendering.RenderBufferLoadAction, UnityEngine.Rendering.RenderBufferStoreAction) declare in UnityEngine.Rendering.CommandBuffer
+bool w_vtS_i4i4i4pi4i4i4_i4i4S_i4i4i4pi4i4i4_i4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_vtS_i4i4i4pi4i4i4_i4i4S_i4i4i4pi4i4i4_i4i4");
+    auto TIp0 = wrapData->TypeInfos[0];
+    auto TIp3 = wrapData->TypeInfos[1];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    int _sv1 = apis->get_arg(info, 1);
+    int _sv2 = apis->get_arg(info, 2);
+    int _sv3 = apis->get_arg(info, 3);
+    int _sv4 = apis->get_arg(info, 4);
+    int _sv5 = apis->get_arg(info, 5);
+    if (checkLuaArgument) {
+        if (lua_args_len != 6) 
+            return false;
+
+        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
+            return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv1))
+            return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv2))
+            return false;
+        if (!DataTransfer::IsAssignable(apis, env, _sv3, TIp3, true))
+            return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv4))
+            return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv5))
+            return false;        
+    }
+     
+    // LuaValToCSVal struct
+    S_i4i4i4pi4i4i4_* pp0 = DataTransfer::GetPointer<S_i4i4i4pi4i4i4_>(apis, env, _sv0);
+    S_i4i4i4pi4i4i4_ p0 = pp0 ? *pp0 : S_i4i4i4pi4i4i4_ {};
+                
+    // LuaValToCSVal P any
+    int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
+        
+    // LuaValToCSVal P any
+    int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
+     
+    // LuaValToCSVal struct
+    S_i4i4i4pi4i4i4_* pp3 = DataTransfer::GetPointer<S_i4i4i4pi4i4i4_>(apis, env, _sv3);
+    S_i4i4i4pi4i4i4_ p3 = pp3 ? *pp3 : S_i4i4i4pi4i4i4_ {};
+                
+    // LuaValToCSVal P any
+    int32_t p4 = converter::Converter<int32_t>::toCpp(apis, env, _sv4);
+        
+    // LuaValToCSVal P any
+    int32_t p5 = converter::Converter<int32_t>::toCpp(apis, env, _sv5);
+
+    typedef void (*FuncToCall)(void*,struct S_i4i4i4pi4i4i4_ p1, int32_t p2, int32_t p3, struct S_i4i4i4pi4i4i4_ p4, int32_t p5, int32_t p6, const void* method);
+    ((FuncToCall)methodPointer)(self, p0, p1, p2, p3, p4, p5,  method);
+    return true;
+}
+// Void SetRenderTarget(UnityEngine.Rendering.RenderTargetIdentifier, Int32, UnityEngine.CubemapFace, Int32) declare in UnityEngine.Rendering.CommandBuffer
+bool w_vtS_i4i4i4pi4i4i4_i4i4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_vtS_i4i4i4pi4i4i4_i4i4i4");
+    auto TIp0 = wrapData->TypeInfos[0];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    int _sv1 = apis->get_arg(info, 1);
+    int _sv2 = apis->get_arg(info, 2);
+    int _sv3 = apis->get_arg(info, 3);
+    if (checkLuaArgument) {
+        if (lua_args_len != 4) 
+            return false;
+
+        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
+            return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv1))
+            return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv2))
+            return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv3))
+            return false;        
+    }
+     
+    // LuaValToCSVal struct
+    S_i4i4i4pi4i4i4_* pp0 = DataTransfer::GetPointer<S_i4i4i4pi4i4i4_>(apis, env, _sv0);
+    S_i4i4i4pi4i4i4_ p0 = pp0 ? *pp0 : S_i4i4i4pi4i4i4_ {};
+                
+    // LuaValToCSVal P any
+    int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
+        
+    // LuaValToCSVal P any
+    int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
+        
+    // LuaValToCSVal P any
+    int32_t p3 = converter::Converter<int32_t>::toCpp(apis, env, _sv3);
+
+    typedef void (*FuncToCall)(void*,struct S_i4i4i4pi4i4i4_ p1, int32_t p2, int32_t p3, int32_t p4, const void* method);
+    ((FuncToCall)methodPointer)(self, p0, p1, p2, p3,  method);
+    return true;
+}
+// Void SetRenderTarget(UnityEngine.Rendering.RenderTargetIdentifier, UnityEngine.Rendering.RenderBufferLoadAction, UnityEngine.Rendering.RenderBufferStoreAction, UnityEngine.Rendering.RenderBufferLoadAction, UnityEngine.Rendering.RenderBufferStoreAction) declare in UnityEngine.Rendering.CommandBuffer
+bool w_vtS_i4i4i4pi4i4i4_i4i4i4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_vtS_i4i4i4pi4i4i4_i4i4i4i4");
+    auto TIp0 = wrapData->TypeInfos[0];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    int _sv1 = apis->get_arg(info, 1);
+    int _sv2 = apis->get_arg(info, 2);
+    int _sv3 = apis->get_arg(info, 3);
+    int _sv4 = apis->get_arg(info, 4);
+    if (checkLuaArgument) {
+        if (lua_args_len != 5) 
+            return false;
+
+        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
+            return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv1))
+            return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv2))
+            return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv3))
+            return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv4))
+            return false;        
+    }
+     
+    // LuaValToCSVal struct
+    S_i4i4i4pi4i4i4_* pp0 = DataTransfer::GetPointer<S_i4i4i4pi4i4i4_>(apis, env, _sv0);
+    S_i4i4i4pi4i4i4_ p0 = pp0 ? *pp0 : S_i4i4i4pi4i4i4_ {};
+                
+    // LuaValToCSVal P any
+    int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
+        
+    // LuaValToCSVal P any
+    int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
+        
+    // LuaValToCSVal P any
+    int32_t p3 = converter::Converter<int32_t>::toCpp(apis, env, _sv3);
+        
+    // LuaValToCSVal P any
+    int32_t p4 = converter::Converter<int32_t>::toCpp(apis, env, _sv4);
+
+    typedef void (*FuncToCall)(void*,struct S_i4i4i4pi4i4i4_ p1, int32_t p2, int32_t p3, int32_t p4, int32_t p5, const void* method);
+    ((FuncToCall)methodPointer)(self, p0, p1, p2, p3, p4,  method);
+    return true;
+}
+// Void CopyTexture(UnityEngine.Rendering.RenderTargetIdentifier, Int32, Int32, Int32, Int32, Int32, Int32, UnityEngine.Rendering.RenderTargetIdentifier, Int32, Int32, Int32, Int32) declare in UnityEngine.Rendering.CommandBuffer
+bool w_vtS_i4i4i4pi4i4i4_i4i4i4i4i4i4S_i4i4i4pi4i4i4_i4i4i4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_vtS_i4i4i4pi4i4i4_i4i4i4i4i4i4S_i4i4i4pi4i4i4_i4i4i4i4");
+    auto TIp0 = wrapData->TypeInfos[0];
+    auto TIp7 = wrapData->TypeInfos[1];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    int _sv1 = apis->get_arg(info, 1);
+    int _sv2 = apis->get_arg(info, 2);
+    int _sv3 = apis->get_arg(info, 3);
+    int _sv4 = apis->get_arg(info, 4);
+    int _sv5 = apis->get_arg(info, 5);
+    int _sv6 = apis->get_arg(info, 6);
+    int _sv7 = apis->get_arg(info, 7);
+    int _sv8 = apis->get_arg(info, 8);
+    int _sv9 = apis->get_arg(info, 9);
+    int _sv10 = apis->get_arg(info, 10);
+    int _sv11 = apis->get_arg(info, 11);
+    if (checkLuaArgument) {
+        if (lua_args_len != 12) 
+            return false;
+
+        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
+            return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv1))
+            return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv2))
+            return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv3))
+            return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv4))
+            return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv5))
+            return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv6))
+            return false;
+        if (!DataTransfer::IsAssignable(apis, env, _sv7, TIp7, true))
+            return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv8))
+            return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv9))
+            return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv10))
+            return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv11))
+            return false;        
+    }
+     
+    // LuaValToCSVal struct
+    S_i4i4i4pi4i4i4_* pp0 = DataTransfer::GetPointer<S_i4i4i4pi4i4i4_>(apis, env, _sv0);
+    S_i4i4i4pi4i4i4_ p0 = pp0 ? *pp0 : S_i4i4i4pi4i4i4_ {};
+                
+    // LuaValToCSVal P any
+    int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
+        
+    // LuaValToCSVal P any
+    int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
+        
+    // LuaValToCSVal P any
+    int32_t p3 = converter::Converter<int32_t>::toCpp(apis, env, _sv3);
+        
+    // LuaValToCSVal P any
+    int32_t p4 = converter::Converter<int32_t>::toCpp(apis, env, _sv4);
+        
+    // LuaValToCSVal P any
+    int32_t p5 = converter::Converter<int32_t>::toCpp(apis, env, _sv5);
+        
+    // LuaValToCSVal P any
+    int32_t p6 = converter::Converter<int32_t>::toCpp(apis, env, _sv6);
+     
+    // LuaValToCSVal struct
+    S_i4i4i4pi4i4i4_* pp7 = DataTransfer::GetPointer<S_i4i4i4pi4i4i4_>(apis, env, _sv7);
+    S_i4i4i4pi4i4i4_ p7 = pp7 ? *pp7 : S_i4i4i4pi4i4i4_ {};
+                
+    // LuaValToCSVal P any
+    int32_t p8 = converter::Converter<int32_t>::toCpp(apis, env, _sv8);
+        
+    // LuaValToCSVal P any
+    int32_t p9 = converter::Converter<int32_t>::toCpp(apis, env, _sv9);
+        
+    // LuaValToCSVal P any
+    int32_t p10 = converter::Converter<int32_t>::toCpp(apis, env, _sv10);
+        
+    // LuaValToCSVal P any
+    int32_t p11 = converter::Converter<int32_t>::toCpp(apis, env, _sv11);
+
+    typedef void (*FuncToCall)(void*,struct S_i4i4i4pi4i4i4_ p1, int32_t p2, int32_t p3, int32_t p4, int32_t p5, int32_t p6, int32_t p7, struct S_i4i4i4pi4i4i4_ p8, int32_t p9, int32_t p10, int32_t p11, int32_t p12, const void* method);
+    ((FuncToCall)methodPointer)(self, p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11,  method);
+    return true;
+}
+// Void ProcessVTFeedback(UnityEngine.Rendering.RenderTargetIdentifier, IntPtr, Int32, Int32, Int32, Int32, Int32, Int32) declare in UnityEngine.Rendering.CommandBuffer
+bool w_vtS_i4i4i4pi4i4i4_pi4i4i4i4i4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_vtS_i4i4i4pi4i4i4_pi4i4i4i4i4i4");
+    auto TIp0 = wrapData->TypeInfos[0];
+    auto TIp1 = wrapData->TypeInfos[1];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    int _sv1 = apis->get_arg(info, 1);
+    int _sv2 = apis->get_arg(info, 2);
+    int _sv3 = apis->get_arg(info, 3);
+    int _sv4 = apis->get_arg(info, 4);
+    int _sv5 = apis->get_arg(info, 5);
+    int _sv6 = apis->get_arg(info, 6);
+    int _sv7 = apis->get_arg(info, 7);
+    if (checkLuaArgument) {
+        if (lua_args_len != 8) 
+            return false;
+
+        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
+            return false;
+        if (!apis->is_binary(env, _sv1) && !apis->is_null(env, _sv1) && !apis->is_undefined(env, _sv1)) return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv2))
+            return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv3))
+            return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv4))
+            return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv5))
+            return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv6))
+            return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv7))
+            return false;        
+    }
+     
+    // LuaValToCSVal struct
+    S_i4i4i4pi4i4i4_* pp0 = DataTransfer::GetPointer<S_i4i4i4pi4i4i4_>(apis, env, _sv0);
+    S_i4i4i4pi4i4i4_ p0 = pp0 ? *pp0 : S_i4i4i4pi4i4i4_ {};
+                
+    // LuaValToCSVal P any
+    void* p1 = DataTransfer::GetPointer(apis, env, _sv1);
+        
+    // LuaValToCSVal P any
+    int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
+        
+    // LuaValToCSVal P any
+    int32_t p3 = converter::Converter<int32_t>::toCpp(apis, env, _sv3);
+        
+    // LuaValToCSVal P any
+    int32_t p4 = converter::Converter<int32_t>::toCpp(apis, env, _sv4);
+        
+    // LuaValToCSVal P any
+    int32_t p5 = converter::Converter<int32_t>::toCpp(apis, env, _sv5);
+        
+    // LuaValToCSVal P any
+    int32_t p6 = converter::Converter<int32_t>::toCpp(apis, env, _sv6);
+        
+    // LuaValToCSVal P any
+    int32_t p7 = converter::Converter<int32_t>::toCpp(apis, env, _sv7);
+
+    typedef void (*FuncToCall)(void*,struct S_i4i4i4pi4i4i4_ p1, void* p2, int32_t p3, int32_t p4, int32_t p5, int32_t p6, int32_t p7, int32_t p8, const void* method);
+    ((FuncToCall)methodPointer)(self, p0, p1, p2, p3, p4, p5, p6, p7,  method);
     return true;
 }
 // Void set_startColor(MinMaxGradient) declare in UnityEngine.ParticleSystem+MainModule
@@ -27331,7 +29881,8 @@ bool w_vtS_i4ooS_r4r4r4r4_S_r4r4r4r4__(struct pesapi_ffi* apis, MethodInfo* meth
         if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_i4ooS_r4r4r4r4_S_r4r4r4r4__* pp0 = DataTransfer::GetPointer<S_i4ooS_r4r4r4r4_S_r4r4r4r4__>(apis, env, _sv0);
     S_i4ooS_r4r4r4r4_S_r4r4r4r4__ p0 = pp0 ? *pp0 : S_i4ooS_r4r4r4r4_S_r4r4r4r4__ {};
         
@@ -27356,10 +29907,12 @@ bool w_vtS_i4p_S_i4p_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodP
         if (!DataTransfer::IsAssignable(apis, env, _sv1, TIp1, true))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_i4p_* pp0 = DataTransfer::GetPointer<S_i4p_>(apis, env, _sv0);
     S_i4p_ p0 = pp0 ? *pp0 : S_i4p_ {};
-             // LuaValToCSVal struct
+             
+    // LuaValToCSVal struct
     S_i4p_* pp1 = DataTransfer::GetPointer<S_i4p_>(apis, env, _sv1);
     S_i4p_ p1 = pp1 ? *pp1 : S_i4p_ {};
         
@@ -27380,7 +29933,8 @@ bool w_vtS_i4r4oor4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethod
         if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_i4r4oor4r4_* pp0 = DataTransfer::GetPointer<S_i4r4oor4r4_>(apis, env, _sv0);
     S_i4r4oor4r4_ p0 = pp0 ? *pp0 : S_i4r4oor4r4_ {};
         
@@ -27401,12 +29955,75 @@ bool w_vtS_i4u8r4b_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPoi
         if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_i4u8r4b_* pp0 = DataTransfer::GetPointer<S_i4u8r4b_>(apis, env, _sv0);
     S_i4u8r4b_ p0 = pp0 ? *pp0 : S_i4u8r4b_ {};
         
     typedef void (*FuncToCall)(void*,struct S_i4u8r4b_ p1, const void* method);
     ((FuncToCall)methodPointer)(self, p0,  method);
+    return true;
+}
+// Void SetRenderTarget(UnityEngine.Rendering.RenderTargetBinding) declare in UnityEngine.Rendering.CommandBuffer
+bool w_vtS_oS_i4i4i4pi4i4i4_ooi4i4i4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_vtS_oS_i4i4i4pi4i4i4_ooi4i4i4_");
+    auto TIp0 = wrapData->TypeInfos[0];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    if (checkLuaArgument) {
+        if (lua_args_len != 1) 
+            return false;
+
+        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
+            return false;        
+    }
+     
+    // LuaValToCSVal struct
+    S_oS_i4i4i4pi4i4i4_ooi4i4i4_* pp0 = DataTransfer::GetPointer<S_oS_i4i4i4pi4i4i4_ooi4i4i4_>(apis, env, _sv0);
+    S_oS_i4i4i4pi4i4i4_ooi4i4i4_ p0 = pp0 ? *pp0 : S_oS_i4i4i4pi4i4i4_ooi4i4i4_ {};
+        
+    typedef void (*FuncToCall)(void*,struct S_oS_i4i4i4pi4i4i4_ooi4i4i4_ p1, const void* method);
+    ((FuncToCall)methodPointer)(self, p0,  method);
+    return true;
+}
+// Void SetRenderTarget(UnityEngine.Rendering.RenderTargetBinding, Int32, UnityEngine.CubemapFace, Int32) declare in UnityEngine.Rendering.CommandBuffer
+bool w_vtS_oS_i4i4i4pi4i4i4_ooi4i4i4_i4i4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_vtS_oS_i4i4i4pi4i4i4_ooi4i4i4_i4i4i4");
+    auto TIp0 = wrapData->TypeInfos[0];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    int _sv1 = apis->get_arg(info, 1);
+    int _sv2 = apis->get_arg(info, 2);
+    int _sv3 = apis->get_arg(info, 3);
+    if (checkLuaArgument) {
+        if (lua_args_len != 4) 
+            return false;
+
+        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
+            return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv1))
+            return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv2))
+            return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv3))
+            return false;        
+    }
+     
+    // LuaValToCSVal struct
+    S_oS_i4i4i4pi4i4i4_ooi4i4i4_* pp0 = DataTransfer::GetPointer<S_oS_i4i4i4pi4i4i4_ooi4i4i4_>(apis, env, _sv0);
+    S_oS_i4i4i4pi4i4i4_ooi4i4i4_ p0 = pp0 ? *pp0 : S_oS_i4i4i4pi4i4i4_ooi4i4i4_ {};
+                
+    // LuaValToCSVal P any
+    int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
+        
+    // LuaValToCSVal P any
+    int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
+        
+    // LuaValToCSVal P any
+    int32_t p3 = converter::Converter<int32_t>::toCpp(apis, env, _sv3);
+
+    typedef void (*FuncToCall)(void*,struct S_oS_i4i4i4pi4i4i4_ooi4i4i4_ p1, int32_t p2, int32_t p3, int32_t p4, const void* method);
+    ((FuncToCall)methodPointer)(self, p0, p1, p2, p3,  method);
     return true;
 }
 // Void Pay(Assets.Scripts.SDK.PayParam) declare in Assets.Scripts.SDK.PayService
@@ -27422,7 +30039,8 @@ bool w_vtS_o_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer m
         if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_o_* pp0 = DataTransfer::GetPointer<S_o_>(apis, env, _sv0);
     S_o_ p0 = pp0 ? *pp0 : S_o_ {};
         
@@ -27443,11 +30061,34 @@ bool w_vtS_oo_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer 
         if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_oo_* pp0 = DataTransfer::GetPointer<S_oo_>(apis, env, _sv0);
     S_oo_ p0 = pp0 ? *pp0 : S_oo_ {};
         
     typedef void (*FuncToCall)(void*,struct S_oo_ p1, const void* method);
+    ((FuncToCall)methodPointer)(self, p0,  method);
+    return true;
+}
+// Void SetTrails(Trails) declare in UnityEngine.ParticleSystem
+bool w_vtS_oooooi4i4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_vtS_oooooi4i4_");
+    auto TIp0 = wrapData->TypeInfos[0];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    if (checkLuaArgument) {
+        if (lua_args_len != 1) 
+            return false;
+
+        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
+            return false;        
+    }
+     
+    // LuaValToCSVal struct
+    S_oooooi4i4_* pp0 = DataTransfer::GetPointer<S_oooooi4i4_>(apis, env, _sv0);
+    S_oooooi4i4_ p0 = pp0 ? *pp0 : S_oooooi4i4_ {};
+        
+    typedef void (*FuncToCall)(void*,struct S_oooooi4i4_ p1, const void* method);
     ((FuncToCall)methodPointer)(self, p0,  method);
     return true;
 }
@@ -27464,7 +30105,8 @@ bool w_vtS_oou1_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointe
         if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_oou1_* pp0 = DataTransfer::GetPointer<S_oou1_>(apis, env, _sv0);
     S_oou1_ p0 = pp0 ? *pp0 : S_oou1_ {};
         
@@ -27472,7 +30114,101 @@ bool w_vtS_oou1_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointe
     ((FuncToCall)methodPointer)(self, p0,  method);
     return true;
 }
-// Void SetIdentity(UnityEngine.RectTransform, UnityEngine.Vector2) declare in com.pixui.PxMisc
+// Void BeginSample(Unity.Profiling.ProfilerMarker) declare in UnityEngine.Rendering.CommandBuffer
+bool w_vtS_p_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_vtS_p_");
+    auto TIp0 = wrapData->TypeInfos[0];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    if (checkLuaArgument) {
+        if (lua_args_len != 1) 
+            return false;
+
+        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
+            return false;        
+    }
+     
+    // LuaValToCSVal struct
+    S_p_* pp0 = DataTransfer::GetPointer<S_p_>(apis, env, _sv0);
+    S_p_ p0 = pp0 ? *pp0 : S_p_ {};
+        
+    typedef void (*FuncToCall)(void*,struct S_p_ p1, const void* method);
+    ((FuncToCall)methodPointer)(self, p0,  method);
+    return true;
+}
+// Void WaitOnAsyncGraphicsFence(UnityEngine.Rendering.GraphicsFence) declare in UnityEngine.Rendering.CommandBuffer
+bool w_vtS_pi4i4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_vtS_pi4i4_");
+    auto TIp0 = wrapData->TypeInfos[0];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    if (checkLuaArgument) {
+        if (lua_args_len != 1) 
+            return false;
+
+        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
+            return false;        
+    }
+     
+    // LuaValToCSVal struct
+    S_pi4i4_* pp0 = DataTransfer::GetPointer<S_pi4i4_>(apis, env, _sv0);
+    S_pi4i4_ p0 = pp0 ? *pp0 : S_pi4i4_ {};
+        
+    typedef void (*FuncToCall)(void*,struct S_pi4i4_ p1, const void* method);
+    ((FuncToCall)methodPointer)(self, p0,  method);
+    return true;
+}
+// Void WaitOnAsyncGraphicsFence(UnityEngine.Rendering.GraphicsFence, UnityEngine.Rendering.SynchronisationStage) declare in UnityEngine.Rendering.CommandBuffer
+bool w_vtS_pi4i4_i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_vtS_pi4i4_i4");
+    auto TIp0 = wrapData->TypeInfos[0];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    int _sv1 = apis->get_arg(info, 1);
+    if (checkLuaArgument) {
+        if (lua_args_len != 2) 
+            return false;
+
+        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
+            return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv1))
+            return false;        
+    }
+     
+    // LuaValToCSVal struct
+    S_pi4i4_* pp0 = DataTransfer::GetPointer<S_pi4i4_>(apis, env, _sv0);
+    S_pi4i4_ p0 = pp0 ? *pp0 : S_pi4i4_ {};
+                
+    // LuaValToCSVal P any
+    int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
+
+    typedef void (*FuncToCall)(void*,struct S_pi4i4_ p1, int32_t p2, const void* method);
+    ((FuncToCall)methodPointer)(self, p0, p1,  method);
+    return true;
+}
+// Void DrawRendererList(UnityEngine.Rendering.RendererList) declare in UnityEngine.Rendering.CommandBuffer
+bool w_vtS_pu4u4u4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_vtS_pu4u4u4_");
+    auto TIp0 = wrapData->TypeInfos[0];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    if (checkLuaArgument) {
+        if (lua_args_len != 1) 
+            return false;
+
+        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
+            return false;        
+    }
+     
+    // LuaValToCSVal struct
+    S_pu4u4u4_* pp0 = DataTransfer::GetPointer<S_pu4u4u4_>(apis, env, _sv0);
+    S_pu4u4u4_ p0 = pp0 ? *pp0 : S_pu4u4u4_ {};
+        
+    typedef void (*FuncToCall)(void*,struct S_pu4u4u4_ p1, const void* method);
+    ((FuncToCall)methodPointer)(self, p0,  method);
+    return true;
+}
+// Void SmartSetPivot(UnityEngine.RectTransform, UnityEngine.Vector2) declare in ExtRectTransform
 bool w_vtS_r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
     // PLog("Running w_vtS_r4r4_");
     auto TIp0 = wrapData->TypeInfos[0];
@@ -27485,7 +30221,8 @@ bool w_vtS_r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointe
         if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_r4r4_* pp0 = DataTransfer::GetPointer<S_r4r4_>(apis, env, _sv0);
     S_r4r4_ p0 = pp0 ? *pp0 : S_r4r4_ {};
         
@@ -27509,7 +30246,8 @@ bool w_vtS_r4r4_Db(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPoin
         if (lua_args_len > 1 && !converter::Converter<bool>::accept(apis, env, _sv1))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_r4r4_* pp0 = DataTransfer::GetPointer<S_r4r4_>(apis, env, _sv0);
     S_r4r4_ p0 = pp0 ? *pp0 : S_r4r4_ {};
          // LuaValToCSVal primitive with default
@@ -27535,7 +30273,8 @@ bool w_vtS_r4r4_Dr4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPoi
         if (lua_args_len > 1 && !converter::Converter<float>::accept(apis, env, _sv1))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_r4r4_* pp0 = DataTransfer::GetPointer<S_r4r4_>(apis, env, _sv0);
     S_r4r4_ p0 = pp0 ? *pp0 : S_r4r4_ {};
          // LuaValToCSVal primitive with default
@@ -27562,7 +30301,8 @@ bool w_vtS_r4r4_PS_oS_r4r4r4r4_i4r4br4i4i4bbi4i4bi4i4S_r4r4_S_r4r4_bb_(struct pe
             return false;
         if (!apis->is_object(env, _sv1)) return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_r4r4_* pp0 = DataTransfer::GetPointer<S_r4r4_>(apis, env, _sv0);
     S_r4r4_ p0 = pp0 ? *pp0 : S_r4r4_ {};
              
@@ -27591,7 +30331,7 @@ bool w_vtS_r4r4_PS_oS_r4r4r4r4_i4r4br4i4i4bbi4i4bi4i4S_r4r4_S_r4r4_bb_(struct pe
     value_scope.reserve = apis->get_return_num(info);
     return true;
 }
-// Void SetRect(UnityEngine.RectTransform, UnityEngine.Vector2, UnityEngine.Vector2) declare in com.pixui.PxMisc
+// Void SmartSetAnchor(UnityEngine.RectTransform, UnityEngine.Vector2, UnityEngine.Vector2) declare in ExtRectTransform
 bool w_vtS_r4r4_S_r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
     // PLog("Running w_vtS_r4r4_S_r4r4_");
     auto TIp0 = wrapData->TypeInfos[0];
@@ -27608,10 +30348,12 @@ bool w_vtS_r4r4_S_r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMetho
         if (!DataTransfer::IsAssignable(apis, env, _sv1, TIp1, true))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_r4r4_* pp0 = DataTransfer::GetPointer<S_r4r4_>(apis, env, _sv0);
     S_r4r4_ p0 = pp0 ? *pp0 : S_r4r4_ {};
-             // LuaValToCSVal struct
+             
+    // LuaValToCSVal struct
     S_r4r4_* pp1 = DataTransfer::GetPointer<S_r4r4_>(apis, env, _sv1);
     S_r4r4_ p1 = pp1 ? *pp1 : S_r4r4_ {};
         
@@ -27636,10 +30378,12 @@ bool w_vtS_r4r4_S_r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMet
         if (!DataTransfer::IsAssignable(apis, env, _sv1, TIp1, true))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_r4r4_* pp0 = DataTransfer::GetPointer<S_r4r4_>(apis, env, _sv0);
     S_r4r4_ p0 = pp0 ? *pp0 : S_r4r4_ {};
-             // LuaValToCSVal struct
+             
+    // LuaValToCSVal struct
     S_r4r4r4_* pp1 = DataTransfer::GetPointer<S_r4r4r4_>(apis, env, _sv1);
     S_r4r4r4_ p1 = pp1 ? *pp1 : S_r4r4r4_ {};
         
@@ -27668,13 +30412,16 @@ bool w_vtS_r4r4_S_r4r4r4_S_r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, 
         if (!DataTransfer::IsAssignable(apis, env, _sv2, TIp2, true))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_r4r4_* pp0 = DataTransfer::GetPointer<S_r4r4_>(apis, env, _sv0);
     S_r4r4_ p0 = pp0 ? *pp0 : S_r4r4_ {};
-             // LuaValToCSVal struct
+             
+    // LuaValToCSVal struct
     S_r4r4r4_* pp1 = DataTransfer::GetPointer<S_r4r4r4_>(apis, env, _sv1);
     S_r4r4r4_ p1 = pp1 ? *pp1 : S_r4r4r4_ {};
-             // LuaValToCSVal struct
+             
+    // LuaValToCSVal struct
     S_r4r4r4_* pp2 = DataTransfer::GetPointer<S_r4r4r4_>(apis, env, _sv2);
     S_r4r4r4_ p2 = pp2 ? *pp2 : S_r4r4r4_ {};
         
@@ -27699,10 +30446,12 @@ bool w_vtS_r4r4_S_u4o_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethod
         if (!DataTransfer::IsAssignable(apis, env, _sv1, TIp1, true))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_r4r4_* pp0 = DataTransfer::GetPointer<S_r4r4_>(apis, env, _sv0);
     S_r4r4_ p0 = pp0 ? *pp0 : S_r4r4_ {};
-             // LuaValToCSVal struct
+             
+    // LuaValToCSVal struct
     S_u4o_* pp1 = DataTransfer::GetPointer<S_u4o_>(apis, env, _sv1);
     S_u4o_ p1 = pp1 ? *pp1 : S_u4o_ {};
         
@@ -27726,13 +30475,14 @@ bool w_vtS_r4r4_r4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPoin
         if (!converter::Converter<float>::accept(apis, env, _sv1))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_r4r4_* pp0 = DataTransfer::GetPointer<S_r4r4_>(apis, env, _sv0);
     S_r4r4_ p0 = pp0 ? *pp0 : S_r4r4_ {};
                 
     // LuaValToCSVal P any
     float p1 = converter::Converter<float>::toCpp(apis, env, _sv1);
-        
+
     typedef void (*FuncToCall)(void*,struct S_r4r4_ p1, float p2, const void* method);
     ((FuncToCall)methodPointer)(self, p0, p1,  method);
     return true;
@@ -27757,13 +30507,15 @@ bool w_vtS_r4r4_r4S_r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMet
         if (!DataTransfer::IsAssignable(apis, env, _sv2, TIp2, true))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_r4r4_* pp0 = DataTransfer::GetPointer<S_r4r4_>(apis, env, _sv0);
     S_r4r4_ p0 = pp0 ? *pp0 : S_r4r4_ {};
                 
     // LuaValToCSVal P any
     float p1 = converter::Converter<float>::toCpp(apis, env, _sv1);
-             // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_r4r4_* pp2 = DataTransfer::GetPointer<S_r4r4_>(apis, env, _sv2);
     S_r4r4_ p2 = pp2 ? *pp2 : S_r4r4_ {};
         
@@ -27771,7 +30523,7 @@ bool w_vtS_r4r4_r4S_r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMet
     ((FuncToCall)methodPointer)(self, p0, p1, p2,  method);
     return true;
 }
-// Void SetScale(UnityEngine.RectTransform, UnityEngine.Vector3) declare in com.pixui.PxMisc
+// Void SetRotate(UnityEngine.UI.Image, UnityEngine.Vector3) declare in ExtImage
 bool w_vtS_r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
     // PLog("Running w_vtS_r4r4r4_");
     auto TIp0 = wrapData->TypeInfos[0];
@@ -27784,7 +30536,8 @@ bool w_vtS_r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPoin
         if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_r4r4r4_* pp0 = DataTransfer::GetPointer<S_r4r4r4_>(apis, env, _sv0);
     S_r4r4r4_ p0 = pp0 ? *pp0 : S_r4r4r4_ {};
         
@@ -27808,13 +30561,41 @@ bool w_vtS_r4r4r4_Db(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPo
         if (lua_args_len > 1 && !converter::Converter<bool>::accept(apis, env, _sv1))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_r4r4r4_* pp0 = DataTransfer::GetPointer<S_r4r4r4_>(apis, env, _sv0);
     S_r4r4r4_ p0 = pp0 ? *pp0 : S_r4r4r4_ {};
          // LuaValToCSVal primitive with default
     bool p1 = OptionalParameter<bool>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 1);
             
     typedef void (*FuncToCall)(void*,struct S_r4r4r4_ p1, bool p2, const void* method);
+    ((FuncToCall)methodPointer)(self, p0, p1,  method);
+    return true;
+}
+// Void PlayOSHCoinFlyEffectByUIPos(UnityEngine.Vector3, Assets.Scripts.UI.GameBanner.Item.PrizeBarFlyInEffectType) declare in Assets.Scripts.UI.GameBanner.Item.UIGameBanner
+bool w_vtS_r4r4r4_Di4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_vtS_r4r4r4_Di4");
+    auto TIp0 = wrapData->TypeInfos[0];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    int _sv1 = apis->get_arg(info, 1);
+    if (true) {
+        if (lua_args_len < 1 || lua_args_len > 2) 
+            return false;
+
+        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
+            return false;
+        if (lua_args_len > 1 && !converter::Converter<int32_t>::accept(apis, env, _sv1))
+            return false;        
+    }
+     
+    // LuaValToCSVal struct
+    S_r4r4r4_* pp0 = DataTransfer::GetPointer<S_r4r4r4_>(apis, env, _sv0);
+    S_r4r4r4_ p0 = pp0 ? *pp0 : S_r4r4r4_ {};
+         // LuaValToCSVal primitive with default
+    int32_t p1 = OptionalParameter<int32_t>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 1);
+            
+    typedef void (*FuncToCall)(void*,struct S_r4r4r4_ p1, int32_t p2, const void* method);
     ((FuncToCall)methodPointer)(self, p0, p1,  method);
     return true;
 }
@@ -27834,7 +30615,8 @@ bool w_vtS_r4r4r4_Dr4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodP
         if (lua_args_len > 1 && !converter::Converter<float>::accept(apis, env, _sv1))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_r4r4r4_* pp0 = DataTransfer::GetPointer<S_r4r4r4_>(apis, env, _sv0);
     S_r4r4r4_ p0 = pp0 ? *pp0 : S_r4r4r4_ {};
          // LuaValToCSVal primitive with default
@@ -27861,10 +30643,12 @@ bool w_vtS_r4r4r4_S_r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppM
         if (!DataTransfer::IsAssignable(apis, env, _sv1, TIp1, true))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_r4r4r4_* pp0 = DataTransfer::GetPointer<S_r4r4r4_>(apis, env, _sv0);
     S_r4r4r4_ p0 = pp0 ? *pp0 : S_r4r4r4_ {};
-             // LuaValToCSVal struct
+             
+    // LuaValToCSVal struct
     S_r4r4r4_* pp1 = DataTransfer::GetPointer<S_r4r4r4_>(apis, env, _sv1);
     S_r4r4r4_ p1 = pp1 ? *pp1 : S_r4r4r4_ {};
         
@@ -27892,18 +30676,70 @@ bool w_vtS_r4r4r4_S_r4r4r4_r4(struct pesapi_ffi* apis, MethodInfo* method, Il2Cp
         if (!converter::Converter<float>::accept(apis, env, _sv2))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_r4r4r4_* pp0 = DataTransfer::GetPointer<S_r4r4r4_>(apis, env, _sv0);
     S_r4r4r4_ p0 = pp0 ? *pp0 : S_r4r4r4_ {};
-             // LuaValToCSVal struct
+             
+    // LuaValToCSVal struct
+    S_r4r4r4_* pp1 = DataTransfer::GetPointer<S_r4r4r4_>(apis, env, _sv1);
+    S_r4r4r4_ p1 = pp1 ? *pp1 : S_r4r4r4_ {};
+                
+    // LuaValToCSVal P any
+    float p2 = converter::Converter<float>::toCpp(apis, env, _sv2);
+
+    typedef void (*FuncToCall)(void*,struct S_r4r4r4_ p1, struct S_r4r4r4_ p2, float p3, const void* method);
+    ((FuncToCall)methodPointer)(self, p0, p1, p2,  method);
+    return true;
+}
+// Void Emit(UnityEngine.Vector3, UnityEngine.Vector3, Single, Single, UnityEngine.Color32) declare in UnityEngine.ParticleSystem
+bool w_vtS_r4r4r4_S_r4r4r4_r4r4S_i4u1u1u1u1_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_vtS_r4r4r4_S_r4r4r4_r4r4S_i4u1u1u1u1_");
+    auto TIp0 = wrapData->TypeInfos[0];
+    auto TIp1 = wrapData->TypeInfos[1];
+    auto TIp4 = wrapData->TypeInfos[2];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    int _sv1 = apis->get_arg(info, 1);
+    int _sv2 = apis->get_arg(info, 2);
+    int _sv3 = apis->get_arg(info, 3);
+    int _sv4 = apis->get_arg(info, 4);
+    if (checkLuaArgument) {
+        if (lua_args_len != 5) 
+            return false;
+
+        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
+            return false;
+        if (!DataTransfer::IsAssignable(apis, env, _sv1, TIp1, true))
+            return false;
+        if (!converter::Converter<float>::accept(apis, env, _sv2))
+            return false;
+        if (!converter::Converter<float>::accept(apis, env, _sv3))
+            return false;
+        if (!DataTransfer::IsAssignable(apis, env, _sv4, TIp4, true))
+            return false;        
+    }
+     
+    // LuaValToCSVal struct
+    S_r4r4r4_* pp0 = DataTransfer::GetPointer<S_r4r4r4_>(apis, env, _sv0);
+    S_r4r4r4_ p0 = pp0 ? *pp0 : S_r4r4r4_ {};
+             
+    // LuaValToCSVal struct
     S_r4r4r4_* pp1 = DataTransfer::GetPointer<S_r4r4r4_>(apis, env, _sv1);
     S_r4r4r4_ p1 = pp1 ? *pp1 : S_r4r4r4_ {};
                 
     // LuaValToCSVal P any
     float p2 = converter::Converter<float>::toCpp(apis, env, _sv2);
         
-    typedef void (*FuncToCall)(void*,struct S_r4r4r4_ p1, struct S_r4r4r4_ p2, float p3, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1, p2,  method);
+    // LuaValToCSVal P any
+    float p3 = converter::Converter<float>::toCpp(apis, env, _sv3);
+     
+    // LuaValToCSVal struct
+    S_i4u1u1u1u1_* pp4 = DataTransfer::GetPointer<S_i4u1u1u1u1_>(apis, env, _sv4);
+    S_i4u1u1u1u1_ p4 = pp4 ? *pp4 : S_i4u1u1u1u1_ {};
+        
+    typedef void (*FuncToCall)(void*,struct S_r4r4r4_ p1, struct S_r4r4r4_ p2, float p3, float p4, struct S_i4u1u1u1u1_ p5, const void* method);
+    ((FuncToCall)methodPointer)(self, p0, p1, p2, p3, p4,  method);
     return true;
 }
 // Void SetPositionAndRotation(UnityEngine.Vector3, UnityEngine.Quaternion) declare in UnityEngine.Transform
@@ -27923,10 +30759,12 @@ bool w_vtS_r4r4r4_S_r4r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2Cp
         if (!DataTransfer::IsAssignable(apis, env, _sv1, TIp1, true))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_r4r4r4_* pp0 = DataTransfer::GetPointer<S_r4r4r4_>(apis, env, _sv0);
     S_r4r4r4_ p0 = pp0 ? *pp0 : S_r4r4r4_ {};
-             // LuaValToCSVal struct
+             
+    // LuaValToCSVal struct
     S_r4r4r4r4_* pp1 = DataTransfer::GetPointer<S_r4r4r4r4_>(apis, env, _sv1);
     S_r4r4r4r4_ p1 = pp1 ? *pp1 : S_r4r4r4r4_ {};
         
@@ -27956,16 +30794,17 @@ bool w_vtS_r4r4r4_bbDb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethod
         if (lua_args_len > 3 && !converter::Converter<bool>::accept(apis, env, _sv3))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_r4r4r4_* pp0 = DataTransfer::GetPointer<S_r4r4r4_>(apis, env, _sv0);
     S_r4r4r4_ p0 = pp0 ? *pp0 : S_r4r4r4_ {};
                 
     // LuaValToCSVal P any
     bool p1 = converter::Converter<bool>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     bool p2 = converter::Converter<bool>::toCpp(apis, env, _sv2);
-         // LuaValToCSVal primitive with default
+ // LuaValToCSVal primitive with default
     bool p3 = OptionalParameter<bool>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 3);
             
     typedef void (*FuncToCall)(void*,struct S_r4r4r4_ p1, bool p2, bool p3, bool p4, const void* method);
@@ -27994,16 +30833,17 @@ bool w_vtS_r4r4r4_bi4Db(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMetho
         if (lua_args_len > 3 && !converter::Converter<bool>::accept(apis, env, _sv3))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_r4r4r4_* pp0 = DataTransfer::GetPointer<S_r4r4r4_>(apis, env, _sv0);
     S_r4r4r4_ p0 = pp0 ? *pp0 : S_r4r4r4_ {};
                 
     // LuaValToCSVal P any
     bool p1 = converter::Converter<bool>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-         // LuaValToCSVal primitive with default
+ // LuaValToCSVal primitive with default
     bool p3 = OptionalParameter<bool>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 3);
             
     typedef void (*FuncToCall)(void*,struct S_r4r4r4_ p1, bool p2, int32_t p3, bool p4, const void* method);
@@ -28026,13 +30866,14 @@ bool w_vtS_r4r4r4_i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPo
         if (!converter::Converter<int32_t>::accept(apis, env, _sv1))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_r4r4r4_* pp0 = DataTransfer::GetPointer<S_r4r4r4_>(apis, env, _sv0);
     S_r4r4r4_ p0 = pp0 ? *pp0 : S_r4r4r4_ {};
                 
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-        
+
     typedef void (*FuncToCall)(void*,struct S_r4r4r4_ p1, int32_t p2, const void* method);
     ((FuncToCall)methodPointer)(self, p0, p1,  method);
     return true;
@@ -28054,13 +30895,14 @@ bool w_vtS_r4r4r4_o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPoi
         if (!DataTransfer::IsAssignable(apis, env, _sv1, TIp1, false))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_r4r4r4_* pp0 = DataTransfer::GetPointer<S_r4r4r4_>(apis, env, _sv0);
     S_r4r4r4_ p0 = pp0 ? *pp0 : S_r4r4r4_ {};
             
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-        
+
     typedef void (*FuncToCall)(void*,struct S_r4r4r4_ p1, Il2CppObject* p2, const void* method);
     ((FuncToCall)methodPointer)(self, p0, p1,  method);
     return true;
@@ -28081,13 +30923,14 @@ bool w_vtS_r4r4r4_r4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPo
         if (!converter::Converter<float>::accept(apis, env, _sv1))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_r4r4r4_* pp0 = DataTransfer::GetPointer<S_r4r4r4_>(apis, env, _sv0);
     S_r4r4r4_ p0 = pp0 ? *pp0 : S_r4r4r4_ {};
                 
     // LuaValToCSVal P any
     float p1 = converter::Converter<float>::toCpp(apis, env, _sv1);
-        
+
     typedef void (*FuncToCall)(void*,struct S_r4r4r4_ p1, float p2, const void* method);
     ((FuncToCall)methodPointer)(self, p0, p1,  method);
     return true;
@@ -28111,16 +30954,17 @@ bool w_vtS_r4r4r4_r4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethod
         if (!converter::Converter<int32_t>::accept(apis, env, _sv2))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_r4r4r4_* pp0 = DataTransfer::GetPointer<S_r4r4r4_>(apis, env, _sv0);
     S_r4r4r4_ p0 = pp0 ? *pp0 : S_r4r4r4_ {};
                 
     // LuaValToCSVal P any
     float p1 = converter::Converter<float>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-        
+
     typedef void (*FuncToCall)(void*,struct S_r4r4r4_ p1, float p2, int32_t p3, const void* method);
     ((FuncToCall)methodPointer)(self, p0, p1, p2,  method);
     return true;
@@ -28141,15 +30985,38 @@ bool w_vtS_r4r4r4_u4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPo
         if (!converter::Converter<uint32_t>::accept(apis, env, _sv1))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_r4r4r4_* pp0 = DataTransfer::GetPointer<S_r4r4r4_>(apis, env, _sv0);
     S_r4r4r4_ p0 = pp0 ? *pp0 : S_r4r4r4_ {};
                 
     // LuaValToCSVal P any
     uint32_t p1 = converter::Converter<uint32_t>::toCpp(apis, env, _sv1);
-        
+
     typedef void (*FuncToCall)(void*,struct S_r4r4r4_ p1, uint32_t p2, const void* method);
     ((FuncToCall)methodPointer)(self, p0, p1,  method);
+    return true;
+}
+// Void SetPlaybackState(PlaybackState) declare in UnityEngine.ParticleSystem
+bool w_vtS_r4r4r4i4S_r4r4S_u4u4u4u4__S_S_S_u4u4u4u4_S_u4u4u4u4_S_u4u4u4u4_S_u4u4u4u4___S_S_S_u4u4u4u4_S_u4u4u4u4_S_u4u4u4u4_S_u4u4u4u4__r4r4r4r4r4r4i4_S_S_S_u4u4u4u4_S_u4u4u4u4_S_u4u4u4u4_S_u4u4u4u4___S_S_S_u4u4u4u4_S_u4u4u4u4_S_u4u4u4u4_S_u4u4u4u4___S_r4_S_S_u4u4u4u4_r4_S_r4__(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_vtS_r4r4r4i4S_r4r4S_u4u4u4u4__S_S_S_u4u4u4u4_S_u4u4u4u4_S_u4u4u4u4_S_u4u4u4u4___S_S_S_u4u4u4u4_S_u4u4u4u4_S_u4u4u4u4_S_u4u4u4u4__r4r4r4r4r4r4i4_S_S_S_u4u4u4u4_S_u4u4u4u4_S_u4u4u4u4_S_u4u4u4u4___S_S_S_u4u4u4u4_S_u4u4u4u4_S_u4u4u4u4_S_u4u4u4u4___S_r4_S_S_u4u4u4u4_r4_S_r4__");
+    auto TIp0 = wrapData->TypeInfos[0];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    if (checkLuaArgument) {
+        if (lua_args_len != 1) 
+            return false;
+
+        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
+            return false;        
+    }
+     
+    // LuaValToCSVal struct
+    S_r4r4r4i4S_r4r4S_u4u4u4u4__S_S_S_u4u4u4u4_S_u4u4u4u4_S_u4u4u4u4_S_u4u4u4u4___S_S_S_u4u4u4u4_S_u4u4u4u4_S_u4u4u4u4_S_u4u4u4u4__r4r4r4r4r4r4i4_S_S_S_u4u4u4u4_S_u4u4u4u4_S_u4u4u4u4_S_u4u4u4u4___S_S_S_u4u4u4u4_S_u4u4u4u4_S_u4u4u4u4_S_u4u4u4u4___S_r4_S_S_u4u4u4u4_r4_S_r4__* pp0 = DataTransfer::GetPointer<S_r4r4r4i4S_r4r4S_u4u4u4u4__S_S_S_u4u4u4u4_S_u4u4u4u4_S_u4u4u4u4_S_u4u4u4u4___S_S_S_u4u4u4u4_S_u4u4u4u4_S_u4u4u4u4_S_u4u4u4u4__r4r4r4r4r4r4i4_S_S_S_u4u4u4u4_S_u4u4u4u4_S_u4u4u4u4_S_u4u4u4u4___S_S_S_u4u4u4u4_S_u4u4u4u4_S_u4u4u4u4_S_u4u4u4u4___S_r4_S_S_u4u4u4u4_r4_S_r4__>(apis, env, _sv0);
+    S_r4r4r4i4S_r4r4S_u4u4u4u4__S_S_S_u4u4u4u4_S_u4u4u4u4_S_u4u4u4u4_S_u4u4u4u4___S_S_S_u4u4u4u4_S_u4u4u4u4_S_u4u4u4u4_S_u4u4u4u4__r4r4r4r4r4r4i4_S_S_S_u4u4u4u4_S_u4u4u4u4_S_u4u4u4u4_S_u4u4u4u4___S_S_S_u4u4u4u4_S_u4u4u4u4_S_u4u4u4u4_S_u4u4u4u4___S_r4_S_S_u4u4u4u4_r4_S_r4__ p0 = pp0 ? *pp0 : S_r4r4r4i4S_r4r4S_u4u4u4u4__S_S_S_u4u4u4u4_S_u4u4u4u4_S_u4u4u4u4_S_u4u4u4u4___S_S_S_u4u4u4u4_S_u4u4u4u4_S_u4u4u4u4_S_u4u4u4u4__r4r4r4r4r4r4i4_S_S_S_u4u4u4u4_S_u4u4u4u4_S_u4u4u4u4_S_u4u4u4u4___S_S_S_u4u4u4u4_S_u4u4u4u4_S_u4u4u4u4_S_u4u4u4u4___S_r4_S_S_u4u4u4u4_r4_S_r4__ {};
+        
+    typedef void (*FuncToCall)(void*,struct S_r4r4r4i4S_r4r4S_u4u4u4u4__S_S_S_u4u4u4u4_S_u4u4u4u4_S_u4u4u4u4_S_u4u4u4u4___S_S_S_u4u4u4u4_S_u4u4u4u4_S_u4u4u4u4_S_u4u4u4u4__r4r4r4r4r4r4i4_S_S_S_u4u4u4u4_S_u4u4u4u4_S_u4u4u4u4_S_u4u4u4u4___S_S_S_u4u4u4u4_S_u4u4u4u4_S_u4u4u4u4_S_u4u4u4u4___S_r4_S_S_u4u4u4u4_r4_S_r4__ p1, const void* method);
+    ((FuncToCall)methodPointer)(self, p0,  method);
     return true;
 }
 // Void SetColor(UnityEngine.UI.Graphic, UnityEngine.Color) declare in ExtImage
@@ -28165,7 +31032,8 @@ bool w_vtS_r4r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPo
         if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_r4r4r4r4_* pp0 = DataTransfer::GetPointer<S_r4r4r4r4_>(apis, env, _sv0);
     S_r4r4r4r4_ p0 = pp0 ? *pp0 : S_r4r4r4r4_ {};
         
@@ -28190,10 +31058,12 @@ bool w_vtS_r4r4r4r4_S_r4r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2
         if (!DataTransfer::IsAssignable(apis, env, _sv1, TIp1, true))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_r4r4r4r4_* pp0 = DataTransfer::GetPointer<S_r4r4r4r4_>(apis, env, _sv0);
     S_r4r4r4r4_ p0 = pp0 ? *pp0 : S_r4r4r4r4_ {};
-             // LuaValToCSVal struct
+             
+    // LuaValToCSVal struct
     S_r4r4r4r4_* pp1 = DataTransfer::GetPointer<S_r4r4r4r4_>(apis, env, _sv1);
     S_r4r4r4r4_ p1 = pp1 ? *pp1 : S_r4r4r4r4_ {};
         
@@ -28217,13 +31087,14 @@ bool w_vtS_r4r4r4r4_b(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodP
         if (!converter::Converter<bool>::accept(apis, env, _sv1))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_r4r4r4r4_* pp0 = DataTransfer::GetPointer<S_r4r4r4r4_>(apis, env, _sv0);
     S_r4r4r4r4_ p0 = pp0 ? *pp0 : S_r4r4r4r4_ {};
                 
     // LuaValToCSVal P any
     bool p1 = converter::Converter<bool>::toCpp(apis, env, _sv1);
-        
+
     typedef void (*FuncToCall)(void*,struct S_r4r4r4r4_ p1, bool p2, const void* method);
     ((FuncToCall)methodPointer)(self, p0, p1,  method);
     return true;
@@ -28250,19 +31121,20 @@ bool w_vtS_r4r4r4r4_r4bb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMeth
         if (!converter::Converter<bool>::accept(apis, env, _sv3))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_r4r4r4r4_* pp0 = DataTransfer::GetPointer<S_r4r4r4r4_>(apis, env, _sv0);
     S_r4r4r4r4_ p0 = pp0 ? *pp0 : S_r4r4r4r4_ {};
                 
     // LuaValToCSVal P any
     float p1 = converter::Converter<float>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     bool p2 = converter::Converter<bool>::toCpp(apis, env, _sv2);
-                
+        
     // LuaValToCSVal P any
     bool p3 = converter::Converter<bool>::toCpp(apis, env, _sv3);
-        
+
     typedef void (*FuncToCall)(void*,struct S_r4r4r4r4_ p1, float p2, bool p3, bool p4, const void* method);
     ((FuncToCall)methodPointer)(self, p0, p1, p2, p3,  method);
     return true;
@@ -28292,22 +31164,23 @@ bool w_vtS_r4r4r4r4_r4bbb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMet
         if (!converter::Converter<bool>::accept(apis, env, _sv4))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_r4r4r4r4_* pp0 = DataTransfer::GetPointer<S_r4r4r4r4_>(apis, env, _sv0);
     S_r4r4r4r4_ p0 = pp0 ? *pp0 : S_r4r4r4r4_ {};
                 
     // LuaValToCSVal P any
     float p1 = converter::Converter<float>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     bool p2 = converter::Converter<bool>::toCpp(apis, env, _sv2);
-                
+        
     // LuaValToCSVal P any
     bool p3 = converter::Converter<bool>::toCpp(apis, env, _sv3);
-                
+        
     // LuaValToCSVal P any
     bool p4 = converter::Converter<bool>::toCpp(apis, env, _sv4);
-        
+
     typedef void (*FuncToCall)(void*,struct S_r4r4r4r4_ p1, float p2, bool p3, bool p4, bool p5, const void* method);
     ((FuncToCall)methodPointer)(self, p0, p1, p2, p3, p4,  method);
     return true;
@@ -28335,19 +31208,20 @@ bool w_vtS_r4r4r4r4_r4i4o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMet
         if (!DataTransfer::IsAssignable(apis, env, _sv3, TIp3, false))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_r4r4r4r4_* pp0 = DataTransfer::GetPointer<S_r4r4r4r4_>(apis, env, _sv0);
     S_r4r4r4r4_ p0 = pp0 ? *pp0 : S_r4r4r4r4_ {};
                 
     // LuaValToCSVal P any
     float p1 = converter::Converter<float>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p3 = LuaValueToCSRef(apis, TIp3, env, _sv3);
-        
+
     typedef void (*FuncToCall)(void*,struct S_r4r4r4r4_ p1, float p2, int32_t p3, Il2CppObject* p4, const void* method);
     ((FuncToCall)methodPointer)(self, p0, p1, p2, p3,  method);
     return true;
@@ -28368,13 +31242,14 @@ bool w_vtS_r4r4r4r4_u8(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethod
         if (!converter::Converter<uint64_t>::accept(apis, env, _sv1))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_r4r4r4r4_* pp0 = DataTransfer::GetPointer<S_r4r4r4r4_>(apis, env, _sv0);
     S_r4r4r4r4_ p0 = pp0 ? *pp0 : S_r4r4r4r4_ {};
                 
     // LuaValToCSVal P any
     uint64_t p1 = converter::Converter<uint64_t>::toCpp(apis, env, _sv1);
-        
+
     typedef void (*FuncToCall)(void*,struct S_r4r4r4r4_ p1, uint64_t p2, const void* method);
     ((FuncToCall)methodPointer)(self, p0, p1,  method);
     return true;
@@ -28392,7 +31267,8 @@ bool w_vtS_r4r4r4r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMeth
         if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_r4r4r4r4r4r4_* pp0 = DataTransfer::GetPointer<S_r4r4r4r4r4r4_>(apis, env, _sv0);
     S_r4r4r4r4r4r4_ p0 = pp0 ? *pp0 : S_r4r4r4r4r4r4_ {};
         
@@ -28413,7 +31289,8 @@ bool w_vtS_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_(struct pesapi_ffi* apis, MethodInfo
         if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_* pp0 = DataTransfer::GetPointer<S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_>(apis, env, _sv0);
     S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_ p0 = pp0 ? *pp0 : S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_ {};
         
@@ -28438,15 +31315,340 @@ bool w_vtS_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_(
         if (!DataTransfer::IsAssignable(apis, env, _sv1, TIp1, true))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_* pp0 = DataTransfer::GetPointer<S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_>(apis, env, _sv0);
     S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_ p0 = pp0 ? *pp0 : S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_ {};
-             // LuaValToCSVal struct
+             
+    // LuaValToCSVal struct
     S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_* pp1 = DataTransfer::GetPointer<S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_>(apis, env, _sv1);
     S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_ p1 = pp1 ? *pp1 : S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_ {};
         
     typedef void (*FuncToCall)(void*,struct S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_ p1, struct S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_ p2, const void* method);
     ((FuncToCall)methodPointer)(self, p0, p1,  method);
+    return true;
+}
+// Void DrawProcedural(UnityEngine.Matrix4x4, UnityEngine.Material, Int32, UnityEngine.MeshTopology, Int32) declare in UnityEngine.Rendering.CommandBuffer
+bool w_vtS_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_oi4i4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_vtS_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_oi4i4i4");
+    auto TIp0 = wrapData->TypeInfos[0];
+    auto TIp1 = wrapData->TypeInfos[1];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    int _sv1 = apis->get_arg(info, 1);
+    int _sv2 = apis->get_arg(info, 2);
+    int _sv3 = apis->get_arg(info, 3);
+    int _sv4 = apis->get_arg(info, 4);
+    if (checkLuaArgument) {
+        if (lua_args_len != 5) 
+            return false;
+
+        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
+            return false;
+        if (!DataTransfer::IsAssignable(apis, env, _sv1, TIp1, false))
+            return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv2))
+            return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv3))
+            return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv4))
+            return false;        
+    }
+     
+    // LuaValToCSVal struct
+    S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_* pp0 = DataTransfer::GetPointer<S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_>(apis, env, _sv0);
+    S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_ p0 = pp0 ? *pp0 : S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_ {};
+            
+    // LuaValToCSVal o/O
+    Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
+        
+    // LuaValToCSVal P any
+    int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
+        
+    // LuaValToCSVal P any
+    int32_t p3 = converter::Converter<int32_t>::toCpp(apis, env, _sv3);
+        
+    // LuaValToCSVal P any
+    int32_t p4 = converter::Converter<int32_t>::toCpp(apis, env, _sv4);
+
+    typedef void (*FuncToCall)(void*,struct S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_ p1, Il2CppObject* p2, int32_t p3, int32_t p4, int32_t p5, const void* method);
+    ((FuncToCall)methodPointer)(self, p0, p1, p2, p3, p4,  method);
+    return true;
+}
+// Void DrawProcedural(UnityEngine.Matrix4x4, UnityEngine.Material, Int32, UnityEngine.MeshTopology, Int32, Int32) declare in UnityEngine.Rendering.CommandBuffer
+bool w_vtS_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_oi4i4i4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_vtS_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_oi4i4i4i4");
+    auto TIp0 = wrapData->TypeInfos[0];
+    auto TIp1 = wrapData->TypeInfos[1];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    int _sv1 = apis->get_arg(info, 1);
+    int _sv2 = apis->get_arg(info, 2);
+    int _sv3 = apis->get_arg(info, 3);
+    int _sv4 = apis->get_arg(info, 4);
+    int _sv5 = apis->get_arg(info, 5);
+    if (checkLuaArgument) {
+        if (lua_args_len != 6) 
+            return false;
+
+        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
+            return false;
+        if (!DataTransfer::IsAssignable(apis, env, _sv1, TIp1, false))
+            return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv2))
+            return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv3))
+            return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv4))
+            return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv5))
+            return false;        
+    }
+     
+    // LuaValToCSVal struct
+    S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_* pp0 = DataTransfer::GetPointer<S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_>(apis, env, _sv0);
+    S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_ p0 = pp0 ? *pp0 : S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_ {};
+            
+    // LuaValToCSVal o/O
+    Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
+        
+    // LuaValToCSVal P any
+    int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
+        
+    // LuaValToCSVal P any
+    int32_t p3 = converter::Converter<int32_t>::toCpp(apis, env, _sv3);
+        
+    // LuaValToCSVal P any
+    int32_t p4 = converter::Converter<int32_t>::toCpp(apis, env, _sv4);
+        
+    // LuaValToCSVal P any
+    int32_t p5 = converter::Converter<int32_t>::toCpp(apis, env, _sv5);
+
+    typedef void (*FuncToCall)(void*,struct S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_ p1, Il2CppObject* p2, int32_t p3, int32_t p4, int32_t p5, int32_t p6, const void* method);
+    ((FuncToCall)methodPointer)(self, p0, p1, p2, p3, p4, p5,  method);
+    return true;
+}
+// Void DrawProcedural(UnityEngine.Matrix4x4, UnityEngine.Material, Int32, UnityEngine.MeshTopology, Int32, Int32, UnityEngine.MaterialPropertyBlock) declare in UnityEngine.Rendering.CommandBuffer
+bool w_vtS_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_oi4i4i4i4o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_vtS_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_oi4i4i4i4o");
+    auto TIp0 = wrapData->TypeInfos[0];
+    auto TIp1 = wrapData->TypeInfos[1];
+    auto TIp6 = wrapData->TypeInfos[2];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    int _sv1 = apis->get_arg(info, 1);
+    int _sv2 = apis->get_arg(info, 2);
+    int _sv3 = apis->get_arg(info, 3);
+    int _sv4 = apis->get_arg(info, 4);
+    int _sv5 = apis->get_arg(info, 5);
+    int _sv6 = apis->get_arg(info, 6);
+    if (checkLuaArgument) {
+        if (lua_args_len != 7) 
+            return false;
+
+        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
+            return false;
+        if (!DataTransfer::IsAssignable(apis, env, _sv1, TIp1, false))
+            return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv2))
+            return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv3))
+            return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv4))
+            return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv5))
+            return false;
+        if (!DataTransfer::IsAssignable(apis, env, _sv6, TIp6, false))
+            return false;        
+    }
+     
+    // LuaValToCSVal struct
+    S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_* pp0 = DataTransfer::GetPointer<S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_>(apis, env, _sv0);
+    S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_ p0 = pp0 ? *pp0 : S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_ {};
+            
+    // LuaValToCSVal o/O
+    Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
+        
+    // LuaValToCSVal P any
+    int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
+        
+    // LuaValToCSVal P any
+    int32_t p3 = converter::Converter<int32_t>::toCpp(apis, env, _sv3);
+        
+    // LuaValToCSVal P any
+    int32_t p4 = converter::Converter<int32_t>::toCpp(apis, env, _sv4);
+        
+    // LuaValToCSVal P any
+    int32_t p5 = converter::Converter<int32_t>::toCpp(apis, env, _sv5);
+    
+    // LuaValToCSVal o/O
+    Il2CppObject* p6 = LuaValueToCSRef(apis, TIp6, env, _sv6);
+
+    typedef void (*FuncToCall)(void*,struct S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_ p1, Il2CppObject* p2, int32_t p3, int32_t p4, int32_t p5, int32_t p6, Il2CppObject* p7, const void* method);
+    ((FuncToCall)methodPointer)(self, p0, p1, p2, p3, p4, p5, p6,  method);
+    return true;
+}
+// Void DrawProceduralIndirect(UnityEngine.Matrix4x4, UnityEngine.Material, Int32, UnityEngine.MeshTopology, UnityEngine.ComputeBuffer) declare in UnityEngine.Rendering.CommandBuffer
+bool w_vtS_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_oi4i4o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_vtS_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_oi4i4o");
+    auto TIp0 = wrapData->TypeInfos[0];
+    auto TIp1 = wrapData->TypeInfos[1];
+    auto TIp4 = wrapData->TypeInfos[2];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    int _sv1 = apis->get_arg(info, 1);
+    int _sv2 = apis->get_arg(info, 2);
+    int _sv3 = apis->get_arg(info, 3);
+    int _sv4 = apis->get_arg(info, 4);
+    if (checkLuaArgument) {
+        if (lua_args_len != 5) 
+            return false;
+
+        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
+            return false;
+        if (!DataTransfer::IsAssignable(apis, env, _sv1, TIp1, false))
+            return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv2))
+            return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv3))
+            return false;
+        if (!DataTransfer::IsAssignable(apis, env, _sv4, TIp4, false))
+            return false;        
+    }
+     
+    // LuaValToCSVal struct
+    S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_* pp0 = DataTransfer::GetPointer<S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_>(apis, env, _sv0);
+    S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_ p0 = pp0 ? *pp0 : S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_ {};
+            
+    // LuaValToCSVal o/O
+    Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
+        
+    // LuaValToCSVal P any
+    int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
+        
+    // LuaValToCSVal P any
+    int32_t p3 = converter::Converter<int32_t>::toCpp(apis, env, _sv3);
+    
+    // LuaValToCSVal o/O
+    Il2CppObject* p4 = LuaValueToCSRef(apis, TIp4, env, _sv4);
+
+    typedef void (*FuncToCall)(void*,struct S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_ p1, Il2CppObject* p2, int32_t p3, int32_t p4, Il2CppObject* p5, const void* method);
+    ((FuncToCall)methodPointer)(self, p0, p1, p2, p3, p4,  method);
+    return true;
+}
+// Void DrawProceduralIndirect(UnityEngine.Matrix4x4, UnityEngine.Material, Int32, UnityEngine.MeshTopology, UnityEngine.ComputeBuffer, Int32) declare in UnityEngine.Rendering.CommandBuffer
+bool w_vtS_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_oi4i4oi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_vtS_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_oi4i4oi4");
+    auto TIp0 = wrapData->TypeInfos[0];
+    auto TIp1 = wrapData->TypeInfos[1];
+    auto TIp4 = wrapData->TypeInfos[2];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    int _sv1 = apis->get_arg(info, 1);
+    int _sv2 = apis->get_arg(info, 2);
+    int _sv3 = apis->get_arg(info, 3);
+    int _sv4 = apis->get_arg(info, 4);
+    int _sv5 = apis->get_arg(info, 5);
+    if (checkLuaArgument) {
+        if (lua_args_len != 6) 
+            return false;
+
+        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
+            return false;
+        if (!DataTransfer::IsAssignable(apis, env, _sv1, TIp1, false))
+            return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv2))
+            return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv3))
+            return false;
+        if (!DataTransfer::IsAssignable(apis, env, _sv4, TIp4, false))
+            return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv5))
+            return false;        
+    }
+     
+    // LuaValToCSVal struct
+    S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_* pp0 = DataTransfer::GetPointer<S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_>(apis, env, _sv0);
+    S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_ p0 = pp0 ? *pp0 : S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_ {};
+            
+    // LuaValToCSVal o/O
+    Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
+        
+    // LuaValToCSVal P any
+    int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
+        
+    // LuaValToCSVal P any
+    int32_t p3 = converter::Converter<int32_t>::toCpp(apis, env, _sv3);
+    
+    // LuaValToCSVal o/O
+    Il2CppObject* p4 = LuaValueToCSRef(apis, TIp4, env, _sv4);
+        
+    // LuaValToCSVal P any
+    int32_t p5 = converter::Converter<int32_t>::toCpp(apis, env, _sv5);
+
+    typedef void (*FuncToCall)(void*,struct S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_ p1, Il2CppObject* p2, int32_t p3, int32_t p4, Il2CppObject* p5, int32_t p6, const void* method);
+    ((FuncToCall)methodPointer)(self, p0, p1, p2, p3, p4, p5,  method);
+    return true;
+}
+// Void DrawProceduralIndirect(UnityEngine.Matrix4x4, UnityEngine.Material, Int32, UnityEngine.MeshTopology, UnityEngine.ComputeBuffer, Int32, UnityEngine.MaterialPropertyBlock) declare in UnityEngine.Rendering.CommandBuffer
+bool w_vtS_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_oi4i4oi4o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_vtS_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_oi4i4oi4o");
+    auto TIp0 = wrapData->TypeInfos[0];
+    auto TIp1 = wrapData->TypeInfos[1];
+    auto TIp4 = wrapData->TypeInfos[2];
+    auto TIp6 = wrapData->TypeInfos[3];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    int _sv1 = apis->get_arg(info, 1);
+    int _sv2 = apis->get_arg(info, 2);
+    int _sv3 = apis->get_arg(info, 3);
+    int _sv4 = apis->get_arg(info, 4);
+    int _sv5 = apis->get_arg(info, 5);
+    int _sv6 = apis->get_arg(info, 6);
+    if (checkLuaArgument) {
+        if (lua_args_len != 7) 
+            return false;
+
+        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
+            return false;
+        if (!DataTransfer::IsAssignable(apis, env, _sv1, TIp1, false))
+            return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv2))
+            return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv3))
+            return false;
+        if (!DataTransfer::IsAssignable(apis, env, _sv4, TIp4, false))
+            return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv5))
+            return false;
+        if (!DataTransfer::IsAssignable(apis, env, _sv6, TIp6, false))
+            return false;        
+    }
+     
+    // LuaValToCSVal struct
+    S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_* pp0 = DataTransfer::GetPointer<S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_>(apis, env, _sv0);
+    S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_ p0 = pp0 ? *pp0 : S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_ {};
+            
+    // LuaValToCSVal o/O
+    Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
+        
+    // LuaValToCSVal P any
+    int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
+        
+    // LuaValToCSVal P any
+    int32_t p3 = converter::Converter<int32_t>::toCpp(apis, env, _sv3);
+    
+    // LuaValToCSVal o/O
+    Il2CppObject* p4 = LuaValueToCSRef(apis, TIp4, env, _sv4);
+        
+    // LuaValToCSVal P any
+    int32_t p5 = converter::Converter<int32_t>::toCpp(apis, env, _sv5);
+    
+    // LuaValToCSVal o/O
+    Il2CppObject* p6 = LuaValueToCSRef(apis, TIp6, env, _sv6);
+
+    typedef void (*FuncToCall)(void*,struct S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_ p1, Il2CppObject* p2, int32_t p3, int32_t p4, Il2CppObject* p5, int32_t p6, Il2CppObject* p7, const void* method);
+    ((FuncToCall)methodPointer)(self, p0, p1, p2, p3, p4, p5, p6,  method);
     return true;
 }
 // Void InitPay(Assets.Scripts.SDK.PayInitParam) declare in Assets.Scripts.SDK.PayService
@@ -28462,7 +31664,8 @@ bool w_vtS_ssso_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointe
         if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_ssso_* pp0 = DataTransfer::GetPointer<S_ssso_>(apis, env, _sv0);
     S_ssso_ p0 = pp0 ? *pp0 : S_ssso_ {};
         
@@ -28483,7 +31686,8 @@ bool w_vtS_u1i4i4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPoin
         if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_u1i4i4_* pp0 = DataTransfer::GetPointer<S_u1i4i4_>(apis, env, _sv0);
     S_u1i4i4_ p0 = pp0 ? *pp0 : S_u1i4i4_ {};
         
@@ -28504,7 +31708,8 @@ bool w_vtS_u4o_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer
         if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_u4o_* pp0 = DataTransfer::GetPointer<S_u4o_>(apis, env, _sv0);
     S_u4o_ p0 = pp0 ? *pp0 : S_u4o_ {};
         
@@ -28534,7 +31739,8 @@ bool w_vtS_u4o_DbDu4Du4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMetho
         if (lua_args_len > 3 && !converter::Converter<uint32_t>::accept(apis, env, _sv3))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_u4o_* pp0 = DataTransfer::GetPointer<S_u4o_>(apis, env, _sv0);
     S_u4o_ p0 = pp0 ? *pp0 : S_u4o_ {};
          // LuaValToCSVal primitive with default
@@ -28564,13 +31770,14 @@ bool w_vtS_u4o_b(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointe
         if (!converter::Converter<bool>::accept(apis, env, _sv1))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_u4o_* pp0 = DataTransfer::GetPointer<S_u4o_>(apis, env, _sv0);
     S_u4o_ p0 = pp0 ? *pp0 : S_u4o_ {};
                 
     // LuaValToCSVal P any
     bool p1 = converter::Converter<bool>::toCpp(apis, env, _sv1);
-        
+
     typedef void (*FuncToCall)(void*,struct S_u4o_ p1, bool p2, const void* method);
     ((FuncToCall)methodPointer)(self, p0, p1,  method);
     return true;
@@ -28591,13 +31798,14 @@ bool w_vtS_u4o_i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPoint
         if (!converter::Converter<int32_t>::accept(apis, env, _sv1))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_u4o_* pp0 = DataTransfer::GetPointer<S_u4o_>(apis, env, _sv0);
     S_u4o_ p0 = pp0 ? *pp0 : S_u4o_ {};
                 
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-        
+
     typedef void (*FuncToCall)(void*,struct S_u4o_ p1, int32_t p2, const void* method);
     ((FuncToCall)methodPointer)(self, p0, p1,  method);
     return true;
@@ -28621,16 +31829,17 @@ bool w_vtS_u4o_u4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPoi
         if (!converter::Converter<int32_t>::accept(apis, env, _sv2))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_u4o_* pp0 = DataTransfer::GetPointer<S_u4o_>(apis, env, _sv0);
     S_u4o_ p0 = pp0 ? *pp0 : S_u4o_ {};
                 
     // LuaValToCSVal P any
     uint32_t p1 = converter::Converter<uint32_t>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-        
+
     typedef void (*FuncToCall)(void*,struct S_u4o_ p1, uint32_t p2, int32_t p3, const void* method);
     ((FuncToCall)methodPointer)(self, p0, p1, p2,  method);
     return true;
@@ -28648,7 +31857,8 @@ bool w_vtS_u4u1o_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPoint
         if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_u4u1o_* pp0 = DataTransfer::GetPointer<S_u4u1o_>(apis, env, _sv0);
     S_u4u1o_ p0 = pp0 ? *pp0 : S_u4u1o_ {};
         
@@ -28672,13 +31882,14 @@ bool w_vtS_u4u1o_b(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPoin
         if (!converter::Converter<bool>::accept(apis, env, _sv1))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_u4u1o_* pp0 = DataTransfer::GetPointer<S_u4u1o_>(apis, env, _sv0);
     S_u4u1o_ p0 = pp0 ? *pp0 : S_u4u1o_ {};
                 
     // LuaValToCSVal P any
     bool p1 = converter::Converter<bool>::toCpp(apis, env, _sv1);
-        
+
     typedef void (*FuncToCall)(void*,struct S_u4u1o_ p1, bool p2, const void* method);
     ((FuncToCall)methodPointer)(self, p0, p1,  method);
     return true;
@@ -28696,7 +31907,8 @@ bool w_vtS_u4u1u1u1u1_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethod
         if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_u4u1u1u1u1_* pp0 = DataTransfer::GetPointer<S_u4u1u1u1u1_>(apis, env, _sv0);
     S_u4u1u1u1u1_ p0 = pp0 ? *pp0 : S_u4u1u1u1u1_ {};
         
@@ -28717,11 +31929,34 @@ bool w_vtS_u4u4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointe
         if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_u4u4_* pp0 = DataTransfer::GetPointer<S_u4u4_>(apis, env, _sv0);
     S_u4u4_ p0 = pp0 ? *pp0 : S_u4u4_ {};
         
     typedef void (*FuncToCall)(void*,struct S_u4u4_ p1, const void* method);
+    ((FuncToCall)methodPointer)(self, p0,  method);
+    return true;
+}
+// Void Add(Assets.Scripts.GameLogic.Project8EquipPair) declare in System.Collections.Generic.List`1[Assets.Scripts.GameLogic.Project8EquipPair]
+bool w_vtS_u4u4i4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_vtS_u4u4i4_");
+    auto TIp0 = wrapData->TypeInfos[0];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    if (checkLuaArgument) {
+        if (lua_args_len != 1) 
+            return false;
+
+        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
+            return false;        
+    }
+     
+    // LuaValToCSVal struct
+    S_u4u4i4_* pp0 = DataTransfer::GetPointer<S_u4u4i4_>(apis, env, _sv0);
+    S_u4u4i4_ p0 = pp0 ? *pp0 : S_u4u4i4_ {};
+        
+    typedef void (*FuncToCall)(void*,struct S_u4u4i4_ p1, const void* method);
     ((FuncToCall)methodPointer)(self, p0,  method);
     return true;
 }
@@ -28738,7 +31973,8 @@ bool w_vtS_u4u4u1_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPoin
         if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_u4u4u1_* pp0 = DataTransfer::GetPointer<S_u4u4u1_>(apis, env, _sv0);
     S_u4u4u1_ p0 = pp0 ? *pp0 : S_u4u4u1_ {};
         
@@ -28759,7 +31995,8 @@ bool w_vtS_u4u4u4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPoin
         if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_u4u4u4_* pp0 = DataTransfer::GetPointer<S_u4u4u4_>(apis, env, _sv0);
     S_u4u4u4_ p0 = pp0 ? *pp0 : S_u4u4u4_ {};
         
@@ -28780,7 +32017,8 @@ bool w_vtS_u4u4u4i4u4o_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMetho
         if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, true))
             return false;        
     }
-     // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_u4u4u4i4u4o_* pp0 = DataTransfer::GetPointer<S_u4u4u4i4u4o_>(apis, env, _sv0);
     S_u4u4u4i4u4o_ p0 = pp0 ? *pp0 : S_u4u4u4i4u4o_ {};
         
@@ -28998,7 +32236,61 @@ bool w_vtVO(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
     ((FuncToCall)methodPointer)(self, p0,  method);
     return true;
 }
-// Void SetActive(UnityEngine.Component, Boolean) declare in com.pixui.PxMisc
+// Void set_outData(Byte[]) declare in CurlUnity.CurlEasy
+bool w_vta(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_vta");
+    auto TIp0 = wrapData->TypeInfos[0];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    if (checkLuaArgument) {
+        if (lua_args_len != 1) 
+            return false;
+
+        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, false))
+            return false;        
+    }
+    
+    // LuaValToCSVal o/O
+    Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
+
+    typedef void (*FuncToCall)(void*,Il2CppObject* p1, const void* method);
+    ((FuncToCall)methodPointer)(self, p0,  method);
+    return true;
+}
+// Void Write(Byte[], Int32, Int32) declare in Ionic.Zlib.ZlibStream
+bool w_vtai4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_vtai4i4");
+    auto TIp0 = wrapData->TypeInfos[0];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    int _sv1 = apis->get_arg(info, 1);
+    int _sv2 = apis->get_arg(info, 2);
+    if (checkLuaArgument) {
+        if (lua_args_len != 3) 
+            return false;
+
+        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, false))
+            return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv1))
+            return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv2))
+            return false;        
+    }
+    
+    // LuaValToCSVal o/O
+    Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
+        
+    // LuaValToCSVal P any
+    int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
+        
+    // LuaValToCSVal P any
+    int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
+
+    typedef void (*FuncToCall)(void*,Il2CppObject* p1, int32_t p2, int32_t p3, const void* method);
+    ((FuncToCall)methodPointer)(self, p0, p1, p2,  method);
+    return true;
+}
+// Void ActiveChilds(UnityEngine.Component, Boolean) declare in ExtComponent
 bool w_vtb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
     // PLog("Running w_vtb");
 
@@ -29014,7 +32306,7 @@ bool w_vtb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer meth
         
     // LuaValToCSVal P any
     bool p0 = converter::Converter<bool>::toCpp(apis, env, _sv0);
-        
+
     typedef void (*FuncToCall)(void*,bool p1, const void* method);
     ((FuncToCall)methodPointer)(self, p0,  method);
     return true;
@@ -29038,7 +32330,7 @@ bool w_vtbDb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
         
     // LuaValToCSVal P any
     bool p0 = converter::Converter<bool>::toCpp(apis, env, _sv0);
-         // LuaValToCSVal primitive with default
+ // LuaValToCSVal primitive with default
     bool p1 = OptionalParameter<bool>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 1);
             
     typedef void (*FuncToCall)(void*,bool p1, bool p2, const void* method);
@@ -29067,7 +32359,7 @@ bool w_vtbDbDo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer 
         
     // LuaValToCSVal P any
     bool p0 = converter::Converter<bool>::toCpp(apis, env, _sv0);
-         // LuaValToCSVal primitive with default
+ // LuaValToCSVal primitive with default
     bool p1 = OptionalParameter<bool>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 1);
                 // LuaValToCSVal ref with default
     Il2CppObject* p2 = OptionalParameter<Il2CppObject*>::GetRefType(apis, env, info, method, wrapData, lua_args_len, 2, TIp2);
@@ -29094,7 +32386,7 @@ bool w_vtbDi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer m
         
     // LuaValToCSVal P any
     bool p0 = converter::Converter<bool>::toCpp(apis, env, _sv0);
-         // LuaValToCSVal primitive with default
+ // LuaValToCSVal primitive with default
     int32_t p1 = OptionalParameter<int32_t>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 1);
             
     typedef void (*FuncToCall)(void*,bool p1, int32_t p2, const void* method);
@@ -29119,7 +32411,7 @@ bool w_vtbVi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer m
         
     // LuaValToCSVal P any
     bool p0 = converter::Converter<bool>::toCpp(apis, env, _sv0);
-             
+     
     // LuaValToCSVal primitive params
     Il2CppArray* p1 = Params<int32_t>::PackPrimitive(apis, env, info, TIp1, lua_args_len, 1);
 
@@ -29146,12 +32438,86 @@ bool w_vtbb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     bool p0 = converter::Converter<bool>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     bool p1 = converter::Converter<bool>::toCpp(apis, env, _sv1);
-        
+
     typedef void (*FuncToCall)(void*,bool p1, bool p2, const void* method);
     ((FuncToCall)methodPointer)(self, p0, p1,  method);
+    return true;
+}
+// Void ClearRenderTarget(Boolean, Boolean, UnityEngine.Color) declare in UnityEngine.Rendering.CommandBuffer
+bool w_vtbbS_r4r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_vtbbS_r4r4r4r4_");
+    auto TIp2 = wrapData->TypeInfos[0];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    int _sv1 = apis->get_arg(info, 1);
+    int _sv2 = apis->get_arg(info, 2);
+    if (checkLuaArgument) {
+        if (lua_args_len != 3) 
+            return false;
+
+        if (!converter::Converter<bool>::accept(apis, env, _sv0))
+            return false;
+        if (!converter::Converter<bool>::accept(apis, env, _sv1))
+            return false;
+        if (!DataTransfer::IsAssignable(apis, env, _sv2, TIp2, true))
+            return false;        
+    }
+        
+    // LuaValToCSVal P any
+    bool p0 = converter::Converter<bool>::toCpp(apis, env, _sv0);
+        
+    // LuaValToCSVal P any
+    bool p1 = converter::Converter<bool>::toCpp(apis, env, _sv1);
+     
+    // LuaValToCSVal struct
+    S_r4r4r4r4_* pp2 = DataTransfer::GetPointer<S_r4r4r4r4_>(apis, env, _sv2);
+    S_r4r4r4r4_ p2 = pp2 ? *pp2 : S_r4r4r4r4_ {};
+        
+    typedef void (*FuncToCall)(void*,bool p1, bool p2, struct S_r4r4r4r4_ p3, const void* method);
+    ((FuncToCall)methodPointer)(self, p0, p1, p2,  method);
+    return true;
+}
+// Void ClearRenderTarget(Boolean, Boolean, UnityEngine.Color, Single) declare in UnityEngine.Rendering.CommandBuffer
+bool w_vtbbS_r4r4r4r4_r4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_vtbbS_r4r4r4r4_r4");
+    auto TIp2 = wrapData->TypeInfos[0];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    int _sv1 = apis->get_arg(info, 1);
+    int _sv2 = apis->get_arg(info, 2);
+    int _sv3 = apis->get_arg(info, 3);
+    if (checkLuaArgument) {
+        if (lua_args_len != 4) 
+            return false;
+
+        if (!converter::Converter<bool>::accept(apis, env, _sv0))
+            return false;
+        if (!converter::Converter<bool>::accept(apis, env, _sv1))
+            return false;
+        if (!DataTransfer::IsAssignable(apis, env, _sv2, TIp2, true))
+            return false;
+        if (!converter::Converter<float>::accept(apis, env, _sv3))
+            return false;        
+    }
+        
+    // LuaValToCSVal P any
+    bool p0 = converter::Converter<bool>::toCpp(apis, env, _sv0);
+        
+    // LuaValToCSVal P any
+    bool p1 = converter::Converter<bool>::toCpp(apis, env, _sv1);
+     
+    // LuaValToCSVal struct
+    S_r4r4r4r4_* pp2 = DataTransfer::GetPointer<S_r4r4r4r4_>(apis, env, _sv2);
+    S_r4r4r4r4_ p2 = pp2 ? *pp2 : S_r4r4r4r4_ {};
+                
+    // LuaValToCSVal P any
+    float p3 = converter::Converter<float>::toCpp(apis, env, _sv3);
+
+    typedef void (*FuncToCall)(void*,bool p1, bool p2, struct S_r4r4r4r4_ p3, float p4, const void* method);
+    ((FuncToCall)methodPointer)(self, p0, p1, p2, p3,  method);
     return true;
 }
 // Void NBSetDragHeroFeetFlags(Boolean, Boolean, Boolean) declare in Assets.Scripts.GameSystem.Project8UINewbie
@@ -29176,13 +32542,13 @@ bool w_vtbbb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
         
     // LuaValToCSVal P any
     bool p0 = converter::Converter<bool>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     bool p1 = converter::Converter<bool>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     bool p2 = converter::Converter<bool>::toCpp(apis, env, _sv2);
-        
+
     typedef void (*FuncToCall)(void*,bool p1, bool p2, bool p3, const void* method);
     ((FuncToCall)methodPointer)(self, p0, p1, p2,  method);
     return true;
@@ -29209,13 +32575,13 @@ bool w_vtbbo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
         
     // LuaValToCSVal P any
     bool p0 = converter::Converter<bool>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     bool p1 = converter::Converter<bool>::toCpp(apis, env, _sv1);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p2 = LuaValueToCSRef(apis, TIp2, env, _sv2);
-        
+
     typedef void (*FuncToCall)(void*,bool p1, bool p2, Il2CppObject* p3, const void* method);
     ((FuncToCall)methodPointer)(self, p0, p1, p2,  method);
     return true;
@@ -29242,13 +32608,13 @@ bool w_vtbbu4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer m
         
     // LuaValToCSVal P any
     bool p0 = converter::Converter<bool>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     bool p1 = converter::Converter<bool>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     uint32_t p2 = converter::Converter<uint32_t>::toCpp(apis, env, _sv2);
-        
+
     typedef void (*FuncToCall)(void*,bool p1, bool p2, uint32_t p3, const void* method);
     ((FuncToCall)methodPointer)(self, p0, p1, p2,  method);
     return true;
@@ -29272,10 +32638,10 @@ bool w_vtbi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
         
     // LuaValToCSVal P any
     bool p0 = converter::Converter<bool>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-        
+
     typedef void (*FuncToCall)(void*,bool p1, int32_t p2, const void* method);
     ((FuncToCall)methodPointer)(self, p0, p1,  method);
     return true;
@@ -29301,10 +32667,10 @@ bool w_vtbi4Vi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer
         
     // LuaValToCSVal P any
     bool p0 = converter::Converter<bool>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-             
+     
     // LuaValToCSVal primitive params
     Il2CppArray* p2 = Params<int32_t>::PackPrimitive(apis, env, info, TIp2, lua_args_len, 2);
 
@@ -29334,13 +32700,13 @@ bool w_vtbi4o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer m
         
     // LuaValToCSVal P any
     bool p0 = converter::Converter<bool>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p2 = LuaValueToCSRef(apis, TIp2, env, _sv2);
-        
+
     typedef void (*FuncToCall)(void*,bool p1, int32_t p2, Il2CppObject* p3, const void* method);
     ((FuncToCall)methodPointer)(self, p0, p1, p2,  method);
     return true;
@@ -29364,10 +32730,10 @@ bool w_vtbo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     bool p0 = converter::Converter<bool>::toCpp(apis, env, _sv0);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-        
+
     typedef void (*FuncToCall)(void*,bool p1, Il2CppObject* p2, const void* method);
     ((FuncToCall)methodPointer)(self, p0, p1,  method);
     return true;
@@ -29391,10 +32757,10 @@ bool w_vtbr4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
         
     // LuaValToCSVal P any
     bool p0 = converter::Converter<bool>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     float p1 = converter::Converter<float>::toCpp(apis, env, _sv1);
-        
+
     typedef void (*FuncToCall)(void*,bool p1, float p2, const void* method);
     ((FuncToCall)methodPointer)(self, p0, p1,  method);
     return true;
@@ -29418,7 +32784,7 @@ bool w_vtbs(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     bool p0 = converter::Converter<bool>::toCpp(apis, env, _sv0);
-            // LuaValToCSVal s
+    // LuaValToCSVal s
     Il2CppString* p1 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv1);
     typedef void (*FuncToCall)(void*,bool p1, Il2CppString* p2, const void* method);
     ((FuncToCall)methodPointer)(self, p0, p1,  method);
@@ -29446,10 +32812,10 @@ bool w_vtbu4Di4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer
         
     // LuaValToCSVal P any
     bool p0 = converter::Converter<bool>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     uint32_t p1 = converter::Converter<uint32_t>::toCpp(apis, env, _sv1);
-         // LuaValToCSVal primitive with default
+ // LuaValToCSVal primitive with default
     int32_t p2 = OptionalParameter<int32_t>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 2);
             
     typedef void (*FuncToCall)(void*,bool p1, uint32_t p2, int32_t p3, const void* method);
@@ -29481,16 +32847,16 @@ bool w_vtbu4i4u4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointe
         
     // LuaValToCSVal P any
     bool p0 = converter::Converter<bool>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     uint32_t p1 = converter::Converter<uint32_t>::toCpp(apis, env, _sv1);
-                
+        
     // LuaValToCSVal P any
     int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-                
+        
     // LuaValToCSVal P any
     uint32_t p3 = converter::Converter<uint32_t>::toCpp(apis, env, _sv3);
-        
+
     typedef void (*FuncToCall)(void*,bool p1, uint32_t p2, int32_t p3, uint32_t p4, const void* method);
     ((FuncToCall)methodPointer)(self, p0, p1, p2, p3,  method);
     return true;
@@ -29511,7 +32877,7 @@ bool w_vtc(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer meth
         
     // LuaValToCSVal P any
     Il2CppChar p0 = converter::Converter<Il2CppChar>::toCpp(apis, env, _sv0);
-        
+
     typedef void (*FuncToCall)(void*,Il2CppChar p1, const void* method);
     ((FuncToCall)methodPointer)(self, p0,  method);
     return true;
@@ -29535,10 +32901,10 @@ bool w_vtci4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
         
     // LuaValToCSVal P any
     Il2CppChar p0 = converter::Converter<Il2CppChar>::toCpp(apis, env, _sv0);
-                
+        
     // LuaValToCSVal P any
     int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-        
+
     typedef void (*FuncToCall)(void*,Il2CppChar p1, int32_t p2, const void* method);
     ((FuncToCall)methodPointer)(self, p0, p1,  method);
     return true;
@@ -29559,7 +32925,7 @@ bool w_vti4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-        
+
     typedef void (*FuncToCall)(void*,int32_t p1, const void* method);
     ((FuncToCall)methodPointer)(self, p0,  method);
     return true;
@@ -29583,7 +32949,7 @@ bool w_vti4Db(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer m
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-         // LuaValToCSVal primitive with default
+ // LuaValToCSVal primitive with default
     bool p1 = OptionalParameter<bool>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 1);
             
     typedef void (*FuncToCall)(void*,int32_t p1, bool p2, const void* method);
@@ -29612,7 +32978,7 @@ bool w_vti4DbDb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-         // LuaValToCSVal primitive with default
+ // LuaValToCSVal primitive with default
     bool p1 = OptionalParameter<bool>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 1);
              // LuaValToCSVal primitive with default
     bool p2 = OptionalParameter<bool>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 2);
@@ -29643,7 +33009,7 @@ bool w_vti4DbDo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-         // LuaValToCSVal primitive with default
+ // LuaValToCSVal primitive with default
     bool p1 = OptionalParameter<bool>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 1);
                 // LuaValToCSVal ref with default
     Il2CppObject* p2 = OptionalParameter<Il2CppObject*>::GetRefType(apis, env, info, method, wrapData, lua_args_len, 2, TIp2);
@@ -29670,7 +33036,7 @@ bool w_vti4Di4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer 
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-         // LuaValToCSVal primitive with default
+ // LuaValToCSVal primitive with default
     int32_t p1 = OptionalParameter<int32_t>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 1);
             
     typedef void (*FuncToCall)(void*,int32_t p1, int32_t p2, const void* method);
@@ -29696,7 +33062,7 @@ bool w_vti4Dr4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer 
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-         // LuaValToCSVal primitive with default
+ // LuaValToCSVal primitive with default
     float p1 = OptionalParameter<float>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 1);
             
     typedef void (*FuncToCall)(void*,int32_t p1, float p2, const void* method);
@@ -29722,7 +33088,7 @@ bool w_vti4Ds(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer m
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-            // LuaValToCSVal string with default
+    // LuaValToCSVal string with default
     Il2CppString* p1 = OptionalParameter<Il2CppString*>::GetString(apis, env, info, method, wrapData, lua_args_len, 1);
     typedef void (*FuncToCall)(void*,int32_t p1, Il2CppString* p2, const void* method);
     ((FuncToCall)methodPointer)(self, p0, p1,  method);
@@ -29747,7 +33113,7 @@ bool w_vti4Du4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer 
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-         // LuaValToCSVal primitive with default
+ // LuaValToCSVal primitive with default
     uint32_t p1 = OptionalParameter<uint32_t>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 1);
             
     typedef void (*FuncToCall)(void*,int32_t p1, uint32_t p2, const void* method);
@@ -29774,15 +33140,60 @@ bool w_vti4OVi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-            
+    
     // LuaValToCSVal o/O
     Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-             
+     
     // LuaValToCSVal primitive params
     Il2CppArray* p2 = Params<int32_t>::PackPrimitive(apis, env, info, TIp2, lua_args_len, 2);
 
     typedef void (*FuncToCall)(void*,int32_t p1, Il2CppObject* p2, Il2CppArray* p3, const void* method);
     ((FuncToCall)methodPointer)(self, p0, p1, p2,  method);
+    return true;
+}
+// Void TriggerSubEmitter(Int32, Particle ByRef) declare in UnityEngine.ParticleSystem
+bool w_vti4PS_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_i4u1u1u1u1_u4u4r4r4i4r4r4u4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_vti4PS_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_i4u1u1u1u1_u4u4r4r4i4r4r4u4_");
+    AutoValueScope value_scope(apis, env);
+    auto TIp1 = wrapData->TypeInfos[0];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    int _sv1 = apis->get_arg(info, 1);
+    if (checkLuaArgument) {
+        if (lua_args_len != 2) 
+            return false;
+
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv0))
+            return false;
+        if (!apis->is_object(env, _sv1)) return false;        
+    }
+        
+    // LuaValToCSVal P any
+    int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
+     
+    // LuaValToCSVal Pstruct
+    S_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_i4u1u1u1u1_u4u4r4r4i4r4r4u4_* p1 = DataTransfer::GetPointer<S_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_i4u1u1u1u1_u4u4r4r4i4r4r4u4_>(apis, env, apis->unboxing(env, _sv1)); // valuetype ref
+    S_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_i4u1u1u1u1_u4u4r4r4i4r4r4u4_ up1;
+    if (!p1) {
+        memset(&up1, 0, sizeof(p1));
+        p1 = &up1;
+    }
+        
+    typedef void (*FuncToCall)(void*,int32_t p1, struct S_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_i4u1u1u1u1_u4u4r4r4i4r4r4u4_* p2, const void* method);
+    ((FuncToCall)methodPointer)(self, p0, p1,  method);                
+    int ret1;
+    if (p1 == &up1)
+    {
+        ret1 = DataTransfer::CopyValueType(apis, env, *p1, TIp1);    
+        apis->update_boxed_value(env, _sv1, ret1);
+    }
+    else
+    {
+        ret1 = apis->native_object_to_value(env, TIp1, p1, false);
+    }
+
+	apis->add_return(info, ret1);
+    value_scope.reserve = apis->get_return_num(info);
     return true;
 }
 // Void CopyTo(Int32, System.Span`1[System.Char], Int32) declare in System.Text.StringBuilder
@@ -29807,14 +33218,139 @@ bool w_vti4S_S_p_i4_i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethod
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-             // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_S_p_i4_* pp1 = DataTransfer::GetPointer<S_S_p_i4_>(apis, env, _sv1);
     S_S_p_i4_ p1 = pp1 ? *pp1 : S_S_p_i4_ {};
                 
     // LuaValToCSVal P any
     int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-        
+
     typedef void (*FuncToCall)(void*,int32_t p1, struct S_S_p_i4_ p2, int32_t p3, const void* method);
+    ((FuncToCall)methodPointer)(self, p0, p1, p2,  method);
+    return true;
+}
+// Void GetTemporaryRT(Int32, UnityEngine.RenderTextureDescriptor) declare in UnityEngine.Rendering.CommandBuffer
+bool w_vti4S_i4i4i4i4i4i4i4i4i4i4i4i4i4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_vti4S_i4i4i4i4i4i4i4i4i4i4i4i4i4_");
+    auto TIp1 = wrapData->TypeInfos[0];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    int _sv1 = apis->get_arg(info, 1);
+    if (checkLuaArgument) {
+        if (lua_args_len != 2) 
+            return false;
+
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv0))
+            return false;
+        if (!DataTransfer::IsAssignable(apis, env, _sv1, TIp1, true))
+            return false;        
+    }
+        
+    // LuaValToCSVal P any
+    int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
+     
+    // LuaValToCSVal struct
+    S_i4i4i4i4i4i4i4i4i4i4i4i4i4_* pp1 = DataTransfer::GetPointer<S_i4i4i4i4i4i4i4i4i4i4i4i4i4_>(apis, env, _sv1);
+    S_i4i4i4i4i4i4i4i4i4i4i4i4i4_ p1 = pp1 ? *pp1 : S_i4i4i4i4i4i4i4i4i4i4i4i4i4_ {};
+        
+    typedef void (*FuncToCall)(void*,int32_t p1, struct S_i4i4i4i4i4i4i4i4i4i4i4i4i4_ p2, const void* method);
+    ((FuncToCall)methodPointer)(self, p0, p1,  method);
+    return true;
+}
+// Void GetTemporaryRT(Int32, UnityEngine.RenderTextureDescriptor, UnityEngine.FilterMode) declare in UnityEngine.Rendering.CommandBuffer
+bool w_vti4S_i4i4i4i4i4i4i4i4i4i4i4i4i4_i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_vti4S_i4i4i4i4i4i4i4i4i4i4i4i4i4_i4");
+    auto TIp1 = wrapData->TypeInfos[0];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    int _sv1 = apis->get_arg(info, 1);
+    int _sv2 = apis->get_arg(info, 2);
+    if (checkLuaArgument) {
+        if (lua_args_len != 3) 
+            return false;
+
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv0))
+            return false;
+        if (!DataTransfer::IsAssignable(apis, env, _sv1, TIp1, true))
+            return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv2))
+            return false;        
+    }
+        
+    // LuaValToCSVal P any
+    int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
+     
+    // LuaValToCSVal struct
+    S_i4i4i4i4i4i4i4i4i4i4i4i4i4_* pp1 = DataTransfer::GetPointer<S_i4i4i4i4i4i4i4i4i4i4i4i4i4_>(apis, env, _sv1);
+    S_i4i4i4i4i4i4i4i4i4i4i4i4i4_ p1 = pp1 ? *pp1 : S_i4i4i4i4i4i4i4i4i4i4i4i4i4_ {};
+                
+    // LuaValToCSVal P any
+    int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
+
+    typedef void (*FuncToCall)(void*,int32_t p1, struct S_i4i4i4i4i4i4i4i4i4i4i4i4i4_ p2, int32_t p3, const void* method);
+    ((FuncToCall)methodPointer)(self, p0, p1, p2,  method);
+    return true;
+}
+// Void SetRandomWriteTarget(Int32, UnityEngine.Rendering.RenderTargetIdentifier) declare in UnityEngine.Rendering.CommandBuffer
+bool w_vti4S_i4i4i4pi4i4i4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_vti4S_i4i4i4pi4i4i4_");
+    auto TIp1 = wrapData->TypeInfos[0];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    int _sv1 = apis->get_arg(info, 1);
+    if (checkLuaArgument) {
+        if (lua_args_len != 2) 
+            return false;
+
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv0))
+            return false;
+        if (!DataTransfer::IsAssignable(apis, env, _sv1, TIp1, true))
+            return false;        
+    }
+        
+    // LuaValToCSVal P any
+    int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
+     
+    // LuaValToCSVal struct
+    S_i4i4i4pi4i4i4_* pp1 = DataTransfer::GetPointer<S_i4i4i4pi4i4i4_>(apis, env, _sv1);
+    S_i4i4i4pi4i4i4_ p1 = pp1 ? *pp1 : S_i4i4i4pi4i4i4_ {};
+        
+    typedef void (*FuncToCall)(void*,int32_t p1, struct S_i4i4i4pi4i4i4_ p2, const void* method);
+    ((FuncToCall)methodPointer)(self, p0, p1,  method);
+    return true;
+}
+// Void SetGlobalTexture(Int32, UnityEngine.Rendering.RenderTargetIdentifier, UnityEngine.Rendering.RenderTextureSubElement) declare in UnityEngine.Rendering.CommandBuffer
+bool w_vti4S_i4i4i4pi4i4i4_i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_vti4S_i4i4i4pi4i4i4_i4");
+    auto TIp1 = wrapData->TypeInfos[0];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    int _sv1 = apis->get_arg(info, 1);
+    int _sv2 = apis->get_arg(info, 2);
+    if (checkLuaArgument) {
+        if (lua_args_len != 3) 
+            return false;
+
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv0))
+            return false;
+        if (!DataTransfer::IsAssignable(apis, env, _sv1, TIp1, true))
+            return false;
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv2))
+            return false;        
+    }
+        
+    // LuaValToCSVal P any
+    int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
+     
+    // LuaValToCSVal struct
+    S_i4i4i4pi4i4i4_* pp1 = DataTransfer::GetPointer<S_i4i4i4pi4i4i4_>(apis, env, _sv1);
+    S_i4i4i4pi4i4i4_ p1 = pp1 ? *pp1 : S_i4i4i4pi4i4i4_ {};
+                
+    // LuaValToCSVal P any
+    int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
+
+    typedef void (*FuncToCall)(void*,int32_t p1, struct S_i4i4i4pi4i4i4_ p2, int32_t p3, const void* method);
     ((FuncToCall)methodPointer)(self, p0, p1, p2,  method);
     return true;
 }
@@ -29837,7 +33373,8 @@ bool w_vti4S_r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPoin
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-             // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_r4r4_* pp1 = DataTransfer::GetPointer<S_r4r4_>(apis, env, _sv1);
     S_r4r4_ p1 = pp1 ? *pp1 : S_r4r4_ {};
         
@@ -29864,7 +33401,8 @@ bool w_vti4S_r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPo
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-             // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_r4r4r4_* pp1 = DataTransfer::GetPointer<S_r4r4r4_>(apis, env, _sv1);
     S_r4r4r4_ p1 = pp1 ? *pp1 : S_r4r4r4_ {};
         
@@ -29891,7 +33429,8 @@ bool w_vti4S_r4r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethod
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-             // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_r4r4r4r4_* pp1 = DataTransfer::GetPointer<S_r4r4r4r4_>(apis, env, _sv1);
     S_r4r4r4r4_ p1 = pp1 ? *pp1 : S_r4r4r4r4_ {};
         
@@ -29924,17 +33463,58 @@ bool w_vti4S_r4r4r4r4_r4r4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMe
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-             // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_r4r4r4r4_* pp1 = DataTransfer::GetPointer<S_r4r4r4r4_>(apis, env, _sv1);
     S_r4r4r4r4_ p1 = pp1 ? *pp1 : S_r4r4r4r4_ {};
                 
     // LuaValToCSVal P any
     float p2 = converter::Converter<float>::toCpp(apis, env, _sv2);
-                
+        
     // LuaValToCSVal P any
     float p3 = converter::Converter<float>::toCpp(apis, env, _sv3);
-        
+
     typedef void (*FuncToCall)(void*,int32_t p1, struct S_r4r4r4r4_ p2, float p3, float p4, const void* method);
+    ((FuncToCall)methodPointer)(self, p0, p1, p2, p3,  method);
+    return true;
+}
+// Void ClearRenderTarget(UnityEngine.Rendering.RTClearFlags, UnityEngine.Color, Single, UInt32) declare in UnityEngine.Rendering.CommandBuffer
+bool w_vti4S_r4r4r4r4_r4u4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_vti4S_r4r4r4r4_r4u4");
+    auto TIp1 = wrapData->TypeInfos[0];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    int _sv1 = apis->get_arg(info, 1);
+    int _sv2 = apis->get_arg(info, 2);
+    int _sv3 = apis->get_arg(info, 3);
+    if (checkLuaArgument) {
+        if (lua_args_len != 4) 
+            return false;
+
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv0))
+            return false;
+        if (!DataTransfer::IsAssignable(apis, env, _sv1, TIp1, true))
+            return false;
+        if (!converter::Converter<float>::accept(apis, env, _sv2))
+            return false;
+        if (!converter::Converter<uint32_t>::accept(apis, env, _sv3))
+            return false;        
+    }
+        
+    // LuaValToCSVal P any
+    int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
+     
+    // LuaValToCSVal struct
+    S_r4r4r4r4_* pp1 = DataTransfer::GetPointer<S_r4r4r4r4_>(apis, env, _sv1);
+    S_r4r4r4r4_ p1 = pp1 ? *pp1 : S_r4r4r4r4_ {};
+                
+    // LuaValToCSVal P any
+    float p2 = converter::Converter<float>::toCpp(apis, env, _sv2);
+        
+    // LuaValToCSVal P any
+    uint32_t p3 = converter::Converter<uint32_t>::toCpp(apis, env, _sv3);
+
+    typedef void (*FuncToCall)(void*,int32_t p1, struct S_r4r4r4r4_ p2, float p3, uint32_t p4, const void* method);
     ((FuncToCall)methodPointer)(self, p0, p1, p2, p3,  method);
     return true;
 }
@@ -29957,7 +33537,8 @@ bool w_vti4S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_(struct pesapi_ffi* apis, MethodIn
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-             // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_* pp1 = DataTransfer::GetPointer<S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_>(apis, env, _sv1);
     S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_ p1 = pp1 ? *pp1 : S_r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4r4_ {};
         
@@ -29987,20 +33568,21 @@ bool w_vti4S_u4o_b(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPoin
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-             // LuaValToCSVal struct
+     
+    // LuaValToCSVal struct
     S_u4o_* pp1 = DataTransfer::GetPointer<S_u4o_>(apis, env, _sv1);
     S_u4o_ p1 = pp1 ? *pp1 : S_u4o_ {};
                 
     // LuaValToCSVal P any
     bool p2 = converter::Converter<bool>::toCpp(apis, env, _sv2);
-        
+
     typedef void (*FuncToCall)(void*,int32_t p1, struct S_u4o_ p2, bool p3, const void* method);
     ((FuncToCall)methodPointer)(self, p0, p1, p2,  method);
     return true;
 }
-// Void SetDataForCapture(Int32, stFacade) declare in Assets.Scripts.UI.CardComponent.Item.UICardItem
-bool w_vti4S_u4u4u4i4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vti4S_u4u4u4i4_");
+// Void set_Item(Int32, Assets.Scripts.GameLogic.Project8EquipPair) declare in System.Collections.Generic.List`1[Assets.Scripts.GameLogic.Project8EquipPair]
+bool w_vti4S_u4u4i4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_vti4S_u4u4i4_");
     auto TIp1 = wrapData->TypeInfos[0];
     int lua_args_len = apis->get_args_len(info);
     int _sv0 = apis->get_arg(info, 0);
@@ -30017,3746 +33599,13 @@ bool w_vti4S_u4u4u4i4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethod
         
     // LuaValToCSVal P any
     int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-             // LuaValToCSVal struct
-    S_u4u4u4i4_* pp1 = DataTransfer::GetPointer<S_u4u4u4i4_>(apis, env, _sv1);
-    S_u4u4u4i4_ p1 = pp1 ? *pp1 : S_u4u4u4i4_ {};
-        
-    typedef void (*FuncToCall)(void*,int32_t p1, struct S_u4u4u4i4_ p2, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1,  method);
-    return true;
-}
-// Void GetLordHurtNum(Int32, Int32 ByRef, Int32 ByRef) declare in Assets.Scripts.GameLogic.PlayerLordComponent
-bool w_vti4Ti4Ti4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vti4Ti4Ti4");
-    AutoValueScope value_scope(apis, env);
-    auto TIp1 = wrapData->TypeInfos[0];
-    auto TIp2 = wrapData->TypeInfos[1];
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    int _sv2 = apis->get_arg(info, 2);
-    if (checkLuaArgument) {
-        if (lua_args_len < 2 || lua_args_len > 3) 
-            return false;
-
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv0))
-            return false;        
-    }
-        
-    // LuaValToCSVal P any
-    int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-             
-    // LuaValToCSVal P primitive
-    int32_t up1 = 0;
-    if (1 < lua_args_len)
-        up1 = converter::Converter<std::reference_wrapper<int32_t>>::toCpp(apis, env, _sv1);
-    int32_t* p1 = &up1;
      
-    // LuaValToCSVal P primitive
-    int32_t up2 = 0;
-    if (2 < lua_args_len)
-        up2 = converter::Converter<std::reference_wrapper<int32_t>>::toCpp(apis, env, _sv2);
-    int32_t* p2 = &up2;
-
-    typedef void (*FuncToCall)(void*,int32_t p1, void* p2, void* p3, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1, p2,  method);
-	int ret1 = converter::Converter<int32_t>::toScript(apis, env, *p1);
-	int ret2 = converter::Converter<int32_t>::toScript(apis, env, *p2);
-	apis->add_return(info, ret1);
-	apis->add_return(info, ret2);
-    value_scope.reserve = apis->get_return_num(info);
-    return true;
-}
-// Void CheckTriggerType(Assets.Scripts.GameSystem.Project8NewbieTriggerType, Int32[]) declare in Assets.Scripts.GameSystem.Project8UINewbie
-bool w_vti4Vi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vti4Vi4");
-    auto TIp1 = wrapData->TypeInfos[0];
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    if (checkLuaArgument) {
-        if (lua_args_len < 1 || lua_args_len > 2) 
-            return false;
-
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv0))
-            return false;        if(lua_args_len > 1 && !converter::Converter<int32_t>::accept(apis, env, _sv1))
-            return false;        
-    }
+    // LuaValToCSVal struct
+    S_u4u4i4_* pp1 = DataTransfer::GetPointer<S_u4u4i4_>(apis, env, _sv1);
+    S_u4u4i4_ p1 = pp1 ? *pp1 : S_u4u4i4_ {};
         
-    // LuaValToCSVal P any
-    int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-             
-    // LuaValToCSVal primitive params
-    Il2CppArray* p1 = Params<int32_t>::PackPrimitive(apis, env, info, TIp1, lua_args_len, 1);
-
-    typedef void (*FuncToCall)(void*,int32_t p1, Il2CppArray* p2, const void* method);
+    typedef void (*FuncToCall)(void*,int32_t p1, struct S_u4u4i4_ p2, const void* method);
     ((FuncToCall)methodPointer)(self, p0, p1,  method);
-    return true;
-}
-// Void SetStateMask(Assets.Scripts.UI.CardComponent.Item.HandCardStateMask, Boolean) declare in Assets.Scripts.UI.CardComponent.Item.UICardItem
-bool w_vti4b(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vti4b");
-
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    if (checkLuaArgument) {
-        if (lua_args_len != 2) 
-            return false;
-
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv0))
-            return false;
-        if (!converter::Converter<bool>::accept(apis, env, _sv1))
-            return false;        
-    }
-        
-    // LuaValToCSVal P any
-    int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
-    // LuaValToCSVal P any
-    bool p1 = converter::Converter<bool>::toCpp(apis, env, _sv1);
-        
-    typedef void (*FuncToCall)(void*,int32_t p1, bool p2, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1,  method);
-    return true;
-}
-// Void PlayHorseRaceLampByTimes(Int32, Boolean, System.Action`1[System.Int32]) declare in ShrinkText
-bool w_vti4bo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vti4bo");
-    auto TIp2 = wrapData->TypeInfos[0];
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    int _sv2 = apis->get_arg(info, 2);
-    if (checkLuaArgument) {
-        if (lua_args_len != 3) 
-            return false;
-
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv0))
-            return false;
-        if (!converter::Converter<bool>::accept(apis, env, _sv1))
-            return false;
-        if (!DataTransfer::IsAssignable(apis, env, _sv2, TIp2, false))
-            return false;        
-    }
-        
-    // LuaValToCSVal P any
-    int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
-    // LuaValToCSVal P any
-    bool p1 = converter::Converter<bool>::toCpp(apis, env, _sv1);
-            
-    // LuaValToCSVal o/O
-    Il2CppObject* p2 = LuaValueToCSRef(apis, TIp2, env, _sv2);
-        
-    typedef void (*FuncToCall)(void*,int32_t p1, bool p2, Il2CppObject* p3, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1, p2,  method);
-    return true;
-}
-// Void set_Chars(Int32, Char) declare in System.Text.StringBuilder
-bool w_vti4c(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vti4c");
-
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    if (checkLuaArgument) {
-        if (lua_args_len != 2) 
-            return false;
-
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv0))
-            return false;
-        if (!converter::Converter<Il2CppChar>::accept(apis, env, _sv1))
-            return false;        
-    }
-        
-    // LuaValToCSVal P any
-    int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
-    // LuaValToCSVal P any
-    Il2CppChar p1 = converter::Converter<Il2CppChar>::toCpp(apis, env, _sv1);
-        
-    typedef void (*FuncToCall)(void*,int32_t p1, Il2CppChar p2, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1,  method);
-    return true;
-}
-// Void ChangeRoundNum(Int32, Int32) declare in Assets.Scripts.GameLogic.Project8RoundStateFlow
-bool w_vti4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vti4i4");
-
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    if (checkLuaArgument) {
-        if (lua_args_len != 2) 
-            return false;
-
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv0))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv1))
-            return false;        
-    }
-        
-    // LuaValToCSVal P any
-    int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
-    // LuaValToCSVal P any
-    int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-        
-    typedef void (*FuncToCall)(void*,int32_t p1, int32_t p2, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1,  method);
-    return true;
-}
-// Void OnHpChanged(Int32, Int32, Boolean) declare in Assets.Scripts.GameLogic.Hud3D
-bool w_vti4i4Db(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vti4i4Db");
-
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    int _sv2 = apis->get_arg(info, 2);
-    if (true) {
-        if (lua_args_len < 2 || lua_args_len > 3) 
-            return false;
-
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv0))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv1))
-            return false;
-        if (lua_args_len > 2 && !converter::Converter<bool>::accept(apis, env, _sv2))
-            return false;        
-    }
-        
-    // LuaValToCSVal P any
-    int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
-    // LuaValToCSVal P any
-    int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-         // LuaValToCSVal primitive with default
-    bool p2 = OptionalParameter<bool>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 2);
-            
-    typedef void (*FuncToCall)(void*,int32_t p1, int32_t p2, bool p3, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1, p2,  method);
-    return true;
-}
-// Void CurrentResolutionChangeAction(Int32, Int32, Assets.Scripts.Framework.UI.SafeAreaBoundBox, UnityEngine.ScreenOrientation) declare in Assets.Scripts.Framework.UI.UIPrefabLayerService
-bool w_vti4i4S_i4i4i4i4_i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vti4i4S_i4i4i4i4_i4");
-    auto TIp2 = wrapData->TypeInfos[0];
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    int _sv2 = apis->get_arg(info, 2);
-    int _sv3 = apis->get_arg(info, 3);
-    if (checkLuaArgument) {
-        if (lua_args_len != 4) 
-            return false;
-
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv0))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv1))
-            return false;
-        if (!DataTransfer::IsAssignable(apis, env, _sv2, TIp2, true))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv3))
-            return false;        
-    }
-        
-    // LuaValToCSVal P any
-    int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
-    // LuaValToCSVal P any
-    int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-             // LuaValToCSVal struct
-    S_i4i4i4i4_* pp2 = DataTransfer::GetPointer<S_i4i4i4i4_>(apis, env, _sv2);
-    S_i4i4i4i4_ p2 = pp2 ? *pp2 : S_i4i4i4i4_ {};
-                
-    // LuaValToCSVal P any
-    int32_t p3 = converter::Converter<int32_t>::toCpp(apis, env, _sv3);
-        
-    typedef void (*FuncToCall)(void*,int32_t p1, int32_t p2, struct S_i4i4i4i4_ p3, int32_t p4, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1, p2, p3,  method);
-    return true;
-}
-// Void ChangeOffsetVector(Assets.Scripts.UI.CardComponent.Item.OffsetType, OffsetReason, UnityEngine.Vector3) declare in Assets.Scripts.UI.CardComponent.Item.UICardItemShowData
-bool w_vti4i4S_r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vti4i4S_r4r4r4_");
-    auto TIp2 = wrapData->TypeInfos[0];
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    int _sv2 = apis->get_arg(info, 2);
-    if (checkLuaArgument) {
-        if (lua_args_len != 3) 
-            return false;
-
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv0))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv1))
-            return false;
-        if (!DataTransfer::IsAssignable(apis, env, _sv2, TIp2, true))
-            return false;        
-    }
-        
-    // LuaValToCSVal P any
-    int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
-    // LuaValToCSVal P any
-    int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-             // LuaValToCSVal struct
-    S_r4r4r4_* pp2 = DataTransfer::GetPointer<S_r4r4r4_>(apis, env, _sv2);
-    S_r4r4r4_ p2 = pp2 ? *pp2 : S_r4r4r4_ {};
-        
-    typedef void (*FuncToCall)(void*,int32_t p1, int32_t p2, struct S_r4r4r4_ p3, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1, p2,  method);
-    return true;
-}
-// Void CreateRendererResource(Int32, Int32, Boolean) declare in CriWare.CriMana.Player
-bool w_vti4i4b(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vti4i4b");
-
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    int _sv2 = apis->get_arg(info, 2);
-    if (checkLuaArgument) {
-        if (lua_args_len != 3) 
-            return false;
-
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv0))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv1))
-            return false;
-        if (!converter::Converter<bool>::accept(apis, env, _sv2))
-            return false;        
-    }
-        
-    // LuaValToCSVal P any
-    int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
-    // LuaValToCSVal P any
-    int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-                
-    // LuaValToCSVal P any
-    bool p2 = converter::Converter<bool>::toCpp(apis, env, _sv2);
-        
-    typedef void (*FuncToCall)(void*,int32_t p1, int32_t p2, bool p3, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1, p2,  method);
-    return true;
-}
-// Void RemoveFlagsFromBattle(Int32, Int32, Boolean, System.Object, OSProto.GridDisplayType[]) declare in Assets.Scripts.GameLogic.Project8BattleGrid
-bool w_vti4i4bOVi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vti4i4bOVi4");
-    auto TIp3 = wrapData->TypeInfos[0];
-    auto TIp4 = wrapData->TypeInfos[1];
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    int _sv2 = apis->get_arg(info, 2);
-    int _sv3 = apis->get_arg(info, 3);
-    int _sv4 = apis->get_arg(info, 4);
-    if (checkLuaArgument) {
-        if (lua_args_len < 4 || lua_args_len > 5) 
-            return false;
-
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv0))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv1))
-            return false;
-        if (!converter::Converter<bool>::accept(apis, env, _sv2))
-            return false;        if(lua_args_len > 4 && !converter::Converter<int32_t>::accept(apis, env, _sv4))
-            return false;        
-    }
-        
-    // LuaValToCSVal P any
-    int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
-    // LuaValToCSVal P any
-    int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-                
-    // LuaValToCSVal P any
-    bool p2 = converter::Converter<bool>::toCpp(apis, env, _sv2);
-            
-    // LuaValToCSVal o/O
-    Il2CppObject* p3 = LuaValueToCSRef(apis, TIp3, env, _sv3);
-             
-    // LuaValToCSVal primitive params
-    Il2CppArray* p4 = Params<int32_t>::PackPrimitive(apis, env, info, TIp4, lua_args_len, 4);
-
-    typedef void (*FuncToCall)(void*,int32_t p1, int32_t p2, bool p3, Il2CppObject* p4, Il2CppArray* p5, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1, p2, p3, p4,  method);
-    return true;
-}
-// Void AddFlagsToBattle(Int32, Int32, Boolean, System.Object, Boolean, OSProto.GridDisplayType[]) declare in Assets.Scripts.GameLogic.Project8BattleGrid
-bool w_vti4i4bObVi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vti4i4bObVi4");
-    auto TIp3 = wrapData->TypeInfos[0];
-    auto TIp5 = wrapData->TypeInfos[1];
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    int _sv2 = apis->get_arg(info, 2);
-    int _sv3 = apis->get_arg(info, 3);
-    int _sv4 = apis->get_arg(info, 4);
-    int _sv5 = apis->get_arg(info, 5);
-    if (checkLuaArgument) {
-        if (lua_args_len < 5 || lua_args_len > 6) 
-            return false;
-
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv0))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv1))
-            return false;
-        if (!converter::Converter<bool>::accept(apis, env, _sv2))
-            return false;
-        if (!converter::Converter<bool>::accept(apis, env, _sv4))
-            return false;        if(lua_args_len > 5 && !converter::Converter<int32_t>::accept(apis, env, _sv5))
-            return false;        
-    }
-        
-    // LuaValToCSVal P any
-    int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
-    // LuaValToCSVal P any
-    int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-                
-    // LuaValToCSVal P any
-    bool p2 = converter::Converter<bool>::toCpp(apis, env, _sv2);
-            
-    // LuaValToCSVal o/O
-    Il2CppObject* p3 = LuaValueToCSRef(apis, TIp3, env, _sv3);
-                
-    // LuaValToCSVal P any
-    bool p4 = converter::Converter<bool>::toCpp(apis, env, _sv4);
-             
-    // LuaValToCSVal primitive params
-    Il2CppArray* p5 = Params<int32_t>::PackPrimitive(apis, env, info, TIp5, lua_args_len, 5);
-
-    typedef void (*FuncToCall)(void*,int32_t p1, int32_t p2, bool p3, Il2CppObject* p4, bool p5, Il2CppArray* p6, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1, p2, p3, p4, p5,  method);
-    return true;
-}
-// Void GetFlagsFromBattle(Int32, Int32, Boolean, System.Collections.Generic.ICollection`1[OSProto.GridDisplayType]) declare in Assets.Scripts.GameLogic.Project8BattleGrid
-bool w_vti4i4bo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vti4i4bo");
-    auto TIp3 = wrapData->TypeInfos[0];
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    int _sv2 = apis->get_arg(info, 2);
-    int _sv3 = apis->get_arg(info, 3);
-    if (checkLuaArgument) {
-        if (lua_args_len != 4) 
-            return false;
-
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv0))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv1))
-            return false;
-        if (!converter::Converter<bool>::accept(apis, env, _sv2))
-            return false;
-        if (!DataTransfer::IsAssignable(apis, env, _sv3, TIp3, false))
-            return false;        
-    }
-        
-    // LuaValToCSVal P any
-    int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
-    // LuaValToCSVal P any
-    int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-                
-    // LuaValToCSVal P any
-    bool p2 = converter::Converter<bool>::toCpp(apis, env, _sv2);
-            
-    // LuaValToCSVal o/O
-    Il2CppObject* p3 = LuaValueToCSRef(apis, TIp3, env, _sv3);
-        
-    typedef void (*FuncToCall)(void*,int32_t p1, int32_t p2, bool p3, Il2CppObject* p4, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1, p2, p3,  method);
-    return true;
-}
-// Void OnPartChange(Protobuf.PartOperate, Int32, ResData.ActorAbilitySymmetryType) declare in BindableDict`2[ResData.ActorAbilitySymmetryType,System.Int32]
-bool w_vti4i4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vti4i4i4");
-
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    int _sv2 = apis->get_arg(info, 2);
-    if (checkLuaArgument) {
-        if (lua_args_len != 3) 
-            return false;
-
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv0))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv1))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv2))
-            return false;        
-    }
-        
-    // LuaValToCSVal P any
-    int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
-    // LuaValToCSVal P any
-    int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-                
-    // LuaValToCSVal P any
-    int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-        
-    typedef void (*FuncToCall)(void*,int32_t p1, int32_t p2, int32_t p3, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1, p2,  method);
-    return true;
-}
-// Void SetCameraCenterLerp(Int32, Int32, Int32, Boolean, Int32, Int32) declare in Moba_Camera
-bool w_vti4i4i4DbDi4Di4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vti4i4i4DbDi4Di4");
-
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    int _sv2 = apis->get_arg(info, 2);
-    int _sv3 = apis->get_arg(info, 3);
-    int _sv4 = apis->get_arg(info, 4);
-    int _sv5 = apis->get_arg(info, 5);
-    if (true) {
-        if (lua_args_len < 3 || lua_args_len > 6) 
-            return false;
-
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv0))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv1))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv2))
-            return false;
-        if (lua_args_len > 3 && !converter::Converter<bool>::accept(apis, env, _sv3))
-            return false;
-        if (lua_args_len > 4 && !converter::Converter<int32_t>::accept(apis, env, _sv4))
-            return false;
-        if (lua_args_len > 5 && !converter::Converter<int32_t>::accept(apis, env, _sv5))
-            return false;        
-    }
-        
-    // LuaValToCSVal P any
-    int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
-    // LuaValToCSVal P any
-    int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-                
-    // LuaValToCSVal P any
-    int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-         // LuaValToCSVal primitive with default
-    bool p3 = OptionalParameter<bool>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 3);
-             // LuaValToCSVal primitive with default
-    int32_t p4 = OptionalParameter<int32_t>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 4);
-             // LuaValToCSVal primitive with default
-    int32_t p5 = OptionalParameter<int32_t>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 5);
-            
-    typedef void (*FuncToCall)(void*,int32_t p1, int32_t p2, int32_t p3, bool p4, int32_t p5, int32_t p6, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1, p2, p3, p4, p5,  method);
-    return true;
-}
-// Void SetCameraViewportLerp(Int32, Int32, Int32, VInt3 ByRef, VInt3 ByRef, Int32, Int32, System.String) declare in Moba_Camera
-bool w_vti4i4i4PS_i4i4i4_PS_i4i4i4_i4i4s(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vti4i4i4PS_i4i4i4_PS_i4i4i4_i4i4s");
-    AutoValueScope value_scope(apis, env);
-    auto TIp3 = wrapData->TypeInfos[0];
-    auto TIp4 = wrapData->TypeInfos[1];
-    auto TIp7 = wrapData->TypeInfos[2];
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    int _sv2 = apis->get_arg(info, 2);
-    int _sv3 = apis->get_arg(info, 3);
-    int _sv4 = apis->get_arg(info, 4);
-    int _sv5 = apis->get_arg(info, 5);
-    int _sv6 = apis->get_arg(info, 6);
-    int _sv7 = apis->get_arg(info, 7);
-    if (checkLuaArgument) {
-        if (lua_args_len != 8) 
-            return false;
-
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv0))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv1))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv2))
-            return false;
-        if (!apis->is_object(env, _sv3)) return false;
-        if (!apis->is_object(env, _sv4)) return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv5))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv6))
-            return false;
-        if (!converter::Converter<Il2CppString*>::accept(apis, env, _sv7))
-            return false;        
-    }
-        
-    // LuaValToCSVal P any
-    int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
-    // LuaValToCSVal P any
-    int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-                
-    // LuaValToCSVal P any
-    int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-             
-    // LuaValToCSVal Pstruct
-    S_i4i4i4_* p3 = DataTransfer::GetPointer<S_i4i4i4_>(apis, env, apis->unboxing(env, _sv3)); // valuetype ref
-    S_i4i4i4_ up3;
-    if (!p3) {
-        memset(&up3, 0, sizeof(p3));
-        p3 = &up3;
-    }
-             
-    // LuaValToCSVal Pstruct
-    S_i4i4i4_* p4 = DataTransfer::GetPointer<S_i4i4i4_>(apis, env, apis->unboxing(env, _sv4)); // valuetype ref
-    S_i4i4i4_ up4;
-    if (!p4) {
-        memset(&up4, 0, sizeof(p4));
-        p4 = &up4;
-    }
-                
-    // LuaValToCSVal P any
-    int32_t p5 = converter::Converter<int32_t>::toCpp(apis, env, _sv5);
-                
-    // LuaValToCSVal P any
-    int32_t p6 = converter::Converter<int32_t>::toCpp(apis, env, _sv6);
-            // LuaValToCSVal s
-    Il2CppString* p7 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv7);
-    typedef void (*FuncToCall)(void*,int32_t p1, int32_t p2, int32_t p3, struct S_i4i4i4_* p4, struct S_i4i4i4_* p5, int32_t p6, int32_t p7, Il2CppString* p8, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1, p2, p3, p4, p5, p6, p7,  method);                
-    int ret3;
-    if (p3 == &up3)
-    {
-        ret3 = DataTransfer::CopyValueType(apis, env, *p3, TIp3);    
-        apis->update_boxed_value(env, _sv3, ret3);
-    }
-    else
-    {
-        ret3 = apis->native_object_to_value(env, TIp3, p3, false);
-    }
-                
-    int ret4;
-    if (p4 == &up4)
-    {
-        ret4 = DataTransfer::CopyValueType(apis, env, *p4, TIp4);    
-        apis->update_boxed_value(env, _sv4, ret4);
-    }
-    else
-    {
-        ret4 = apis->native_object_to_value(env, TIp4, p4, false);
-    }
-
-	apis->add_return(info, ret3);
-	apis->add_return(info, ret4);
-    value_scope.reserve = apis->get_return_num(info);
-    return true;
-}
-// Void .ctor(Int32, Int32, Int32, Int32) declare in UnityEngine.RectOffset
-bool w_vti4i4i4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vti4i4i4i4");
-
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    int _sv2 = apis->get_arg(info, 2);
-    int _sv3 = apis->get_arg(info, 3);
-    if (checkLuaArgument) {
-        if (lua_args_len != 4) 
-            return false;
-
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv0))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv1))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv2))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv3))
-            return false;        
-    }
-        
-    // LuaValToCSVal P any
-    int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
-    // LuaValToCSVal P any
-    int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-                
-    // LuaValToCSVal P any
-    int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-                
-    // LuaValToCSVal P any
-    int32_t p3 = converter::Converter<int32_t>::toCpp(apis, env, _sv3);
-        
-    typedef void (*FuncToCall)(void*,int32_t p1, int32_t p2, int32_t p3, int32_t p4, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1, p2, p3,  method);
-    return true;
-}
-// Void UpdateRoundState(Int32, Int32, Int32, Int32, Int32) declare in Assets.Scripts.GameLogic.Project8RoundStateFlow
-bool w_vti4i4i4i4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vti4i4i4i4i4");
-
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    int _sv2 = apis->get_arg(info, 2);
-    int _sv3 = apis->get_arg(info, 3);
-    int _sv4 = apis->get_arg(info, 4);
-    if (checkLuaArgument) {
-        if (lua_args_len != 5) 
-            return false;
-
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv0))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv1))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv2))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv3))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv4))
-            return false;        
-    }
-        
-    // LuaValToCSVal P any
-    int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
-    // LuaValToCSVal P any
-    int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-                
-    // LuaValToCSVal P any
-    int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-                
-    // LuaValToCSVal P any
-    int32_t p3 = converter::Converter<int32_t>::toCpp(apis, env, _sv3);
-                
-    // LuaValToCSVal P any
-    int32_t p4 = converter::Converter<int32_t>::toCpp(apis, env, _sv4);
-        
-    typedef void (*FuncToCall)(void*,int32_t p1, int32_t p2, int32_t p3, int32_t p4, int32_t p5, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1, p2, p3, p4,  method);
-    return true;
-}
-// Void .ctor(Int32, Int32, Int32, Int32, Int32, Int32) declare in System.DateTime
-bool w_vti4i4i4i4i4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vti4i4i4i4i4i4");
-
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    int _sv2 = apis->get_arg(info, 2);
-    int _sv3 = apis->get_arg(info, 3);
-    int _sv4 = apis->get_arg(info, 4);
-    int _sv5 = apis->get_arg(info, 5);
-    if (checkLuaArgument) {
-        if (lua_args_len != 6) 
-            return false;
-
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv0))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv1))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv2))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv3))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv4))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv5))
-            return false;        
-    }
-        
-    // LuaValToCSVal P any
-    int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
-    // LuaValToCSVal P any
-    int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-                
-    // LuaValToCSVal P any
-    int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-                
-    // LuaValToCSVal P any
-    int32_t p3 = converter::Converter<int32_t>::toCpp(apis, env, _sv3);
-                
-    // LuaValToCSVal P any
-    int32_t p4 = converter::Converter<int32_t>::toCpp(apis, env, _sv4);
-                
-    // LuaValToCSVal P any
-    int32_t p5 = converter::Converter<int32_t>::toCpp(apis, env, _sv5);
-        
-    typedef void (*FuncToCall)(void*,int32_t p1, int32_t p2, int32_t p3, int32_t p4, int32_t p5, int32_t p6, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1, p2, p3, p4, p5,  method);
-    return true;
-}
-// Void .ctor(Int32, Int32, Int32, Int32, Int32, Int32, System.DateTimeKind) declare in System.DateTime
-bool w_vti4i4i4i4i4i4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vti4i4i4i4i4i4i4");
-
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    int _sv2 = apis->get_arg(info, 2);
-    int _sv3 = apis->get_arg(info, 3);
-    int _sv4 = apis->get_arg(info, 4);
-    int _sv5 = apis->get_arg(info, 5);
-    int _sv6 = apis->get_arg(info, 6);
-    if (checkLuaArgument) {
-        if (lua_args_len != 7) 
-            return false;
-
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv0))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv1))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv2))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv3))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv4))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv5))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv6))
-            return false;        
-    }
-        
-    // LuaValToCSVal P any
-    int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
-    // LuaValToCSVal P any
-    int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-                
-    // LuaValToCSVal P any
-    int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-                
-    // LuaValToCSVal P any
-    int32_t p3 = converter::Converter<int32_t>::toCpp(apis, env, _sv3);
-                
-    // LuaValToCSVal P any
-    int32_t p4 = converter::Converter<int32_t>::toCpp(apis, env, _sv4);
-                
-    // LuaValToCSVal P any
-    int32_t p5 = converter::Converter<int32_t>::toCpp(apis, env, _sv5);
-                
-    // LuaValToCSVal P any
-    int32_t p6 = converter::Converter<int32_t>::toCpp(apis, env, _sv6);
-        
-    typedef void (*FuncToCall)(void*,int32_t p1, int32_t p2, int32_t p3, int32_t p4, int32_t p5, int32_t p6, int32_t p7, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1, p2, p3, p4, p5, p6,  method);
-    return true;
-}
-// Void .ctor(Int32, Int32, Int32, Int32, Int32, Int32, Int32, System.DateTimeKind) declare in System.DateTime
-bool w_vti4i4i4i4i4i4i4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vti4i4i4i4i4i4i4i4");
-
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    int _sv2 = apis->get_arg(info, 2);
-    int _sv3 = apis->get_arg(info, 3);
-    int _sv4 = apis->get_arg(info, 4);
-    int _sv5 = apis->get_arg(info, 5);
-    int _sv6 = apis->get_arg(info, 6);
-    int _sv7 = apis->get_arg(info, 7);
-    if (checkLuaArgument) {
-        if (lua_args_len != 8) 
-            return false;
-
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv0))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv1))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv2))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv3))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv4))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv5))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv6))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv7))
-            return false;        
-    }
-        
-    // LuaValToCSVal P any
-    int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
-    // LuaValToCSVal P any
-    int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-                
-    // LuaValToCSVal P any
-    int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-                
-    // LuaValToCSVal P any
-    int32_t p3 = converter::Converter<int32_t>::toCpp(apis, env, _sv3);
-                
-    // LuaValToCSVal P any
-    int32_t p4 = converter::Converter<int32_t>::toCpp(apis, env, _sv4);
-                
-    // LuaValToCSVal P any
-    int32_t p5 = converter::Converter<int32_t>::toCpp(apis, env, _sv5);
-                
-    // LuaValToCSVal P any
-    int32_t p6 = converter::Converter<int32_t>::toCpp(apis, env, _sv6);
-                
-    // LuaValToCSVal P any
-    int32_t p7 = converter::Converter<int32_t>::toCpp(apis, env, _sv7);
-        
-    typedef void (*FuncToCall)(void*,int32_t p1, int32_t p2, int32_t p3, int32_t p4, int32_t p5, int32_t p6, int32_t p7, int32_t p8, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1, p2, p3, p4, p5, p6, p7,  method);
-    return true;
-}
-// Void .ctor(Int32, Int32, Int32, Int32, Int32, Int32, Int32, System.Globalization.Calendar) declare in System.DateTime
-bool w_vti4i4i4i4i4i4i4o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vti4i4i4i4i4i4i4o");
-    auto TIp7 = wrapData->TypeInfos[0];
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    int _sv2 = apis->get_arg(info, 2);
-    int _sv3 = apis->get_arg(info, 3);
-    int _sv4 = apis->get_arg(info, 4);
-    int _sv5 = apis->get_arg(info, 5);
-    int _sv6 = apis->get_arg(info, 6);
-    int _sv7 = apis->get_arg(info, 7);
-    if (checkLuaArgument) {
-        if (lua_args_len != 8) 
-            return false;
-
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv0))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv1))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv2))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv3))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv4))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv5))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv6))
-            return false;
-        if (!DataTransfer::IsAssignable(apis, env, _sv7, TIp7, false))
-            return false;        
-    }
-        
-    // LuaValToCSVal P any
-    int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
-    // LuaValToCSVal P any
-    int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-                
-    // LuaValToCSVal P any
-    int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-                
-    // LuaValToCSVal P any
-    int32_t p3 = converter::Converter<int32_t>::toCpp(apis, env, _sv3);
-                
-    // LuaValToCSVal P any
-    int32_t p4 = converter::Converter<int32_t>::toCpp(apis, env, _sv4);
-                
-    // LuaValToCSVal P any
-    int32_t p5 = converter::Converter<int32_t>::toCpp(apis, env, _sv5);
-                
-    // LuaValToCSVal P any
-    int32_t p6 = converter::Converter<int32_t>::toCpp(apis, env, _sv6);
-            
-    // LuaValToCSVal o/O
-    Il2CppObject* p7 = LuaValueToCSRef(apis, TIp7, env, _sv7);
-        
-    typedef void (*FuncToCall)(void*,int32_t p1, int32_t p2, int32_t p3, int32_t p4, int32_t p5, int32_t p6, int32_t p7, Il2CppObject* p8, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1, p2, p3, p4, p5, p6, p7,  method);
-    return true;
-}
-// Void .ctor(Int32, Int32, Int32, Int32, Int32, Int32, Int32, System.Globalization.Calendar, System.DateTimeKind) declare in System.DateTime
-bool w_vti4i4i4i4i4i4i4oi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vti4i4i4i4i4i4i4oi4");
-    auto TIp7 = wrapData->TypeInfos[0];
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    int _sv2 = apis->get_arg(info, 2);
-    int _sv3 = apis->get_arg(info, 3);
-    int _sv4 = apis->get_arg(info, 4);
-    int _sv5 = apis->get_arg(info, 5);
-    int _sv6 = apis->get_arg(info, 6);
-    int _sv7 = apis->get_arg(info, 7);
-    int _sv8 = apis->get_arg(info, 8);
-    if (checkLuaArgument) {
-        if (lua_args_len != 9) 
-            return false;
-
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv0))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv1))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv2))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv3))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv4))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv5))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv6))
-            return false;
-        if (!DataTransfer::IsAssignable(apis, env, _sv7, TIp7, false))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv8))
-            return false;        
-    }
-        
-    // LuaValToCSVal P any
-    int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
-    // LuaValToCSVal P any
-    int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-                
-    // LuaValToCSVal P any
-    int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-                
-    // LuaValToCSVal P any
-    int32_t p3 = converter::Converter<int32_t>::toCpp(apis, env, _sv3);
-                
-    // LuaValToCSVal P any
-    int32_t p4 = converter::Converter<int32_t>::toCpp(apis, env, _sv4);
-                
-    // LuaValToCSVal P any
-    int32_t p5 = converter::Converter<int32_t>::toCpp(apis, env, _sv5);
-                
-    // LuaValToCSVal P any
-    int32_t p6 = converter::Converter<int32_t>::toCpp(apis, env, _sv6);
-            
-    // LuaValToCSVal o/O
-    Il2CppObject* p7 = LuaValueToCSRef(apis, TIp7, env, _sv7);
-                
-    // LuaValToCSVal P any
-    int32_t p8 = converter::Converter<int32_t>::toCpp(apis, env, _sv8);
-        
-    typedef void (*FuncToCall)(void*,int32_t p1, int32_t p2, int32_t p3, int32_t p4, int32_t p5, int32_t p6, int32_t p7, Il2CppObject* p8, int32_t p9, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1, p2, p3, p4, p5, p6, p7, p8,  method);
-    return true;
-}
-// Void .ctor(Int32, Int32, Int32, Int32, Int32, Int32, System.Globalization.Calendar) declare in System.DateTime
-bool w_vti4i4i4i4i4i4o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vti4i4i4i4i4i4o");
-    auto TIp6 = wrapData->TypeInfos[0];
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    int _sv2 = apis->get_arg(info, 2);
-    int _sv3 = apis->get_arg(info, 3);
-    int _sv4 = apis->get_arg(info, 4);
-    int _sv5 = apis->get_arg(info, 5);
-    int _sv6 = apis->get_arg(info, 6);
-    if (checkLuaArgument) {
-        if (lua_args_len != 7) 
-            return false;
-
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv0))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv1))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv2))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv3))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv4))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv5))
-            return false;
-        if (!DataTransfer::IsAssignable(apis, env, _sv6, TIp6, false))
-            return false;        
-    }
-        
-    // LuaValToCSVal P any
-    int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
-    // LuaValToCSVal P any
-    int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-                
-    // LuaValToCSVal P any
-    int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-                
-    // LuaValToCSVal P any
-    int32_t p3 = converter::Converter<int32_t>::toCpp(apis, env, _sv3);
-                
-    // LuaValToCSVal P any
-    int32_t p4 = converter::Converter<int32_t>::toCpp(apis, env, _sv4);
-                
-    // LuaValToCSVal P any
-    int32_t p5 = converter::Converter<int32_t>::toCpp(apis, env, _sv5);
-            
-    // LuaValToCSVal o/O
-    Il2CppObject* p6 = LuaValueToCSRef(apis, TIp6, env, _sv6);
-        
-    typedef void (*FuncToCall)(void*,int32_t p1, int32_t p2, int32_t p3, int32_t p4, int32_t p5, int32_t p6, Il2CppObject* p7, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1, p2, p3, p4, p5, p6,  method);
-    return true;
-}
-// Void .ctor(Int32, Int32, Int32, System.Globalization.Calendar) declare in System.DateTime
-bool w_vti4i4i4o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vti4i4i4o");
-    auto TIp3 = wrapData->TypeInfos[0];
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    int _sv2 = apis->get_arg(info, 2);
-    int _sv3 = apis->get_arg(info, 3);
-    if (checkLuaArgument) {
-        if (lua_args_len != 4) 
-            return false;
-
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv0))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv1))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv2))
-            return false;
-        if (!DataTransfer::IsAssignable(apis, env, _sv3, TIp3, false))
-            return false;        
-    }
-        
-    // LuaValToCSVal P any
-    int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
-    // LuaValToCSVal P any
-    int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-                
-    // LuaValToCSVal P any
-    int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-            
-    // LuaValToCSVal o/O
-    Il2CppObject* p3 = LuaValueToCSRef(apis, TIp3, env, _sv3);
-        
-    typedef void (*FuncToCall)(void*,int32_t p1, int32_t p2, int32_t p3, Il2CppObject* p4, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1, p2, p3,  method);
-    return true;
-}
-// Void .ctor(GCloud.ConnectorErrorCode, Int32, Int32, System.String) declare in GCloud.ConnectorResult
-bool w_vti4i4i4s(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vti4i4i4s");
-    auto TIp3 = wrapData->TypeInfos[0];
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    int _sv2 = apis->get_arg(info, 2);
-    int _sv3 = apis->get_arg(info, 3);
-    if (checkLuaArgument) {
-        if (lua_args_len != 4) 
-            return false;
-
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv0))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv1))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv2))
-            return false;
-        if (!converter::Converter<Il2CppString*>::accept(apis, env, _sv3))
-            return false;        
-    }
-        
-    // LuaValToCSVal P any
-    int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
-    // LuaValToCSVal P any
-    int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-                
-    // LuaValToCSVal P any
-    int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-            // LuaValToCSVal s
-    Il2CppString* p3 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv3);
-    typedef void (*FuncToCall)(void*,int32_t p1, int32_t p2, int32_t p3, Il2CppString* p4, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1, p2, p3,  method);
-    return true;
-}
-// Void Sort(Int32, Int32, System.Collections.Generic.IComparer`1[UIEventDelegate]) declare in System.Collections.Generic.List`1[UIEventDelegate]
-bool w_vti4i4o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vti4i4o");
-    auto TIp2 = wrapData->TypeInfos[0];
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    int _sv2 = apis->get_arg(info, 2);
-    if (checkLuaArgument) {
-        if (lua_args_len != 3) 
-            return false;
-
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv0))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv1))
-            return false;
-        if (!DataTransfer::IsAssignable(apis, env, _sv2, TIp2, false))
-            return false;        
-    }
-        
-    // LuaValToCSVal P any
-    int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
-    // LuaValToCSVal P any
-    int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-            
-    // LuaValToCSVal o/O
-    Il2CppObject* p2 = LuaValueToCSRef(apis, TIp2, env, _sv2);
-        
-    typedef void (*FuncToCall)(void*,int32_t p1, int32_t p2, Il2CppObject* p3, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1, p2,  method);
-    return true;
-}
-// Void SetCameraTimeLerpParam2(Int32, Int32, Single, Single, UnityEngine.Vector3, UnityEngine.Vector3) declare in Moba_Camera
-bool w_vti4i4r4r4S_r4r4r4_S_r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vti4i4r4r4S_r4r4r4_S_r4r4r4_");
-    auto TIp4 = wrapData->TypeInfos[0];
-    auto TIp5 = wrapData->TypeInfos[1];
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    int _sv2 = apis->get_arg(info, 2);
-    int _sv3 = apis->get_arg(info, 3);
-    int _sv4 = apis->get_arg(info, 4);
-    int _sv5 = apis->get_arg(info, 5);
-    if (checkLuaArgument) {
-        if (lua_args_len != 6) 
-            return false;
-
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv0))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv1))
-            return false;
-        if (!converter::Converter<float>::accept(apis, env, _sv2))
-            return false;
-        if (!converter::Converter<float>::accept(apis, env, _sv3))
-            return false;
-        if (!DataTransfer::IsAssignable(apis, env, _sv4, TIp4, true))
-            return false;
-        if (!DataTransfer::IsAssignable(apis, env, _sv5, TIp5, true))
-            return false;        
-    }
-        
-    // LuaValToCSVal P any
-    int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
-    // LuaValToCSVal P any
-    int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-                
-    // LuaValToCSVal P any
-    float p2 = converter::Converter<float>::toCpp(apis, env, _sv2);
-                
-    // LuaValToCSVal P any
-    float p3 = converter::Converter<float>::toCpp(apis, env, _sv3);
-             // LuaValToCSVal struct
-    S_r4r4r4_* pp4 = DataTransfer::GetPointer<S_r4r4r4_>(apis, env, _sv4);
-    S_r4r4r4_ p4 = pp4 ? *pp4 : S_r4r4r4_ {};
-             // LuaValToCSVal struct
-    S_r4r4r4_* pp5 = DataTransfer::GetPointer<S_r4r4r4_>(apis, env, _sv5);
-    S_r4r4r4_ p5 = pp5 ? *pp5 : S_r4r4r4_ {};
-        
-    typedef void (*FuncToCall)(void*,int32_t p1, int32_t p2, float p3, float p4, struct S_r4r4r4_ p5, struct S_r4r4r4_ p6, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1, p2, p3, p4, p5,  method);
-    return true;
-}
-// Void SetCameraTimeLerpParam(Int32, Int32, Single, Single, Single, Single, Single, Single) declare in Moba_Camera
-bool w_vti4i4r4r4r4r4r4r4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vti4i4r4r4r4r4r4r4");
-
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    int _sv2 = apis->get_arg(info, 2);
-    int _sv3 = apis->get_arg(info, 3);
-    int _sv4 = apis->get_arg(info, 4);
-    int _sv5 = apis->get_arg(info, 5);
-    int _sv6 = apis->get_arg(info, 6);
-    int _sv7 = apis->get_arg(info, 7);
-    if (checkLuaArgument) {
-        if (lua_args_len != 8) 
-            return false;
-
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv0))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv1))
-            return false;
-        if (!converter::Converter<float>::accept(apis, env, _sv2))
-            return false;
-        if (!converter::Converter<float>::accept(apis, env, _sv3))
-            return false;
-        if (!converter::Converter<float>::accept(apis, env, _sv4))
-            return false;
-        if (!converter::Converter<float>::accept(apis, env, _sv5))
-            return false;
-        if (!converter::Converter<float>::accept(apis, env, _sv6))
-            return false;
-        if (!converter::Converter<float>::accept(apis, env, _sv7))
-            return false;        
-    }
-        
-    // LuaValToCSVal P any
-    int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
-    // LuaValToCSVal P any
-    int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-                
-    // LuaValToCSVal P any
-    float p2 = converter::Converter<float>::toCpp(apis, env, _sv2);
-                
-    // LuaValToCSVal P any
-    float p3 = converter::Converter<float>::toCpp(apis, env, _sv3);
-                
-    // LuaValToCSVal P any
-    float p4 = converter::Converter<float>::toCpp(apis, env, _sv4);
-                
-    // LuaValToCSVal P any
-    float p5 = converter::Converter<float>::toCpp(apis, env, _sv5);
-                
-    // LuaValToCSVal P any
-    float p6 = converter::Converter<float>::toCpp(apis, env, _sv6);
-                
-    // LuaValToCSVal P any
-    float p7 = converter::Converter<float>::toCpp(apis, env, _sv7);
-        
-    typedef void (*FuncToCall)(void*,int32_t p1, int32_t p2, float p3, float p4, float p5, float p6, float p7, float p8, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1, p2, p3, p4, p5, p6, p7,  method);
-    return true;
-}
-// Void .ctor(GCloud.ConnectorErrorCode, Int32, System.String) declare in GCloud.ConnectorResult
-bool w_vti4i4s(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vti4i4s");
-    auto TIp2 = wrapData->TypeInfos[0];
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    int _sv2 = apis->get_arg(info, 2);
-    if (checkLuaArgument) {
-        if (lua_args_len != 3) 
-            return false;
-
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv0))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv1))
-            return false;
-        if (!converter::Converter<Il2CppString*>::accept(apis, env, _sv2))
-            return false;        
-    }
-        
-    // LuaValToCSVal P any
-    int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
-    // LuaValToCSVal P any
-    int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-            // LuaValToCSVal s
-    Il2CppString* p2 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv2);
-    typedef void (*FuncToCall)(void*,int32_t p1, int32_t p2, Il2CppString* p3, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1, p2,  method);
-    return true;
-}
-// Void CreateNumFloatText(Int32, Assets.Scripts.GameSystem.FLOAT_TYPE, UInt32, UnityEngine.Vector3, Boolean, UInt32, Int32) declare in Assets.Scripts.GameSystem.BattleFloatTextManager
-bool w_vti4i4u4S_r4r4r4_DbDu4Di4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vti4i4u4S_r4r4r4_DbDu4Di4");
-    auto TIp3 = wrapData->TypeInfos[0];
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    int _sv2 = apis->get_arg(info, 2);
-    int _sv3 = apis->get_arg(info, 3);
-    int _sv4 = apis->get_arg(info, 4);
-    int _sv5 = apis->get_arg(info, 5);
-    int _sv6 = apis->get_arg(info, 6);
-    if (true) {
-        if (lua_args_len < 4 || lua_args_len > 7) 
-            return false;
-
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv0))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv1))
-            return false;
-        if (!converter::Converter<uint32_t>::accept(apis, env, _sv2))
-            return false;
-        if (!DataTransfer::IsAssignable(apis, env, _sv3, TIp3, true))
-            return false;
-        if (lua_args_len > 4 && !converter::Converter<bool>::accept(apis, env, _sv4))
-            return false;
-        if (lua_args_len > 5 && !converter::Converter<uint32_t>::accept(apis, env, _sv5))
-            return false;
-        if (lua_args_len > 6 && !converter::Converter<int32_t>::accept(apis, env, _sv6))
-            return false;        
-    }
-        
-    // LuaValToCSVal P any
-    int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
-    // LuaValToCSVal P any
-    int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-                
-    // LuaValToCSVal P any
-    uint32_t p2 = converter::Converter<uint32_t>::toCpp(apis, env, _sv2);
-             // LuaValToCSVal struct
-    S_r4r4r4_* pp3 = DataTransfer::GetPointer<S_r4r4r4_>(apis, env, _sv3);
-    S_r4r4r4_ p3 = pp3 ? *pp3 : S_r4r4r4_ {};
-         // LuaValToCSVal primitive with default
-    bool p4 = OptionalParameter<bool>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 4);
-             // LuaValToCSVal primitive with default
-    uint32_t p5 = OptionalParameter<uint32_t>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 5);
-             // LuaValToCSVal primitive with default
-    int32_t p6 = OptionalParameter<int32_t>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 6);
-            
-    typedef void (*FuncToCall)(void*,int32_t p1, int32_t p2, uint32_t p3, struct S_r4r4r4_ p4, bool p5, uint32_t p6, int32_t p7, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1, p2, p3, p4, p5, p6,  method);
-    return true;
-}
-// Void AddCommandBuffer(UnityEngine.Rendering.CameraEvent, UnityEngine.Rendering.CommandBuffer) declare in UnityEngine.Camera
-bool w_vti4o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vti4o");
-    auto TIp1 = wrapData->TypeInfos[0];
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    if (checkLuaArgument) {
-        if (lua_args_len != 2) 
-            return false;
-
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv0))
-            return false;
-        if (!DataTransfer::IsAssignable(apis, env, _sv1, TIp1, false))
-            return false;        
-    }
-        
-    // LuaValToCSVal P any
-    int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-            
-    // LuaValToCSVal o/O
-    Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-        
-    typedef void (*FuncToCall)(void*,int32_t p1, Il2CppObject* p2, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1,  method);
-    return true;
-}
-// Void LoadAsyn(Int32, Assets.Scripts.Framework.AssetService.IAssetLoadCallback, Assets.Scripts.Framework.AssetService.AssetType, System.String, Assets.Scripts.Framework.AssetService.LifeType, System.String, Int32, Int32, Int32, System.Object, System.Object) declare in Assets.Scripts.Framework.AssetService.AssetService
-bool w_vti4oi1si1DsDi4Di4Di4DODO(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vti4oi1si1DsDi4Di4Di4DODO");
-    auto TIp1 = wrapData->TypeInfos[0];
-    auto TIp3 = wrapData->TypeInfos[1];
-    auto TIp5 = wrapData->TypeInfos[2];
-    auto TIp9 = wrapData->TypeInfos[3];
-    auto TIp10 = wrapData->TypeInfos[4];
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    int _sv2 = apis->get_arg(info, 2);
-    int _sv3 = apis->get_arg(info, 3);
-    int _sv4 = apis->get_arg(info, 4);
-    int _sv5 = apis->get_arg(info, 5);
-    int _sv6 = apis->get_arg(info, 6);
-    int _sv7 = apis->get_arg(info, 7);
-    int _sv8 = apis->get_arg(info, 8);
-    int _sv9 = apis->get_arg(info, 9);
-    int _sv10 = apis->get_arg(info, 10);
-    if (true) {
-        if (lua_args_len < 5 || lua_args_len > 11) 
-            return false;
-
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv0))
-            return false;
-        if (!DataTransfer::IsAssignable(apis, env, _sv1, TIp1, false))
-            return false;
-        if (!converter::Converter<int8_t>::accept(apis, env, _sv2))
-            return false;
-        if (!converter::Converter<Il2CppString*>::accept(apis, env, _sv3))
-            return false;
-        if (!converter::Converter<int8_t>::accept(apis, env, _sv4))
-            return false;
-        if (lua_args_len > 5 && !converter::Converter<Il2CppString*>::accept(apis, env, _sv5))
-            return false;
-        if (lua_args_len > 6 && !converter::Converter<int32_t>::accept(apis, env, _sv6))
-            return false;
-        if (lua_args_len > 7 && !converter::Converter<int32_t>::accept(apis, env, _sv7))
-            return false;
-        if (lua_args_len > 8 && !converter::Converter<int32_t>::accept(apis, env, _sv8))
-            return false;        
-    }
-        
-    // LuaValToCSVal P any
-    int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-            
-    // LuaValToCSVal o/O
-    Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-                
-    // LuaValToCSVal P any
-    int8_t p2 = converter::Converter<int8_t>::toCpp(apis, env, _sv2);
-            // LuaValToCSVal s
-    Il2CppString* p3 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv3);        
-    // LuaValToCSVal P any
-    int8_t p4 = converter::Converter<int8_t>::toCpp(apis, env, _sv4);
-            // LuaValToCSVal string with default
-    Il2CppString* p5 = OptionalParameter<Il2CppString*>::GetString(apis, env, info, method, wrapData, lua_args_len, 5); // LuaValToCSVal primitive with default
-    int32_t p6 = OptionalParameter<int32_t>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 6);
-             // LuaValToCSVal primitive with default
-    int32_t p7 = OptionalParameter<int32_t>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 7);
-             // LuaValToCSVal primitive with default
-    int32_t p8 = OptionalParameter<int32_t>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 8);
-                // LuaValToCSVal ref with default
-    Il2CppObject* p9 = OptionalParameter<Il2CppObject*>::GetRefType(apis, env, info, method, wrapData, lua_args_len, 9, TIp9);    // LuaValToCSVal ref with default
-    Il2CppObject* p10 = OptionalParameter<Il2CppObject*>::GetRefType(apis, env, info, method, wrapData, lua_args_len, 10, TIp10);
-    typedef void (*FuncToCall)(void*,int32_t p1, Il2CppObject* p2, int8_t p3, Il2CppString* p4, int8_t p5, Il2CppString* p6, int32_t p7, int32_t p8, int32_t p9, Il2CppObject* p10, Il2CppObject* p11, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10,  method);
-    return true;
-}
-// Void AddLoad(Int32, Assets.Scripts.Framework.AssetService.IAssetLoadCallback, Assets.Scripts.Framework.AssetService.AssetType, System.String, Assets.Scripts.Framework.AssetService.LifeType, System.String, Int32, Int32, Int32, System.Object, System.Object) declare in Assets.Scripts.Framework.AssetService.AssetService
-bool w_vti4oi1si1si4i4Di4DODO(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vti4oi1si1si4i4Di4DODO");
-    auto TIp1 = wrapData->TypeInfos[0];
-    auto TIp3 = wrapData->TypeInfos[1];
-    auto TIp5 = wrapData->TypeInfos[2];
-    auto TIp9 = wrapData->TypeInfos[3];
-    auto TIp10 = wrapData->TypeInfos[4];
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    int _sv2 = apis->get_arg(info, 2);
-    int _sv3 = apis->get_arg(info, 3);
-    int _sv4 = apis->get_arg(info, 4);
-    int _sv5 = apis->get_arg(info, 5);
-    int _sv6 = apis->get_arg(info, 6);
-    int _sv7 = apis->get_arg(info, 7);
-    int _sv8 = apis->get_arg(info, 8);
-    int _sv9 = apis->get_arg(info, 9);
-    int _sv10 = apis->get_arg(info, 10);
-    if (true) {
-        if (lua_args_len < 8 || lua_args_len > 11) 
-            return false;
-
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv0))
-            return false;
-        if (!DataTransfer::IsAssignable(apis, env, _sv1, TIp1, false))
-            return false;
-        if (!converter::Converter<int8_t>::accept(apis, env, _sv2))
-            return false;
-        if (!converter::Converter<Il2CppString*>::accept(apis, env, _sv3))
-            return false;
-        if (!converter::Converter<int8_t>::accept(apis, env, _sv4))
-            return false;
-        if (!converter::Converter<Il2CppString*>::accept(apis, env, _sv5))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv6))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv7))
-            return false;
-        if (lua_args_len > 8 && !converter::Converter<int32_t>::accept(apis, env, _sv8))
-            return false;        
-    }
-        
-    // LuaValToCSVal P any
-    int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-            
-    // LuaValToCSVal o/O
-    Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-                
-    // LuaValToCSVal P any
-    int8_t p2 = converter::Converter<int8_t>::toCpp(apis, env, _sv2);
-            // LuaValToCSVal s
-    Il2CppString* p3 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv3);        
-    // LuaValToCSVal P any
-    int8_t p4 = converter::Converter<int8_t>::toCpp(apis, env, _sv4);
-            // LuaValToCSVal s
-    Il2CppString* p5 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv5);        
-    // LuaValToCSVal P any
-    int32_t p6 = converter::Converter<int32_t>::toCpp(apis, env, _sv6);
-                
-    // LuaValToCSVal P any
-    int32_t p7 = converter::Converter<int32_t>::toCpp(apis, env, _sv7);
-         // LuaValToCSVal primitive with default
-    int32_t p8 = OptionalParameter<int32_t>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 8);
-                // LuaValToCSVal ref with default
-    Il2CppObject* p9 = OptionalParameter<Il2CppObject*>::GetRefType(apis, env, info, method, wrapData, lua_args_len, 9, TIp9);    // LuaValToCSVal ref with default
-    Il2CppObject* p10 = OptionalParameter<Il2CppObject*>::GetRefType(apis, env, info, method, wrapData, lua_args_len, 10, TIp10);
-    typedef void (*FuncToCall)(void*,int32_t p1, Il2CppObject* p2, int8_t p3, Il2CppString* p4, int8_t p5, Il2CppString* p6, int32_t p7, int32_t p8, int32_t p9, Il2CppObject* p10, Il2CppObject* p11, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10,  method);
-    return true;
-}
-// Void AddCommandBufferAsync(UnityEngine.Rendering.CameraEvent, UnityEngine.Rendering.CommandBuffer, UnityEngine.Rendering.ComputeQueueType) declare in UnityEngine.Camera
-bool w_vti4oi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vti4oi4");
-    auto TIp1 = wrapData->TypeInfos[0];
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    int _sv2 = apis->get_arg(info, 2);
-    if (checkLuaArgument) {
-        if (lua_args_len != 3) 
-            return false;
-
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv0))
-            return false;
-        if (!DataTransfer::IsAssignable(apis, env, _sv1, TIp1, false))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv2))
-            return false;        
-    }
-        
-    // LuaValToCSVal P any
-    int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-            
-    // LuaValToCSVal o/O
-    Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-                
-    // LuaValToCSVal P any
-    int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-        
-    typedef void (*FuncToCall)(void*,int32_t p1, Il2CppObject* p2, int32_t p3, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1, p2,  method);
-    return true;
-}
-// Void CopyTo(Int32, Char[], Int32, Int32) declare in System.String
-bool w_vti4oi4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vti4oi4i4");
-    auto TIp1 = wrapData->TypeInfos[0];
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    int _sv2 = apis->get_arg(info, 2);
-    int _sv3 = apis->get_arg(info, 3);
-    if (checkLuaArgument) {
-        if (lua_args_len != 4) 
-            return false;
-
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv0))
-            return false;
-        if (!DataTransfer::IsAssignable(apis, env, _sv1, TIp1, false))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv2))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv3))
-            return false;        
-    }
-        
-    // LuaValToCSVal P any
-    int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-            
-    // LuaValToCSVal o/O
-    Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-                
-    // LuaValToCSVal P any
-    int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-                
-    // LuaValToCSVal P any
-    int32_t p3 = converter::Converter<int32_t>::toCpp(apis, env, _sv3);
-        
-    typedef void (*FuncToCall)(void*,int32_t p1, Il2CppObject* p2, int32_t p3, int32_t p4, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1, p2, p3,  method);
-    return true;
-}
-// Void Init(Int32, Timi.TimiMenuOptionData, System.Action`1[Timi.TimiMenuItem]) declare in Timi.TimiMenuItem
-bool w_vti4oo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vti4oo");
-    auto TIp1 = wrapData->TypeInfos[0];
-    auto TIp2 = wrapData->TypeInfos[1];
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    int _sv2 = apis->get_arg(info, 2);
-    if (checkLuaArgument) {
-        if (lua_args_len != 3) 
-            return false;
-
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv0))
-            return false;
-        if (!DataTransfer::IsAssignable(apis, env, _sv1, TIp1, false))
-            return false;
-        if (!DataTransfer::IsAssignable(apis, env, _sv2, TIp2, false))
-            return false;        
-    }
-        
-    // LuaValToCSVal P any
-    int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-            
-    // LuaValToCSVal o/O
-    Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-            
-    // LuaValToCSVal o/O
-    Il2CppObject* p2 = LuaValueToCSRef(apis, TIp2, env, _sv2);
-        
-    typedef void (*FuncToCall)(void*,int32_t p1, Il2CppObject* p2, Il2CppObject* p3, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1, p2,  method);
-    return true;
-}
-// Void Open(com.vasd.gamelet.PandoraEnv, System.Action`1[System.String], System.Action`2[UnityEngine.GameObject,System.String], System.Action`2[UnityEngine.GameObject,System.String], System.Action`2[System.String,System.Collections.Generic.Dictionary`2[System.String,System.String]], System.Action`4[System.String,System.String,UnityEngine.GameObject,System.Action`2[System.String,UnityEngine.GameObject]]) declare in PandoraSDK.PandoraSDK
-bool w_vti4ooooo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vti4ooooo");
-    auto TIp1 = wrapData->TypeInfos[0];
-    auto TIp2 = wrapData->TypeInfos[1];
-    auto TIp3 = wrapData->TypeInfos[2];
-    auto TIp4 = wrapData->TypeInfos[3];
-    auto TIp5 = wrapData->TypeInfos[4];
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    int _sv2 = apis->get_arg(info, 2);
-    int _sv3 = apis->get_arg(info, 3);
-    int _sv4 = apis->get_arg(info, 4);
-    int _sv5 = apis->get_arg(info, 5);
-    if (checkLuaArgument) {
-        if (lua_args_len != 6) 
-            return false;
-
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv0))
-            return false;
-        if (!DataTransfer::IsAssignable(apis, env, _sv1, TIp1, false))
-            return false;
-        if (!DataTransfer::IsAssignable(apis, env, _sv2, TIp2, false))
-            return false;
-        if (!DataTransfer::IsAssignable(apis, env, _sv3, TIp3, false))
-            return false;
-        if (!DataTransfer::IsAssignable(apis, env, _sv4, TIp4, false))
-            return false;
-        if (!DataTransfer::IsAssignable(apis, env, _sv5, TIp5, false))
-            return false;        
-    }
-        
-    // LuaValToCSVal P any
-    int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-            
-    // LuaValToCSVal o/O
-    Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-            
-    // LuaValToCSVal o/O
-    Il2CppObject* p2 = LuaValueToCSRef(apis, TIp2, env, _sv2);
-            
-    // LuaValToCSVal o/O
-    Il2CppObject* p3 = LuaValueToCSRef(apis, TIp3, env, _sv3);
-            
-    // LuaValToCSVal o/O
-    Il2CppObject* p4 = LuaValueToCSRef(apis, TIp4, env, _sv4);
-            
-    // LuaValToCSVal o/O
-    Il2CppObject* p5 = LuaValueToCSRef(apis, TIp5, env, _sv5);
-        
-    typedef void (*FuncToCall)(void*,int32_t p1, Il2CppObject* p2, Il2CppObject* p3, Il2CppObject* p4, Il2CppObject* p5, Il2CppObject* p6, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1, p2, p3, p4, p5,  method);
-    return true;
-}
-// Void RegisterPlayerHang(OSProto.HangUIType, UnityEngine.Transform, UInt32) declare in Assets.Scripts.GameSystem.UIComponentArtEffect
-bool w_vti4ou4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vti4ou4");
-    auto TIp1 = wrapData->TypeInfos[0];
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    int _sv2 = apis->get_arg(info, 2);
-    if (checkLuaArgument) {
-        if (lua_args_len != 3) 
-            return false;
-
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv0))
-            return false;
-        if (!DataTransfer::IsAssignable(apis, env, _sv1, TIp1, false))
-            return false;
-        if (!converter::Converter<uint32_t>::accept(apis, env, _sv2))
-            return false;        
-    }
-        
-    // LuaValToCSVal P any
-    int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-            
-    // LuaValToCSVal o/O
-    Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-                
-    // LuaValToCSVal P any
-    uint32_t p2 = converter::Converter<uint32_t>::toCpp(apis, env, _sv2);
-        
-    typedef void (*FuncToCall)(void*,int32_t p1, Il2CppObject* p2, uint32_t p3, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1, p2,  method);
-    return true;
-}
-// Void SetSystemSpeed(SystemSpeedType, Single) declare in Assets.Scripts.Framework.FrameSynchr
-bool w_vti4r4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vti4r4");
-
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    if (checkLuaArgument) {
-        if (lua_args_len != 2) 
-            return false;
-
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv0))
-            return false;
-        if (!converter::Converter<float>::accept(apis, env, _sv1))
-            return false;        
-    }
-        
-    // LuaValToCSVal P any
-    int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
-    // LuaValToCSVal P any
-    float p1 = converter::Converter<float>::toCpp(apis, env, _sv1);
-        
-    typedef void (*FuncToCall)(void*,int32_t p1, float p2, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1,  method);
-    return true;
-}
-// Void ScrollTo(Int32, Single, Boolean, Single) declare in UIWidgets.EasyListView
-bool w_vti4r4DbDr4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vti4r4DbDr4");
-
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    int _sv2 = apis->get_arg(info, 2);
-    int _sv3 = apis->get_arg(info, 3);
-    if (true) {
-        if (lua_args_len < 2 || lua_args_len > 4) 
-            return false;
-
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv0))
-            return false;
-        if (!converter::Converter<float>::accept(apis, env, _sv1))
-            return false;
-        if (lua_args_len > 2 && !converter::Converter<bool>::accept(apis, env, _sv2))
-            return false;
-        if (lua_args_len > 3 && !converter::Converter<float>::accept(apis, env, _sv3))
-            return false;        
-    }
-        
-    // LuaValToCSVal P any
-    int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
-    // LuaValToCSVal P any
-    float p1 = converter::Converter<float>::toCpp(apis, env, _sv1);
-         // LuaValToCSVal primitive with default
-    bool p2 = OptionalParameter<bool>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 2);
-             // LuaValToCSVal primitive with default
-    float p3 = OptionalParameter<float>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 3);
-            
-    typedef void (*FuncToCall)(void*,int32_t p1, float p2, bool p3, float p4, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1, p2, p3,  method);
-    return true;
-}
-// Void SetInsetAndSizeFromParentEdge(Edge, Single, Single) declare in UnityEngine.RectTransform
-bool w_vti4r4r4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vti4r4r4");
-
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    int _sv2 = apis->get_arg(info, 2);
-    if (checkLuaArgument) {
-        if (lua_args_len != 3) 
-            return false;
-
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv0))
-            return false;
-        if (!converter::Converter<float>::accept(apis, env, _sv1))
-            return false;
-        if (!converter::Converter<float>::accept(apis, env, _sv2))
-            return false;        
-    }
-        
-    // LuaValToCSVal P any
-    int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
-    // LuaValToCSVal P any
-    float p1 = converter::Converter<float>::toCpp(apis, env, _sv1);
-                
-    // LuaValToCSVal P any
-    float p2 = converter::Converter<float>::toCpp(apis, env, _sv2);
-        
-    typedef void (*FuncToCall)(void*,int32_t p1, float p2, float p3, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1, p2,  method);
-    return true;
-}
-// Void SetItemTitleTxt(Int32, System.String) declare in Timi.TimiMenu
-bool w_vti4s(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vti4s");
-    auto TIp1 = wrapData->TypeInfos[0];
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    if (checkLuaArgument) {
-        if (lua_args_len != 2) 
-            return false;
-
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv0))
-            return false;
-        if (!converter::Converter<Il2CppString*>::accept(apis, env, _sv1))
-            return false;        
-    }
-        
-    // LuaValToCSVal P any
-    int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-            // LuaValToCSVal s
-    Il2CppString* p1 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv1);
-    typedef void (*FuncToCall)(void*,int32_t p1, Il2CppString* p2, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1,  method);
-    return true;
-}
-// Void SetHeroUpgradeEffectAge(Int32, System.String, System.String, System.String) declare in Assets.Scripts.GameSystem.Project8UINewbie
-bool w_vti4sss(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vti4sss");
-    auto TIp1 = wrapData->TypeInfos[0];
-    auto TIp2 = wrapData->TypeInfos[1];
-    auto TIp3 = wrapData->TypeInfos[2];
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    int _sv2 = apis->get_arg(info, 2);
-    int _sv3 = apis->get_arg(info, 3);
-    if (checkLuaArgument) {
-        if (lua_args_len != 4) 
-            return false;
-
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv0))
-            return false;
-        if (!converter::Converter<Il2CppString*>::accept(apis, env, _sv1))
-            return false;
-        if (!converter::Converter<Il2CppString*>::accept(apis, env, _sv2))
-            return false;
-        if (!converter::Converter<Il2CppString*>::accept(apis, env, _sv3))
-            return false;        
-    }
-        
-    // LuaValToCSVal P any
-    int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-            // LuaValToCSVal s
-    Il2CppString* p1 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv1);    // LuaValToCSVal s
-    Il2CppString* p2 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv2);    // LuaValToCSVal s
-    Il2CppString* p3 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv3);
-    typedef void (*FuncToCall)(void*,int32_t p1, Il2CppString* p2, Il2CppString* p3, Il2CppString* p4, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1, p2, p3,  method);
-    return true;
-}
-// Void InitByConfigID(Int32, UInt32) declare in Assets.Scripts.UI.CardComponent.Item.UICardItemShowData
-bool w_vti4u4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vti4u4");
-
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    if (checkLuaArgument) {
-        if (lua_args_len != 2) 
-            return false;
-
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv0))
-            return false;
-        if (!converter::Converter<uint32_t>::accept(apis, env, _sv1))
-            return false;        
-    }
-        
-    // LuaValToCSVal P any
-    int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
-    // LuaValToCSVal P any
-    uint32_t p1 = converter::Converter<uint32_t>::toCpp(apis, env, _sv1);
-        
-    typedef void (*FuncToCall)(void*,int32_t p1, uint32_t p2, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1,  method);
-    return true;
-}
-// Void SimpleSetDataWithConfigID(Int32, UInt32, stFacade, Boolean, Boolean, OSProto.SyncDynamicDesc, System.Object[]) declare in Assets.Scripts.UI.CardComponent.Item.UICardItem
-bool w_vti4u4S_u4u4u4i4_DbDbDoDo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vti4u4S_u4u4u4i4_DbDbDoDo");
-    auto TIp2 = wrapData->TypeInfos[0];
-    auto TIp5 = wrapData->TypeInfos[1];
-    auto TIp6 = wrapData->TypeInfos[2];
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    int _sv2 = apis->get_arg(info, 2);
-    int _sv3 = apis->get_arg(info, 3);
-    int _sv4 = apis->get_arg(info, 4);
-    int _sv5 = apis->get_arg(info, 5);
-    int _sv6 = apis->get_arg(info, 6);
-    if (true) {
-        if (lua_args_len < 3 || lua_args_len > 7) 
-            return false;
-
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv0))
-            return false;
-        if (!converter::Converter<uint32_t>::accept(apis, env, _sv1))
-            return false;
-        if (!DataTransfer::IsAssignable(apis, env, _sv2, TIp2, true))
-            return false;
-        if (lua_args_len > 3 && !converter::Converter<bool>::accept(apis, env, _sv3))
-            return false;
-        if (lua_args_len > 4 && !converter::Converter<bool>::accept(apis, env, _sv4))
-            return false;
-        if (lua_args_len > 5 && !DataTransfer::IsAssignable(apis, env, _sv5, TIp5, false))
-            return false;
-        if (lua_args_len > 6 && !DataTransfer::IsAssignable(apis, env, _sv6, TIp6, false))
-            return false;        
-    }
-        
-    // LuaValToCSVal P any
-    int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
-    // LuaValToCSVal P any
-    uint32_t p1 = converter::Converter<uint32_t>::toCpp(apis, env, _sv1);
-             // LuaValToCSVal struct
-    S_u4u4u4i4_* pp2 = DataTransfer::GetPointer<S_u4u4u4i4_>(apis, env, _sv2);
-    S_u4u4u4i4_ p2 = pp2 ? *pp2 : S_u4u4u4i4_ {};
-         // LuaValToCSVal primitive with default
-    bool p3 = OptionalParameter<bool>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 3);
-             // LuaValToCSVal primitive with default
-    bool p4 = OptionalParameter<bool>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 4);
-                // LuaValToCSVal ref with default
-    Il2CppObject* p5 = OptionalParameter<Il2CppObject*>::GetRefType(apis, env, info, method, wrapData, lua_args_len, 5, TIp5);    // LuaValToCSVal ref with default
-    Il2CppObject* p6 = OptionalParameter<Il2CppObject*>::GetRefType(apis, env, info, method, wrapData, lua_args_len, 6, TIp6);
-    typedef void (*FuncToCall)(void*,int32_t p1, uint32_t p2, struct S_u4u4u4i4_ p3, bool p4, bool p5, Il2CppObject* p6, Il2CppObject* p7, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1, p2, p3, p4, p5, p6,  method);
-    return true;
-}
-// Void .ctor(Scope, UInt32, Boolean, Boolean, Boolean) declare in Assets.Scripts.GameSystem.CullData
-bool w_vti4u4bbb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vti4u4bbb");
-
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    int _sv2 = apis->get_arg(info, 2);
-    int _sv3 = apis->get_arg(info, 3);
-    int _sv4 = apis->get_arg(info, 4);
-    if (checkLuaArgument) {
-        if (lua_args_len != 5) 
-            return false;
-
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv0))
-            return false;
-        if (!converter::Converter<uint32_t>::accept(apis, env, _sv1))
-            return false;
-        if (!converter::Converter<bool>::accept(apis, env, _sv2))
-            return false;
-        if (!converter::Converter<bool>::accept(apis, env, _sv3))
-            return false;
-        if (!converter::Converter<bool>::accept(apis, env, _sv4))
-            return false;        
-    }
-        
-    // LuaValToCSVal P any
-    int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
-                
-    // LuaValToCSVal P any
-    uint32_t p1 = converter::Converter<uint32_t>::toCpp(apis, env, _sv1);
-                
-    // LuaValToCSVal P any
-    bool p2 = converter::Converter<bool>::toCpp(apis, env, _sv2);
-                
-    // LuaValToCSVal P any
-    bool p3 = converter::Converter<bool>::toCpp(apis, env, _sv3);
-                
-    // LuaValToCSVal P any
-    bool p4 = converter::Converter<bool>::toCpp(apis, env, _sv4);
-        
-    typedef void (*FuncToCall)(void*,int32_t p1, uint32_t p2, bool p3, bool p4, bool p5, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1, p2, p3, p4,  method);
-    return true;
-}
-// Void set_rangeStart(Int64) declare in CurlUnity.CurlEasy
-bool w_vti8(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vti8");
-
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    if (checkLuaArgument) {
-        if (lua_args_len != 1) 
-            return false;
-
-        if (!converter::Converter<int64_t>::accept(apis, env, _sv0))
-            return false;        
-    }
-        
-    // LuaValToCSVal P any
-    int64_t p0 = converter::Converter<int64_t>::toCpp(apis, env, _sv0);
-        
-    typedef void (*FuncToCall)(void*,int64_t p1, const void* method);
-    ((FuncToCall)methodPointer)(self, p0,  method);
-    return true;
-}
-// Void Install(Int64, Boolean) declare in Assets.Scripts.Resource.Package.QtsPackageManager
-bool w_vti8Db(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vti8Db");
-
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    if (true) {
-        if (lua_args_len < 1 || lua_args_len > 2) 
-            return false;
-
-        if (!converter::Converter<int64_t>::accept(apis, env, _sv0))
-            return false;
-        if (lua_args_len > 1 && !converter::Converter<bool>::accept(apis, env, _sv1))
-            return false;        
-    }
-        
-    // LuaValToCSVal P any
-    int64_t p0 = converter::Converter<int64_t>::toCpp(apis, env, _sv0);
-         // LuaValToCSVal primitive with default
-    bool p1 = OptionalParameter<bool>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 1);
-            
-    typedef void (*FuncToCall)(void*,int64_t p1, bool p2, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1,  method);
-    return true;
-}
-// Void .ctor(Int64, System.DateTimeKind) declare in System.DateTime
-bool w_vti8i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vti8i4");
-
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    if (checkLuaArgument) {
-        if (lua_args_len != 2) 
-            return false;
-
-        if (!converter::Converter<int64_t>::accept(apis, env, _sv0))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv1))
-            return false;        
-    }
-        
-    // LuaValToCSVal P any
-    int64_t p0 = converter::Converter<int64_t>::toCpp(apis, env, _sv0);
-                
-    // LuaValToCSVal P any
-    int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-        
-    typedef void (*FuncToCall)(void*,int64_t p1, int32_t p2, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1,  method);
-    return true;
-}
-// Void OnInstalled(Int64, System.String) declare in Assets.Scripts.Resource.Package.OnAirCollection
-bool w_vti8s(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vti8s");
-    auto TIp1 = wrapData->TypeInfos[0];
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    if (checkLuaArgument) {
-        if (lua_args_len != 2) 
-            return false;
-
-        if (!converter::Converter<int64_t>::accept(apis, env, _sv0))
-            return false;
-        if (!converter::Converter<Il2CppString*>::accept(apis, env, _sv1))
-            return false;        
-    }
-        
-    // LuaValToCSVal P any
-    int64_t p0 = converter::Converter<int64_t>::toCpp(apis, env, _sv0);
-            // LuaValToCSVal s
-    Il2CppString* p1 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv1);
-    typedef void (*FuncToCall)(void*,int64_t p1, Il2CppString* p2, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1,  method);
-    return true;
-}
-// Void AddPackage(Int64, UInt64) declare in Assets.Scripts.Resource.Package.OnAirCollection
-bool w_vti8u8(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vti8u8");
-
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    if (checkLuaArgument) {
-        if (lua_args_len != 2) 
-            return false;
-
-        if (!converter::Converter<int64_t>::accept(apis, env, _sv0))
-            return false;
-        if (!converter::Converter<uint64_t>::accept(apis, env, _sv1))
-            return false;        
-    }
-        
-    // LuaValToCSVal P any
-    int64_t p0 = converter::Converter<int64_t>::toCpp(apis, env, _sv0);
-                
-    // LuaValToCSVal P any
-    uint64_t p1 = converter::Converter<uint64_t>::toCpp(apis, env, _sv1);
-        
-    typedef void (*FuncToCall)(void*,int64_t p1, uint64_t p2, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1,  method);
-    return true;
-}
-// Void CloneProperties(UnityEngine.RectTransform, UnityEngine.RectTransform) declare in ExtRectTransform
-bool w_vto(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vto");
-    auto TIp0 = wrapData->TypeInfos[0];
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    if (checkLuaArgument) {
-        if (lua_args_len != 1) 
-            return false;
-
-        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, false))
-            return false;        
-    }
-    
-    // LuaValToCSVal o/O
-    Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-        
-    typedef void (*FuncToCall)(void*,Il2CppObject* p1, const void* method);
-    ((FuncToCall)methodPointer)(self, p0,  method);
-    return true;
-}
-// Void InitTransform(UnityEngine.GameObject, UnityEngine.Vector3, Int32) declare in Timi.TimiNestedPrefabData
-bool w_vtoDS_r4r4r4_Di4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vtoDS_r4r4r4_Di4");
-    auto TIp0 = wrapData->TypeInfos[0];
-    auto TIp1 = wrapData->TypeInfos[1];
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    int _sv2 = apis->get_arg(info, 2);
-    if (true) {
-        if (lua_args_len < 1 || lua_args_len > 3) 
-            return false;
-
-        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, false))
-            return false;
-        if (lua_args_len > 1 && !DataTransfer::IsAssignable(apis, env, _sv1, TIp1, true))
-            return false;
-        if (lua_args_len > 2 && !converter::Converter<int32_t>::accept(apis, env, _sv2))
-            return false;        
-    }
-    
-    // LuaValToCSVal o/O
-    Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-            // LuaValToCSVal valuetype with default
-    S_r4r4r4_ p1 = OptionalParameter<S_r4r4r4_>::GetValueType(apis, env, info, method, wrapData, lua_args_len, 1);
-             // LuaValToCSVal primitive with default
-    int32_t p2 = OptionalParameter<int32_t>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 2);
-            
-    typedef void (*FuncToCall)(void*,Il2CppObject* p1, struct S_r4r4r4_ p2, int32_t p3, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1, p2,  method);
-    return true;
-}
-// Void SetParent(UnityEngine.Component, UnityEngine.GameObject, Boolean) declare in com.pixui.PxMisc
-bool w_vtoDb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vtoDb");
-    auto TIp0 = wrapData->TypeInfos[0];
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    if (true) {
-        if (lua_args_len < 1 || lua_args_len > 2) 
-            return false;
-
-        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, false))
-            return false;
-        if (lua_args_len > 1 && !converter::Converter<bool>::accept(apis, env, _sv1))
-            return false;        
-    }
-    
-    // LuaValToCSVal o/O
-    Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-         // LuaValToCSVal primitive with default
-    bool p1 = OptionalParameter<bool>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 1);
-            
-    typedef void (*FuncToCall)(void*,Il2CppObject* p1, bool p2, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1,  method);
-    return true;
-}
-// Void GetGoodslist(System.Action`1[GCloud.GMall.GoodslistResponse], Boolean, Boolean) declare in GCloud.GMall.GMall
-bool w_vtoDbDb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vtoDbDb");
-    auto TIp0 = wrapData->TypeInfos[0];
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    int _sv2 = apis->get_arg(info, 2);
-    if (true) {
-        if (lua_args_len < 1 || lua_args_len > 3) 
-            return false;
-
-        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, false))
-            return false;
-        if (lua_args_len > 1 && !converter::Converter<bool>::accept(apis, env, _sv1))
-            return false;
-        if (lua_args_len > 2 && !converter::Converter<bool>::accept(apis, env, _sv2))
-            return false;        
-    }
-    
-    // LuaValToCSVal o/O
-    Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-         // LuaValToCSVal primitive with default
-    bool p1 = OptionalParameter<bool>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 1);
-             // LuaValToCSVal primitive with default
-    bool p2 = OptionalParameter<bool>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 2);
-            
-    typedef void (*FuncToCall)(void*,Il2CppObject* p1, bool p2, bool p3, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1, p2,  method);
-    return true;
-}
-// Void PrepareChangeItem(System.Collections.Generic.List`1[System.Int32], Int32) declare in UnityEngine.UI.Extensions.RadialLayout
-bool w_vtoDi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vtoDi4");
-    auto TIp0 = wrapData->TypeInfos[0];
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    if (true) {
-        if (lua_args_len < 1 || lua_args_len > 2) 
-            return false;
-
-        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, false))
-            return false;
-        if (lua_args_len > 1 && !converter::Converter<int32_t>::accept(apis, env, _sv1))
-            return false;        
-    }
-    
-    // LuaValToCSVal o/O
-    Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-         // LuaValToCSVal primitive with default
-    int32_t p1 = OptionalParameter<int32_t>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 1);
-            
-    typedef void (*FuncToCall)(void*,Il2CppObject* p1, int32_t p2, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1,  method);
-    return true;
-}
-// Void SetArtField(Assets.Scripts.GameLogic.Project8BaseArtField, Int32, Boolean) declare in Assets.Scripts.GameLogic.Project8SceneManagement
-bool w_vtoDi4Db(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vtoDi4Db");
-    auto TIp0 = wrapData->TypeInfos[0];
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    int _sv2 = apis->get_arg(info, 2);
-    if (true) {
-        if (lua_args_len < 1 || lua_args_len > 3) 
-            return false;
-
-        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, false))
-            return false;
-        if (lua_args_len > 1 && !converter::Converter<int32_t>::accept(apis, env, _sv1))
-            return false;
-        if (lua_args_len > 2 && !converter::Converter<bool>::accept(apis, env, _sv2))
-            return false;        
-    }
-    
-    // LuaValToCSVal o/O
-    Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-         // LuaValToCSVal primitive with default
-    int32_t p1 = OptionalParameter<int32_t>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 1);
-             // LuaValToCSVal primitive with default
-    bool p2 = OptionalParameter<bool>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 2);
-            
-    typedef void (*FuncToCall)(void*,Il2CppObject* p1, int32_t p2, bool p3, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1, p2,  method);
-    return true;
-}
-// Void PopRectTransform(UnityEngine.RectTransform, UnityEngine.RectTransform, PopDirection, Single, Single) declare in ExtRectTransform
-bool w_vtoDi4Dr4Dr4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vtoDi4Dr4Dr4");
-    auto TIp0 = wrapData->TypeInfos[0];
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    int _sv2 = apis->get_arg(info, 2);
-    int _sv3 = apis->get_arg(info, 3);
-    if (true) {
-        if (lua_args_len < 1 || lua_args_len > 4) 
-            return false;
-
-        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, false))
-            return false;
-        if (lua_args_len > 1 && !converter::Converter<int32_t>::accept(apis, env, _sv1))
-            return false;
-        if (lua_args_len > 2 && !converter::Converter<float>::accept(apis, env, _sv2))
-            return false;
-        if (lua_args_len > 3 && !converter::Converter<float>::accept(apis, env, _sv3))
-            return false;        
-    }
-    
-    // LuaValToCSVal o/O
-    Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-         // LuaValToCSVal primitive with default
-    int32_t p1 = OptionalParameter<int32_t>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 1);
-             // LuaValToCSVal primitive with default
-    float p2 = OptionalParameter<float>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 2);
-             // LuaValToCSVal primitive with default
-    float p3 = OptionalParameter<float>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 3);
-            
-    typedef void (*FuncToCall)(void*,Il2CppObject* p1, int32_t p2, float p3, float p4, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1, p2, p3,  method);
-    return true;
-}
-// Void Init(onSelectChg, onSelectChg) declare in UIWidgets.CMTabGroup
-bool w_vtoDo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vtoDo");
-    auto TIp0 = wrapData->TypeInfos[0];
-    auto TIp1 = wrapData->TypeInfos[1];
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    if (true) {
-        if (lua_args_len < 1 || lua_args_len > 2) 
-            return false;
-
-        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, false))
-            return false;
-        if (lua_args_len > 1 && !DataTransfer::IsAssignable(apis, env, _sv1, TIp1, false))
-            return false;        
-    }
-    
-    // LuaValToCSVal o/O
-    Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-            // LuaValToCSVal ref with default
-    Il2CppObject* p1 = OptionalParameter<Il2CppObject*>::GetRefType(apis, env, info, method, wrapData, lua_args_len, 1, TIp1);
-    typedef void (*FuncToCall)(void*,Il2CppObject* p1, Il2CppObject* p2, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1,  method);
-    return true;
-}
-// Void UpdateUI(System.Collections.Generic.List`1[GUA.GUANoticeInfo], System.Action, Boolean) declare in Assets.Scripts.GameNotice.UIUpdateFileMsg
-bool w_vtoDoDb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vtoDoDb");
-    auto TIp0 = wrapData->TypeInfos[0];
-    auto TIp1 = wrapData->TypeInfos[1];
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    int _sv2 = apis->get_arg(info, 2);
-    if (true) {
-        if (lua_args_len < 1 || lua_args_len > 3) 
-            return false;
-
-        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, false))
-            return false;
-        if (lua_args_len > 1 && !DataTransfer::IsAssignable(apis, env, _sv1, TIp1, false))
-            return false;
-        if (lua_args_len > 2 && !converter::Converter<bool>::accept(apis, env, _sv2))
-            return false;        
-    }
-    
-    // LuaValToCSVal o/O
-    Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-            // LuaValToCSVal ref with default
-    Il2CppObject* p1 = OptionalParameter<Il2CppObject*>::GetRefType(apis, env, info, method, wrapData, lua_args_len, 1, TIp1); // LuaValToCSVal primitive with default
-    bool p2 = OptionalParameter<bool>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 2);
-            
-    typedef void (*FuncToCall)(void*,Il2CppObject* p1, Il2CppObject* p2, bool p3, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1, p2,  method);
-    return true;
-}
-// Void CancelAsyn(Assets.Scripts.Framework.AssetService.IAssetLoadCallback, System.String) declare in Assets.Scripts.Framework.AssetService.AssetService
-bool w_vtoDs(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vtoDs");
-    auto TIp0 = wrapData->TypeInfos[0];
-    auto TIp1 = wrapData->TypeInfos[1];
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    if (true) {
-        if (lua_args_len < 1 || lua_args_len > 2) 
-            return false;
-
-        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, false))
-            return false;
-        if (lua_args_len > 1 && !converter::Converter<Il2CppString*>::accept(apis, env, _sv1))
-            return false;        
-    }
-    
-    // LuaValToCSVal o/O
-    Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-            // LuaValToCSVal string with default
-    Il2CppString* p1 = OptionalParameter<Il2CppString*>::GetString(apis, env, info, method, wrapData, lua_args_len, 1);
-    typedef void (*FuncToCall)(void*,Il2CppObject* p1, Il2CppString* p2, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1,  method);
-    return true;
-}
-// Void CaptureScreenWithPath(System.Action`1[System.String], System.String, Assets.Scripts.GameSystem.CaptureSettings) declare in Assets.Scripts.GameSystem.ShareCaptureSys
-bool w_vtoDsDS_bbi4bo_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vtoDsDS_bbi4bo_");
-    auto TIp0 = wrapData->TypeInfos[0];
-    auto TIp1 = wrapData->TypeInfos[1];
-    auto TIp2 = wrapData->TypeInfos[2];
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    int _sv2 = apis->get_arg(info, 2);
-    if (true) {
-        if (lua_args_len < 1 || lua_args_len > 3) 
-            return false;
-
-        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, false))
-            return false;
-        if (lua_args_len > 1 && !converter::Converter<Il2CppString*>::accept(apis, env, _sv1))
-            return false;
-        if (lua_args_len > 2 && !DataTransfer::IsAssignable(apis, env, _sv2, TIp2, true))
-            return false;        
-    }
-    
-    // LuaValToCSVal o/O
-    Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-            // LuaValToCSVal string with default
-    Il2CppString* p1 = OptionalParameter<Il2CppString*>::GetString(apis, env, info, method, wrapData, lua_args_len, 1);    // LuaValToCSVal valuetype with default
-    S_bbi4bo_ p2 = OptionalParameter<S_bbi4bo_>::GetValueType(apis, env, info, method, wrapData, lua_args_len, 2);
-            
-    typedef void (*FuncToCall)(void*,Il2CppObject* p1, Il2CppString* p2, struct S_bbi4bo_ p3, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1, p2,  method);
-    return true;
-}
-// Void TestEndlessLoopInThread(Assets.Scripts.Framework.ThreadService.ThreadService, System.Object) declare in Assets.Scripts.Framework.GameFramework
-bool w_vtoO(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vtoO");
-    auto TIp0 = wrapData->TypeInfos[0];
-    auto TIp1 = wrapData->TypeInfos[1];
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    if (checkLuaArgument) {
-        if (lua_args_len != 2) 
-            return false;
-
-        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, false))
-            return false;        
-    }
-    
-    // LuaValToCSVal o/O
-    Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-            
-    // LuaValToCSVal o/O
-    Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-        
-    typedef void (*FuncToCall)(void*,Il2CppObject* p1, Il2CppObject* p2, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1,  method);
-    return true;
-}
-// Void PlayNewCard(OSProto.InteractiveEffectInfo, RectRtRecord ByRef, System.Action) declare in Assets.Scripts.UI.CardComponent.Item.UICardItem
-bool w_vtoPS_S_r4r4r4_S_r4r4r4_S_r4r4r4_r4_o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vtoPS_S_r4r4r4_S_r4r4r4_S_r4r4r4_r4_o");
-    AutoValueScope value_scope(apis, env);
-    auto TIp0 = wrapData->TypeInfos[0];
-    auto TIp1 = wrapData->TypeInfos[1];
-    auto TIp2 = wrapData->TypeInfos[2];
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    int _sv2 = apis->get_arg(info, 2);
-    if (checkLuaArgument) {
-        if (lua_args_len != 3) 
-            return false;
-
-        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, false))
-            return false;
-        if (!apis->is_object(env, _sv1)) return false;
-        if (!DataTransfer::IsAssignable(apis, env, _sv2, TIp2, false))
-            return false;        
-    }
-    
-    // LuaValToCSVal o/O
-    Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-             
-    // LuaValToCSVal Pstruct
-    S_S_r4r4r4_S_r4r4r4_S_r4r4r4_r4_* p1 = DataTransfer::GetPointer<S_S_r4r4r4_S_r4r4r4_S_r4r4r4_r4_>(apis, env, apis->unboxing(env, _sv1)); // valuetype ref
-    S_S_r4r4r4_S_r4r4r4_S_r4r4r4_r4_ up1;
-    if (!p1) {
-        memset(&up1, 0, sizeof(p1));
-        p1 = &up1;
-    }
-            
-    // LuaValToCSVal o/O
-    Il2CppObject* p2 = LuaValueToCSRef(apis, TIp2, env, _sv2);
-        
-    typedef void (*FuncToCall)(void*,Il2CppObject* p1, struct S_S_r4r4r4_S_r4r4r4_S_r4r4r4_r4_* p2, Il2CppObject* p3, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1, p2,  method);                
-    int ret1;
-    if (p1 == &up1)
-    {
-        ret1 = DataTransfer::CopyValueType(apis, env, *p1, TIp1);    
-        apis->update_boxed_value(env, _sv1, ret1);
-    }
-    else
-    {
-        ret1 = apis->native_object_to_value(env, TIp1, p1, false);
-    }
-
-	apis->add_return(info, ret1);
-    value_scope.reserve = apis->get_return_num(info);
-    return true;
-}
-// Void GetObjectData(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext) declare in System.Collections.Generic.Dictionary`2[System.String,System.String]
-bool w_vtoS_Oi4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vtoS_Oi4_");
-    auto TIp0 = wrapData->TypeInfos[0];
-    auto TIp1 = wrapData->TypeInfos[1];
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    if (checkLuaArgument) {
-        if (lua_args_len != 2) 
-            return false;
-
-        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, false))
-            return false;
-        if (!DataTransfer::IsAssignable(apis, env, _sv1, TIp1, true))
-            return false;        
-    }
-    
-    // LuaValToCSVal o/O
-    Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-             // LuaValToCSVal struct
-    S_Oi4_* pp1 = DataTransfer::GetPointer<S_Oi4_>(apis, env, _sv1);
-    S_Oi4_ p1 = pp1 ? *pp1 : S_Oi4_ {};
-        
-    typedef void (*FuncToCall)(void*,Il2CppObject* p1, struct S_Oi4_ p2, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1,  method);
-    return true;
-}
-// Void SetTargetBuffers(UnityEngine.RenderBuffer[], UnityEngine.RenderBuffer) declare in UnityEngine.Camera
-bool w_vtoS_i4p_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vtoS_i4p_");
-    auto TIp0 = wrapData->TypeInfos[0];
-    auto TIp1 = wrapData->TypeInfos[1];
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    if (checkLuaArgument) {
-        if (lua_args_len != 2) 
-            return false;
-
-        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, false))
-            return false;
-        if (!DataTransfer::IsAssignable(apis, env, _sv1, TIp1, true))
-            return false;        
-    }
-    
-    // LuaValToCSVal o/O
-    Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-             // LuaValToCSVal struct
-    S_i4p_* pp1 = DataTransfer::GetPointer<S_i4p_>(apis, env, _sv1);
-    S_i4p_ p1 = pp1 ? *pp1 : S_i4p_ {};
-        
-    typedef void (*FuncToCall)(void*,Il2CppObject* p1, struct S_i4p_ p2, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1,  method);
-    return true;
-}
-// Void Invoke(EquipWithActor, UnityEngine.Vector2) declare in EventProxy`2[Assets.Scripts.UI.InTheGame.Common.UIEquipCommonItem+EquipWithActor,UnityEngine.Vector2]
-bool w_vtoS_r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vtoS_r4r4_");
-    auto TIp0 = wrapData->TypeInfos[0];
-    auto TIp1 = wrapData->TypeInfos[1];
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    if (checkLuaArgument) {
-        if (lua_args_len != 2) 
-            return false;
-
-        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, false))
-            return false;
-        if (!DataTransfer::IsAssignable(apis, env, _sv1, TIp1, true))
-            return false;        
-    }
-    
-    // LuaValToCSVal o/O
-    Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-             // LuaValToCSVal struct
-    S_r4r4_* pp1 = DataTransfer::GetPointer<S_r4r4_>(apis, env, _sv1);
-    S_r4r4_ p1 = pp1 ? *pp1 : S_r4r4_ {};
-        
-    typedef void (*FuncToCall)(void*,Il2CppObject* p1, struct S_r4r4_ p2, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1,  method);
-    return true;
-}
-// Void PopRectTransform(UnityEngine.RectTransform, UnityEngine.RectTransform, UnityEngine.Vector2, UnityEngine.Vector2, UnityEngine.Vector2) declare in ExtRectTransform
-bool w_vtoS_r4r4_S_r4r4_S_r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vtoS_r4r4_S_r4r4_S_r4r4_");
-    auto TIp0 = wrapData->TypeInfos[0];
-    auto TIp1 = wrapData->TypeInfos[1];
-    auto TIp2 = wrapData->TypeInfos[2];
-    auto TIp3 = wrapData->TypeInfos[3];
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    int _sv2 = apis->get_arg(info, 2);
-    int _sv3 = apis->get_arg(info, 3);
-    if (checkLuaArgument) {
-        if (lua_args_len != 4) 
-            return false;
-
-        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, false))
-            return false;
-        if (!DataTransfer::IsAssignable(apis, env, _sv1, TIp1, true))
-            return false;
-        if (!DataTransfer::IsAssignable(apis, env, _sv2, TIp2, true))
-            return false;
-        if (!DataTransfer::IsAssignable(apis, env, _sv3, TIp3, true))
-            return false;        
-    }
-    
-    // LuaValToCSVal o/O
-    Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-             // LuaValToCSVal struct
-    S_r4r4_* pp1 = DataTransfer::GetPointer<S_r4r4_>(apis, env, _sv1);
-    S_r4r4_ p1 = pp1 ? *pp1 : S_r4r4_ {};
-             // LuaValToCSVal struct
-    S_r4r4_* pp2 = DataTransfer::GetPointer<S_r4r4_>(apis, env, _sv2);
-    S_r4r4_ p2 = pp2 ? *pp2 : S_r4r4_ {};
-             // LuaValToCSVal struct
-    S_r4r4_* pp3 = DataTransfer::GetPointer<S_r4r4_>(apis, env, _sv3);
-    S_r4r4_ p3 = pp3 ? *pp3 : S_r4r4_ {};
-        
-    typedef void (*FuncToCall)(void*,Il2CppObject* p1, struct S_r4r4_ p2, struct S_r4r4_ p3, struct S_r4r4_ p4, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1, p2, p3,  method);
-    return true;
-}
-// Void LookAt(UnityEngine.Transform, UnityEngine.Vector3) declare in UnityEngine.Transform
-bool w_vtoS_r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vtoS_r4r4r4_");
-    auto TIp0 = wrapData->TypeInfos[0];
-    auto TIp1 = wrapData->TypeInfos[1];
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    if (checkLuaArgument) {
-        if (lua_args_len != 2) 
-            return false;
-
-        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, false))
-            return false;
-        if (!DataTransfer::IsAssignable(apis, env, _sv1, TIp1, true))
-            return false;        
-    }
-    
-    // LuaValToCSVal o/O
-    Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-             // LuaValToCSVal struct
-    S_r4r4r4_* pp1 = DataTransfer::GetPointer<S_r4r4r4_>(apis, env, _sv1);
-    S_r4r4r4_ p1 = pp1 ? *pp1 : S_r4r4r4_ {};
-        
-    typedef void (*FuncToCall)(void*,Il2CppObject* p1, struct S_r4r4r4_ p2, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1,  method);
-    return true;
-}
-// Void PlayNewCard(OSProto.InteractiveEffectInfo, UnityEngine.Vector3, UnityEngine.Vector3, System.Action) declare in Assets.Scripts.UI.CardComponent.Item.UICardItem
-bool w_vtoS_r4r4r4_S_r4r4r4_o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vtoS_r4r4r4_S_r4r4r4_o");
-    auto TIp0 = wrapData->TypeInfos[0];
-    auto TIp1 = wrapData->TypeInfos[1];
-    auto TIp2 = wrapData->TypeInfos[2];
-    auto TIp3 = wrapData->TypeInfos[3];
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    int _sv2 = apis->get_arg(info, 2);
-    int _sv3 = apis->get_arg(info, 3);
-    if (checkLuaArgument) {
-        if (lua_args_len != 4) 
-            return false;
-
-        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, false))
-            return false;
-        if (!DataTransfer::IsAssignable(apis, env, _sv1, TIp1, true))
-            return false;
-        if (!DataTransfer::IsAssignable(apis, env, _sv2, TIp2, true))
-            return false;
-        if (!DataTransfer::IsAssignable(apis, env, _sv3, TIp3, false))
-            return false;        
-    }
-    
-    // LuaValToCSVal o/O
-    Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-             // LuaValToCSVal struct
-    S_r4r4r4_* pp1 = DataTransfer::GetPointer<S_r4r4r4_>(apis, env, _sv1);
-    S_r4r4r4_ p1 = pp1 ? *pp1 : S_r4r4r4_ {};
-             // LuaValToCSVal struct
-    S_r4r4r4_* pp2 = DataTransfer::GetPointer<S_r4r4r4_>(apis, env, _sv2);
-    S_r4r4r4_ p2 = pp2 ? *pp2 : S_r4r4r4_ {};
-            
-    // LuaValToCSVal o/O
-    Il2CppObject* p3 = LuaValueToCSRef(apis, TIp3, env, _sv3);
-        
-    typedef void (*FuncToCall)(void*,Il2CppObject* p1, struct S_r4r4r4_ p2, struct S_r4r4r4_ p3, Il2CppObject* p4, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1, p2, p3,  method);
-    return true;
-}
-// Void ActiveVirtualScene(VirtualScene, UnityEngine.Vector3, Boolean) declare in Assets.Scripts.GameLogic.Project8VirtualSceneGroup
-bool w_vtoS_r4r4r4_b(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vtoS_r4r4r4_b");
-    auto TIp0 = wrapData->TypeInfos[0];
-    auto TIp1 = wrapData->TypeInfos[1];
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    int _sv2 = apis->get_arg(info, 2);
-    if (checkLuaArgument) {
-        if (lua_args_len != 3) 
-            return false;
-
-        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, false))
-            return false;
-        if (!DataTransfer::IsAssignable(apis, env, _sv1, TIp1, true))
-            return false;
-        if (!converter::Converter<bool>::accept(apis, env, _sv2))
-            return false;        
-    }
-    
-    // LuaValToCSVal o/O
-    Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-             // LuaValToCSVal struct
-    S_r4r4r4_* pp1 = DataTransfer::GetPointer<S_r4r4r4_>(apis, env, _sv1);
-    S_r4r4r4_ p1 = pp1 ? *pp1 : S_r4r4r4_ {};
-                
-    // LuaValToCSVal P any
-    bool p2 = converter::Converter<bool>::toCpp(apis, env, _sv2);
-        
-    typedef void (*FuncToCall)(void*,Il2CppObject* p1, struct S_r4r4r4_ p2, bool p3, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1, p2,  method);
-    return true;
-}
-// Void PlayNewCard(OSProto.InteractiveEffectInfo, UnityEngine.Vector3, System.Action) declare in Assets.Scripts.UI.CardComponent.Item.UICardItem
-bool w_vtoS_r4r4r4_o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vtoS_r4r4r4_o");
-    auto TIp0 = wrapData->TypeInfos[0];
-    auto TIp1 = wrapData->TypeInfos[1];
-    auto TIp2 = wrapData->TypeInfos[2];
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    int _sv2 = apis->get_arg(info, 2);
-    if (checkLuaArgument) {
-        if (lua_args_len != 3) 
-            return false;
-
-        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, false))
-            return false;
-        if (!DataTransfer::IsAssignable(apis, env, _sv1, TIp1, true))
-            return false;
-        if (!DataTransfer::IsAssignable(apis, env, _sv2, TIp2, false))
-            return false;        
-    }
-    
-    // LuaValToCSVal o/O
-    Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-             // LuaValToCSVal struct
-    S_r4r4r4_* pp1 = DataTransfer::GetPointer<S_r4r4r4_>(apis, env, _sv1);
-    S_r4r4r4_ p1 = pp1 ? *pp1 : S_r4r4r4_ {};
-            
-    // LuaValToCSVal o/O
-    Il2CppObject* p2 = LuaValueToCSRef(apis, TIp2, env, _sv2);
-        
-    typedef void (*FuncToCall)(void*,Il2CppObject* p1, struct S_r4r4r4_ p2, Il2CppObject* p3, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1, p2,  method);
-    return true;
-}
-// Void CaptureAreaWithPath(System.Action`1[System.String], UnityEngine.Rect, System.String, Assets.Scripts.GameSystem.CaptureSettings) declare in Assets.Scripts.GameSystem.ShareCaptureSys
-bool w_vtoS_r4r4r4r4_DsDS_bbi4bo_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vtoS_r4r4r4r4_DsDS_bbi4bo_");
-    auto TIp0 = wrapData->TypeInfos[0];
-    auto TIp1 = wrapData->TypeInfos[1];
-    auto TIp2 = wrapData->TypeInfos[2];
-    auto TIp3 = wrapData->TypeInfos[3];
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    int _sv2 = apis->get_arg(info, 2);
-    int _sv3 = apis->get_arg(info, 3);
-    if (true) {
-        if (lua_args_len < 2 || lua_args_len > 4) 
-            return false;
-
-        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, false))
-            return false;
-        if (!DataTransfer::IsAssignable(apis, env, _sv1, TIp1, true))
-            return false;
-        if (lua_args_len > 2 && !converter::Converter<Il2CppString*>::accept(apis, env, _sv2))
-            return false;
-        if (lua_args_len > 3 && !DataTransfer::IsAssignable(apis, env, _sv3, TIp3, true))
-            return false;        
-    }
-    
-    // LuaValToCSVal o/O
-    Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-             // LuaValToCSVal struct
-    S_r4r4r4r4_* pp1 = DataTransfer::GetPointer<S_r4r4r4r4_>(apis, env, _sv1);
-    S_r4r4r4r4_ p1 = pp1 ? *pp1 : S_r4r4r4r4_ {};
-            // LuaValToCSVal string with default
-    Il2CppString* p2 = OptionalParameter<Il2CppString*>::GetString(apis, env, info, method, wrapData, lua_args_len, 2);    // LuaValToCSVal valuetype with default
-    S_bbi4bo_ p3 = OptionalParameter<S_bbi4bo_>::GetValueType(apis, env, info, method, wrapData, lua_args_len, 3);
-            
-    typedef void (*FuncToCall)(void*,Il2CppObject* p1, struct S_r4r4r4r4_ p2, Il2CppString* p3, struct S_bbi4bo_ p4, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1, p2, p3,  method);
-    return true;
-}
-// Void ResetBattleGrid(Assets.Scripts.GameLogic.Project8PlayerInstance, PooledCollections.PoolObjHandle`1[Assets.Scripts.GameLogic.ActorLinker], System.Object) declare in Assets.Scripts.GameSystem.UIHeroOp
-bool w_vtoS_u4o_O(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vtoS_u4o_O");
-    auto TIp0 = wrapData->TypeInfos[0];
-    auto TIp1 = wrapData->TypeInfos[1];
-    auto TIp2 = wrapData->TypeInfos[2];
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    int _sv2 = apis->get_arg(info, 2);
-    if (checkLuaArgument) {
-        if (lua_args_len != 3) 
-            return false;
-
-        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, false))
-            return false;
-        if (!DataTransfer::IsAssignable(apis, env, _sv1, TIp1, true))
-            return false;        
-    }
-    
-    // LuaValToCSVal o/O
-    Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-             // LuaValToCSVal struct
-    S_u4o_* pp1 = DataTransfer::GetPointer<S_u4o_>(apis, env, _sv1);
-    S_u4o_ p1 = pp1 ? *pp1 : S_u4o_ {};
-            
-    // LuaValToCSVal o/O
-    Il2CppObject* p2 = LuaValueToCSRef(apis, TIp2, env, _sv2);
-        
-    typedef void (*FuncToCall)(void*,Il2CppObject* p1, struct S_u4o_ p2, Il2CppObject* p3, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1, p2,  method);
-    return true;
-}
-// Void SendActionFromLua(UIEventIDBase, System.Object[]) declare in Assets.Scripts.Framework.UI.UIPrefabBaseClass
-bool w_vtoVO(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vtoVO");
-    auto TIp0 = wrapData->TypeInfos[0];
-    auto TIp1 = wrapData->TypeInfos[1];
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    if (checkLuaArgument) {
-        if (lua_args_len < 1 || lua_args_len > 2) 
-            return false;
-
-        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, false))
-            return false;        
-    }
-    
-    // LuaValToCSVal o/O
-    Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-            // LuaValToCSVal ref params
-    Il2CppArray* p1 = Params<void*>::PackRef(apis, env, info, TIp1, lua_args_len, 1);
-            
-    typedef void (*FuncToCall)(void*,Il2CppObject* p1, Il2CppArray* p2, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1,  method);
-    return true;
-}
-// Void GetAreaActor(System.Collections.Generic.List`1[PooledCollections.PoolObjHandle`1[Assets.Scripts.GameLogic.ActorLinker]], OSProto.ChessAreaType[]) declare in Assets.Scripts.GameLogic.PlayerChessManager
-bool w_vtoVi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vtoVi4");
-    auto TIp0 = wrapData->TypeInfos[0];
-    auto TIp1 = wrapData->TypeInfos[1];
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    if (checkLuaArgument) {
-        if (lua_args_len < 1 || lua_args_len > 2) 
-            return false;
-
-        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, false))
-            return false;        if(lua_args_len > 1 && !converter::Converter<int32_t>::accept(apis, env, _sv1))
-            return false;        
-    }
-    
-    // LuaValToCSVal o/O
-    Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-             
-    // LuaValToCSVal primitive params
-    Il2CppArray* p1 = Params<int32_t>::PackPrimitive(apis, env, info, TIp1, lua_args_len, 1);
-
-    typedef void (*FuncToCall)(void*,Il2CppObject* p1, Il2CppArray* p2, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1,  method);
-    return true;
-}
-// Void ExtSetParent(UnityEngine.Transform, UnityEngine.Transform, Boolean) declare in ExtTransform
-bool w_vtob(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vtob");
-    auto TIp0 = wrapData->TypeInfos[0];
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    if (checkLuaArgument) {
-        if (lua_args_len != 2) 
-            return false;
-
-        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, false))
-            return false;
-        if (!converter::Converter<bool>::accept(apis, env, _sv1))
-            return false;        
-    }
-    
-    // LuaValToCSVal o/O
-    Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-                
-    // LuaValToCSVal P any
-    bool p1 = converter::Converter<bool>::toCpp(apis, env, _sv1);
-        
-    typedef void (*FuncToCall)(void*,Il2CppObject* p1, bool p2, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1,  method);
-    return true;
-}
-// Void SetWearItem(EquipWithActor, Boolean, Boolean, ToastSyntheticeType) declare in Assets.Scripts.UI.InTheGame.Equip.UIEquipToastSyntheticItem
-bool w_vtobbi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vtobbi4");
-    auto TIp0 = wrapData->TypeInfos[0];
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    int _sv2 = apis->get_arg(info, 2);
-    int _sv3 = apis->get_arg(info, 3);
-    if (checkLuaArgument) {
-        if (lua_args_len != 4) 
-            return false;
-
-        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, false))
-            return false;
-        if (!converter::Converter<bool>::accept(apis, env, _sv1))
-            return false;
-        if (!converter::Converter<bool>::accept(apis, env, _sv2))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv3))
-            return false;        
-    }
-    
-    // LuaValToCSVal o/O
-    Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-                
-    // LuaValToCSVal P any
-    bool p1 = converter::Converter<bool>::toCpp(apis, env, _sv1);
-                
-    // LuaValToCSVal P any
-    bool p2 = converter::Converter<bool>::toCpp(apis, env, _sv2);
-                
-    // LuaValToCSVal P any
-    int32_t p3 = converter::Converter<int32_t>::toCpp(apis, env, _sv3);
-        
-    typedef void (*FuncToCall)(void*,Il2CppObject* p1, bool p2, bool p3, int32_t p4, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1, p2, p3,  method);
-    return true;
-}
-// Void AddOrRemoveHeroSellBlackList(Int32[], Boolean, Int32) declare in Assets.Scripts.GameSystem.Project8UINewbie
-bool w_vtobi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vtobi4");
-    auto TIp0 = wrapData->TypeInfos[0];
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    int _sv2 = apis->get_arg(info, 2);
-    if (checkLuaArgument) {
-        if (lua_args_len != 3) 
-            return false;
-
-        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, false))
-            return false;
-        if (!converter::Converter<bool>::accept(apis, env, _sv1))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv2))
-            return false;        
-    }
-    
-    // LuaValToCSVal o/O
-    Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-                
-    // LuaValToCSVal P any
-    bool p1 = converter::Converter<bool>::toCpp(apis, env, _sv1);
-                
-    // LuaValToCSVal P any
-    int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-        
-    typedef void (*FuncToCall)(void*,Il2CppObject* p1, bool p2, int32_t p3, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1, p2,  method);
-    return true;
-}
-// Void SetSprite(UnityEngine.UI.Image, UnityEngine.Sprite, ImageAlphaTexLayout) declare in ExtImage
-bool w_vtoi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vtoi4");
-    auto TIp0 = wrapData->TypeInfos[0];
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    if (checkLuaArgument) {
-        if (lua_args_len != 2) 
-            return false;
-
-        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, false))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv1))
-            return false;        
-    }
-    
-    // LuaValToCSVal o/O
-    Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-                
-    // LuaValToCSVal P any
-    int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-        
-    typedef void (*FuncToCall)(void*,Il2CppObject* p1, int32_t p2, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1,  method);
-    return true;
-}
-// Void ApplyPropertyOverride(UnityEngine.Material, Int32, Boolean) declare in UnityEngine.Material
-bool w_vtoi4Db(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vtoi4Db");
-    auto TIp0 = wrapData->TypeInfos[0];
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    int _sv2 = apis->get_arg(info, 2);
-    if (true) {
-        if (lua_args_len < 2 || lua_args_len > 3) 
-            return false;
-
-        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, false))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv1))
-            return false;
-        if (lua_args_len > 2 && !converter::Converter<bool>::accept(apis, env, _sv2))
-            return false;        
-    }
-    
-    // LuaValToCSVal o/O
-    Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-                
-    // LuaValToCSVal P any
-    int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-         // LuaValToCSVal primitive with default
-    bool p2 = OptionalParameter<bool>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 2);
-            
-    typedef void (*FuncToCall)(void*,Il2CppObject* p1, int32_t p2, bool p3, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1, p2,  method);
-    return true;
-}
-// Void UIPreload(System.Type, Int32, Assets.Scripts.Framework.AssetService.AssetType) declare in Assets.Scripts.Framework.AssetService.AssetService
-bool w_vtoi4Di1(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vtoi4Di1");
-    auto TIp0 = wrapData->TypeInfos[0];
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    int _sv2 = apis->get_arg(info, 2);
-    if (true) {
-        if (lua_args_len < 2 || lua_args_len > 3) 
-            return false;
-
-        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, false))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv1))
-            return false;
-        if (lua_args_len > 2 && !converter::Converter<int8_t>::accept(apis, env, _sv2))
-            return false;        
-    }
-    
-    // LuaValToCSVal o/O
-    Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-                
-    // LuaValToCSVal P any
-    int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-         // LuaValToCSVal primitive with default
-    int8_t p2 = OptionalParameter<int8_t>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 2);
-            
-    typedef void (*FuncToCall)(void*,Il2CppObject* p1, int32_t p2, int8_t p3, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1, p2,  method);
-    return true;
-}
-// Void GetCommonEquips(System.Collections.Generic.List`1[SGW+stEquipItem], ResData.RES_PROJECT8_EQUIP_GRID_FUNC_TYPE, Int32, Boolean) declare in Assets.Scripts.GameLogic.EquipLinkerComponent
-bool w_vtoi4Di4Db(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vtoi4Di4Db");
-    auto TIp0 = wrapData->TypeInfos[0];
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    int _sv2 = apis->get_arg(info, 2);
-    int _sv3 = apis->get_arg(info, 3);
-    if (true) {
-        if (lua_args_len < 2 || lua_args_len > 4) 
-            return false;
-
-        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, false))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv1))
-            return false;
-        if (lua_args_len > 2 && !converter::Converter<int32_t>::accept(apis, env, _sv2))
-            return false;
-        if (lua_args_len > 3 && !converter::Converter<bool>::accept(apis, env, _sv3))
-            return false;        
-    }
-    
-    // LuaValToCSVal o/O
-    Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-                
-    // LuaValToCSVal P any
-    int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-         // LuaValToCSVal primitive with default
-    int32_t p2 = OptionalParameter<int32_t>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 2);
-             // LuaValToCSVal primitive with default
-    bool p3 = OptionalParameter<bool>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 3);
-            
-    typedef void (*FuncToCall)(void*,Il2CppObject* p1, int32_t p2, int32_t p3, bool p4, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1, p2, p3,  method);
-    return true;
-}
-// Void UnloadBaseAssetDelay(Assets.Scripts.Framework.AssetService.BaseAsset, Int32, OnDelayRecycleDelegate, Single[], UnityEngine.Vector3[]) declare in Assets.Scripts.Framework.AssetService.AssetService
-bool w_vtoi4DoDoDo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vtoi4DoDoDo");
-    auto TIp0 = wrapData->TypeInfos[0];
-    auto TIp2 = wrapData->TypeInfos[1];
-    auto TIp3 = wrapData->TypeInfos[2];
-    auto TIp4 = wrapData->TypeInfos[3];
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    int _sv2 = apis->get_arg(info, 2);
-    int _sv3 = apis->get_arg(info, 3);
-    int _sv4 = apis->get_arg(info, 4);
-    if (true) {
-        if (lua_args_len < 2 || lua_args_len > 5) 
-            return false;
-
-        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, false))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv1))
-            return false;
-        if (lua_args_len > 2 && !DataTransfer::IsAssignable(apis, env, _sv2, TIp2, false))
-            return false;
-        if (lua_args_len > 3 && !DataTransfer::IsAssignable(apis, env, _sv3, TIp3, false))
-            return false;
-        if (lua_args_len > 4 && !DataTransfer::IsAssignable(apis, env, _sv4, TIp4, false))
-            return false;        
-    }
-    
-    // LuaValToCSVal o/O
-    Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-                
-    // LuaValToCSVal P any
-    int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-            // LuaValToCSVal ref with default
-    Il2CppObject* p2 = OptionalParameter<Il2CppObject*>::GetRefType(apis, env, info, method, wrapData, lua_args_len, 2, TIp2);    // LuaValToCSVal ref with default
-    Il2CppObject* p3 = OptionalParameter<Il2CppObject*>::GetRefType(apis, env, info, method, wrapData, lua_args_len, 3, TIp3);    // LuaValToCSVal ref with default
-    Il2CppObject* p4 = OptionalParameter<Il2CppObject*>::GetRefType(apis, env, info, method, wrapData, lua_args_len, 4, TIp4);
-    typedef void (*FuncToCall)(void*,Il2CppObject* p1, int32_t p2, Il2CppObject* p3, Il2CppObject* p4, Il2CppObject* p5, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1, p2, p3, p4,  method);
-    return true;
-}
-// Void _ChangeChildAbility(Assets.Scripts.Framework.UI.UIPrefabBaseClass, Int32, Boolean) declare in Assets.Scripts.Framework.UI.UIPrefabBaseClass
-bool w_vtoi4b(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vtoi4b");
-    auto TIp0 = wrapData->TypeInfos[0];
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    int _sv2 = apis->get_arg(info, 2);
-    if (checkLuaArgument) {
-        if (lua_args_len != 3) 
-            return false;
-
-        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, false))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv1))
-            return false;
-        if (!converter::Converter<bool>::accept(apis, env, _sv2))
-            return false;        
-    }
-    
-    // LuaValToCSVal o/O
-    Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-                
-    // LuaValToCSVal P any
-    int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-                
-    // LuaValToCSVal P any
-    bool p2 = converter::Converter<bool>::toCpp(apis, env, _sv2);
-        
-    typedef void (*FuncToCall)(void*,Il2CppObject* p1, int32_t p2, bool p3, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1, p2,  method);
-    return true;
-}
-// Void SetHandCardCountBar(Assets.Scripts.UI.CardComponent.Item.UIHandCardCountBar, Int32, Int32) declare in Assets.Scripts.UI.CardComponent.Item.UICardItem
-bool w_vtoi4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vtoi4i4");
-    auto TIp0 = wrapData->TypeInfos[0];
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    int _sv2 = apis->get_arg(info, 2);
-    if (checkLuaArgument) {
-        if (lua_args_len != 3) 
-            return false;
-
-        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, false))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv1))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv2))
-            return false;        
-    }
-    
-    // LuaValToCSVal o/O
-    Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-                
-    // LuaValToCSVal P any
-    int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-                
-    // LuaValToCSVal P any
-    int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-        
-    typedef void (*FuncToCall)(void*,Il2CppObject* p1, int32_t p2, int32_t p3, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1, p2,  method);
-    return true;
-}
-// Void .ctor(System.IO.Stream, Ionic.Zlib.CompressionMode, Ionic.Zlib.CompressionLevel, Boolean) declare in Ionic.Zlib.ZlibStream
-bool w_vtoi4i4b(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vtoi4i4b");
-    auto TIp0 = wrapData->TypeInfos[0];
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    int _sv2 = apis->get_arg(info, 2);
-    int _sv3 = apis->get_arg(info, 3);
-    if (checkLuaArgument) {
-        if (lua_args_len != 4) 
-            return false;
-
-        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, false))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv1))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv2))
-            return false;
-        if (!converter::Converter<bool>::accept(apis, env, _sv3))
-            return false;        
-    }
-    
-    // LuaValToCSVal o/O
-    Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-                
-    // LuaValToCSVal P any
-    int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-                
-    // LuaValToCSVal P any
-    int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-                
-    // LuaValToCSVal P any
-    bool p3 = converter::Converter<bool>::toCpp(apis, env, _sv3);
-        
-    typedef void (*FuncToCall)(void*,Il2CppObject* p1, int32_t p2, int32_t p3, bool p4, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1, p2, p3,  method);
-    return true;
-}
-// Void CopySHCoefficientArraysFrom(System.Collections.Generic.List`1[UnityEngine.Rendering.SphericalHarmonicsL2], Int32, Int32, Int32) declare in UnityEngine.MaterialPropertyBlock
-bool w_vtoi4i4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vtoi4i4i4");
-    auto TIp0 = wrapData->TypeInfos[0];
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    int _sv2 = apis->get_arg(info, 2);
-    int _sv3 = apis->get_arg(info, 3);
-    if (checkLuaArgument) {
-        if (lua_args_len != 4) 
-            return false;
-
-        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, false))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv1))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv2))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv3))
-            return false;        
-    }
-    
-    // LuaValToCSVal o/O
-    Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-                
-    // LuaValToCSVal P any
-    int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-                
-    // LuaValToCSVal P any
-    int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-                
-    // LuaValToCSVal P any
-    int32_t p3 = converter::Converter<int32_t>::toCpp(apis, env, _sv3);
-        
-    typedef void (*FuncToCall)(void*,Il2CppObject* p1, int32_t p2, int32_t p3, int32_t p4, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1, p2, p3,  method);
-    return true;
-}
-// Void OnDragOverBattleField(Assets.Scripts.GameLogic.Project8PlayerInstance, Int32, Int32, Assets.Scripts.GameLogic.ChessAreaInfo) declare in Assets.Scripts.GameSystem.UIHeroOp
-bool w_vtoi4i4o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vtoi4i4o");
-    auto TIp0 = wrapData->TypeInfos[0];
-    auto TIp3 = wrapData->TypeInfos[1];
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    int _sv2 = apis->get_arg(info, 2);
-    int _sv3 = apis->get_arg(info, 3);
-    if (checkLuaArgument) {
-        if (lua_args_len != 4) 
-            return false;
-
-        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, false))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv1))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv2))
-            return false;
-        if (!DataTransfer::IsAssignable(apis, env, _sv3, TIp3, false))
-            return false;        
-    }
-    
-    // LuaValToCSVal o/O
-    Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-                
-    // LuaValToCSVal P any
-    int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-                
-    // LuaValToCSVal P any
-    int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-            
-    // LuaValToCSVal o/O
-    Il2CppObject* p3 = LuaValueToCSRef(apis, TIp3, env, _sv3);
-        
-    typedef void (*FuncToCall)(void*,Il2CppObject* p1, int32_t p2, int32_t p3, Il2CppObject* p4, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1, p2, p3,  method);
-    return true;
-}
-// Void RegisterAction(Assets.Scripts.GameSystem.MuteLayer, ResData.RES_SETTINGS_HOTKEY_FEATURE_TYPE, Assets.Scripts.GameSystem.HotkeyAction) declare in Assets.Scripts.GameSystem.HotkeyUIComponent
-bool w_vtoi4o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vtoi4o");
-    auto TIp0 = wrapData->TypeInfos[0];
-    auto TIp2 = wrapData->TypeInfos[1];
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    int _sv2 = apis->get_arg(info, 2);
-    if (checkLuaArgument) {
-        if (lua_args_len != 3) 
-            return false;
-
-        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, false))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv1))
-            return false;
-        if (!DataTransfer::IsAssignable(apis, env, _sv2, TIp2, false))
-            return false;        
-    }
-    
-    // LuaValToCSVal o/O
-    Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-                
-    // LuaValToCSVal P any
-    int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-            
-    // LuaValToCSVal o/O
-    Il2CppObject* p2 = LuaValueToCSRef(apis, TIp2, env, _sv2);
-        
-    typedef void (*FuncToCall)(void*,Il2CppObject* p1, int32_t p2, Il2CppObject* p3, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1, p2,  method);
-    return true;
-}
-// Void RegisterIcon(Assets.Scripts.GameSystem.MuteLayer, ResData.RES_SETTINGS_HOTKEY_FEATURE_TYPE, ShrinkText, System.Action`2[ShrinkText,System.Boolean]) declare in Assets.Scripts.GameSystem.HotkeyUIComponent
-bool w_vtoi4oDo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vtoi4oDo");
-    auto TIp0 = wrapData->TypeInfos[0];
-    auto TIp2 = wrapData->TypeInfos[1];
-    auto TIp3 = wrapData->TypeInfos[2];
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    int _sv2 = apis->get_arg(info, 2);
-    int _sv3 = apis->get_arg(info, 3);
-    if (true) {
-        if (lua_args_len < 3 || lua_args_len > 4) 
-            return false;
-
-        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, false))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv1))
-            return false;
-        if (!DataTransfer::IsAssignable(apis, env, _sv2, TIp2, false))
-            return false;
-        if (lua_args_len > 3 && !DataTransfer::IsAssignable(apis, env, _sv3, TIp3, false))
-            return false;        
-    }
-    
-    // LuaValToCSVal o/O
-    Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-                
-    // LuaValToCSVal P any
-    int32_t p1 = converter::Converter<int32_t>::toCpp(apis, env, _sv1);
-            
-    // LuaValToCSVal o/O
-    Il2CppObject* p2 = LuaValueToCSRef(apis, TIp2, env, _sv2);
-            // LuaValToCSVal ref with default
-    Il2CppObject* p3 = OptionalParameter<Il2CppObject*>::GetRefType(apis, env, info, method, wrapData, lua_args_len, 3, TIp3);
-    typedef void (*FuncToCall)(void*,Il2CppObject* p1, int32_t p2, Il2CppObject* p3, Il2CppObject* p4, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1, p2, p3,  method);
-    return true;
-}
-// Void CopyTo(System.Array, Int64) declare in System.Array
-bool w_vtoi8(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vtoi8");
-    auto TIp0 = wrapData->TypeInfos[0];
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    if (checkLuaArgument) {
-        if (lua_args_len != 2) 
-            return false;
-
-        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, false))
-            return false;
-        if (!converter::Converter<int64_t>::accept(apis, env, _sv1))
-            return false;        
-    }
-    
-    // LuaValToCSVal o/O
-    Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-                
-    // LuaValToCSVal P any
-    int64_t p1 = converter::Converter<int64_t>::toCpp(apis, env, _sv1);
-        
-    typedef void (*FuncToCall)(void*,Il2CppObject* p1, int64_t p2, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1,  method);
-    return true;
-}
-// Void GetComponents(System.Type, System.Collections.Generic.List`1[UnityEngine.Component]) declare in UnityEngine.Component
-bool w_vtoo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vtoo");
-    auto TIp0 = wrapData->TypeInfos[0];
-    auto TIp1 = wrapData->TypeInfos[1];
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    if (checkLuaArgument) {
-        if (lua_args_len != 2) 
-            return false;
-
-        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, false))
-            return false;
-        if (!DataTransfer::IsAssignable(apis, env, _sv1, TIp1, false))
-            return false;        
-    }
-    
-    // LuaValToCSVal o/O
-    Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-            
-    // LuaValToCSVal o/O
-    Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-        
-    typedef void (*FuncToCall)(void*,Il2CppObject* p1, Il2CppObject* p2, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1,  method);
-    return true;
-}
-// Void BakeMesh(UnityEngine.Mesh, UnityEngine.Camera, Boolean) declare in UnityEngine.LineRenderer
-bool w_vtooDb(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vtooDb");
-    auto TIp0 = wrapData->TypeInfos[0];
-    auto TIp1 = wrapData->TypeInfos[1];
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    int _sv2 = apis->get_arg(info, 2);
-    if (true) {
-        if (lua_args_len < 2 || lua_args_len > 3) 
-            return false;
-
-        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, false))
-            return false;
-        if (!DataTransfer::IsAssignable(apis, env, _sv1, TIp1, false))
-            return false;
-        if (lua_args_len > 2 && !converter::Converter<bool>::accept(apis, env, _sv2))
-            return false;        
-    }
-    
-    // LuaValToCSVal o/O
-    Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-            
-    // LuaValToCSVal o/O
-    Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-         // LuaValToCSVal primitive with default
-    bool p2 = OptionalParameter<bool>::GetPrimitive(apis, env, info, method, wrapData, lua_args_len, 2);
-            
-    typedef void (*FuncToCall)(void*,Il2CppObject* p1, Il2CppObject* p2, bool p3, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1, p2,  method);
-    return true;
-}
-// Void CalcHeight(UnityEngine.GameObject, UnityEngine.SkinnedMeshRenderer, Boolean ByRef, Single ByRef, Single) declare in Assets.Scripts.GameLogic.CActorInfo
-bool w_vtooPbPr4r4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vtooPbPr4r4");
-    AutoValueScope value_scope(apis, env);
-    auto TIp0 = wrapData->TypeInfos[0];
-    auto TIp1 = wrapData->TypeInfos[1];
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    int _sv2 = apis->get_arg(info, 2);
-    int _sv3 = apis->get_arg(info, 3);
-    int _sv4 = apis->get_arg(info, 4);
-    if (checkLuaArgument) {
-        if (lua_args_len != 5) 
-            return false;
-
-        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, false))
-            return false;
-        if (!DataTransfer::IsAssignable(apis, env, _sv1, TIp1, false))
-            return false;
-        if (!apis->is_object(env, _sv2)) return false;
-        if (!apis->is_object(env, _sv3)) return false;
-        if (!converter::Converter<float>::accept(apis, env, _sv4))
-            return false;        
-    }
-    
-    // LuaValToCSVal o/O
-    Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-            
-    // LuaValToCSVal o/O
-    Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-             
-    // LuaValToCSVal P primitive
-    bool up2 = false;
-    if (2 < lua_args_len)
-        up2 = converter::Converter<std::reference_wrapper<bool>>::toCpp(apis, env, _sv2);
-    bool* p2 = &up2;
-     
-    // LuaValToCSVal P primitive
-    float up3 = 0;
-    if (3 < lua_args_len)
-        up3 = converter::Converter<std::reference_wrapper<float>>::toCpp(apis, env, _sv3);
-    float* p3 = &up3;
-        
-    // LuaValToCSVal P any
-    float p4 = converter::Converter<float>::toCpp(apis, env, _sv4);
-        
-    typedef void (*FuncToCall)(void*,Il2CppObject* p1, Il2CppObject* p2, bool* p3, float* p4, float p5, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1, p2, p3, p4,  method);
-	int ret2 = converter::Converter<bool>::toScript(apis, env, *p2);
-	int ret3 = converter::Converter<float>::toScript(apis, env, *p3);
-	apis->add_return(info, ret2);
-	apis->add_return(info, ret3);
-    value_scope.reserve = apis->get_return_num(info);
-    return true;
-}
-// Void SetUnSelect(Int32[], Int32[], Boolean) declare in UIWidgets.CMMenu
-bool w_vtoob(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vtoob");
-    auto TIp0 = wrapData->TypeInfos[0];
-    auto TIp1 = wrapData->TypeInfos[1];
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    int _sv2 = apis->get_arg(info, 2);
-    if (checkLuaArgument) {
-        if (lua_args_len != 3) 
-            return false;
-
-        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, false))
-            return false;
-        if (!DataTransfer::IsAssignable(apis, env, _sv1, TIp1, false))
-            return false;
-        if (!converter::Converter<bool>::accept(apis, env, _sv2))
-            return false;        
-    }
-    
-    // LuaValToCSVal o/O
-    Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-            
-    // LuaValToCSVal o/O
-    Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-                
-    // LuaValToCSVal P any
-    bool p2 = converter::Converter<bool>::toCpp(apis, env, _sv2);
-        
-    typedef void (*FuncToCall)(void*,Il2CppObject* p1, Il2CppObject* p2, bool p3, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1, p2,  method);
-    return true;
-}
-// Void ClearCache(System.Collections.Generic.List`1[System.String], System.Collections.Generic.List`1[System.String], Int32, System.Collections.Generic.List`1[System.String]) declare in Assets.Scripts.Framework.AssetService.AssetService
-bool w_vtooi4o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vtooi4o");
-    auto TIp0 = wrapData->TypeInfos[0];
-    auto TIp1 = wrapData->TypeInfos[1];
-    auto TIp3 = wrapData->TypeInfos[2];
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    int _sv2 = apis->get_arg(info, 2);
-    int _sv3 = apis->get_arg(info, 3);
-    if (checkLuaArgument) {
-        if (lua_args_len != 4) 
-            return false;
-
-        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, false))
-            return false;
-        if (!DataTransfer::IsAssignable(apis, env, _sv1, TIp1, false))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv2))
-            return false;
-        if (!DataTransfer::IsAssignable(apis, env, _sv3, TIp3, false))
-            return false;        
-    }
-    
-    // LuaValToCSVal o/O
-    Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-            
-    // LuaValToCSVal o/O
-    Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-                
-    // LuaValToCSVal P any
-    int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-            
-    // LuaValToCSVal o/O
-    Il2CppObject* p3 = LuaValueToCSRef(apis, TIp3, env, _sv3);
-        
-    typedef void (*FuncToCall)(void*,Il2CppObject* p1, Il2CppObject* p2, int32_t p3, Il2CppObject* p4, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1, p2, p3,  method);
-    return true;
-}
-// Void OpenTip(Assets.Scripts.Framework.UI.UIPrefab2DClass, UnityEngine.RectTransform, PopDirection, Single, System.Action, Assets.Scripts.UI.TipExtraParam) declare in Assets.Scripts.UI.TipsManager
-bool w_vtooi4r4DoDS_bbbbbbbi4i4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
-    // PLog("Running w_vtooi4r4DoDS_bbbbbbbi4i4_");
-    auto TIp0 = wrapData->TypeInfos[0];
-    auto TIp1 = wrapData->TypeInfos[1];
-    auto TIp4 = wrapData->TypeInfos[2];
-    auto TIp5 = wrapData->TypeInfos[3];
-    int lua_args_len = apis->get_args_len(info);
-    int _sv0 = apis->get_arg(info, 0);
-    int _sv1 = apis->get_arg(info, 1);
-    int _sv2 = apis->get_arg(info, 2);
-    int _sv3 = apis->get_arg(info, 3);
-    int _sv4 = apis->get_arg(info, 4);
-    int _sv5 = apis->get_arg(info, 5);
-    if (true) {
-        if (lua_args_len < 4 || lua_args_len > 6) 
-            return false;
-
-        if (!DataTransfer::IsAssignable(apis, env, _sv0, TIp0, false))
-            return false;
-        if (!DataTransfer::IsAssignable(apis, env, _sv1, TIp1, false))
-            return false;
-        if (!converter::Converter<int32_t>::accept(apis, env, _sv2))
-            return false;
-        if (!converter::Converter<float>::accept(apis, env, _sv3))
-            return false;
-        if (lua_args_len > 4 && !DataTransfer::IsAssignable(apis, env, _sv4, TIp4, false))
-            return false;
-        if (lua_args_len > 5 && !DataTransfer::IsAssignable(apis, env, _sv5, TIp5, true))
-            return false;        
-    }
-    
-    // LuaValToCSVal o/O
-    Il2CppObject* p0 = LuaValueToCSRef(apis, TIp0, env, _sv0);
-            
-    // LuaValToCSVal o/O
-    Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
-                
-    // LuaValToCSVal P any
-    int32_t p2 = converter::Converter<int32_t>::toCpp(apis, env, _sv2);
-                
-    // LuaValToCSVal P any
-    float p3 = converter::Converter<float>::toCpp(apis, env, _sv3);
-            // LuaValToCSVal ref with default
-    Il2CppObject* p4 = OptionalParameter<Il2CppObject*>::GetRefType(apis, env, info, method, wrapData, lua_args_len, 4, TIp4);    // LuaValToCSVal valuetype with default
-    S_bbbbbbbi4i4_ p5 = OptionalParameter<S_bbbbbbbi4i4_>::GetValueType(apis, env, info, method, wrapData, lua_args_len, 5);
-            
-    typedef void (*FuncToCall)(void*,Il2CppObject* p1, Il2CppObject* p2, int32_t p3, float p4, Il2CppObject* p5, struct S_bbbbbbbi4i4_ p6, const void* method);
-    ((FuncToCall)methodPointer)(self, p0, p1, p2, p3, p4, p5,  method);
     return true;
 }
 }

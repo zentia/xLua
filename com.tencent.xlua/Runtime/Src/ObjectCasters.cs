@@ -3,7 +3,6 @@ using LuaAPI = XLua.LuaDLL.Lua;
 using RealStatePtr = System.IntPtr;
 using System.Collections.Generic;
 using System;
-using static alglib;
 
 namespace XLua
 {
@@ -299,6 +298,12 @@ namespace XLua
 
         private object getIntptr(RealStatePtr L, int idx, object target)
         {
+            if (LuaAPI.lua_type(L, idx) == LuaTypes.LUA_TSTRING)
+            {
+                IntPtr strlen;
+                IntPtr str = LuaAPI.lua_tolstring(L, idx, out strlen);
+                return str;
+            }
             return LuaAPI.lua_touserdata(L, idx);
         }
 
@@ -309,16 +314,27 @@ namespace XLua
             switch (type)
             {
                 case LuaTypes.LUA_TNUMBER:
-                {
-                    throw new Exception("Conversion from number to object is not supported.");
+                    {
+                        if (LuaAPI.lua_isint64(L, idx))
+                        {
+                            return LuaAPI.lua_toint64(L, idx);
+                        }
+                        else if(LuaAPI.lua_isinteger(L, idx))
+                        {
+                            return LuaAPI.xlua_tointeger(L, idx);
+                        }
+                        else
+                        {
+                            return LuaAPI.lua_tonumber(L, idx);
+                        }
                     }
                 case LuaTypes.LUA_TSTRING:
                     {
                         return LuaAPI.lua_tostring(L, idx);
                     }
                 case LuaTypes.LUA_TBOOLEAN:
-                {
-                    throw new Exception("Conversion from boolean to object is not supported.");
+                    {
+                        return LuaAPI.lua_toboolean(L, idx);
                     }
                 case LuaTypes.LUA_TTABLE:
                     {

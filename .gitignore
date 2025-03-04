@@ -45,3 +45,4 @@ com.tencent.xlua/Plugins/x86_64/xlua_il2cpp.dll.meta
 *.log
 ProjectSettings/ProjectSettings.asset
 com.tencent.xlua/Plugins/xlua_il2cpp/unityenv_for_xlua.h
+Assets/Plugins/x86_64

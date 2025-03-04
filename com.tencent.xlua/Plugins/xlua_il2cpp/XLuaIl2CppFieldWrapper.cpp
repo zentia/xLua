@@ -37,7 +37,7 @@ static void ifs_O(struct pesapi_ffi* apis, pesapi_callback_info info, FieldInfo*
     pesapi_env env = apis->get_env(info);    
     // LuaValToCSVal o/O
     Il2CppObject* p = LuaValueToCSRef(apis, TIp, env, apis->get_arg(info, 0));
-                    
+            
     SetFieldValue(nullptr, fieldInfo, offset, &p);
 }
 
@@ -50,7 +50,8 @@ static void ifg_S_i4i4_(struct pesapi_ffi* apis, pesapi_callback_info info, Fiel
 
 static void ifs_S_i4i4_(struct pesapi_ffi* apis, pesapi_callback_info info, FieldInfo* fieldInfo, size_t offset, Il2CppClass* TIp) {
     // PLog("Running ifs_S_i4i4_");
-    pesapi_env env = apis->get_env(info);     // LuaValToCSVal struct
+    pesapi_env env = apis->get_env(info);     
+    // LuaValToCSVal struct
     S_i4i4_* pp = DataTransfer::GetPointer<S_i4i4_>(apis, env, apis->get_arg(info, 0));
     S_i4i4_ p = pp ? *pp : S_i4i4_ {};
                     
@@ -66,7 +67,8 @@ static void ifg_S_i8_(struct pesapi_ffi* apis, pesapi_callback_info info, FieldI
 
 static void ifs_S_i8_(struct pesapi_ffi* apis, pesapi_callback_info info, FieldInfo* fieldInfo, size_t offset, Il2CppClass* TIp) {
     // PLog("Running ifs_S_i8_");
-    pesapi_env env = apis->get_env(info);     // LuaValToCSVal struct
+    pesapi_env env = apis->get_env(info);     
+    // LuaValToCSVal struct
     S_i8_* pp = DataTransfer::GetPointer<S_i8_>(apis, env, apis->get_arg(info, 0));
     S_i8_ p = pp ? *pp : S_i8_ {};
                     
@@ -82,7 +84,8 @@ static void ifg_S_r4r4_(struct pesapi_ffi* apis, pesapi_callback_info info, Fiel
 
 static void ifs_S_r4r4_(struct pesapi_ffi* apis, pesapi_callback_info info, FieldInfo* fieldInfo, size_t offset, Il2CppClass* TIp) {
     // PLog("Running ifs_S_r4r4_");
-    pesapi_env env = apis->get_env(info);     // LuaValToCSVal struct
+    pesapi_env env = apis->get_env(info);     
+    // LuaValToCSVal struct
     S_r4r4_* pp = DataTransfer::GetPointer<S_r4r4_>(apis, env, apis->get_arg(info, 0));
     S_r4r4_ p = pp ? *pp : S_r4r4_ {};
                     
@@ -98,7 +101,8 @@ static void ifg_S_r4r4r4_(struct pesapi_ffi* apis, pesapi_callback_info info, Fi
 
 static void ifs_S_r4r4r4_(struct pesapi_ffi* apis, pesapi_callback_info info, FieldInfo* fieldInfo, size_t offset, Il2CppClass* TIp) {
     // PLog("Running ifs_S_r4r4r4_");
-    pesapi_env env = apis->get_env(info);     // LuaValToCSVal struct
+    pesapi_env env = apis->get_env(info);     
+    // LuaValToCSVal struct
     S_r4r4r4_* pp = DataTransfer::GetPointer<S_r4r4r4_>(apis, env, apis->get_arg(info, 0));
     S_r4r4r4_ p = pp ? *pp : S_r4r4r4_ {};
                     
@@ -114,7 +118,8 @@ static void ifg_S_r4r4r4r4_(struct pesapi_ffi* apis, pesapi_callback_info info, 
 
 static void ifs_S_r4r4r4r4_(struct pesapi_ffi* apis, pesapi_callback_info info, FieldInfo* fieldInfo, size_t offset, Il2CppClass* TIp) {
     // PLog("Running ifs_S_r4r4r4r4_");
-    pesapi_env env = apis->get_env(info);     // LuaValToCSVal struct
+    pesapi_env env = apis->get_env(info);     
+    // LuaValToCSVal struct
     S_r4r4r4r4_* pp = DataTransfer::GetPointer<S_r4r4r4r4_>(apis, env, apis->get_arg(info, 0));
     S_r4r4r4r4_ p = pp ? *pp : S_r4r4r4r4_ {};
                     
@@ -130,7 +135,8 @@ static void ifg_S_r4r4r4r4r4r4_(struct pesapi_ffi* apis, pesapi_callback_info in
 
 static void ifs_S_r4r4r4r4r4r4_(struct pesapi_ffi* apis, pesapi_callback_info info, FieldInfo* fieldInfo, size_t offset, Il2CppClass* TIp) {
     // PLog("Running ifs_S_r4r4r4r4r4r4_");
-    pesapi_env env = apis->get_env(info);     // LuaValToCSVal struct
+    pesapi_env env = apis->get_env(info);     
+    // LuaValToCSVal struct
     S_r4r4r4r4r4r4_* pp = DataTransfer::GetPointer<S_r4r4r4r4r4r4_>(apis, env, apis->get_arg(info, 0));
     S_r4r4r4r4r4r4_ p = pp ? *pp : S_r4r4r4r4r4r4_ {};
                     
@@ -146,7 +152,8 @@ static void ifg_S_u1u1u1u1_(struct pesapi_ffi* apis, pesapi_callback_info info, 
 
 static void ifs_S_u1u1u1u1_(struct pesapi_ffi* apis, pesapi_callback_info info, FieldInfo* fieldInfo, size_t offset, Il2CppClass* TIp) {
     // PLog("Running ifs_S_u1u1u1u1_");
-    pesapi_env env = apis->get_env(info);     // LuaValToCSVal struct
+    pesapi_env env = apis->get_env(info);     
+    // LuaValToCSVal struct
     S_u1u1u1u1_* pp = DataTransfer::GetPointer<S_u1u1u1u1_>(apis, env, apis->get_arg(info, 0));
     S_u1u1u1u1_ p = pp ? *pp : S_u1u1u1u1_ {};
                     
@@ -162,7 +169,8 @@ static void ifg_S_u1u2u1u1S_S_u4u4u4u4u4u4u4u4_u4u4u1u4u4__(struct pesapi_ffi* a
 
 static void ifs_S_u1u2u1u1S_S_u4u4u4u4u4u4u4u4_u4u4u1u4u4__(struct pesapi_ffi* apis, pesapi_callback_info info, FieldInfo* fieldInfo, size_t offset, Il2CppClass* TIp) {
     // PLog("Running ifs_S_u1u2u1u1S_S_u4u4u4u4u4u4u4u4_u4u4u1u4u4__");
-    pesapi_env env = apis->get_env(info);     // LuaValToCSVal struct
+    pesapi_env env = apis->get_env(info);     
+    // LuaValToCSVal struct
     S_u1u2u1u1S_S_u4u4u4u4u4u4u4u4_u4u4u1u4u4__* pp = DataTransfer::GetPointer<S_u1u2u1u1S_S_u4u4u4u4u4u4u4u4_u4u4u1u4u4__>(apis, env, apis->get_arg(info, 0));
     S_u1u2u1u1S_S_u4u4u4u4u4u4u4u4_u4u4u1u4u4__ p = pp ? *pp : S_u1u2u1u1S_S_u4u4u4u4u4u4u4u4_u4u4u1u4u4__ {};
                     
@@ -178,7 +186,8 @@ static void ifg_S_u4o_(struct pesapi_ffi* apis, pesapi_callback_info info, Field
 
 static void ifs_S_u4o_(struct pesapi_ffi* apis, pesapi_callback_info info, FieldInfo* fieldInfo, size_t offset, Il2CppClass* TIp) {
     // PLog("Running ifs_S_u4o_");
-    pesapi_env env = apis->get_env(info);     // LuaValToCSVal struct
+    pesapi_env env = apis->get_env(info);     
+    // LuaValToCSVal struct
     S_u4o_* pp = DataTransfer::GetPointer<S_u4o_>(apis, env, apis->get_arg(info, 0));
     S_u4o_ p = pp ? *pp : S_u4o_ {};
                     
@@ -194,7 +203,8 @@ static void ifg_S_u8_(struct pesapi_ffi* apis, pesapi_callback_info info, FieldI
 
 static void ifs_S_u8_(struct pesapi_ffi* apis, pesapi_callback_info info, FieldInfo* fieldInfo, size_t offset, Il2CppClass* TIp) {
     // PLog("Running ifs_S_u8_");
-    pesapi_env env = apis->get_env(info);     // LuaValToCSVal struct
+    pesapi_env env = apis->get_env(info);     
+    // LuaValToCSVal struct
     S_u8_* pp = DataTransfer::GetPointer<S_u8_>(apis, env, apis->get_arg(info, 0));
     S_u8_ p = pp ? *pp : S_u8_ {};
                     
@@ -215,7 +225,7 @@ static void ifs_b(struct pesapi_ffi* apis, pesapi_callback_info info, FieldInfo*
     pesapi_env env = apis->get_env(info);        
     // LuaValToCSVal P any
     bool p = converter::Converter<bool>::toCpp(apis, env, apis->get_arg(info, 0));
-                    
+            
     SetFieldValue(nullptr, fieldInfo, offset, &p);
 }
 
@@ -233,7 +243,7 @@ static void ifs_c(struct pesapi_ffi* apis, pesapi_callback_info info, FieldInfo*
     pesapi_env env = apis->get_env(info);        
     // LuaValToCSVal P any
     Il2CppChar p = converter::Converter<Il2CppChar>::toCpp(apis, env, apis->get_arg(info, 0));
-                    
+            
     SetFieldValue(nullptr, fieldInfo, offset, &p);
 }
 
@@ -251,7 +261,7 @@ static void ifs_i4(struct pesapi_ffi* apis, pesapi_callback_info info, FieldInfo
     pesapi_env env = apis->get_env(info);        
     // LuaValToCSVal P any
     int32_t p = converter::Converter<int32_t>::toCpp(apis, env, apis->get_arg(info, 0));
-                    
+            
     SetFieldValue(nullptr, fieldInfo, offset, &p);
 }
 
@@ -269,7 +279,7 @@ static void ifs_i8(struct pesapi_ffi* apis, pesapi_callback_info info, FieldInfo
     pesapi_env env = apis->get_env(info);        
     // LuaValToCSVal P any
     int64_t p = converter::Converter<int64_t>::toCpp(apis, env, apis->get_arg(info, 0));
-                    
+            
     SetFieldValue(nullptr, fieldInfo, offset, &p);
 }
 
@@ -287,7 +297,7 @@ static void ifs_o(struct pesapi_ffi* apis, pesapi_callback_info info, FieldInfo*
     pesapi_env env = apis->get_env(info);    
     // LuaValToCSVal o/O
     Il2CppObject* p = LuaValueToCSRef(apis, TIp, env, apis->get_arg(info, 0));
-                    
+            
     SetFieldValue(nullptr, fieldInfo, offset, p);
 }
 
@@ -305,7 +315,7 @@ static void ifs_r4(struct pesapi_ffi* apis, pesapi_callback_info info, FieldInfo
     pesapi_env env = apis->get_env(info);        
     // LuaValToCSVal P any
     float p = converter::Converter<float>::toCpp(apis, env, apis->get_arg(info, 0));
-                    
+            
     SetFieldValue(nullptr, fieldInfo, offset, &p);
 }
 
@@ -323,7 +333,7 @@ static void ifs_r8(struct pesapi_ffi* apis, pesapi_callback_info info, FieldInfo
     pesapi_env env = apis->get_env(info);        
     // LuaValToCSVal P any
     double p = converter::Converter<double>::toCpp(apis, env, apis->get_arg(info, 0));
-                    
+            
     SetFieldValue(nullptr, fieldInfo, offset, &p);
 }
 
@@ -363,7 +373,7 @@ static void ifs_tO(struct pesapi_ffi* apis, pesapi_callback_info info, FieldInfo
         
     // LuaValToCSVal o/O
     Il2CppObject* p = LuaValueToCSRef(apis, TIp, env, apis->get_arg(info, 0));
-                    
+            
     SetFieldValue(self, fieldInfo, offset, &p);
 }
 
@@ -382,7 +392,8 @@ static void ifs_tS_S_r4r4r4_S_r4r4r4_S_r4r4r4_r4_(struct pesapi_ffi* apis, pesap
     pesapi_env env = apis->get_env(info);
     pesapi_value luaThis = apis->get_holder(info);
     auto self = apis->get_native_object_ptr(env, luaThis);
-         // LuaValToCSVal struct
+         
+    // LuaValToCSVal struct
     S_S_r4r4r4_S_r4r4r4_S_r4r4r4_r4_* pp = DataTransfer::GetPointer<S_S_r4r4r4_S_r4r4r4_S_r4r4r4_r4_>(apis, env, apis->get_arg(info, 0));
     S_S_r4r4r4_S_r4r4r4_S_r4r4r4_r4_ p = pp ? *pp : S_S_r4r4r4_S_r4r4r4_S_r4r4r4_r4_ {};
                     
@@ -404,7 +415,8 @@ static void ifs_tS_bb_(struct pesapi_ffi* apis, pesapi_callback_info info, Field
     pesapi_env env = apis->get_env(info);
     pesapi_value luaThis = apis->get_holder(info);
     auto self = apis->get_native_object_ptr(env, luaThis);
-         // LuaValToCSVal struct
+         
+    // LuaValToCSVal struct
     S_bb_* pp = DataTransfer::GetPointer<S_bb_>(apis, env, apis->get_arg(info, 0));
     S_bb_ p = pp ? *pp : S_bb_ {};
                     
@@ -426,7 +438,8 @@ static void ifs_tS_bbbbi4i4i4_(struct pesapi_ffi* apis, pesapi_callback_info inf
     pesapi_env env = apis->get_env(info);
     pesapi_value luaThis = apis->get_holder(info);
     auto self = apis->get_native_object_ptr(env, luaThis);
-         // LuaValToCSVal struct
+         
+    // LuaValToCSVal struct
     S_bbbbi4i4i4_* pp = DataTransfer::GetPointer<S_bbbbi4i4i4_>(apis, env, apis->get_arg(info, 0));
     S_bbbbi4i4i4_ p = pp ? *pp : S_bbbbi4i4i4_ {};
                     
@@ -448,7 +461,8 @@ static void ifs_tS_i4i4i4_(struct pesapi_ffi* apis, pesapi_callback_info info, F
     pesapi_env env = apis->get_env(info);
     pesapi_value luaThis = apis->get_holder(info);
     auto self = apis->get_native_object_ptr(env, luaThis);
-         // LuaValToCSVal struct
+         
+    // LuaValToCSVal struct
     S_i4i4i4_* pp = DataTransfer::GetPointer<S_i4i4i4_>(apis, env, apis->get_arg(info, 0));
     S_i4i4i4_ p = pp ? *pp : S_i4i4i4_ {};
                     
@@ -470,7 +484,8 @@ static void ifs_tS_i4i4ossOosi4i4i1i1i1i4Oob_(struct pesapi_ffi* apis, pesapi_ca
     pesapi_env env = apis->get_env(info);
     pesapi_value luaThis = apis->get_holder(info);
     auto self = apis->get_native_object_ptr(env, luaThis);
-         // LuaValToCSVal struct
+         
+    // LuaValToCSVal struct
     S_i4i4ossOosi4i4i1i1i1i4Oob_* pp = DataTransfer::GetPointer<S_i4i4ossOosi4i4i1i1i1i4Oob_>(apis, env, apis->get_arg(info, 0));
     S_i4i4ossOosi4i4i1i1i1i4Oob_ p = pp ? *pp : S_i4i4ossOosi4i4i1i1i1i4Oob_ {};
                     
@@ -492,7 +507,8 @@ static void ifs_tS_oi4i4i4i4i4o_(struct pesapi_ffi* apis, pesapi_callback_info i
     pesapi_env env = apis->get_env(info);
     pesapi_value luaThis = apis->get_holder(info);
     auto self = apis->get_native_object_ptr(env, luaThis);
-         // LuaValToCSVal struct
+         
+    // LuaValToCSVal struct
     S_oi4i4i4i4i4o_* pp = DataTransfer::GetPointer<S_oi4i4i4i4i4o_>(apis, env, apis->get_arg(info, 0));
     S_oi4i4i4i4i4o_ p = pp ? *pp : S_oi4i4i4i4i4o_ {};
                     
@@ -514,7 +530,8 @@ static void ifs_tS_r4r4_(struct pesapi_ffi* apis, pesapi_callback_info info, Fie
     pesapi_env env = apis->get_env(info);
     pesapi_value luaThis = apis->get_holder(info);
     auto self = apis->get_native_object_ptr(env, luaThis);
-         // LuaValToCSVal struct
+         
+    // LuaValToCSVal struct
     S_r4r4_* pp = DataTransfer::GetPointer<S_r4r4_>(apis, env, apis->get_arg(info, 0));
     S_r4r4_ p = pp ? *pp : S_r4r4_ {};
                     
@@ -536,7 +553,8 @@ static void ifs_tS_r4r4r4_(struct pesapi_ffi* apis, pesapi_callback_info info, F
     pesapi_env env = apis->get_env(info);
     pesapi_value luaThis = apis->get_holder(info);
     auto self = apis->get_native_object_ptr(env, luaThis);
-         // LuaValToCSVal struct
+         
+    // LuaValToCSVal struct
     S_r4r4r4_* pp = DataTransfer::GetPointer<S_r4r4r4_>(apis, env, apis->get_arg(info, 0));
     S_r4r4r4_ p = pp ? *pp : S_r4r4r4_ {};
                     
@@ -558,7 +576,8 @@ static void ifs_tS_r4r4r4r4_(struct pesapi_ffi* apis, pesapi_callback_info info,
     pesapi_env env = apis->get_env(info);
     pesapi_value luaThis = apis->get_holder(info);
     auto self = apis->get_native_object_ptr(env, luaThis);
-         // LuaValToCSVal struct
+         
+    // LuaValToCSVal struct
     S_r4r4r4r4_* pp = DataTransfer::GetPointer<S_r4r4r4r4_>(apis, env, apis->get_arg(info, 0));
     S_r4r4r4r4_ p = pp ? *pp : S_r4r4r4r4_ {};
                     
@@ -580,7 +599,8 @@ static void ifs_tS_u4o_(struct pesapi_ffi* apis, pesapi_callback_info info, Fiel
     pesapi_env env = apis->get_env(info);
     pesapi_value luaThis = apis->get_holder(info);
     auto self = apis->get_native_object_ptr(env, luaThis);
-         // LuaValToCSVal struct
+         
+    // LuaValToCSVal struct
     S_u4o_* pp = DataTransfer::GetPointer<S_u4o_>(apis, env, apis->get_arg(info, 0));
     S_u4o_ p = pp ? *pp : S_u4o_ {};
                     
@@ -602,7 +622,8 @@ static void ifs_tS_u4u4i4u4i4u4u1i4i4u1i4_(struct pesapi_ffi* apis, pesapi_callb
     pesapi_env env = apis->get_env(info);
     pesapi_value luaThis = apis->get_holder(info);
     auto self = apis->get_native_object_ptr(env, luaThis);
-         // LuaValToCSVal struct
+         
+    // LuaValToCSVal struct
     S_u4u4i4u4i4u4u1i4i4u1i4_* pp = DataTransfer::GetPointer<S_u4u4i4u4i4u4u1i4i4u1i4_>(apis, env, apis->get_arg(info, 0));
     S_u4u4i4u4i4u4u1i4i4u1i4_ p = pp ? *pp : S_u4u4i4u4i4u4u1i4i4u1i4_ {};
                     
@@ -624,7 +645,8 @@ static void ifs_tS_u4u4u4i4_(struct pesapi_ffi* apis, pesapi_callback_info info,
     pesapi_env env = apis->get_env(info);
     pesapi_value luaThis = apis->get_holder(info);
     auto self = apis->get_native_object_ptr(env, luaThis);
-         // LuaValToCSVal struct
+         
+    // LuaValToCSVal struct
     S_u4u4u4i4_* pp = DataTransfer::GetPointer<S_u4u4u4i4_>(apis, env, apis->get_arg(info, 0));
     S_u4u4u4i4_ p = pp ? *pp : S_u4u4u4i4_ {};
                     
@@ -646,10 +668,35 @@ static void ifs_tS_u4u4u4u4u4u4u4u4_(struct pesapi_ffi* apis, pesapi_callback_in
     pesapi_env env = apis->get_env(info);
     pesapi_value luaThis = apis->get_holder(info);
     auto self = apis->get_native_object_ptr(env, luaThis);
-         // LuaValToCSVal struct
+         
+    // LuaValToCSVal struct
     S_u4u4u4u4u4u4u4u4_* pp = DataTransfer::GetPointer<S_u4u4u4u4u4u4u4u4_>(apis, env, apis->get_arg(info, 0));
     S_u4u4u4u4u4u4u4u4_ p = pp ? *pp : S_u4u4u4u4u4u4u4u4_ {};
                     
+    SetFieldValue(self, fieldInfo, offset, &p);
+}
+
+static void ifg_ta(struct pesapi_ffi* apis, pesapi_callback_info info, FieldInfo* fieldInfo, size_t offset, Il2CppClass* TIret) {
+    // PLog("Running ifg_ta");
+    pesapi_env env = apis->get_env(info);
+    pesapi_value luaThis = apis->get_holder(info);
+    auto self = apis->get_native_object_ptr(env, luaThis);
+        
+    Il2CppObject* ret;
+    GetFieldValue(self, fieldInfo, offset, &ret);
+
+    apis->add_return(info, CSRefToLuaValue(apis, env, TIret, ret));    
+}
+
+static void ifs_ta(struct pesapi_ffi* apis, pesapi_callback_info info, FieldInfo* fieldInfo, size_t offset, Il2CppClass* TIp) {
+    // PLog("Running ifs_ta");
+    pesapi_env env = apis->get_env(info);
+    pesapi_value luaThis = apis->get_holder(info);
+    auto self = apis->get_native_object_ptr(env, luaThis);
+        
+    // LuaValToCSVal o/O
+    Il2CppObject* p = LuaValueToCSRef(apis, TIp, env, apis->get_arg(info, 0));
+            
     SetFieldValue(self, fieldInfo, offset, &p);
 }
 
@@ -673,7 +720,7 @@ static void ifs_tb(struct pesapi_ffi* apis, pesapi_callback_info info, FieldInfo
             
     // LuaValToCSVal P any
     bool p = converter::Converter<bool>::toCpp(apis, env, apis->get_arg(info, 0));
-                    
+            
     SetFieldValue(self, fieldInfo, offset, &p);
 }
 
@@ -697,7 +744,7 @@ static void ifs_ti1(struct pesapi_ffi* apis, pesapi_callback_info info, FieldInf
             
     // LuaValToCSVal P any
     int8_t p = converter::Converter<int8_t>::toCpp(apis, env, apis->get_arg(info, 0));
-                    
+            
     SetFieldValue(self, fieldInfo, offset, &p);
 }
 
@@ -721,7 +768,7 @@ static void ifs_ti4(struct pesapi_ffi* apis, pesapi_callback_info info, FieldInf
             
     // LuaValToCSVal P any
     int32_t p = converter::Converter<int32_t>::toCpp(apis, env, apis->get_arg(info, 0));
-                    
+            
     SetFieldValue(self, fieldInfo, offset, &p);
 }
 
@@ -745,7 +792,7 @@ static void ifs_ti8(struct pesapi_ffi* apis, pesapi_callback_info info, FieldInf
             
     // LuaValToCSVal P any
     int64_t p = converter::Converter<int64_t>::toCpp(apis, env, apis->get_arg(info, 0));
-                    
+            
     SetFieldValue(self, fieldInfo, offset, &p);
 }
 
@@ -769,7 +816,7 @@ static void ifs_to(struct pesapi_ffi* apis, pesapi_callback_info info, FieldInfo
         
     // LuaValToCSVal o/O
     Il2CppObject* p = LuaValueToCSRef(apis, TIp, env, apis->get_arg(info, 0));
-                    
+            
     SetFieldValue(self, fieldInfo, offset, &p);
 }
 
@@ -793,7 +840,7 @@ static void ifs_tr4(struct pesapi_ffi* apis, pesapi_callback_info info, FieldInf
             
     // LuaValToCSVal P any
     float p = converter::Converter<float>::toCpp(apis, env, apis->get_arg(info, 0));
-                    
+            
     SetFieldValue(self, fieldInfo, offset, &p);
 }
 
@@ -817,7 +864,7 @@ static void ifs_tr8(struct pesapi_ffi* apis, pesapi_callback_info info, FieldInf
             
     // LuaValToCSVal P any
     double p = converter::Converter<double>::toCpp(apis, env, apis->get_arg(info, 0));
-                    
+            
     SetFieldValue(self, fieldInfo, offset, &p);
 }
 
@@ -863,7 +910,7 @@ static void ifs_tu1(struct pesapi_ffi* apis, pesapi_callback_info info, FieldInf
             
     // LuaValToCSVal P any
     uint8_t p = converter::Converter<uint8_t>::toCpp(apis, env, apis->get_arg(info, 0));
-                    
+            
     SetFieldValue(self, fieldInfo, offset, &p);
 }
 
@@ -887,7 +934,7 @@ static void ifs_tu2(struct pesapi_ffi* apis, pesapi_callback_info info, FieldInf
             
     // LuaValToCSVal P any
     uint16_t p = converter::Converter<uint16_t>::toCpp(apis, env, apis->get_arg(info, 0));
-                    
+            
     SetFieldValue(self, fieldInfo, offset, &p);
 }
 
@@ -911,7 +958,7 @@ static void ifs_tu4(struct pesapi_ffi* apis, pesapi_callback_info info, FieldInf
             
     // LuaValToCSVal P any
     uint32_t p = converter::Converter<uint32_t>::toCpp(apis, env, apis->get_arg(info, 0));
-                    
+            
     SetFieldValue(self, fieldInfo, offset, &p);
 }
 
@@ -935,7 +982,7 @@ static void ifs_tu8(struct pesapi_ffi* apis, pesapi_callback_info info, FieldInf
             
     // LuaValToCSVal P any
     uint64_t p = converter::Converter<uint64_t>::toCpp(apis, env, apis->get_arg(info, 0));
-                    
+            
     SetFieldValue(self, fieldInfo, offset, &p);
 }
 
@@ -953,7 +1000,7 @@ static void ifs_u4(struct pesapi_ffi* apis, pesapi_callback_info info, FieldInfo
     pesapi_env env = apis->get_env(info);        
     // LuaValToCSVal P any
     uint32_t p = converter::Converter<uint32_t>::toCpp(apis, env, apis->get_arg(info, 0));
-                    
+            
     SetFieldValue(nullptr, fieldInfo, offset, &p);
 }
 
@@ -971,7 +1018,7 @@ static void ifs_u8(struct pesapi_ffi* apis, pesapi_callback_info info, FieldInfo
     pesapi_env env = apis->get_env(info);        
     // LuaValToCSVal P any
     uint64_t p = converter::Converter<uint64_t>::toCpp(apis, env, apis->get_arg(info, 0));
-                    
+            
     SetFieldValue(nullptr, fieldInfo, offset, &p);
 }
 
@@ -1009,6 +1056,7 @@ static FieldWrapFuncInfo g_fieldWrapFuncInfos[] = {
     {"tS_u4u4i4u4i4u4u1i4i4u1i4_", ifg_tS_u4u4i4u4i4u4u1i4i4u1i4_, ifs_tS_u4u4i4u4i4u4u1i4i4u1i4_},
     {"tS_u4u4u4i4_", ifg_tS_u4u4u4i4_, ifs_tS_u4u4u4i4_},
     {"tS_u4u4u4u4u4u4u4u4_", ifg_tS_u4u4u4u4u4u4u4u4_, ifs_tS_u4u4u4u4u4u4u4u4_},
+    {"ta", ifg_ta, ifs_ta},
     {"tb", ifg_tb, ifs_tb},
     {"ti1", ifg_ti1, ifs_ti1},
     {"ti4", ifg_ti4, ifs_ti4},

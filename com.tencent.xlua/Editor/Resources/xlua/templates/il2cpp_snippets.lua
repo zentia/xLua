@@ -51,7 +51,7 @@ function SToCPPType(signature)
     if signature == 's' then
         return 'Il2CppString*'
     end
-    if signature == 'o' or signature == 'O' then
+    if signature == 'o' or signature == 'O' or signature == 'a' then
         return 'Il2CppObject*'
     end
     if signature:sub(1, 1) == 'V' then
@@ -100,7 +100,7 @@ function getArgValue(signature, LuaName, isRef)
                 LuaName)
         end
     elseif ((signature == 'Pv' or signature == 'p') or signature:sub(1,1) == 'T') and not isRef then
-        return string.format('DataTransfer::GetPointer<void>(apis, env, %s)', LuaName)
+        return string.format('DataTransfer::GetPointer(apis, env, %s)', LuaName)
     else
         if PrimitiveSignatureCppTypeMap[signature] then
             if signature == 'v' then
@@ -157,7 +157,7 @@ function checkLuaArg(signature, index)
             string.format([[
 !converter::Converter<Il2CppString*>::accept(apis, env, _sv%d))
             return false;]], index)
-    elseif signature == 'o' then
+    elseif signature == 'o' or signature == 'a' then
         ret = ret ..
             string.format([[!DataTransfer::IsAssignable(apis, env, _sv%d, %s, false))
             return false;]], index, typeInfoVar)
@@ -237,7 +237,7 @@ function returnToCS(signature)
     return string.format([[
  %s
     return ret;
-    ]], LuaValToCSVal(signature, 'luaret', 'ret'))
+    ]], LuaValToCSVal(signature, 'luaret', 'ret', -1, 'TIret'))
 end
 
 function LuaValToCSVal(signature, LuaName, CSName, index)
@@ -250,19 +250,20 @@ function LuaValToCSVal(signature, LuaName, CSName, index)
     Il2CppString* u%s = converter::Converter<std::reference_wrapper<Il2CppString*>>::toCpp(apis, env, %s); // string ref
     Il2CppString** %s = &u%s;
         ]], CSName, LuaName, CSName, CSName)
-    elseif signature == 'o' or signature == 'O' then -- object
+    elseif signature == 'o' or signature == 'O' or signature == 'a' then -- object
         return string.format([[
     
     // LuaValToCSVal o/O
     Il2CppObject* %s = LuaValueToCSRef(apis, TI%s, env, %s);
-        ]], CSName, CSName, LuaName)
+]], CSName, CSName, LuaName)
     elseif signature == 'Po' or signature == 'PO' or signature == 'Pa' or signature == 'To' or signature == 'TO' or signature == 'Ta' then
         return string.format([[     // LuaValToCSVal Po/PO
     Il2CppObject* u%s = DataTransfer::GetPointer<Il2CppObject>(apis, env, apis->unboxing(env, %s)); // object ret
     Il2CppObject** %s = &u%s;
         ]], CSName, LuaName, CSName, CSName)
     elseif (string.startsWith(signature, sigs.StructPrefix) or string.startsWith(signature, sigs.NullableStructPrefix)) and string.endsWith(signature, '_') then -- valuetype
-        return string.format([[     // LuaValToCSVal struct
+        return string.format([[     
+    // LuaValToCSVal struct
     %s* p%s = DataTransfer::GetPointer<%s>(apis, env, %s);
     %s %s = p%s ? *p%s : %s {};
         ]], signature, CSName, signature, LuaName, signature, CSName, CSName, CSName, signature)
@@ -359,7 +360,7 @@ function LuaValToCSVal(signature, LuaName, CSName, index)
         
     // LuaValToCSVal P any
     %s %s = %s;
-        ]], SToCPPType(signature), CSName, getArgValue(signature, LuaName))
+]], SToCPPType(signature), CSName, getArgValue(signature, LuaName))
     end
 end
 
@@ -376,7 +377,7 @@ function CSValToLuaVal(signature, CSName)
             CSName)
     elseif signature == 'O' then -- System.Object
         return string.format('CSRefToLuaValue(apis, env, %s, %s)', TIName, CSName)
-    elseif signature == 'o' then -- classes except System.Object
+    elseif signature == 'o' or signature == 'a' then -- classes except System.Object
         return string.format('CSRefToLuaValue(apis, env, %s, %s)', TIName, CSName)
     elseif string.startsWith(signature, sigs.NullableStructPrefix) and string.endsWith(signature, '_') then
         return string.format('DataTransfer::CopyNullableValueType(apis, env, %s, %s)', CSName, TIName)

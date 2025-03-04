@@ -44,10 +44,31 @@ void pesapi_set_property_info (pesapi_property_descriptor properties, size_t ind
     pesapi_set_property_info_ptr(properties, index, name, is_static, getter, setter, getter_userdata, setter_userdata, type_info);
 }
 
-typedef void (*pesapi_define_classType)(const void* type_id, const void* super_type_id, const char* type_name,pesapi_constructor constructor, pesapi_finalize finalize, size_t property_count, pesapi_property_descriptor properties,void* userdata);
+typedef void (*pesapi_define_classType)(
+    const void* type_id, 
+    const void* super_type_id, 
+    const char* type_name,
+    pesapi_constructor constructor, 
+    pesapi_finalize finalize, 
+    size_t property_count, 
+    pesapi_property_descriptor properties,
+    void* userdata,
+    bool pairs,
+    bool ipairs);
 static pesapi_define_classType pesapi_define_class_ptr;
-void pesapi_define_class (const void* type_id, const void* super_type_id, const char* type_name,pesapi_constructor constructor, pesapi_finalize finalize, size_t property_count, pesapi_property_descriptor properties,void* userdata) {
-    pesapi_define_class_ptr(type_id, super_type_id, type_name, constructor, finalize, property_count, properties, userdata);
+void pesapi_define_class (
+    const void* type_id, 
+    const void* super_type_id, 
+    const char* type_name,
+    pesapi_constructor constructor, 
+    pesapi_finalize finalize, 
+    size_t property_count, 
+    pesapi_property_descriptor properties,
+    void* userdata,
+    bool dictionary,
+    bool enumerable)
+{
+    pesapi_define_class_ptr(type_id, super_type_id, type_name, constructor, finalize, property_count, properties, userdata, dictionary, enumerable);
 }
 
 typedef void* (*pesapi_get_class_dataType)(const void* type_id, bool force_load);

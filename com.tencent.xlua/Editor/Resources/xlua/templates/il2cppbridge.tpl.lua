@@ -7,7 +7,7 @@ function genBridgeArgs(parameterSignatures)
             return string.format([[pesapi_value argv[%d]{
     %s
     };]], #parameterSignatures,
-                table.join(table.map(parameterSignatures,                        function(ps, i)
+                table.join(table.map(parameterSignatures, function(ps, i)
                             return CSValToLuaVal(ps:sub(1,1) == 'D' and string.sub(ps, 2) or ps, string.format('p%d', i-1)) or
                                 'apis->create_undefined(env)'
                         end),

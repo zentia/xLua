@@ -1,7 +1,6 @@
 using System;
 using System.Runtime.InteropServices;
 using System.Text;
-using Assets.Plugins.Perf;
 
 namespace XLua.LuaDLL
 {
@@ -101,17 +100,6 @@ namespace XLua.LuaDLL
 		[DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
 		public static extern void lua_createtable(IntPtr L, int narr, int nrec);//[-0, +0, m]
 
-        #if OS_GAME
-        [DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
-        
-        public static extern int luaregist_stats_custom_name(IntPtr L, StatsLite.PFRegistCustomName pf);
-
-        [DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
-        public static extern int luastats_begin_sample(IntPtr L, StatsLite.PFStatsBeginSample pf);
-
-        [DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
-        public static extern int luastats_end_sample_by_index(IntPtr L, StatsLite.PFStatsEndSampleByIndex pf);
-        #endif
         public static void lua_newtable(IntPtr L)//[-0, +0, m]
         {
 			lua_createtable(L, 0, 0);
@@ -350,7 +338,7 @@ namespace XLua.LuaDLL
         public static byte[] lua_tobytes(IntPtr L, int index)//[-0, +0, m]
         {
             if (lua_type(L, index) == LuaTypes.LUA_TSTRING)
-            { 
+            {
                 IntPtr strlen;
                 IntPtr str = lua_tolstring(L, index, out strlen);
                 if (str != IntPtr.Zero)
@@ -437,10 +425,7 @@ namespace XLua.LuaDLL
 
         [DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]//[,,m]
         public static extern int load_error_func(IntPtr L, int Ref);
-#if !OS_GAME
-        [DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
-        public static extern int luaopen_i64lib(IntPtr L);//[,,m]
-#endif
+
         [DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void lua_pushint64(IntPtr L, long n);//[,,m]
 

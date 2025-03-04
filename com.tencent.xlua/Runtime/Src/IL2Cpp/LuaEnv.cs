@@ -17,7 +17,6 @@ namespace XLua
     {
         private static List<LuaEnv> luaEnvs = new List<LuaEnv>();
         private static bool isInitialized = false;
-        private static Type persistentObjectInfoType;
         private static MethodInfo extensionMethodGetMethodInfo;
 
         IntPtr apis;
@@ -40,7 +39,7 @@ namespace XLua
 
         public static LuaEnv Instance;
 
-        public LuaEnv()
+        public LuaEnv(CustomLoader loader)
         {
             UnityEngine.Debug.Log("Native XLua Env");
             if (!isInitialized)
@@ -55,12 +54,12 @@ namespace XLua
                         extensionMethodGetMethodInfo = typeof(XLua.ExtensionMethodInfo).GetMethod("Get");
 
                         XLua.NativeAPI.SetExtensionMethodGet(extensionMethodGetMethodInfo);
-
-                        persistentObjectInfoType = typeof(XLua.LuaTable);
-                        XLua.NativeAPI.SetGlobalType_LuaTable(typeof(LuaTable));
-                        XLua.NativeAPI.SetGlobalType_Array(typeof(Array));
-                        XLua.NativeAPI.SetGlobalType_ArrayBuffer(typeof(byte[]));
-                        
+                        NativeAPI.SetGlobalType_LuaTable(typeof(LuaTable));
+                        NativeAPI.SetGlobalType_Array(typeof(Array));
+                        NativeAPI.SetGlobalType_ArrayBuffer(typeof(byte[]));
+                        NativeAPI.SetGlobalType_IntPtr(typeof(IntPtr));
+                        NativeAPI.SetGlobalType_IEnumerable(typeof(IEnumerable));
+                        NativeAPI.SetGlobalType_IDictionary(typeof(IDictionary));
                         XLua.ExtensionMethodInfo.LoadExtensionMethodInfo();
                         isInitialized = true;
                     }
@@ -69,6 +68,11 @@ namespace XLua
             Instance = this;
             apis = XLua.NativeAPI.GetFFIApi();
             Init();
+            if (loader != null)
+            {
+                AddLoader(loader);
+            }
+
             nativePesapiEnv = XLua.NativeAPI.GetPapiEnvRef(nativeLuaEnv);
             nativeScriptObjectsRefsMgr = XLua.NativeAPI.InitialPapiEnvRef(apis, nativePesapiEnv);
 
@@ -98,6 +102,8 @@ namespace XLua
             ffi.set_property(env, global, "CSharpFoo", func);
             ffi.close_scope(rawL, scope, 0);
             _G = (LuaTable)XLua.NativeAPI.GetGlobalTable(apis, nativePesapiEnv);
+
+            DoString("require 'vm/init'");
         }
 
         [MonoPInvokeCallback(typeof(XLua.NativeAPI.LogCallback))]
@@ -117,7 +123,7 @@ namespace XLua
         {
             UnityEngine.Debug.Log(msg);
         }
-        
+
         static IntPtr storeCallback = IntPtr.Zero;
 
         [MonoPInvokeCallback(typeof(XLua.pesapi_callback))]
@@ -238,7 +244,7 @@ namespace XLua
         {
             Tick();
         }
-        
+
         public void FullGc()
         {
             LuaAPI.lua_gc(L, XLua.LuaGCOptions.LUA_GCCOLLECT, 0);
@@ -261,12 +267,11 @@ namespace XLua
         {
             lock (this)
             {
-                if (disposed) return;
-                XLua.NativeAPI.CleanupPapiEnvRef(apis, nativePesapiEnv);
-                
+                if (disposed)
+                    return;
                 XLua.NativeAPI.DestroyLuaEnvPrivate(nativeScriptObjectsRefsMgr);
+                XLua.NativeAPI.CleanupPapiEnvRef(apis, nativePesapiEnv);
                 nativeScriptObjectsRefsMgr = IntPtr.Zero;
-                
                 Instance = null;
                 disposed = true;
             }
@@ -313,12 +318,6 @@ namespace XLua
 #if THREAD_SAFE
             }
 #endif
-        }
-
-        public object SafeGetCSObj(IntPtr l, int index)
-        {
-            var idx = ffi.get_native_object_index(l, index);
-            return objectPool[idx];
         }
 
         internal Dictionary<string, LuaCSFunction> buildin_initer = new();

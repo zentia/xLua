@@ -110,7 +110,7 @@ namespace XLua
 
             List<Type> validGenericParameter = new List<Type>();
 
-            if (pinfos == null) pinfos = method.GetParameters(); 
+            if (pinfos == null) pinfos = method.GetParameters();
             foreach (var parameters in pinfos)
             {
                 Type parameterType = parameters.ParameterType;
@@ -274,7 +274,7 @@ namespace XLua
                 throw new InvalidOperationException();
             return firstParameterConstraint;
         }
-        
+
 #if (UNITY_WSA && !ENABLE_IL2CPP) && !UNITY_EDITOR
         public static List<Assembly> _assemblies;
         public static List<Assembly> GetAssemblies()
@@ -289,7 +289,7 @@ namespace XLua
                 t.Wait();
             }
             return _assemblies;
-            
+
         }
         public static async System.Threading.Tasks.Task<List<Assembly>> GetAssemblyList()
         {
@@ -349,7 +349,7 @@ namespace XLua
             return allTypes;
         }
 #endif
-    
+
 		public static bool LoadField(RealStatePtr L, int idx, string field_name)
 		{
 			idx = idx > 0 ? idx : LuaAPI.lua_gettop(L) + idx + 1;// abs of index
@@ -385,7 +385,7 @@ namespace XLua
                 t.Wait();
             }
             return _assemblies;
-            
+
         }
         public static async System.Threading.Tasks.Task<List<Assembly>> GetAssemblyList()
         {
@@ -627,7 +627,7 @@ namespace XLua
 						type_def_extention_method.Add(type);
 					}
 
-					if (!type.IsAbstract() || !type.IsSealed()) 
+					if (!type.IsAbstract() || !type.IsSealed())
                         continue;
 
 					var fields = type.GetFields(BindingFlags.Static | BindingFlags.Public | BindingFlags.DeclaredOnly);
@@ -687,10 +687,7 @@ namespace XLua
 			{
 				FieldInfo field = fields[i];
 				string fieldName = field.Name;
-				if (field.IsStatic && typeof(Delegate).IsAssignableFrom(field.FieldType))
-				{
-					continue;
-				}
+
 				if (all_events.Any(e => e.Name == fieldName))
 				{
 					fieldName = "&" + fieldName;
@@ -915,7 +912,7 @@ namespace XLua
             {
                 translator.PushAny(L, type.BaseType());
             }
-			
+
 			LuaAPI.xlua_pushasciistring(L, LuaIndexsFieldName);
 			LuaAPI.lua_rawget(L, LuaIndexes.LUA_REGISTRYINDEX);
 			LuaAPI.lua_pushnil(L);
@@ -940,7 +937,7 @@ namespace XLua
             {
                 translator.Push(L, type.BaseType());
             }
-			
+
 			LuaAPI.xlua_pushasciistring(L, LuaNewIndexsFieldName);
 			LuaAPI.lua_rawget(L, LuaIndexes.LUA_REGISTRYINDEX);
 			LuaAPI.lua_pushnil(L);
@@ -974,7 +971,7 @@ namespace XLua
 			LuaAPI.lua_pushvalue(L, -3);
 			LuaAPI.lua_rawset(L, -3);
 			LuaAPI.lua_pop(L, 1);
-			LuaAPI.lua_rawset(L, cls_meta); // set __index 
+			LuaAPI.lua_rawset(L, cls_meta); // set __index
 
 			LuaAPI.xlua_pushasciistring(L, "__newindex");
 			LuaAPI.lua_pushvalue(L, cls_setter);

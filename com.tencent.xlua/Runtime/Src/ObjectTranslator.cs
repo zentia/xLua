@@ -614,7 +614,7 @@ namespace XLua
         {
             Utils.BeginObjectRegister(null, L, this, 0, 0, 1, 0, common_array_meta);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "Length", StaticLuaCallbacks.ArrayLength);
-            Utils.RegisterRefFunc(L, Utils.OBJ_META_IDX, "__pairs", enumerable_pairs_func);
+            Utils.RegisterRefFunc(L, Utils.OBJ_META_IDX, "__pairs", m_IListEnumerable);
             Utils.EndObjectRegister(null, L, this, null, null, typeof(Array), StaticLuaCallbacks.ArrayIndexer, StaticLuaCallbacks.ArrayNewIndexer);
         }
 
@@ -629,37 +629,41 @@ namespace XLua
                  typeof(System.MulticastDelegate), null, null);
         }
 
-        int enumerable_pairs_func = -1;
+        int m_IDictionaryEnumerable = -1;
+        private int m_IListEnumerable = -1;
 
-        internal void CreateEnumerablePairs(RealStatePtr L)
+        internal void CreateIDictionaryEnumerable(RealStatePtr L)
         {
             LuaFunction func = luaEnv.DoString(@"
                 return function(obj)
-                    local isKeyValuePair
                     local function lua_iter(cs_iter, k)
                         if cs_iter:MoveNext() then
                             local current = cs_iter.Current
-                            if isKeyValuePair == nil then
-                                if type(current) == 'userdata' then
-                                    local t = current:GetType()
-                                    isKeyValuePair = t.Name == 'KeyValuePair`2' and t.Namespace == 'System.Collections.Generic'
-                                 else
-                                    isKeyValuePair = false
-                                 end
-                                 --print(current, isKeyValuePair)
-                            end
-                            if isKeyValuePair then
-                                return current.Key, current.Value
-                            else
-                                return k + 1, current
-                            end
+                            return current.Key, current.Value
                         end
                     end
                     return lua_iter, obj:GetEnumerator(), -1
                 end
             ");
             func.push(L);
-            enumerable_pairs_func = LuaAPI.luaL_ref(L, LuaIndexes.LUA_REGISTRYINDEX);
+            m_IDictionaryEnumerable = LuaAPI.luaL_ref(L, LuaIndexes.LUA_REGISTRYINDEX);
+            func.Dispose();
+        }
+
+        internal void CreateIListEnumerable(RealStatePtr L)
+        {
+            LuaFunction func = luaEnv.DoString(@"
+                return function(obj)
+                    local function lua_iter(cs_iter, k)
+                        if cs_iter:MoveNext() then
+                            return k, cs_iter.Current
+                        end
+                    end
+                    return lua_iter, obj:GetEnumerator(), 0
+                end
+            ");
+            func.push(L);
+            m_IListEnumerable = LuaAPI.luaL_ref(L, LuaIndexes.LUA_REGISTRYINDEX);
             func.Dispose();
         }
 
@@ -1053,10 +1057,16 @@ namespace XLua
                         LuaAPI.lua_pushstdcallcfunction(L, metaFunctions.EnumOrMeta);
                         LuaAPI.lua_rawset(L, -3);
                     }
-                    if (typeof(IEnumerable).IsAssignableFrom(type))
+                    if (typeof(IDictionary).IsAssignableFrom(type))
                     {
                         LuaAPI.xlua_pushasciistring(L, "__pairs");
-                        LuaAPI.lua_getref(L, enumerable_pairs_func);
+                        LuaAPI.lua_getref(L, m_IDictionaryEnumerable);
+                        LuaAPI.lua_rawset(L, -3);
+                    }
+                    else if (typeof(IEnumerable).IsAssignableFrom(type))
+                    {
+                        LuaAPI.xlua_pushasciistring(L, "__pairs");
+                        LuaAPI.lua_getref(L, m_IListEnumerable);
                         LuaAPI.lua_rawset(L, -3);
                     }
                     LuaAPI.lua_pushvalue(L, -1);
@@ -1273,28 +1283,6 @@ namespace XLua
             LuaAPI.xlua_pushcsobj(L, index, type_id, needcache, cacheRef);
         }
 
-        public void PushObject(RealStatePtr L, object o, int type_id)
-        {
-            if (o == null)
-            {
-                LuaAPI.lua_pushnil(L);
-                return;
-            }
-
-            int index = -1;
-            if (reverseMap.TryGetValue(o, out index))
-            {
-                if (LuaAPI.xlua_tryget_cachedud(L, index, cacheRef) == 1)
-                {
-                    return;
-                }
-            }
-
-            index = addObject(o, false, false);
-
-            LuaAPI.xlua_pushcsobj(L, index, type_id, true, cacheRef);
-        }
-
         public void Update(RealStatePtr L, int index, object obj)
         {
             int udata = LuaAPI.xlua_tocsobj_fast(L, index);
@@ -1349,7 +1337,7 @@ namespace XLua
             return null;
         }
 
-        public object SafeGetCSObj(RealStatePtr L, int index)
+        internal object SafeGetCSObj(RealStatePtr L, int index)
         {
             return getCsObj(L, index, LuaAPI.xlua_tocsobj_safe(L, index));
         }

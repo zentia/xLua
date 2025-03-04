@@ -13,6 +13,17 @@ namespace XLua.Editor.Generator
 {
     public class FileExporter
     {
+        public static LuaEnv CreateLuaEnv()
+        {
+            byte[] Loader(ref string path)
+            {
+                path += ".lua";
+                return File.ReadAllBytes($"RawAssets/LuaScripts/{path}");
+            }
+            var luaEnv = new LuaEnv(Loader);
+            return luaEnv;
+        }
+
         public static List<string> GetValueTypeFieldSignatures(Type type)
         {
             List<string> ret = new List<string>();
@@ -587,7 +598,7 @@ namespace XLua.Editor.Generator
                 .ToList();
             fieldWrapperInfos.Sort((x, y) => string.CompareOrdinal(x.Signature, y.Signature));
 
-            using (var luaEnv = new LuaEnv())
+            using (var luaEnv = CreateLuaEnv())
             {
                 var assetPath = Path.GetFullPath("Packages/com.tencent.xlua/");
                 assetPath = assetPath.Replace("\\", "/");
@@ -704,7 +715,7 @@ namespace XLua.Editor.Generator
                                               where Utils.isDefined(method, typeof(ExtensionAttribute))
                                               group type by Utils.getExtendedType(method)).ToDictionary(g => g.Key, g => (g as IEnumerable<Type>).Distinct().ToList()).ToList();
 
-            using (var luaEnv = new LuaEnv())
+            using (var luaEnv = CreateLuaEnv())
             {
                 var assetPath = Path.GetFullPath("Packages/com.tencent.xlua/");
                 assetPath = assetPath.Replace("\\", "/");
@@ -731,7 +742,7 @@ namespace XLua.Editor.Generator
                 .ToList();
             var comparer = Comparer<Type>.Create((x, y) => string.Compare(x.FullName, y.FullName));
             genTypes.Sort(comparer);
-            using (var luaEnv = new LuaEnv())
+            using (var luaEnv = CreateLuaEnv())
             {
                 var assetPath = Path.GetFullPath("Packages/com.tencent.xlua/");
                 assetPath = assetPath.Replace("\\", "/");
@@ -754,7 +765,7 @@ namespace XLua.Editor.Generator
         {
             var filePath = outDir + "unityenv_for_xlua.h";
 
-            using (var luaEnv = new LuaEnv())
+            using (var luaEnv = CreateLuaEnv())
             {
                 var assetPath = Path.GetFullPath("Packages/com.tencent.xlua/");
                 assetPath = assetPath.Replace("\\", "/");
@@ -792,7 +803,7 @@ namespace XLua.Editor.Generator
 #else
                 var registerInfos = RegisterInfoGenerator.GetRegisterInfos(types, false);
 #endif
-            using (var luaEnv = new LuaEnv())
+            using (var luaEnv = CreateLuaEnv())
             {
                 var assetPath = Path.GetFullPath("Packages/com.tencent.xlua/");
                 assetPath = assetPath.Replace("\\", "/");
@@ -824,7 +835,7 @@ namespace XLua.Editor.Generator
         {
             var types = registerInfos.Select(item => item.Type).Where(item => !PreLoadTypeBlackList.Contains(item)).ToList();
             // var delegateTypes = delegateInvokes.Select(item => item.DeclaringType).Where(item => !PreLoadTypeBlackList.Contains(item)).ToList();
-            using (var luaEnv = new LuaEnv())
+            using (var luaEnv = CreateLuaEnv())
             {
                 var assetPath = Path.GetFullPath("Packages/com.tencent.xlua/");
                 assetPath = assetPath.Replace("\\", "/");
@@ -835,7 +846,7 @@ namespace XLua.Editor.Generator
                 luaEnv.DoString<LuaFunction>(bytes, name);
                 var func = luaEnv.Global.Get<LuaFunction>("PreLoadInfoTemplate");
                 var registerInfoContent = func.Func<List<Type>, string>(types);
-#if OS_GAME
+#if OSGAME
                 var registerInfoPath = "RawAssets/LuaScripts/TypePreLoad.lua";
 #else
                     var registerInfoPath = Application.streamingAssetsPath +  "/TypePreLoad.lua";

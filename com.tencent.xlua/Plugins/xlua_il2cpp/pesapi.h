@@ -113,8 +113,8 @@ typedef void (*pesapi_callback)(struct pesapi_ffi* apis, pesapi_callback_info in
 typedef void* (*pesapi_constructor)(struct pesapi_ffi* apis, pesapi_callback_info info);
 typedef void (*pesapi_finalize)(struct pesapi_ffi* apis, void* Ptr, void* class_data, void* env_private);
 typedef void (*pesapi_function_finalize)(struct pesapi_ffi* apis, void* data, void* env_private);
-typedef int (*pesapi_on_native_object_enter)(void* ptr, void* class_data, void* env_private);
-typedef void (*pesapi_on_native_object_exit)(void* ptr, void* class_data, void* env_private, int userdata);
+typedef void (*pesapi_on_native_object_enter)(void* ptr, void* class_data, void* env_private);
+typedef void (*pesapi_on_native_object_exit)(void* ptr, void* class_data, void* env_private);
 typedef bool (*pesapi_class_not_found_callback)(const void* type_id);
 typedef void (*pesapi_func_ptr)(void);
 
@@ -168,7 +168,6 @@ typedef bool (*pesapi_is_array_func)(pesapi_env env, int value);
 
 typedef pesapi_value(*pesapi_native_object_to_value_func)(pesapi_env env, const void* type_id, void* object_ptr, bool call_finalize);
 typedef void* (*pesapi_get_native_object_ptr_func)(pesapi_env env, pesapi_value value);
-typedef int (*pesapi_get_native_object_index_func)(pesapi_env env, pesapi_value value);
 typedef const void* (*pesapi_get_native_object_typeid_func)(pesapi_env env, pesapi_value value);
 typedef bool (*pesapi_is_instance_of_func)(pesapi_env env, const void* type_id, pesapi_value value);
 
@@ -274,7 +273,6 @@ struct pesapi_ffi
     pesapi_is_array_func is_array;
     pesapi_native_object_to_value_func native_object_to_value;
     pesapi_get_native_object_ptr_func get_native_object_ptr;
-    pesapi_get_native_object_index_func get_native_object_index_ptr;
     pesapi_get_native_object_typeid_func get_native_object_typeid;
     pesapi_is_instance_of_func is_instance_of;
     pesapi_boxing_func boxing;
@@ -341,9 +339,17 @@ PESAPI_EXTERN void pesapi_set_method_info(pesapi_property_descriptor properties,
 PESAPI_EXTERN void pesapi_set_property_info(pesapi_property_descriptor properties, size_t index, const char* name, bool is_static,
     pesapi_callback getter, pesapi_callback setter, void* getter_userdata, void* setter_userdata, pesapi_type_info type_info);
 
-PESAPI_EXTERN void pesapi_define_class(const void* type_id, const void* super_type_id, const char* type_name,
-    pesapi_constructor constructor, pesapi_finalize finalize, size_t property_count, pesapi_property_descriptor properties,
-    void* userdata);
+PESAPI_EXTERN void pesapi_define_class(
+    const void* type_id,
+    const void* super_type_id,
+    const char* type_name,
+    pesapi_constructor constructor,
+    pesapi_finalize finalize,
+    size_t property_count,
+    pesapi_property_descriptor properties,
+    void* userdata,
+    bool dictionary,
+    bool enumerable);
 
 PESAPI_EXTERN void* pesapi_get_class_data(const void* type_id, bool force_load);
 

@@ -4,117 +4,130 @@
 
 namespace XLUA_NAMESPACE
 {
-class ObjectCacheNode
-{
-public:
-    ObjectCacheNode(const void* TypeId_) : TypeId(TypeId_), UserData(nullptr), Next(nullptr), MustCallFinalize(false)
+    class ObjectCacheNode
     {
-    }
+    public:
+        explicit ObjectCacheNode(const void* typeId)
+            : TypeId(typeId)
+            , UserData(nullptr)
+            , Next(nullptr)
+            , Value(-1)
+            , MustCallFinalize(false)
+        {
+        }
 
-    ObjectCacheNode(const void* TypeId_, ObjectCacheNode* Next_)
-        : TypeId(TypeId_), UserData(nullptr), Next(Next_), MustCallFinalize(false)
-    {
-    }
+        ObjectCacheNode(const void* typeId, ObjectCacheNode* next)
+            : TypeId(typeId)
+            , UserData(nullptr)
+            , Next(next)
+            , Value(-1)
+            , MustCallFinalize(false)
+        {
+        }
 
-    ObjectCacheNode(ObjectCacheNode&& other) noexcept
-        : TypeId(other.TypeId)
-        , UserData(other.UserData)
-        , Next(other.Next)
-        , Value(std::move(other.Value))
-        , MustCallFinalize(other.MustCallFinalize)
-    {
-        other.TypeId = nullptr;
-        other.UserData = nullptr;
-        other.Next = nullptr;
-        other.MustCallFinalize = false;
-    }
+        ObjectCacheNode(ObjectCacheNode&& other) noexcept
+            : TypeId(other.TypeId)
+            , UserData(other.UserData)
+            , Next(other.Next)
+            , Value(std::move(other.Value))
+            , MustCallFinalize(other.MustCallFinalize)
+        {
+            other.TypeId           = nullptr;
+            other.UserData         = nullptr;
+            other.Next             = nullptr;
+            other.MustCallFinalize = false;
+        }
 
-    ObjectCacheNode& operator=(ObjectCacheNode&& rhs) noexcept
-    {
-        TypeId = rhs.TypeId;
-        Next = rhs.Next;
-        Value = std::move(rhs.Value);
-        UserData = rhs.UserData;
-        MustCallFinalize = rhs.MustCallFinalize;
-        rhs.UserData = nullptr;
-        rhs.TypeId = nullptr;
-        rhs.Next = nullptr;
-        rhs.MustCallFinalize = false;
-        return *this;
-    }
+        ObjectCacheNode& operator=(ObjectCacheNode&& rhs) noexcept
+        {
+            TypeId               = rhs.TypeId;
+            Next                 = rhs.Next;
+            Value                = std::move(rhs.Value);
+            UserData             = rhs.UserData;
+            MustCallFinalize     = rhs.MustCallFinalize;
+            rhs.UserData         = nullptr;
+            rhs.TypeId           = nullptr;
+            rhs.Next             = nullptr;
+            rhs.MustCallFinalize = false;
+            return *this;
+        }
 
-    ~ObjectCacheNode()
-    {
-        if (Next)
+        ~ObjectCacheNode()
+        {
             delete Next;
-    }
-
-    ObjectCacheNode* Find(const void* TypeId_)
-    {
-        if (TypeId_ == TypeId)
-        {
-            return this;
         }
-        if (Next)
-        {
-            return Next->Find(TypeId_);
-        }
-        return nullptr;
-    }
 
-    ObjectCacheNode* Remove(const void* TypeId_, bool IsHead)
-    {
-        if (TypeId_ == TypeId)
+        ObjectCacheNode* Find(const void* typeId)
         {
-            if (IsHead)
+            if (typeId == TypeId)
             {
-                if (Next)
-                {
-                    auto PreNext = Next;
-                    *this = std::move(*Next);
-                    delete PreNext;
-                }
-                else
-                {
-                    TypeId = nullptr;
-                    Next = nullptr;
-                    Value = -1;
-                }
+                return this;
             }
-            return this;
-        }
-        if (Next)
-        {
-            auto Removed = Next->Remove(TypeId_, false);
-            if (Removed && Removed == Next)    // detach & delete by prev node
+            if (Next)
             {
-                Next = Removed->Next;
-                Removed->Next = nullptr;
-                delete Removed;
+                return Next->Find(typeId);
             }
-            return Removed;
+            return nullptr;
         }
-        return nullptr;
-    }
 
-    ObjectCacheNode* Add(const void* TypeId_)
-    {
-        Next = new ObjectCacheNode(TypeId_, Next);
-        return Next;
-    }
+        ObjectCacheNode* Remove(const void* typeId, const bool isHead)
+        {
+            if (typeId == TypeId)
+            {
+                if (isHead)
+                {
+                    if (Next)
+                    {
+                        const auto preNext = Next;
+                        *this              = std::move(*Next);
+                        delete preNext;
+                    }
+                    else
+                    {
+                        TypeId = nullptr;
+                        Next   = nullptr;
+                        Value  = -1;
+                    }
+                }
+                return this;
+            }
+            if (Next)
+            {
+                const auto removed = Next->Remove(typeId, false);
+                if (removed && removed == Next) // detach & delete by prev node
+                {
+                    Next          = removed->Next;
+                    removed->Next = nullptr;
+                    delete removed;
+                }
+                return removed;
+            }
+            return nullptr;
+        }
 
-    const void* TypeId;
+        [[nodiscard]] bool IsValid() const
+        {
+            return TypeId != nullptr && Value != -1;
+        }
 
-    void* UserData;
+        ObjectCacheNode* Add(const void* typeId)
+        {
+            Next = new ObjectCacheNode(typeId, Next);
+            return Next;
+        }
 
-    ObjectCacheNode* Next;
+        const void* TypeId;
 
-    int Value;
+        void* UserData;
 
-    bool MustCallFinalize;
+        ObjectCacheNode* Next;
 
-    ObjectCacheNode(const ObjectCacheNode&) = delete;
-    void operator=(const ObjectCacheNode&) = delete;
-};
+        int Value;
 
-}    // namespace XLUA_NAMESPACE
+        bool MustCallFinalize;
+
+        ObjectCacheNode(const ObjectCacheNode&) = delete;
+        void operator=(const ObjectCacheNode&)  = delete;
+    };
+
+} // namespace XLUA_NAMESPACE

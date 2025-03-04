@@ -42,7 +42,7 @@ namespace XLua
 		{
 			#if OSG_PROFILE
 		    int sampleIndex = -1;
-            StatsLite.BeginSample(StatsSampleId.Lua_Delegate, ref sampleIndex);
+            StatsLite.BeginSample(StatsSampleId.xLua_Delegate, ref sampleIndex);
 			#endif
 #if THREAD_SAFE || HOTFIX_ENABLE
             lock (luaEnv.luaEnvLock)

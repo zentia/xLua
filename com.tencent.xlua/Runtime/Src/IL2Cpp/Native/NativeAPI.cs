@@ -22,6 +22,30 @@ namespace XLua
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DestroyNativeLuaEnv(IntPtr luaEnv);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static void SetGlobalType_LuaTable(Type type)
+        {}
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static void SetGlobalType_ArrayBuffer(Type type)
+        {}
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static void SetGlobalType_Array(Type type)
+        {}
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static void SetGlobalType_IntPtr(Type type)
+        {}
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static void SetGlobalType_IEnumerable(Type type)
+        {}
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static void SetGlobalType_IDictionary(Type type)
+        {}
 #if XLUA_IL2CPP && ENABLE_IL2CPP
         
         [DllImport("__Internal", CallingConvention = CallingConvention.Cdecl)]
@@ -74,24 +98,6 @@ namespace XLua
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static object GetModuleExecutor(IntPtr NativeLuaEnvPtr, Type type)
-        {
-            throw new NotImplementedException();
-        }
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static void SetGlobalType_LuaTable(Type type)
-        {
-            throw new NotImplementedException();
-        }
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static void SetGlobalType_ArrayBuffer(Type type)
-        {
-            throw new NotImplementedException();
-        }
-        
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static void SetGlobalType_Array(Type type)
         {
             throw new NotImplementedException();
         }
@@ -216,7 +222,6 @@ namespace XLua
 
     public delegate IntPtr pesapi_native_object_to_value_func(IntPtr env, IntPtr type_id, IntPtr object_ptr, bool call_finalize);
     public delegate IntPtr pesapi_get_native_object_ptr_func(IntPtr env, int value);
-    public delegate int pesapi_get_native_object_index_func(IntPtr env, int value);
     public delegate IntPtr pesapi_get_native_object_typeid_func(IntPtr env, IntPtr value);
     public delegate bool pesapi_is_instance_of_func(IntPtr env, IntPtr type_id, IntPtr value);
 
@@ -313,8 +318,7 @@ namespace XLua
         public pesapi_is_binary_func is_binary;
         public pesapi_is_array_func is_array;
         public pesapi_native_object_to_value_func native_object_to_value;
-        public pesapi_get_native_object_ptr_func get_native_object;
-        public pesapi_get_native_object_index_func get_native_object_index;
+        public pesapi_get_native_object_ptr_func get_native_object_ptr;
         public pesapi_get_native_object_typeid_func get_native_object_typeid;
         public pesapi_is_instance_of_func is_instance_of;
         public pesapi_boxing_func boxing;

@@ -12,7 +12,7 @@ namespace XLua
     {
         ObjectTranslator translator;
         Type targetType;
-        readonly MethodBase m_Method;
+        MethodBase method;
 
         ObjectCheck[] checkArray;
         ObjectCast[] castArray;
@@ -42,23 +42,23 @@ namespace XLua
         {
             this.translator = translator;
             this.targetType = targetType;
-            m_Method = method;
+            this.method = method;
             HasDefalutValue = false;
         }
 
         public void Init(ObjectCheckers objCheckers, ObjectCasters objCasters, Type type, string methodName)
         {
             if ((typeof(Delegate) != targetType && typeof(Delegate).IsAssignableFrom(targetType)) ||
-                !m_Method.IsStatic || m_Method.IsConstructor)
+                !method.IsStatic || method.IsConstructor)
             {
                 luaStackPosStart = 2;
-                if (!m_Method.IsConstructor)
+                if (!method.IsConstructor)
                 {
                     targetNeeded = true;
                 }
             }
 
-            var paramInfos = m_Method.GetParameters();
+            var paramInfos = method.GetParameters();
             refPos = new int[paramInfos.Length];
 
             List<int> inPosList = new List<int>();
@@ -121,11 +121,11 @@ namespace XLua
 
             args = new object[paramInfos.Length];
 
-            if (m_Method is MethodInfo) //constructor is not MethodInfo?
+            if (method is MethodInfo) //constructor is not MethodInfo?
             {
-                isVoid = (m_Method as MethodInfo).ReturnType == typeof(void);
+                isVoid = (method as MethodInfo).ReturnType == typeof(void);
             }
-            else if(m_Method is ConstructorInfo)
+            else if(method is ConstructorInfo)
             {
                 isVoid = false;
             }
@@ -166,14 +166,14 @@ namespace XLua
             try
             {
 #if UNITY_EDITOR && !DISABLE_OBSOLETE_WARNING
-                if (m_Method.IsDefined(typeof(ObsoleteAttribute), true))
+                if (method.IsDefined(typeof(ObsoleteAttribute), true))
                 {
-                    ObsoleteAttribute info = Attribute.GetCustomAttribute(m_Method, typeof(ObsoleteAttribute)) as ObsoleteAttribute;
-                    UnityEngine.Debug.LogWarning("Obsolete Method [" + m_Method.DeclaringType.ToString() + "." + m_Method.Name + "]: " + info.Message);
+                    ObsoleteAttribute info = Attribute.GetCustomAttribute(method, typeof(ObsoleteAttribute)) as ObsoleteAttribute;
+                    UnityEngine.Debug.LogWarning("Obsolete Method [" + method.DeclaringType.ToString() + "." + method.Name + "]: " + info.Message);
                 } 
 #endif
                 object target = null;
-                MethodBase toInvoke = m_Method;
+                MethodBase toInvoke = method;
 
                 if (luaStackPosStart > 1)
                 {
@@ -192,6 +192,7 @@ namespace XLua
 
                 int luaTop = LuaAPI.lua_gettop(L);
                 int luaStackPos = luaStackPosStart;
+
                 for (int i = 0; i < castArray.Length; i++)
                 {
                     //UnityEngine.Debug.Log("inPos:" + inPosArray[i]);
@@ -214,14 +215,7 @@ namespace XLua
                         }
                         else
                         {
-                            try
-                            {
-                                args[inPosArray[i]] = castArray[i](L, luaStackPos, null);
-                            }
-                            catch (Exception e)
-                            {
-                                throw new Exception("Method [" + m_Method.DeclaringType.ToString() + "." + m_Method.Name + "]: " + e.Message);
-                            }
+                            args[inPosArray[i]] = castArray[i](L, luaStackPos, null);
                         }
                         luaStackPos++;
                     }
@@ -231,7 +225,7 @@ namespace XLua
                 object ret = null;
 
 
-                ret = toInvoke.IsConstructor ? ((ConstructorInfo)m_Method).Invoke(args) : m_Method.Invoke(targetNeeded ? target : null, args);
+                ret = toInvoke.IsConstructor ? ((ConstructorInfo)method).Invoke(args) : method.Invoke(targetNeeded ? target : null, args);
 
                 if (targetNeeded && targetType.IsValueType())
                 {

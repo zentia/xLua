@@ -16,13 +16,12 @@ typedef struct
     void* Ptr;
     const void* TypeId;
     bool NeedDelete;
-    int index;
 } CppObject;
 
 struct pesapi_callback_info__
 {
     lua_State* L;
-    int ArgStart;    // 0 or 1
+    int ArgStart; // 0 or 1
     int RetNum;
 };
 
@@ -31,78 +30,83 @@ extern pesapi_ffi g_pesapi_ffi;
 
 namespace xlua
 {
-struct PesapiCallbackData
-{
-    pesapi_callback Callback;
-    void* Data;
-    pesapi_function_finalize Finalize = nullptr;
-};
+    struct PesapiCallbackData
+    {
+        pesapi_callback Callback;
+        void* Data;
+        pesapi_function_finalize Finalize = nullptr;
+    };
 
     struct MetaInfo
     {
         int ref;
-        bool pairs;
+        bool dictionary;
+        bool enumerable;
+        MetaInfo(int _ref, bool _dictionary, bool _enumerable)
+            : ref(_ref)
+            , dictionary(_dictionary)
+            , enumerable(_enumerable)
+        {
+        }
     };
 
-class CppObjectMapper
-{
-public:
-    CppObjectMapper();
-    void Initialize(lua_State* L);
-  
-    bool IsInstanceOfCppObject(lua_State* L, const void* TypeId, int ObjectIndex);
+    class CppObjectMapper
+    {
+    public:
+        CppObjectMapper();
+        void Initialize(lua_State* L);
 
-    std::weak_ptr<int> GetLuaEnvLifeCycleTracker();
+        bool IsInstanceOfCppObject(lua_State* L, const void* TypeId, int ObjectIndex);
 
-    int FindOrAddCppObject(lua_State* L, const void* TypeId, void* Ptr, bool PassByPointer);
+        std::weak_ptr<int> GetLuaEnvLifeCycleTracker();
 
-    int CreateFunction(lua_State* L, pesapi_callback Callback, void* Data, pesapi_function_finalize Finalize);
+        int FindOrAddCppObject(lua_State* L, const void* typeId, void* ptr, bool passByPointer);
 
-    void UnBindCppObject(lua_State* L, LuaClassDefinition* ClassDefinition, void* Ptr, int UserData);
+        int CreateFunction(lua_State* L, pesapi_callback Callback, void* Data, pesapi_function_finalize Finalize);
 
-    void BindCppObject(lua_State* L, LuaClassDefinition* ClassDefinition, void* Ptr, bool PassByPointer, bool create);
+        void UnBindCppObject(lua_State* L, const LuaClassDefinition* classDefinition, void* Ptr);
 
-    void* GetPrivateData(lua_State* L, int index);
+        void BindCppObject(lua_State* L, const LuaClassDefinition* classDefinition, void* ptr, bool PassByPointer);
 
-    void SetPrivateData(lua_State* L, int index, void* Ptr);
+        void* GetPrivateData(lua_State* L, int index) const;
 
-    int LoadTypeById(lua_State* L, const void* TypeId);
+        void SetPrivateData(lua_State* L, int index, void* ptr);
 
-    void UnInitialize(lua_State* L);
+        int LoadTypeById(lua_State* L, const void* typeId);
 
-    static CppObjectMapper* Get();
-    static void CallbackDataGarbageCollected(PesapiCallbackData* Data);
+        void UnInitialize(lua_State* L);
+
+        static CppObjectMapper* Get();
+        static void CallbackDataGarbageCollected(PesapiCallbackData* Data);
 #if OSG_PROFILE
-    static int PrefPropertyGetterIndex;
-    static int PrefPropertySetterIndex;
-    static int PrefFieldGetterIndex;
-    static int PrefFieldSetterIndex;
-    static int PrefMethodIndex;
-    static int PrefFunctionIndex;
-    static int PrefNewIndex;
-    static int PrefGCIndex;
+        static int PrefPropertyGetterIndex;
+        static int PrefPropertySetterIndex;
+        static int PrefFieldGetterIndex;
+        static int PrefFieldSetterIndex;
+        static int PrefMethodIndex;
+        static int PrefFunctionIndex;
+        static int PrefNewIndex;
+        static int PrefGCIndex;
 #endif
 
-private:
-    dense_hash_map<void*, ObjectCacheNode*, PointerHashFunctor, std::equal_to<void*>> CDataCache;
+    private:
+        dense_hash_map<void*, ObjectCacheNode*, PointerHashFunctor> m_DataCache;
+        // std::unordered_map<void*, ObjectCacheNode*> m_DataCache;
 
-    dense_hash_map<const void*, MetaInfo*, ConstPointerHashFunctor, std::equal_to<const void*>> TypeIdToMetaMap;
+        dense_hash_map<const void*, MetaInfo*, ConstPointerHashFunctor> m_TypeIdToMetaMap;
 
-    int PointerConstructor;
+        std::map<std::string, const char*> supportOp;
 
-    std::map<void*, FinalizeFunc> CDataFinalizeMap;
-    std::map<std::string, const char*> supportOp;
+        std::shared_ptr<int> Ref = std::make_shared<int>(0);
 
-    std::shared_ptr<int> Ref = std::make_shared<int>(0);
+        int m_CacheRef            = 0;
+        int m_CachePrivateDataRef = 0;
+        int m_IDictionary         = 0;
+        int m_Enumerable          = 0;
 
-    int CacheRef = 0;
-    int CachePrivateDataRef = 0;
-    int PairsRef = 0;
+        MetaInfo* GetMetaRefOfClass(lua_State* L, const LuaClassDefinition* classDefinition);
 
-    int GetMetaRefOfClass(lua_State* L, const LuaClassDefinition* ClassDefinition, bool &pairs);
-
-    std::vector<PesapiCallbackData*> FunctionDatas;
-    static CppObjectMapper* ms_Instance;
-};
-
-}    // namespace xlua
+        std::vector<PesapiCallbackData*> m_FunctionDatas;
+        static CppObjectMapper* ms_Instance;
+    };
+} // namespace xlua

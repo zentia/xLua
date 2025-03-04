@@ -305,6 +305,14 @@ struct S_oi4i4i4u4u4o_
 	uint32_t p6;
 	Il2CppObject* p7;
 };
+// BgmPlayInfo
+struct S_ssss_
+{
+	Il2CppString* p1;
+	Il2CppString* p2;
+	Il2CppString* p3;
+	Il2CppString* p4;
+};
 // TMP_LinkInfo
 struct S_oi4i4i4i4i4o_
 {
@@ -413,14 +421,6 @@ struct S_S_u4u4u4u4u4u4u4u4_u4u4u1u4u4_
 	uint32_t p5;
 	uint32_t p6;
 };
-// SelectEquipmentData
-struct S_u4u4u4u4_
-{
-	uint32_t p1;
-	uint32_t p2;
-	uint32_t p3;
-	uint32_t p4;
-};
 // BuffChangeEventParam
 struct S_S_u4o_i4S_u4o__
 {
@@ -441,6 +441,21 @@ struct S_bbbbbbbi4i4_
 	int32_t p8;
 	int32_t p9;
 };
+// Project8EquipPair
+struct S_u4u4i4_
+{
+	uint32_t p1;
+	uint32_t p2;
+	int32_t p3;
+};
+// SelectEquipmentData
+struct S_u4u4u4u4_
+{
+	uint32_t p1;
+	uint32_t p2;
+	uint32_t p3;
+	uint32_t p4;
+};
 // TimeSpan
 struct S_i8_
 {
@@ -459,14 +474,6 @@ struct S_S_r4r4_S_r4r4_S_r4r4_S_r4r4_r4r4r4r4r4i4_
 	float p8;
 	float p9;
 	int32_t p10;
-};
-// BgmPlayInfo
-struct S_ssss_
-{
-	Il2CppString* p1;
-	Il2CppString* p2;
-	Il2CppString* p3;
-	Il2CppString* p4;
 };
 // Flags
 struct u8
@@ -504,13 +511,6 @@ struct S_u4bbbi4_
 	bool p3;
 	bool p4;
 	int32_t p5;
-};
-// Project8NSelectOneInfo
-struct S_u4u4i4_
-{
-	uint32_t p1;
-	uint32_t p2;
-	int32_t p3;
 };
 // ReadOnlySpan`1
 struct S_S_p_i4_
@@ -630,6 +630,17 @@ struct S_oor4r4i4i4i4S_r4r4r4_S_r4r4r4_S_r4r4_i4_
 	struct S_r4r4_ p10;
 	int32_t p11;
 };
+// Byte[]
+struct a
+{
+    union
+    {
+        struct
+        {
+        };
+        uint8_t __padding[1];
+    };
+};
 // Guid
 struct S_i4i2i2u1u1u1u1u1u1u1u1_
 {
@@ -748,6 +759,19 @@ struct S_i4i4i4S_i4S_r4r4r4_r4r4i4_S_u1_i4u4u8u8S_r4_i4S_r4r4r4r4r4r4r4r4r4r4r4r
 	int32_t p24;
 	bool p25;
 	int32_t p26;
+};
+// AnimatorStateInfo
+struct S_i4i4i4r4r4r4r4i4i4_
+{
+	int32_t p1;
+	int32_t p2;
+	int32_t p3;
+	float p4;
+	float p5;
+	float p6;
+	float p7;
+	int32_t p8;
+	int32_t p9;
 };
 // PlayerInstanceInfo
 struct S_u4i4u4u4_
@@ -1182,7 +1206,7 @@ struct S_u1S_u8_u1i4_
 	int32_t p4;
 };
 // ModelParamChangeData
-struct S_i4u4u4S_oS_u8_oor4_S_S_u8_ou1_S_u1S_r4r4r4_u1r4u1_S_S_u8_i4_S_u1S_u8_u1i4_S_i4i4i4i4__
+struct S_i4u4u4S_oS_u8_oor4_S_S_u8_ou1_S_u1S_r4r4r4_u1r4u1_S_S_u8_i4_S_u1S_u8_u1i4_S_i4i4i4i4_u1i4_
 {
 	int32_t p1;
 	uint32_t p2;
@@ -1193,6 +1217,8 @@ struct S_i4u4u4S_oS_u8_oor4_S_S_u8_ou1_S_u1S_r4r4r4_u1r4u1_S_S_u8_i4_S_u1S_u8_u1
 	struct S_S_u8_i4_ p7;
 	struct S_u1S_u8_u1i4_ p8;
 	struct S_i4i4i4i4_ p9;
+	uint8_t p10;
+	int32_t p11;
 };
 // ActorAnimDuraPlayParam
 struct S_u4u4u4S_u8_S_u8_i4r4r4r4r4r4u1u1u1u1u1r4u1u1u1u1u1u1u1_
@@ -1407,6 +1433,11 @@ struct S_oS_u8_u1_
 	struct S_u8_ p2;
 	uint8_t p3;
 };
+// BroadCastEventRouterParam
+struct S_a_
+{
+	Il2CppObject* p1;
+};
 // LordFloatTipData
 struct S_u4S_u8_u4u4u4u4u4_
 {
@@ -1461,7 +1492,7 @@ struct S_S_o_S_S_u4u1u1i4i4i4o_oS_S_S_u4u4u4u4u4u4u1u1u4u4S_r4r4r4_u4u2i2u1_S_S_
 	struct S_S_u4u1u1i4i4i4o_oS_S_S_u4u4u4u4u4u4u1u1u4u4S_r4r4r4_u4u2i2u1_S_S_i4i4i4_S_r4r4r4_S_i4i4i4_u1u1u1_S_i4i4i4i4i4i4i4i4i4i4_S_oo_S_i4i4__S_u4S_S_u8_u4u4u4u4u4u1u1u1u1_u1u1u1_S_u4S_S_u8_u4u4u4u4u4u1u1u1u1_u1u1u1__u1u1_ p2;
 };
 // SGWSerializedVar
-struct S_u1u4o_
+struct S_u1u4a_
 {
 	uint8_t p1;
 	uint32_t p2;
@@ -1505,7 +1536,7 @@ struct S_u4ooo_
 	Il2CppObject* p4;
 };
 // Project8AuctionUnlockChange
-struct S_oooo_
+struct S_oaoa_
 {
 	Il2CppObject* p1;
 	Il2CppObject* p2;
@@ -1572,12 +1603,12 @@ struct S_u4_
 	uint32_t p1;
 };
 // OSHPlayerEnergyChangeInfo
-struct S_u4i4u1u4_
+struct S_u4i4u4i4_
 {
 	uint32_t p1;
 	int32_t p2;
-	uint8_t p3;
-	uint32_t p4;
+	uint32_t p3;
+	int32_t p4;
 };
 // EventTriggerLogInfo
 struct S_si8ou1oss_
@@ -1629,6 +1660,36 @@ struct S_su4_
 {
 	Il2CppString* p1;
 	uint32_t p2;
+};
+// RenderTargetIdentifier
+struct S_i4i4i4pi4i4i4_
+{
+	int32_t p1;
+	int32_t p2;
+	int32_t p3;
+	void* p4;
+	int32_t p5;
+	int32_t p6;
+	int32_t p7;
+};
+// RenderTargetBinding
+struct S_oS_i4i4i4pi4i4i4_ooi4i4i4_
+{
+	Il2CppObject* p1;
+	struct S_i4i4i4pi4i4i4_ p2;
+	Il2CppObject* p3;
+	Il2CppObject* p4;
+	int32_t p5;
+	int32_t p6;
+	int32_t p7;
+};
+// RendererList
+struct S_pu4u4u4_
+{
+	void* p1;
+	uint32_t p2;
+	uint32_t p3;
+	uint32_t p4;
 };
 // SkillTimerEvtParam
 struct S_S_u4o_u4i4u8i4i4i4_
@@ -1689,6 +1750,117 @@ struct v
         uint8_t __padding[1];
     };
 };
+// Color32
+struct S_i4u1u1u1u1_
+{
+	int32_t p1;
+	uint8_t p2;
+	uint8_t p3;
+	uint8_t p4;
+	uint8_t p5;
+};
+// Particle
+struct S_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_i4u1u1u1u1_u4u4r4r4i4r4r4u4_
+{
+	struct S_r4r4r4_ p1;
+	struct S_r4r4r4_ p2;
+	struct S_r4r4r4_ p3;
+	struct S_r4r4r4_ p4;
+	struct S_r4r4r4_ p5;
+	struct S_r4r4r4_ p6;
+	struct S_r4r4r4_ p7;
+	struct S_r4r4r4_ p8;
+	struct S_i4u1u1u1u1_ p9;
+	uint32_t p10;
+	uint32_t p11;
+	float p12;
+	float p13;
+	int32_t p14;
+	float p15;
+	float p16;
+	uint32_t p17;
+};
+// Emission
+struct S_r4r4S_u4u4u4u4__
+{
+	float p1;
+	float p2;
+	struct S_u4u4u4u4_ p3;
+};
+// Seed4
+struct S_S_u4u4u4u4_S_u4u4u4u4_S_u4u4u4u4_S_u4u4u4u4__
+{
+	struct S_u4u4u4u4_ p1;
+	struct S_u4u4u4u4_ p2;
+	struct S_u4u4u4u4_ p3;
+	struct S_u4u4u4u4_ p4;
+};
+// Initial
+struct S_S_S_u4u4u4u4_S_u4u4u4u4_S_u4u4u4u4_S_u4u4u4u4___
+{
+	struct S_S_u4u4u4u4_S_u4u4u4u4_S_u4u4u4u4_S_u4u4u4u4__ p1;
+};
+// Shape
+struct S_S_S_u4u4u4u4_S_u4u4u4u4_S_u4u4u4u4_S_u4u4u4u4__r4r4r4r4r4r4i4_
+{
+	struct S_S_u4u4u4u4_S_u4u4u4u4_S_u4u4u4u4_S_u4u4u4u4__ p1;
+	float p2;
+	float p3;
+	float p4;
+	float p5;
+	float p6;
+	float p7;
+	int32_t p8;
+};
+// Lights
+struct S_S_u4u4u4u4_r4_
+{
+	struct S_u4u4u4u4_ p1;
+	float p2;
+};
+// PlaybackState
+struct S_r4r4r4i4S_r4r4S_u4u4u4u4__S_S_S_u4u4u4u4_S_u4u4u4u4_S_u4u4u4u4_S_u4u4u4u4___S_S_S_u4u4u4u4_S_u4u4u4u4_S_u4u4u4u4_S_u4u4u4u4__r4r4r4r4r4r4i4_S_S_S_u4u4u4u4_S_u4u4u4u4_S_u4u4u4u4_S_u4u4u4u4___S_S_S_u4u4u4u4_S_u4u4u4u4_S_u4u4u4u4_S_u4u4u4u4___S_r4_S_S_u4u4u4u4_r4_S_r4__
+{
+	float p1;
+	float p2;
+	float p3;
+	int32_t p4;
+	struct S_r4r4S_u4u4u4u4__ p5;
+	struct S_S_S_u4u4u4u4_S_u4u4u4u4_S_u4u4u4u4_S_u4u4u4u4___ p6;
+	struct S_S_S_u4u4u4u4_S_u4u4u4u4_S_u4u4u4u4_S_u4u4u4u4__r4r4r4r4r4r4i4_ p7;
+	struct S_S_S_u4u4u4u4_S_u4u4u4u4_S_u4u4u4u4_S_u4u4u4u4___ p8;
+	struct S_S_S_u4u4u4u4_S_u4u4u4u4_S_u4u4u4u4_S_u4u4u4u4___ p9;
+	struct S_r4_ p10;
+	struct S_S_u4u4u4u4_r4_ p11;
+	struct S_r4_ p12;
+};
+// Trails
+struct S_oooooi4i4_
+{
+	Il2CppObject* p1;
+	Il2CppObject* p2;
+	Il2CppObject* p3;
+	Il2CppObject* p4;
+	Il2CppObject* p5;
+	int32_t p6;
+	int32_t p7;
+};
+// EmitParams
+struct S_S_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_i4u1u1u1u1_u4u4r4r4i4r4r4u4_bbbbbbbbbbb_
+{
+	struct S_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_r4r4r4_S_i4u1u1u1u1_u4u4r4r4i4r4r4u4_ p1;
+	bool p2;
+	bool p3;
+	bool p4;
+	bool p5;
+	bool p6;
+	bool p7;
+	bool p8;
+	bool p9;
+	bool p10;
+	bool p11;
+	bool p12;
+};
 // MinMaxGradient
 struct S_i4ooS_r4r4r4r4_S_r4r4r4r4__
 {
@@ -1697,6 +1869,11 @@ struct S_i4ooS_r4r4r4r4_S_r4r4r4r4__
 	Il2CppObject* p3;
 	struct S_r4r4r4r4_ p4;
 	struct S_r4r4r4r4_ p5;
+};
+// StatsSampleId
+struct i2
+{
+	int16_t p1;
 };
 // UI3DAssetParam
 struct S_S_r4r4r4_o_
@@ -1710,6 +1887,14 @@ struct S_S_p_pp_
 	struct S_p_ p1;
 	void* p2;
 	void* p3;
+};
+// InterfaceMapping
+struct S_oooo_
+{
+	Il2CppObject* p1;
+	Il2CppObject* p2;
+	Il2CppObject* p3;
+	Il2CppObject* p4;
 };
 // Enumerator
 struct S_oi4i4i4_
@@ -1799,15 +1984,6 @@ struct S_oi4i4S_i4o_i4_
 	struct S_i4o_ p4;
 	int32_t p5;
 };
-// Enumerator
-struct S_oi4i4S_i4i4_i4_
-{
-	Il2CppObject* p1;
-	int32_t p2;
-	int32_t p3;
-	struct S_i4i4_ p4;
-	int32_t p5;
-};
 // DisplayInfoData*
 struct PS_u4S_i4i4i4_S_r4r4r4_i4S_r4r4r4r4_u4u1_
 {
@@ -1820,23 +1996,29 @@ struct PS_u4S_i4i4i4_S_r4r4r4_i4S_r4r4r4r4_u4u1_
     };
 };
 // Enumerator
+struct S_oi4i4S_u4u4i4__
+{
+	Il2CppObject* p1;
+	int32_t p2;
+	int32_t p3;
+	struct S_u4u4i4_ p4;
+};
+// Enumerator
+struct S_oi4i4S_i4i4_i4_
+{
+	Il2CppObject* p1;
+	int32_t p2;
+	int32_t p3;
+	struct S_i4i4_ p4;
+	int32_t p5;
+};
+// Enumerator
 struct S_oi4i4s_
 {
 	Il2CppObject* p1;
 	int32_t p2;
 	int32_t p3;
 	Il2CppString* p4;
-};
-// RenderTargetIdentifier
-struct S_i4i4i4pi4i4i4_
-{
-	int32_t p1;
-	int32_t p2;
-	int32_t p3;
-	void* p4;
-	int32_t p5;
-	int32_t p6;
-	int32_t p7;
 };
 // EventPoint
 struct S_pu4u8u8i4pu4u4_
@@ -1907,14 +2089,6 @@ struct S_ooo_
 	Il2CppObject* p3;
 };
 // CardFilterChessInfo
-struct S_u4u4oo_
-{
-	uint32_t p1;
-	uint32_t p2;
-	Il2CppObject* p3;
-	Il2CppObject* p4;
-};
-// CardAdvanceUseInfo
 struct S_u4u4ooo_
 {
 	uint32_t p1;
@@ -1963,6 +2137,14 @@ struct S_u4u1u4u4u1u4u4_
 	uint8_t p5;
 	uint32_t p6;
 	uint32_t p7;
+};
+// PlayerIntelligentDropInfo
+struct S_u4u4oo_
+{
+	uint32_t p1;
+	uint32_t p2;
+	Il2CppObject* p3;
+	Il2CppObject* p4;
 };
 // TargetLordInfo
 struct S_u1u4i4i4i4_
@@ -2131,6 +2313,21 @@ struct S_Oi4i4_
 	Il2CppObject* p1;
 	int32_t p2;
 	int32_t p3;
+};
+// UICommonBattleHeroData
+struct S_u4u4i4ou4bu4u4u4bu4_
+{
+	uint32_t p1;
+	uint32_t p2;
+	int32_t p3;
+	Il2CppObject* p4;
+	uint32_t p5;
+	bool p6;
+	uint32_t p7;
+	uint32_t p8;
+	uint32_t p9;
+	bool p10;
+	uint32_t p11;
 };
 // DebugScreenCapture
 struct S_S_Pvi4i4i4S_pi4i4_i4_i4i4i4_
