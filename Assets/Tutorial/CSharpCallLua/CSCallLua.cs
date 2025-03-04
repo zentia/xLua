@@ -62,7 +62,7 @@ namespace Tutorial
         // Use this for initialization
         void Start()
         {
-            luaenv = new LuaEnv();
+            luaenv = new LuaEnv(null);
             luaenv.DoString(script);
 
             Debug.Log("_G.a = " + luaenv.Global.Get<int>("a"));

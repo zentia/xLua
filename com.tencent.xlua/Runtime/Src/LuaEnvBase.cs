@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using XLua.LuaDLL;
 
 namespace XLua
@@ -31,8 +32,23 @@ namespace XLua
             }
         }
 
-        protected void Init()
+        public delegate byte[] CustomLoader(ref string filepath);
+
+        internal List<CustomLoader> customLoaders = new();
+
+        //loader : CustomLoader， filepath参数：（ref类型）输入是require的参数，如果需要支持调试，需要输出真实路径。
+        //返回值：如果返回null，代表加载该源下无合适的文件，否则返回UTF8编码的byte[]
+        public void AddLoader(CustomLoader loader)
         {
+            customLoaders.Add(loader);
+        }
+
+        protected void Init(CustomLoader loader)
+        {
+            if (loader != null)
+            {
+                AddLoader(loader);
+            }
             nativeLuaEnv = NativeAPI.CreateNativeLuaEnv();
             rawL = NativeAPI.GetLuaState(nativeLuaEnv);
             Lua.lua_atpanic(rawL, StaticLuaCallbacks.Panic);

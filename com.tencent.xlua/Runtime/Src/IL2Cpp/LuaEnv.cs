@@ -67,11 +67,7 @@ namespace XLua
             }
             Instance = this;
             apis = XLua.NativeAPI.GetFFIApi();
-            Init();
-            if (loader != null)
-            {
-                AddLoader(loader);
-            }
+            Init(loader);
 
             nativePesapiEnv = XLua.NativeAPI.GetPapiEnvRef(nativeLuaEnv);
             nativeScriptObjectsRefsMgr = XLua.NativeAPI.InitialPapiEnvRef(apis, nativePesapiEnv);
@@ -293,15 +289,6 @@ namespace XLua
             }
         }
 
-        public delegate byte[] CustomLoader(ref string filepath);
-
-        internal List<CustomLoader> customLoaders = new List<CustomLoader>();
-
-        public void AddLoader(CustomLoader loader)
-        {
-            customLoaders.Add(loader);
-        }
-
         [UnityEngine.Scripting.Preserve]
         public Type GetTypeByString(string className)
         {
@@ -310,14 +297,7 @@ namespace XLua
 
         public void AddRegisterInfoGetter(Type type, Func<RegisterInfo> getter)
         {
-#if THREAD_SAFE
-            lock (this)
-            {
-#endif
             TypeRegister.AddRegisterInfoGetter(type, getter);
-#if THREAD_SAFE
-            }
-#endif
         }
 
         internal Dictionary<string, LuaCSFunction> buildin_initer = new();

@@ -10,7 +10,7 @@ namespace XLuaTest
         // Use this for initialization
         void Start()
         {
-            luaenv = new LuaEnv();
+            luaenv = new LuaEnv(null);
             luaenv.DoString("require 'coruntine_test'");
         }
 

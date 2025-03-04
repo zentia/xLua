@@ -92,7 +92,7 @@ namespace CSObjectWrapEditor
                 else
                 {
                     path += ".lua";
-                    return File.ReadAllBytes($"RawAssets/LuaScripts/{path}");
+                    return File.ReadAllBytes($"{Configure.RootDir}/LuaScripts/{path}");
                 }
             }
 

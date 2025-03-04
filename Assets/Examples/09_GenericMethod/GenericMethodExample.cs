@@ -24,7 +24,7 @@ namespace XLuaTest
 
         private void Start()
         {
-            env = new LuaEnv();
+            env = new LuaEnv(null);
             env.DoString(script);
         }
 

@@ -18,7 +18,7 @@ namespace Tutorial
         // Use this for initialization
         void Start()
         {
-            luaenv = new LuaEnv();
+            luaenv = new LuaEnv(null);
             luaenv.AddLoader((ref string filename) =>
             {
                 if (filename == "InMemory")

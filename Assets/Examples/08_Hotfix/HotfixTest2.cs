@@ -185,7 +185,7 @@ namespace XLuaTest
         // Use this for initialization
         void Start()
         {
-            LuaEnv luaenv = new LuaEnv();
+            LuaEnv luaenv = new LuaEnv(null);
             HotfixCalc calc = new HotfixCalc();
             NoHotfixCalc ordinaryCalc = new NoHotfixCalc();
 

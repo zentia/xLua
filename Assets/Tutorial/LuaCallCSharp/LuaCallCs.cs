@@ -295,7 +295,7 @@ public class LuaCallCs : MonoBehaviour
 	// Use this for initialization
 	void Start()
 	{
-		luaenv = new LuaEnv();
+		luaenv = new LuaEnv(null);
 		luaenv.DoString(script);
 	}
 

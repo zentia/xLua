@@ -94,7 +94,7 @@ namespace XLuaTest
         public TextAsset MyTask1Lua;
         public TextAsset MyTask2Lua;
 
-        internal static LuaEnv luaEnv = new LuaEnv(); //all lua behaviour shared one luaenv only!
+        internal static LuaEnv luaEnv = new LuaEnv(null); //all lua behaviour shared one luaenv only!
 
         [ContextMenu("DoHotfix Method1")]
         public void DoHotfixMethod1()

@@ -18,7 +18,7 @@ namespace XLuaTest
         // Use this for initialization
         void Start()
         {
-            LuaEnv luaenv = new LuaEnv();
+            LuaEnv luaenv = new LuaEnv(null);
             //这两个例子都必须生成代码才能正常运行
             //例子1：改造Vector3
             //沿用Vector3原来的映射方案Vector3 -> userdata，但是把Vector3的方法实现改为lua实现，通过xlua.genaccessor实现不经过C#直接操作内存

@@ -26,12 +26,7 @@ namespace XLua
                     + LIB_VERSION_EXPECT + " but got:" + LuaAPI.xlua_get_lib_version());
             }
             LuaIndexes.LUA_REGISTRYINDEX = LuaAPI.xlua_get_registry_index();
-            Init();
-            if (loader != null)
-            {
-                AddLoader(loader);
-            }
-
+            Init(loader);
             if (objectTranslator != null)
             {
                 translator = Activator.CreateInstance(objectTranslator, this, rawL, bridgeType) as ObjectTranslator;
@@ -452,17 +447,6 @@ namespace XLua
             {
                 refQueue.Enqueue(action);
             }
-        }
-
-        public delegate byte[] CustomLoader(ref string filepath);
-
-        internal List<CustomLoader> customLoaders = new();
-
-        //loader : CustomLoader， filepath参数：（ref类型）输入是require的参数，如果需要支持调试，需要输出真实路径。
-        //                        返回值：如果返回null，代表加载该源下无合适的文件，否则返回UTF8编码的byte[]
-        public void AddLoader(CustomLoader loader)
-        {
-            customLoaders.Add(loader);
         }
 
         internal Dictionary<string, LuaCSFunction> buildin_initer = new();

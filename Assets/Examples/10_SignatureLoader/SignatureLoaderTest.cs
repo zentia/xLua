@@ -12,7 +12,7 @@ namespace XLuaTest
         // Use this for initialization
         void Start()
         {
-            LuaEnv luaenv = new LuaEnv();
+            LuaEnv luaenv = new LuaEnv(null);
 #if UNITY_EDITOR
             luaenv.AddLoader(new SignatureLoader(PUBLIC_KEY, (ref string filepath) =>
             {

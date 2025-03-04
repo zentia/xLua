@@ -31,7 +31,7 @@ public class PerfMain : MonoBehaviour
         try
         {
             filename = filename.Replace('.', '/') + ".lua";
-            var filepath = UnityEngine.Application.streamingAssetsPath + "/" + filename;
+            var filepath = UnityEngine.Application.streamingAssetsPath + "/LuaScripts/" + filename;
 #if UNITY_ANDROID && !UNITY_EDITOR
             UnityEngine.WWW www = new UnityEngine.WWW(filepath);
             while (true)
@@ -97,11 +97,10 @@ public class PerfMain : MonoBehaviour
         var start = Time.realtimeSinceStartup;
         var startMem = System.GC.GetTotalMemory(true);
 #if UNITY_EDITOR || XLUA_IL2CPP
-        luaenv = new LuaEnv();
+        luaenv = new LuaEnv(LoadFromStreamingAssetsPath);
 #else
 		luaenv = new LuaEnv(typeof(DelegateBridgeWrap), typeof(ObjectTranslatorWrap));
 #endif
-        luaenv.AddLoader(LoadFromStreamingAssetsPath);
         Debug.Log("start cost: " + (Time.realtimeSinceStartup - start));
         var endMem = System.GC.GetTotalMemory(true);
         Debug.Log("startMem: " + startMem + ", endMem: " + endMem + ", " + "cost mem: " + (endMem - startMem));

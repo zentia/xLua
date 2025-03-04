@@ -6,7 +6,7 @@ namespace XLuaTest
     [Hotfix]
     public class HotfixTest : MonoBehaviour
     {
-        LuaEnv luaenv = new LuaEnv();
+        LuaEnv luaenv = new LuaEnv(null);
 
         private int tick = 0;
 

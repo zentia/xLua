@@ -18,7 +18,7 @@ namespace XLua.Editor.Generator
             byte[] Loader(ref string path)
             {
                 path += ".lua";
-                return File.ReadAllBytes($"RawAssets/LuaScripts/{path}");
+                return File.ReadAllBytes($"{Configure.RootDir}/LuaScripts/{path}");
             }
             var luaEnv = new LuaEnv(Loader);
             return luaEnv;

@@ -2,8 +2,6 @@
 --local dbg = require('emmy_core')
 --dbg.tcpConnect('localhost', 9966)
 
-require("init_il2cpp")
-
 function FuncBasePara(x)
 end
 
