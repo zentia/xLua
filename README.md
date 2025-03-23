@@ -9,15 +9,14 @@
 
 ## C# 下 Lua 编程支持
 
-xLua 为 Unity增加 Lua 脚本编程的能力，借助 xLua，这些 Lua 代码可以方便的和 C# 相互调用。
+xLua-il2cpp 为 Unity增加 Lua 脚本编程的能力，借助 xLua，这些 Lua 代码可以方便的和 C# 相互调用。
 Lua版本仅支持5.4.7，其他版本包括LuaJit均未作适配！
 Unity只支持Android、iOS、PC、Editor，其他平台不在支持！
 Unity开发主力版本为2022.3.5f，兼容版本为2023.2，其他版本没有做兼容支持
-未来会支持Lua直接导出引擎接口，绕过C#。前提是这个需要引擎源码能力。
 
 <br/>
 
-## xLua 的突破
+## xLua-il2cpp 的突破
 
 xLua 在功能、性能、易用性都有不少突破，这几方面分别最具代表性的是：
 
@@ -31,7 +30,7 @@ xLua 在功能、性能、易用性都有不少突破，这几方面分别最具
 
 ## 安装
 
-xLua 可以直接简单的安装在 Unity 项目中.
+xLua-il2cpp 可以直接简单的安装在 Unity 项目中.
 
 1. 从 [Releases](https://github.com/Tencent/xLua/releases) 中下载发行版, 或直接下载本仓库代码.
 2. 打开下载下来的源码压缩包, 你会看到一个 Assets 目录, 这目录就对应 Unity 工程的 Assets 目录，保持这目录结构, 将其内容置入 Unity 项目即可.
