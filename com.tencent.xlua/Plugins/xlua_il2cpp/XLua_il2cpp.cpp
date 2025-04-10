@@ -2491,14 +2491,14 @@ namespace xlua
 
 		void AddPendingKillScriptObjects(pesapi_value_ref valueRef)
 		{
-			std::lock_guard<std::mutex> guard(pendingKillRefsMutex);
+            il2cpp::os::FastAutoLock guard(&pendingKillRefsMutex);
 			pendingKillRefs.insert(valueRef);
 
 		}
 
 		void CleanupPendingKillScriptObjects()
 		{
-			std::lock_guard<std::mutex> guard(pendingKillRefsMutex);
+            il2cpp::os::FastAutoLock guard(&pendingKillRefsMutex);
 			auto size = pendingKillRefs.size();
 			if (size == 0)
 			{
@@ -2549,7 +2549,7 @@ namespace xlua
 		}
 		struct pesapi_ffi* apis;
 		pesapi_env_ref envRef;
-		std::mutex pendingKillRefsMutex;
+        baselib::ReentrantLock pendingKillRefsMutex;
 		std::unordered_set<pesapi_value_ref> pendingKillRefs;
 
 		typedef std::vector<Il2CppObject*, il2cpp::gc::Allocator<Il2CppObject*> > ObjectPool;
