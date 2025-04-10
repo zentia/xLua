@@ -33,6 +33,9 @@
 #include <unordered_set>
 #include <sstream>
 
+#include "utils/MemoryRead.h"
+#include "vm/GlobalMetadataFileInternals.h"
+
 // Because we need to hold the C# object pointer, we must ensure that GC does not do memory reorganization
 static_assert(IL2CPP_GC_BOEHM, "Only BOEHM GC supported!");
 
@@ -287,6 +290,46 @@ namespace xlua
 		return type->byref ? "P" + ret : ret;
 	}
 
+	class CustomAttributeDataReader
+	{
+	public:
+		uint32_t GetCount() const
+		{
+			return count;
+		}
+		const char* GetDataBufferStart() const
+		{
+			return (const char*)(((uint32_t*)bufferStart) + count);
+		}
+		bool IterateAttributeCtorsImpl(const MethodInfo** attributeCtor, const char** ctorBuffer) const
+		{
+			if (*ctorBuffer < GetDataBufferStart())
+			{
+				MethodIndex ctorIndex = il2cpp::utils::Read32(ctorBuffer);
+				*attributeCtor = il2cpp::vm::MetadataCache::GetMethodInfoFromMethodDefinitionIndex(image, ctorIndex);
+				return true;
+			}
+
+			*attributeCtor = NULL;
+			return false;
+		}
+		bool IterateAttributeCtors(const MethodInfo** attributeCtor, const char* ctorBuffer) const
+		{
+			while (IterateAttributeCtorsImpl(attributeCtor, &ctorBuffer))
+			{
+				if ((*attributeCtor)->klass == s_ParamArrayAttribute)
+					return true;
+			}
+
+			return false;
+		}
+
+		const Il2CppImage* image;
+		const char* bufferStart;
+		const char* bufferEnd;
+		uint32_t count;
+	};
+
 	static bool HasParamArray(const MethodInfo* method)
 	{
 		if (method->parameters_count == 0)
@@ -299,13 +342,15 @@ namespace xlua
 			methodWithParameterAttributeInformation = method->genericMethod->methodDefinition;
 
 		auto reader = il2cpp::vm::MetadataCache::GetCustomAttributeDataReader(methodWithParameterAttributeInformation->klass->image, Method::GetParameterToken(method, method->parameters_count - 1));
-
-		auto ctorIter = reader.GetCtorIterator([](const MethodInfo* ctor)
-			{
-				return ctor->klass == s_ParamArrayAttribute;
-			});
+		if (reader.GetCount() == 0)
+		{
+			return false;
+		}
+		void* ptr = &reader;
+		CustomAttributeDataReader* customReader = (CustomAttributeDataReader*)ptr;
+		const char* bufferStart = customReader->bufferStart;
 		const MethodInfo* ctor;
-		return (reader.IterateAttributeCtors(&ctor, &ctorIter));
+		return (customReader->IterateAttributeCtors(&ctor, bufferStart));
 	}
 
 	static std::string GetParameterSignature(const MethodInfo* method, int index)
