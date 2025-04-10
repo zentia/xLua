@@ -18,8 +18,8 @@ function build() {
     ABI=$2
     TOOLCHAIN_ANME=$3
     BUILD_PATH=build54.Android.${ABI}
-    cmake -H. -B${BUILD_PATH} -DLUA_VERSION=5.4.7 -DANDROID_ABI=${ABI} -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_TOOLCHAIN_FILE=${NDK}/build/cmake/android.toolchain.cmake -DANDROID_NATIVE_API_LEVEL=${API} -DANDROID_TOOLCHAIN=clang -DANDROID_TOOLCHAIN_NAME=${TOOLCHAIN_ANME}
-    cmake --build ${BUILD_PATH} --config RelWithDebInfo
+    cmake -H. -B${BUILD_PATH} -DLUA_VERSION=5.4.7 -DANDROID_ABI=${ABI} -DCMAKE_BUILD_TYPE=Debug -DCMAKE_TOOLCHAIN_FILE=${NDK}/build/cmake/android.toolchain.cmake -DANDROID_NATIVE_API_LEVEL=${API} -DANDROID_TOOLCHAIN=clang -DANDROID_TOOLCHAIN_NAME=${TOOLCHAIN_ANME}
+    cmake --build ${BUILD_PATH} --config Debug
     cp ${BUILD_PATH}/libGameCore.so ../Assets/Plugins/Android/${ABI}/libGameCore.so
 }
 

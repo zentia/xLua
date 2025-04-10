@@ -170,5 +170,3 @@ function createTypeProxy(namespace)
 end
 
 CS = createTypeProxy()
-
-require "TypePreLoad"

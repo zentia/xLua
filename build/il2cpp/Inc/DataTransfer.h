@@ -18,7 +18,7 @@
 
 namespace xlua
 {
-class LUAENV_API DataTransfer
+class DataTransfer
 {
 public:
     FORCEINLINE static void* GetLuaEnvPrivate()

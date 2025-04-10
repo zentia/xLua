@@ -201,3 +201,9 @@ else ( )
         )
     endif()
 endif ( )
+
+# 启用调试信息
+target_compile_options(GameCore PRIVATE -g)
+set_target_properties(GameCore PROPERTIES DEBUG_POSTFIX "")
+
+target_link_libraries(GameCore log)

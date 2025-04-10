@@ -846,11 +846,7 @@ namespace XLua.Editor.Generator
                 luaEnv.DoString<LuaFunction>(bytes, name);
                 var func = luaEnv.Global.Get<LuaFunction>("PreLoadInfoTemplate");
                 var registerInfoContent = func.Func<List<Type>, string>(types);
-#if OSGAME
-                var registerInfoPath = "RawAssets/LuaScripts/TypePreLoad.lua";
-#else
-                    var registerInfoPath = Application.streamingAssetsPath +  "/TypePreLoad.lua";
-#endif
+                var registerInfoPath = $"{Configure.RootDir}/LuaScripts/TypePreLoad.lua";
                 using (var textWriter = new StreamWriter(registerInfoPath, false, new UTF8Encoding(false)))
                 {
                     textWriter.Write(registerInfoContent);
@@ -867,6 +863,11 @@ namespace XLua.Editor.Generator
             GenLinkXml("Assets/XLua/", types);
             GenExtensionMethodInfos(csPath, types);
             GenRegisterInfo(csPath, types);
+        }
+
+        public static void MoveCppToLib()
+        {
+
         }
     }
 }

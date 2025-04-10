@@ -237,7 +237,7 @@ namespace xlua
         return GetLuaClassRegister()->FindCppTypeClassByName(Name);
     }
 
-    LUA_API bool TraceObjectLifecycle(const void* TypeId, pesapi_on_native_object_enter OnEnter, pesapi_on_native_object_exit OnExit)
+    LUAENV_API bool TraceObjectLifecycle(const void* TypeId, pesapi_on_native_object_enter OnEnter, pesapi_on_native_object_exit OnExit)
     {
         if (auto clsDef = const_cast<LuaClassDefinition*>(GetLuaClassRegister()->FindClassByID(TypeId)))
         {

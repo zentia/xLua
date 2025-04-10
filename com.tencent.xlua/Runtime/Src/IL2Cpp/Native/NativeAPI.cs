@@ -15,7 +15,7 @@ namespace XLua
 #endif
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public static extern IntPtr CreateNativeLuaEnv();
+        public static extern IntPtr CreateNativeLuaEnv(string temporaryCachePath);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr GetLuaState(IntPtr luaEnv);

@@ -2,7 +2,11 @@
 
 #include "functional"
 
-#define LUAENV_API
+#ifdef _WIN32
+#define LUAENV_API 
+#else
+#define LUAENV_API LUA_API
+#endif
 #ifndef FORCEINLINE
     #define FORCEINLINE inline
 #endif
@@ -13,6 +17,7 @@
 #include "pesapi.h"
 
 #include "TypeInfo.hpp"
+#include "lua.hpp"
 
 namespace xlua
 {
@@ -20,7 +25,7 @@ namespace xlua
 
     MSVC_PRAGMA(warning(push))
 
-    struct LUAENV_API LuaFunctionInfo
+    struct LuaFunctionInfo
     {
         LuaFunctionInfo()
             : Name(nullptr)
@@ -42,7 +47,7 @@ namespace xlua
         const FunctionInfo* ReflectionInfo = nullptr;
     };
 
-    struct LUAENV_API LuaPropertyInfo
+    struct LuaPropertyInfo
     {
         LuaPropertyInfo()
             : Name(nullptr)
@@ -71,7 +76,7 @@ namespace xlua
 
     typedef pesapi_constructor InitializeFunc;
 
-    struct LUAENV_API LuaClassDefinition
+    struct LuaClassDefinition
     {
         const void* TypeId;
         const void* SuperTypeId;
@@ -140,7 +145,7 @@ namespace xlua
     xlua::LuaClassDefinition(   \
         nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, false, false)
 
-    void LUAENV_API RegisterLuaClass(const LuaClassDefinition& ClassDefinition);
+    LUAENV_API void RegisterLuaClass(const LuaClassDefinition& ClassDefinition);
 
     void LUAENV_API SetClassTypeInfo(const void* TypeId,
                                      const NamedFunctionInfo* ConstructorInfos,

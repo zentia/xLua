@@ -649,7 +649,7 @@ int pesapi_call_function(pesapi_env env, pesapi_value pfunc, pesapi_value this_o
     return lua_gettop(L) - 1;
 }
 
-LUA_API int pesapi_dostring(pesapi_env env, const uint8_t* code, size_t code_size, const char* path, pesapi_value_ref value_ref)
+LUAENV_API int pesapi_dostring(pesapi_env env, const uint8_t* code, size_t code_size, const char* path, pesapi_value_ref value_ref)
 {
     lua_State* L = reinterpret_cast<lua_State*>(env);
     int oldTop   = lua_gettop(L);

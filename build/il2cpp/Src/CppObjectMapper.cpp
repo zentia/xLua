@@ -54,7 +54,7 @@ namespace xlua
         };
     }
 
-    LUA_API CppObjectMapper* CppObjectMapper::Get()
+    LUAENV_API CppObjectMapper* CppObjectMapper::Get()
     {
         return ms_Instance;
     }

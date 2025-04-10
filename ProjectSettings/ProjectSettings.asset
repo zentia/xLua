@@ -154,7 +154,7 @@ PlayerSettings:
   androidSupportedAspectRatio: 1
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
-    Android: com.DefaultCompany.noil2cpp
+    Android: com.DefaultCompany.xLua
     Standalone: com.DefaultCompany.xLua
     iPhone: com.DefaultCompany.noil2cpp
   buildNumber:
@@ -750,7 +750,7 @@ PlayerSettings:
   webGLMemoryGeometricGrowthCap: 96
   webGLPowerPreference: 2
   scriptingDefineSymbols:
-    Android: 
+    Android: XLUA_FULL;XLUA_IL2CPP
     Standalone: XLUA_FULL;XLUA_IL2CPP
     iPhone: XLUA_FULL;XLUA_IL2CPP
   additionalCompilerArguments: {}
@@ -846,7 +846,7 @@ PlayerSettings:
   embeddedLinuxEnableGamepadInput: 0
   hmiLogStartupTiming: 0
   hmiCpuConfiguration: 
-  apiCompatibilityLevel: 3
+  apiCompatibilityLevel: 6
   stripMonoScriptInGlobalGameManagers: 0
   strippingQtsMonoScriptLevel: 0
   activeInputHandler: 0
