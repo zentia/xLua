@@ -543,4 +543,9 @@ function StartTest()
     classLuaCallCS:StringArray({'a','b','c','d','f'})
     classLuaCallCS:StructArray({CS.ParaStruct(),CS.ParaStruct(),CS.ParaStruct(),CS.ParaStruct(),CS.ParaStruct()})
     classLuaCallCS:ClassArray({CS.ParaClass(),CS.ParaClass(),CS.ParaClass(),CS.ParaClass(),CS.ParaClass()})
+    
+    
 end
+-- dictionary
+local dict = CS.System.Collections.Generic.Dictionary(CS.System.String, CS.System.String)()
+dict:Add("a",1)
