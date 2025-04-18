@@ -67,7 +67,7 @@ namespace XLua
         public static extern void CleanupPendingKillScriptObjects(IntPtr luaEnv);
 
         [MethodImpl(MethodImplOptions.InternalCall)]
-        public static IntPtr InitialPapiEnvRef(IntPtr api, IntPtr envRef)
+        public static IntPtr InitialPapiEnvRef(IntPtr api, IntPtr envRef, Object obj, MethodBase addMethodBase, MethodBase removeMethodBase)
         {
             throw new NotImplementedException();
         }

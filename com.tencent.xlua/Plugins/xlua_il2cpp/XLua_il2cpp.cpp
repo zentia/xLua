@@ -1335,7 +1335,6 @@ namespace xlua
 					}
 					return FunctionToDelegate(apis, env, luaval, luaClassInfo);
 				}
-				return nullptr;
 			}
 			auto ptr = (Il2CppObject*)apis->get_native_object_ptr(env, luaval);
 			if (!ptr)
@@ -1876,7 +1875,7 @@ namespace xlua
 				}
 				case IL2CPP_TYPE_STRING:
 				{
-					if (!(apis->is_string(env, luaValue) || apis->is_null(env, luaValue)))
+					if (!(apis->is_string(env, luaValue) || apis->is_null(env, luaValue) || apis->is_undefined(env, luaValue)))
 					{
 						return false;
 					}
@@ -1889,11 +1888,9 @@ namespace xlua
 				case IL2CPP_TYPE_FNPTR:
 				case IL2CPP_TYPE_PTR:
 				{
-					if (apis->is_function(env, luaValue) &&
-						(!Class::IsAssignableFrom(il2cpp_defaults.multicastdelegate_class, parameterKlass) ||
-							parameterKlass == il2cpp_defaults.multicastdelegate_class))
+					if (apis->is_function(env, luaValue) && DataTransfer::IsDelegate(parameterKlass))
 					{
-						return false;
+						continue;
 					}
 					if (parameterKlass == il2cpp_defaults.object_class)
 					{
@@ -1907,6 +1904,10 @@ namespace xlua
 						{
 							return false;
 						}
+					}
+					else if (!apis->is_null(env, luaValue) && !apis->is_undefined(env, luaValue))
+					{
+						return false;
 					}
 					// nullptr will match ref type
 					break;
@@ -2511,27 +2512,16 @@ namespace xlua
 	class LuaEnvPrivate
 	{
 	public:
-		LuaEnvPrivate(struct pesapi_ffi* inApis, pesapi_env_ref inEnvRef)
-			: apis(inApis), envRef(inEnvRef)
+		LuaEnvPrivate(struct pesapi_ffi* inApis, pesapi_env_ref inEnvRef, Il2CppObject* objPool, Il2CppReflectionMethod* objPoolAddMethodInfo, Il2CppReflectionMethod* objPoolRemoveMethodInfo)
+			: apis(inApis), envRef(inEnvRef), objPoolAdd(objPoolAddMethodInfo->method, objPool), objPoolRemove(objPoolRemoveMethodInfo->method, objPool)
 		{
-			void* memory = il2cpp::utils::Memory::Malloc(sizeof(ObjectPool));
-			m_ObjectPool = new(memory) ObjectPool;
 		}
 
 		~LuaEnvPrivate()
 		{
-			m_ObjectPool->clear();
-			SetBarrierForObjectPool();
-			il2cpp::utils::Memory::Free(m_ObjectPool);
-			m_ObjectPool = nullptr;
 			const pesapi_env env = apis->get_env_from_ref(envRef);
 			apis->set_env_private(env, nullptr);
 			CleanupPendingKillScriptObjects();
-		}
-
-		void SetBarrierForObjectPool() const
-		{
-			il2cpp::gc::GarbageCollector::SetWriteBarrier((void**)m_ObjectPool->data(), sizeof(Il2CppObject*) * m_ObjectPool->size());
 		}
 
 		void AddPendingKillScriptObjects(pesapi_value_ref valueRef)
@@ -2573,44 +2563,34 @@ namespace xlua
 		}
 
 		// 由于GC和弱引用时序无法确定，当先弱引用失效时，对导致dataCache和objectPool对不齐，dataCache数量少于objectPool，所以需要先查找判断
-		void RefCSObject(Il2CppObject* obj) const
+		int32_t RefCSObject(Il2CppObject* obj)
 		{
-			ObjectPool::iterator it = std::find(m_ObjectPool->begin(), m_ObjectPool->end(), obj);
-			if (it != m_ObjectPool->end())
-			{
-				return;
-			}
-			//PLog("%p", (void*)obj);
-			m_ObjectPool->push_back(obj);
-			SetBarrierForObjectPool();
+			return objPoolAdd.CallWithInstance(obj);
 		}
 
-		void UnRefCSObject(Il2CppObject* obj) const
+		void UnRefCSObject(int32_t idx)
 		{
-			ObjectPool::iterator it = std::find(m_ObjectPool->begin(), m_ObjectPool->end(), obj);
-			IL2CPP_ASSERT(it != m_ObjectPool->end());
-			m_ObjectPool->erase(it);
-			SetBarrierForObjectPool();
+			objPoolRemove.CallWithInstance(idx);
 		}
 		struct pesapi_ffi* apis;
 		pesapi_env_ref envRef;
         baselib::ReentrantLock pendingKillRefsMutex;
 		std::unordered_set<pesapi_value_ref> pendingKillRefs;
 
-		typedef std::vector<Il2CppObject*, il2cpp::gc::Allocator<Il2CppObject*> > ObjectPool;
-	private:
-		ObjectPool* m_ObjectPool;
+		MethodInfoHelper<int32_t(Il2CppObject* obj)> objPoolAdd;
+		MethodInfoHelper<Il2CppObject* (int32_t index)> objPoolRemove;
 	};
 
-	static void OnCsObjectEnter(Il2CppObject* obj, void* class_data, LuaEnvPrivate* luaEnvPrivate)
+	static void* OnCsObjectEnter(Il2CppObject* obj, void* class_data, LuaEnvPrivate* luaEnvPrivate)
 	{
-		luaEnvPrivate->RefCSObject(obj);
+		return reinterpret_cast<void*>(luaEnvPrivate->RefCSObject(obj));
 	}
 
-	static void OnCsObjectExit(void* ptr, void* class_data, LuaEnvPrivate* luaEnvPrivate)
+	static void OnCsObjectExit(void* ptr, void* class_data, LuaEnvPrivate* luaEnvPrivate, void* userdata)
 	{
+		intptr_t idx = reinterpret_cast<intptr_t>(userdata);
 		if (luaEnvPrivate)
-			luaEnvPrivate->UnRefCSObject(static_cast<Il2CppObject*>(ptr));
+			luaEnvPrivate->UnRefCSObject(idx);
 	}
 
 	static void FreeCSharpMethodInfo(CSharpMethodInfo* csharpMethodInfo)
@@ -2636,21 +2616,13 @@ namespace xlua
 		return (type >= IL2CPP_TYPE_BOOLEAN && type <= IL2CPP_TYPE_R8) || type == IL2CPP_TYPE_I || type == IL2CPP_TYPE_U;
 	}
 
-	static bool IsEnum(const Il2CppType* type, Il2CppClass* klass)
-	{
-		if (type->type != IL2CPP_TYPE_VALUETYPE)
-			return false;
-
-		return klass->enumtype;
-	}
-
 	static bool TypeInfoPassToLuaFilter(const Il2CppType* type, Il2CppClass* klass)
 	{
 		if (klass == g_typeofIntPtr)
 		{
 			return true;
 		}
-		return klass != il2cpp_defaults.void_class && !IsPrimitive(type->type) && !IsEnum(type, klass);
+		return klass != il2cpp_defaults.void_class && !IsPrimitive(type->type) && IL2CPP_TYPE_ENUM != type->type && !Type::IsEnum(type) && Class::GetParent(klass) != il2cpp_defaults.enum_class;
 	}
 
 	static void SetParamArrayFlagAndOptionalNum(WrapData* data, const MethodInfo* method)
@@ -2768,12 +2740,12 @@ namespace xlua
 		apis->add_return(info, ret);
 	}
 
-	xlua::LuaEnvPrivate* InitialPapiEnvRef(struct pesapi_ffi* apis, pesapi_env_ref envRef)
+	xlua::LuaEnvPrivate* InitialPapiEnvRef(struct pesapi_ffi* apis, pesapi_env_ref envRef, Il2CppObject *objPool, Il2CppReflectionMethod* objPoolAddMethodInfo, Il2CppReflectionMethod* objPoolRemoveMethodInfo)
 	{
 		auto env = apis->get_env_from_ref(envRef);
 		xlua::AutoValueScope ValueScope(apis, env);
 
-		auto luaEnvPrivate = new xlua::LuaEnvPrivate(apis, envRef);
+		auto luaEnvPrivate = new xlua::LuaEnvPrivate(apis, envRef, objPool, objPoolAddMethodInfo, objPoolRemoveMethodInfo);
 		apis->set_env_private(env, luaEnvPrivate);
 		auto loadType = apis->create_function(env, LoadTypeWrapper, nullptr, nullptr);
 		auto createFunction = apis->create_function(env, createFunctionWrapper, nullptr, nullptr);
@@ -3097,7 +3069,7 @@ extern "C"
 		InternalCalls::Add("XLua.NativeAPI::DoString(System.IntPtr,System.IntPtr,System.Byte[],System.String,XLua.LuaTable,System.Type)", (Il2CppMethodPointer)xlua::DoString);
 		InternalCalls::Add("XLua.NativeAPI::LoadString(System.IntPtr,System.IntPtr,System.Byte[],System.String,XLua.LuaTable,System.Type)", (Il2CppMethodPointer)xlua::LoadString);
 		InternalCalls::Add("XLua.NativeAPI::SetObjectToGlobal(System.IntPtr,System.IntPtr,System.String,System.Object)", (Il2CppMethodPointer)xlua::SetObjectToGlobal);
-		InternalCalls::Add("XLua.NativeAPI::InitialPapiEnvRef(System.IntPtr,System.IntPtr)", (Il2CppMethodPointer)xlua::InitialPapiEnvRef);
+		InternalCalls::Add("XLua.NativeAPI::InitialPapiEnvRef(System.IntPtr,System.IntPtr,System.Object,System.Reflection.MethodBase,System.Reflection.MethodBase)", (Il2CppMethodPointer)xlua::InitialPapiEnvRef);
 		InternalCalls::Add("XLua.NativeAPI::CleanupPapiEnvRef(System.IntPtr,System.IntPtr)", (Il2CppMethodPointer)xlua::CleanupPapiEnvRef);
 		InternalCalls::Add("XLua.NativeAPI::DestroyLuaEnvPrivate(System.IntPtr)", (Il2CppMethodPointer)xlua::DestroyLuaEnvPrivate);
 		InternalCalls::Add("XLua.LuaTable::GetLuaTableValueByUInt64(System.IntPtr,System.UInt64,System.Type)", (Il2CppMethodPointer)xlua::GetLuaTableValueByUInt64);

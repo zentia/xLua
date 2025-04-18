@@ -954,7 +954,7 @@ PlayerSettings:
   forceOpenHarmonyInternetPermission: 0
   forceOpenHarmonySDCardPermission: 0
   openHarmonyUseLowAccuracyLocation: 0
-  apiCompatibilityLevel: 6
+  apiCompatibilityLevel: 3
   stripMonoScriptInGlobalGameManagers: 0
   strippingQtsMonoScriptLevel: 0
   activeInputHandler: 0

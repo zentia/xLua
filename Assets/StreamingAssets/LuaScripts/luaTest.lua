@@ -548,4 +548,4 @@ function StartTest()
 end
 -- dictionary
 local dict = CS.System.Collections.Generic.Dictionary(CS.System.String, CS.System.String)()
-dict:Add("a",1)
+dict:Add("a","1")

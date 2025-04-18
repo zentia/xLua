@@ -7,9 +7,8 @@ namespace XLUA_NAMESPACE
     class ObjectCacheNode
     {
     public:
-        explicit ObjectCacheNode(const void* typeId)
-            : TypeId(typeId)
-            , UserData(nullptr)
+        explicit ObjectCacheNode(const void* typeId, void* userdata)
+            : TypeId(typeId), UserData(userdata)
             , Next(nullptr)
             , Value(-1)
             , MustCallFinalize(false)

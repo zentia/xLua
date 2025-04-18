@@ -113,8 +113,8 @@ typedef void (*pesapi_callback)(struct pesapi_ffi* apis, pesapi_callback_info in
 typedef void* (*pesapi_constructor)(struct pesapi_ffi* apis, pesapi_callback_info info);
 typedef void (*pesapi_finalize)(struct pesapi_ffi* apis, void* Ptr, void* class_data, void* env_private);
 typedef void (*pesapi_function_finalize)(struct pesapi_ffi* apis, void* data, void* env_private);
-typedef void (*pesapi_on_native_object_enter)(void* ptr, void* class_data, void* env_private);
-typedef void (*pesapi_on_native_object_exit)(void* ptr, void* class_data, void* env_private);
+typedef void* (*pesapi_on_native_object_enter)(void* ptr, void* class_data, void* env_private);
+typedef void (*pesapi_on_native_object_exit)(void* ptr, void* class_data, void* env_private, void* userdata);
 typedef bool (*pesapi_class_not_found_callback)(const void* type_id);
 typedef void (*pesapi_func_ptr)(void);
 

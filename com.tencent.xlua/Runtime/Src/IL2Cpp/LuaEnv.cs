@@ -23,6 +23,8 @@ namespace XLua
         IntPtr nativePesapiEnv;
         IntPtr nativeScriptObjectsRefsMgr;
 
+        ObjectPool objectPool = new ObjectPool();
+
         [UnityEngine.Scripting.Preserve]
         private void Preserver()
         {
@@ -70,7 +72,8 @@ namespace XLua
             Init(loader);
 
             nativePesapiEnv = XLua.NativeAPI.GetPapiEnvRef(nativeLuaEnv);
-            nativeScriptObjectsRefsMgr = XLua.NativeAPI.InitialPapiEnvRef(apis, nativePesapiEnv);
+            var objectPoolType = typeof(ObjectPool);
+            nativeScriptObjectsRefsMgr = NativeAPI.InitialPapiEnvRef(apis, nativePesapiEnv, objectPool, objectPoolType.GetMethod("Add"), objectPoolType.GetMethod("Remove"));
 
             XLua.NativeAPI.SetObjectToGlobal(apis, nativePesapiEnv, "luaEnv", this);
 

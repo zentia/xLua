@@ -22,4 +22,4 @@ cmake -G "%__VS%" -A x64 ..
 popd
 cmake --build build64 --config Debug
 copy /Y build64\Debug\GameCore.dll ..\Assets\Plugins\x86_64\GameCore.dll
-copy /Y build64\Debug\GameCore.dll D:\xLua-win\build\bin\xLua_Data\Plugins\x86_64\GameCore.dll
+copy /Y build64\Debug\GameCore.dll J:\xlua_win\build\bin\xLua_Data\Plugins\x86_64\GameCore.dll

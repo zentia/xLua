@@ -271,13 +271,15 @@ namespace xlua
                 }
                 lua_settop(L,top);
             }*/
+            void* userdata = nullptr;
             if (classDefinition->OnEnter)
             {
-                classDefinition->OnEnter(ptr, classDefinition->Data, DataTransfer::GetLuaEnvPrivate());
+                userdata = classDefinition->OnEnter(ptr, classDefinition->Data, DataTransfer::GetLuaEnvPrivate());
                 // PLog(xlua::Log, "BindCppObject 0X%p", ptr);
             }
-            auto ret     = m_DataCache.insert({ptr, new ObjectCacheNode(classDefinition->TypeId)});
+            auto ret     = m_DataCache.insert({ptr, new ObjectCacheNode(classDefinition->TypeId, userdata)});
             cacheNodePtr = ret.first->second;
+
         }
         cacheNodePtr->Value = ref;
     }
@@ -290,10 +292,11 @@ namespace xlua
             iterator->second->Remove(classDefinition->TypeId, true);
             if (!iterator->second->TypeId)
             {
+                void* userdata = iterator->second->UserData;
                 m_DataCache.erase(ptr);
                 if (classDefinition->OnExit)
                 {
-                    classDefinition->OnExit(ptr, classDefinition->Data, DataTransfer::GetLuaEnvPrivate());
+                    classDefinition->OnExit(ptr, classDefinition->Data, DataTransfer::GetLuaEnvPrivate(), userdata);
                     // PLog(xlua::Log, "UnBindCppObject 0X%p", ptr);
                 }
             }
@@ -353,7 +356,7 @@ namespace xlua
                 }
                 if (ClassDefinition && ClassDefinition->OnExit && !exit)
                 {
-                    ClassDefinition->OnExit(KV.first, ClassDefinition->Data, PData);
+                    ClassDefinition->OnExit(KV.first, ClassDefinition->Data, PData, KV.second->UserData);
                     exit = true;
                 }
                 lua_pop(L, 1);
