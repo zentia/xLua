@@ -146,10 +146,10 @@ namespace XLua
         public static LogCallback Log = LogImpl;
 
         [DllImport("__Internal", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void SetLogCallbackInternal(IntPtr log);
+        public static extern void SetLogCallbackInternal(IntPtr log, IntPtr logWarning, IntPtr logError, IntPtr logException);
 
         //[UnityEngine.Scripting.RequiredByNativeCodeAttribute()]
-        public static void SetLogCallback(LogCallback log, LogCallback logWarning, LogCallback logError)
+        public static void SetLogCallback(LogCallback log, LogCallback logWarning, LogCallback logError, LogCallback logException)
         {
 #if !UNITY_EDITOR || UNITY_STANDALONE_WIN
             GCHandle.Alloc(log);
@@ -159,12 +159,12 @@ namespace XLua
             IntPtr fn1 = log == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(log);
             IntPtr fn2 = logWarning == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(logWarning);
             IntPtr fn3 = logError == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(logError);
+            IntPtr fn4 = logException == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(logException);
 
             try
             {
-                //SetLogCallback(fn1);
-                SetLogCallbackInternal(fn1);
-                LuaDLL.Lua.SetLogCallback(fn1, fn2, fn3);
+                SetLogCallbackInternal(fn1, fn2, fn3, fn4);
+                LuaDLL.Lua.SetLogCallback(fn1, fn2, fn3, fn4);
             }
             catch (DllNotFoundException)
             {

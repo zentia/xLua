@@ -254,7 +254,7 @@ namespace XLua.Editor.Generator
 
         };
 
-        private static HashSet<Type> evalTypes = new();
+        private static HashSet<Type> delegateTypes = new();
         private static HashSet<MethodInfo> delegateInvokes = new();
 
         public class Method
@@ -468,19 +468,23 @@ namespace XLua.Editor.Generator
 
 
             var assemblies = AppDomain.CurrentDomain.GetAssemblies();
-            evalTypes.Clear();
-            evalTypes.Add(typeof(Func<float>));
+            delegateTypes.Clear();
+            delegateTypes.Add(typeof(Func<float>));
             foreach (var assembly in assemblies)
             {
                 var item = assembly.GetTypes();
                 foreach (var type in item)
                 {
+                    if (type.GetCustomAttribute<CSharpCallLuaAttribute>(false) != null)
+                    {
+                        delegateTypes.Add(type);
+                    }
                     var fields = type.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
                     foreach (var fieldInfo in fields)
                     {
                         if (fieldInfo.GetCustomAttribute<LuaEvalAttribute>(false) != null)
                         {
-                            evalTypes.Add(fieldInfo.FieldType);
+                            delegateTypes.Add(fieldInfo.FieldType);
                         }
                     }
                 }
@@ -517,7 +521,7 @@ namespace XLua.Editor.Generator
             }
             HashSet<Type> allTypes = new HashSet<Type>();
             delegateInvokes.Clear();
-            foreach (var type in wrapperUsedTypes.Concat(typeInGenericArgument).Concat(evalTypes).Concat(nestedToWrapper))
+            foreach (var type in wrapperUsedTypes.Concat(typeInGenericArgument).Concat(delegateTypes).Concat(nestedToWrapper))
             {
                 IterateAllType(type, allTypes);
             }

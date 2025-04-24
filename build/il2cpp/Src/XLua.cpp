@@ -25,6 +25,7 @@ namespace xlua
     LogCallback GLogCallback        = nullptr;
     LogCallback GLogWarningCallback = nullptr;
     LogCallback GLogErrorCallback   = nullptr;
+    LogCallback GLogExceptionCallback = nullptr;
 
     void PLog(LogLevel level, const std::string Fmt, ...)
     {
@@ -85,11 +86,12 @@ extern "C" {
         return g_pesapi_ffi.create_env_ref(env);
     }
 
-    PESAPI_MODULE_EXPORT void SetLogCallback(xlua::LogCallback Log, xlua::LogCallback LogWarning, xlua::LogCallback LogError)
+    PESAPI_MODULE_EXPORT void SetLogCallback(xlua::LogCallback Log, xlua::LogCallback LogWarning, xlua::LogCallback LogError, xlua::LogCallback logException)
     {
         xlua::GLogCallback = Log;
         xlua::GLogWarningCallback = LogWarning;
         xlua::GLogErrorCallback = LogError;
+        xlua::GLogExceptionCallback = logException;
     }
 
     PESAPI_MODULE_EXPORT pesapi_func_ptr* GetRegisterApi()

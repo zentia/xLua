@@ -14,6 +14,7 @@ namespace xlua
         Log     = 0,
         Warning = 1,
         Error   = 2,
+        Exception = 3,
     };
 
     void PLog(LogLevel level, const std::string Fmt, ...);

@@ -59,6 +59,46 @@ static bool b_bs(void* target, Il2CppString* p0, MethodInfo* method) {
     return ret;
 
 }
+// Int32 Invoke(Int32, System.String, DClass ByRef) declare in Tutorial.CSCallLua+FDelegate
+static int32_t b_i4i4sTo(void* target, int32_t p0, Il2CppString* p1, void* p2, MethodInfo* method) {
+    // PLog("Running b_i4i4sTo");
+                        
+    auto TIp1 = GetParameterType(method, 1);
+        
+    auto TIp2 = GetParameterType(method, 2);
+
+    PObjectRefInfo* delegateInfo = GetPObjectRefInfo(target);
+    struct pesapi_ffi* apis = delegateInfo->Apis;
+
+    pesapi_env env = apis->get_ref_associated_env(delegateInfo->ValueRef);
+    AutoValueScope valueScope(apis, env);
+    if (!env)
+    {
+        il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException("LuaEnv had been destroy"));
+        return {};
+    }
+    auto func = apis->get_value_from_ref(env, delegateInfo->ValueRef);
+
+    pesapi_value argv[3]{
+    converter::Converter<int32_t>::toScript(apis, env, p0),
+            converter::Converter<Il2CppString*>::toScript(apis, env, p1),
+            // unknown ret signature: To
+    };
+    auto luaret = apis->call_function(env, func, 0, 3, argv);
+
+    if (apis->has_caught(env))
+    {
+        auto msg = apis->get_exception_as_string(env, true);
+        il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException(msg));
+        return {};
+    }
+             
+    // LuaValToCSVal P any
+    int32_t ret = converter::Converter<int32_t>::toCpp(apis, env, luaret);
+
+    return ret;
+
+}
 // Int32 Invoke(IntPtr) declare in XLua.LuaDLL.lua_CSFunction
 static int32_t b_i4p(void* target, void* p0, MethodInfo* method) {
     // PLog("Running b_i4p");
@@ -130,6 +170,40 @@ static int32_t b_i4ss(void* target, Il2CppString* p0, Il2CppString* p1, MethodIn
              
     // LuaValToCSVal P any
     int32_t ret = converter::Converter<int32_t>::toCpp(apis, env, luaret);
+
+    return ret;
+
+}
+// System.Action Invoke() declare in Tutorial.CSCallLua+GetE
+static Il2CppObject* b_o(void* target, MethodInfo* method) {
+    // PLog("Running b_o");
+
+    auto TIret = GetReturnType(method);
+
+    PObjectRefInfo* delegateInfo = GetPObjectRefInfo(target);
+    struct pesapi_ffi* apis = delegateInfo->Apis;
+
+    pesapi_env env = apis->get_ref_associated_env(delegateInfo->ValueRef);
+    AutoValueScope valueScope(apis, env);
+    if (!env)
+    {
+        il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException("LuaEnv had been destroy"));
+        return {};
+    }
+    auto func = apis->get_value_from_ref(env, delegateInfo->ValueRef);
+
+    pesapi_value *argv = nullptr;
+    auto luaret = apis->call_function(env, func, 0, 0, argv);
+
+    if (apis->has_caught(env))
+    {
+        auto msg = apis->get_exception_as_string(env, true);
+        il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException(msg));
+        return {};
+    }
+         
+    // LuaValToCSVal o/O
+    Il2CppObject* ret = LuaValueToCSRef(apis, TIret, env, luaret);
 
     return ret;
 
@@ -276,6 +350,34 @@ static void b_vi4(void* target, int32_t p0, MethodInfo* method) {
     }
 
 }
+// Void Invoke(Int32, Int32) declare in PerfMain+FuncTwoBasePara
+static void b_vi4i4(void* target, int32_t p0, int32_t p1, MethodInfo* method) {
+    // PLog("Running b_vi4i4");
+
+    PObjectRefInfo* delegateInfo = GetPObjectRefInfo(target);
+    struct pesapi_ffi* apis = delegateInfo->Apis;
+
+    pesapi_env env = apis->get_ref_associated_env(delegateInfo->ValueRef);
+    AutoValueScope valueScope(apis, env);
+    if (!env)
+    {
+        il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException("LuaEnv had been destroy"));
+    }
+    auto func = apis->get_value_from_ref(env, delegateInfo->ValueRef);
+
+    pesapi_value argv[2]{
+    converter::Converter<int32_t>::toScript(apis, env, p0),
+            converter::Converter<int32_t>::toScript(apis, env, p1)
+    };
+    auto luaret = apis->call_function(env, func, 0, 2, argv);
+
+    if (apis->has_caught(env))
+    {
+        auto msg = apis->get_exception_as_string(env, true);
+        il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException(msg));
+    }
+
+}
 // Void Invoke(ParaClass) declare in ClassParaEventHandler
 static void b_vo(void* target, Il2CppObject* p0, MethodInfo* method) {
     // PLog("Running b_vo");
@@ -395,13 +497,16 @@ static void b_vs(void* target, Il2CppString* p0, MethodInfo* method) {
 }
 static BridgeFuncInfo g_bridgeFuncInfos[] = {
         {"bs", (Il2CppMethodPointer)b_bs},
+    {"i4i4sTo", (Il2CppMethodPointer)b_i4i4sTo},
     {"i4p", (Il2CppMethodPointer)b_i4p},
     {"i4ss", (Il2CppMethodPointer)b_i4ss},
+    {"o", (Il2CppMethodPointer)b_o},
     {"r4", (Il2CppMethodPointer)b_r4},
     {"v", (Il2CppMethodPointer)b_v},
     {"vS__", (Il2CppMethodPointer)b_vS__},
     {"vS_r4r4r4_", (Il2CppMethodPointer)b_vS_r4r4r4_},
     {"vi4", (Il2CppMethodPointer)b_vi4},
+    {"vi4i4", (Il2CppMethodPointer)b_vi4i4},
     {"vo", (Il2CppMethodPointer)b_vo},
     {"vp", (Il2CppMethodPointer)b_vp},
     {"vpi4", (Il2CppMethodPointer)b_vpi4},

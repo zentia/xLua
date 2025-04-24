@@ -53,7 +53,6 @@ public class PerfMain : MonoBehaviour
 #else
             if (File.Exists(filepath))
             {
-                // string text = File.ReadAllText(filepath);
                 return File.ReadAllBytes(filepath);
 
             }
@@ -129,7 +128,7 @@ public class PerfMain : MonoBehaviour
             sw.Close();
         }
 
-        var loopTimes = 1000000;
+        var loopTimes = 1;
         if (GUI.Button(new Rect(0, height, width, height), $"AllTest{loopTimes}"))
         {
             var fs = new FileStream($"{resultPath}AllTest{loopTimes}.log", FileMode.Create);
@@ -728,7 +727,9 @@ public class ClassLuaCallCS : ParaClass
     { }
 
     public static void sFuncStructParam(ParaStruct x)
-    { }
+    {
+        Debug.Log(x.GetType());
+    }
 
     public static void sFuncVec3Param(Vector3 x)
     { }
@@ -902,7 +903,8 @@ public class ClassLuaCallCS : ParaClass
         {
             foreach (var v in param)
             {
-                Debug.Log(v);
+                var t = v.GetType();
+                Debug.Log(t);
             }
         }
     }

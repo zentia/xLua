@@ -16,7 +16,7 @@ namespace XLua.LuaDLL
 #endif
 
         [DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
-        public static extern void SetLogCallback(IntPtr log, IntPtr logWarning, IntPtr logError);
+        public static extern void SetLogCallback(IntPtr log, IntPtr logWarning, IntPtr logError, IntPtr logException);
 
 #if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN || PUERTS_GENERAL || (UNITY_WSA && !UNITY_EDITOR)
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
@@ -24,18 +24,20 @@ namespace XLua.LuaDLL
         public delegate void LogCallback(string content);
 
         //[UnityEngine.Scripting.RequiredByNativeCodeAttribute()]
-        public static void SetLogCallback(LogCallback log, LogCallback logWarning, LogCallback logError)
+        public static void SetLogCallback(LogCallback log, LogCallback logWarning, LogCallback logError, LogCallback logException)
         {
 #if !UNITY_EDITOR
             GCHandle.Alloc(log);
             GCHandle.Alloc(logWarning);
             GCHandle.Alloc(logError);
+            GCHandle.Alloc(logException);
 #endif
             IntPtr fn1 = log == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(log);
             IntPtr fn2 = logWarning == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(logWarning);
             IntPtr fn3 = logError == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(logError);
+            IntPtr fn4 = logError == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(logException);
 
-            SetLogCallback(fn1, fn2, fn3);
+            SetLogCallback(fn1, fn2, fn3, fn4);
         }
 
         [DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]

@@ -675,18 +675,49 @@ namespace xlua
 	typedef void (*LogCallbackFunc)(const char* value);
 
 	static LogCallbackFunc GLogCallback = nullptr;
+	static LogCallbackFunc GLogWarningCallback = nullptr;
+	static LogCallbackFunc GLogErrorCallback = nullptr;
+	static LogCallbackFunc GLogExceptionCallback = nullptr;
 
-	void PLog(const char* Fmt, ...)
+	enum class XLuaLogType
+	{
+		Log,
+		Warning,
+		Error,
+		Exception,
+	};
+
+	void XLuaLog(XLuaLogType type, const char* Fmt, ...)
 	{
 		static char SLogBuffer[1024];
 		va_list list;
 		va_start(list, Fmt);
 		vsnprintf(SLogBuffer, sizeof(SLogBuffer), Fmt, list);
 		va_end(list);
-
-		if (GLogCallback)
+		switch (type)
 		{
-			GLogCallback(SLogBuffer);
+		case XLuaLogType::Log:
+			if (GLogCallback)
+			{
+				GLogCallback(SLogBuffer);
+			}
+			break;
+		case XLuaLogType::Warning:
+			if (GLogWarningCallback)
+			{
+				GLogWarningCallback(SLogBuffer);
+			}
+			break;
+		case XLuaLogType::Error:
+			if (GLogErrorCallback)
+			{
+				GLogErrorCallback(SLogBuffer);
+			}
+		case XLuaLogType::Exception:
+			if (GLogExceptionCallback)
+			{
+				GLogExceptionCallback(SLogBuffer);
+			}
 		}
 	}
 
@@ -786,7 +817,7 @@ namespace xlua
 			res = reinterpret_cast<XLUA_Il2CppGCHandle*>(apis->get_ref_internal_fields(value_ref));
 			if (!res)
 			{
-				PLog("invalid internal_fields ptr:%p", res);
+				XLuaLog(XLuaLogType::Error, "invalid internal_fields ptr:%p", res);
 				apis->release_value_ref(value_ref);
 				res = nullptr;
 				value_ref = nullptr;
@@ -2964,6 +2995,11 @@ namespace xlua
 			{
 				std::string signature = GetMethodSignature(invoke, true, false);
 				classInfo->DelegateBridge = FindBridgeFunc(signature.c_str());
+				if (classInfo->DelegateBridge == nullptr)
+				{
+					xlua::XLuaLog(XLuaLogType::Exception, "%s(%s) not found delegate bridge", oklass->name, signature.c_str());
+					return false;
+				}
 			}
 			catch (Il2CppExceptionWrapper& exception)
 			{
@@ -3182,9 +3218,12 @@ extern "C"
 		luaEnvPrivate->CleanupPendingKillScriptObjects();
 	}
 
-	void SetLogCallbackInternal(xlua::LogCallbackFunc Log)
+	void SetLogCallbackInternal(xlua::LogCallbackFunc Log, xlua::LogCallbackFunc logWarning, xlua::LogCallbackFunc logError, xlua::LogCallbackFunc logException)
 	{
 		xlua::GLogCallback = Log;
+		xlua::GLogWarningCallback = logWarning;
+		xlua::GLogErrorCallback = logError;
+		xlua::GLogExceptionCallback = logException;
 	}
 #ifdef __cplusplus
 }
