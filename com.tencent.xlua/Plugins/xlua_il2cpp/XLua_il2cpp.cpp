@@ -949,25 +949,67 @@ namespace xlua
 			return 0;
 		}
 	}
-
-	static int TryTranslatePrimitiveWithClass(struct pesapi_ffi* apis, pesapi_env env, Il2CppObject* obj, Il2CppClass* klass = nullptr)
+	static int TryTranslatePrimitiveWithClass(struct pesapi_ffi* apis, pesapi_env env, void* obj, Il2CppClass* klass)
 	{
 		if (obj)
 		{
-			const Il2CppType* type = Class::GetType(klass ? klass : obj->klass);
-			int t = type->type;
+			const Il2CppType* type = Class::GetType(klass);
+			Il2CppTypeEnum t = type->type;
 			if (t == IL2CPP_TYPE_STRING)
 			{
 				const Il2CppChar* utf16 = il2cpp::utils::StringUtils::GetChars((Il2CppString*)obj);
 				std::string str = il2cpp::utils::StringUtils::Utf16ToUtf8(utf16);
 				return apis->create_string_utf8(env, str.c_str(), str.size());
 			}
-			void* ptr = Object::Unbox(obj);
-			return TryTranslatePrimitivePtr(apis, env, type->type, ptr);
+			if (t == IL2CPP_TYPE_VALUETYPE && Class::IsEnum(klass))
+			{
+				const Il2CppType* tp = Class::GetEnumBaseType(klass);
+				if (tp != nullptr)
+				{
+					t = tp->type;
+				}
+			}
+			return TryTranslatePrimitivePtr(apis, env, t, obj);
 		}
 		return 0;
 	}
+	static int TryTranslatePrimitiveWithClass(struct pesapi_ffi* apis, pesapi_env env, Il2CppObject* obj, Il2CppClass* klass = nullptr)
+	{
+		if (obj)
+		{
+			const Il2CppType* type = Class::GetType(klass ? klass : obj->klass);
+			Il2CppTypeEnum t = type->type;
+			if (t == IL2CPP_TYPE_STRING)
+			{
+				const Il2CppChar* utf16 = il2cpp::utils::StringUtils::GetChars((Il2CppString*)obj);
+				std::string str = il2cpp::utils::StringUtils::Utf16ToUtf8(utf16);
+				return apis->create_string_utf8(env, str.c_str(), str.size());
+			}
+			if (t == IL2CPP_TYPE_VALUETYPE && Class::IsEnum(obj->klass))
+			{
+				const Il2CppType* tp = Class::GetEnumBaseType(obj->klass);
+				if (tp != nullptr)
+				{
+					t = tp->type;
+				}
+			}
+			void* ptr = Object::Unbox(obj);
+			return TryTranslatePrimitivePtr(apis, env, t, ptr);
+		}
+		return 0;
+	}
+	int TranslateValueType(struct pesapi_ffi* apis, pesapi_env env, Il2CppClass* targetClass, void* obj)
+	{
+		auto len = targetClass->native_size;
+		if (len < 0)
+		{
+			len = targetClass->instance_size - sizeof(Il2CppObject);
+		}
 
+		auto buff = new uint8_t[len];
+		memcpy(buff, obj, len);
+		return apis->native_object_to_value(env, targetClass, buff, true);
+	}
 	int TranslateValueType(struct pesapi_ffi* apis, pesapi_env env, Il2CppClass* targetClass, Il2CppObject* obj)
 	{
 		auto len = targetClass->native_size;
@@ -993,7 +1035,7 @@ namespace xlua
 		}
 		return 0;
 	}
-
+	
 	union PrimitiveValueType
 	{
 		int8_t i1;
@@ -1484,6 +1526,31 @@ namespace xlua
 		return Object::Box(klass, toBox);
 	}
 
+	int CSValueToLuaValue(struct pesapi_ffi* apis, pesapi_env env, Il2CppClass* targetClass, void* obj)
+	{
+		if (targetClass == il2cpp_defaults.void_class)
+			return apis->create_undefined(env);
+		if (!obj)
+			return apis->create_null(env);
+		if (!targetClass)
+		{
+			targetClass = il2cpp_defaults.object_class;
+		}
+
+		if (Class::IsEnum(targetClass))
+		{
+			targetClass = Class::GetElementClass(targetClass);
+		}
+
+		int luaVal = TryTranslatePrimitiveWithClass(apis, env, obj, targetClass != il2cpp_defaults.object_class ? targetClass : nullptr);
+
+		if (luaVal)
+		{
+			return luaVal;
+		}
+		return TranslateValueType(apis, env, targetClass, obj);
+	}
+
 	int CSRefToLuaValue(struct pesapi_ffi* apis, pesapi_env env, Il2CppClass* targetClass, Il2CppObject* obj)
 	{
 		if (targetClass == il2cpp_defaults.void_class)
@@ -1935,7 +2002,10 @@ namespace xlua
 				}
 			}
 		}
-		void** args = method->parameters_count > 0 ? (void**)alloca(sizeof(void*) * method->parameters_count) : nullptr;
+		size_t argsSize = sizeof(void*) * method->parameters_count;
+		void** args = method->parameters_count > 0 ? (void**)alloca(argsSize) : nullptr;
+		if (args != nullptr)
+			memset(args, 0, argsSize);
 		int luaThis = apis->get_holder(info);
 		if (isExtensionMethod)
 		{
@@ -1994,9 +2064,11 @@ namespace xlua
 				else if (passedByReference)
 				{
 					returnCount++;
-					auto underlyClass = Class::FromIl2CppType(&parameterKlass->byval_arg);
-					void* storage = alloca(underlyClass->instance_size - sizeof(Il2CppObject));
 					luaValue = LuaObjectUnRef(apis, env, luaValue);
+					auto underlyClass = Class::FromIl2CppType(&parameterKlass->byval_arg);
+					size_t storageSize = underlyClass->instance_size - sizeof(Il2CppObject);
+					void* storage = alloca(storageSize);
+					memset(storage, 0, storageSize);
 					GetValueTypeFromLua(apis, env, luaValue, underlyClass, storage);
 					args[i] = storage;
 				}
@@ -2128,8 +2200,15 @@ namespace xlua
 					}
 				}
 				auto underlyClass = Class::FromIl2CppType(&parameterKlass->byval_arg);
-				Il2CppObject* ptr = (Il2CppObject*)(((uint8_t*)args[i]) - sizeof(Il2CppObject));
-				returnValueArray[idx++] = CSRefToLuaValue(apis, env, underlyClass, ptr);
+				if (Class::IsValuetype(underlyClass))
+				{
+					returnValueArray[idx++] = CSValueToLuaValue(apis, env, underlyClass, args[i]);
+				}
+				else
+				{
+					Il2CppObject* ptr = (Il2CppObject*)(((uint8_t*)args[i]) - sizeof(Il2CppObject));
+					returnValueArray[idx++] = CSRefToLuaValue(apis, env, underlyClass, ptr);
+				}
 			}
 			else if (passedByReference)
 			{
