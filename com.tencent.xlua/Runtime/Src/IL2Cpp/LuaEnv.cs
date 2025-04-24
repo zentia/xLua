@@ -247,7 +247,14 @@ namespace XLua
 
         public void GC()
         {
+#if OSGAME
+            Int32 sampleIndex = -1;
+            Assets.Plugins.Perf.StatsLite.BeginSample(StatsSampleId.LuaEnv_GC, ref sampleIndex);
+#endif
             Tick();
+#if OSGAME
+            Assets.Plugins.Perf.StatsLite.EndSampleByIndex(ref sampleIndex);
+#endif
         }
 
         public void FullGc()

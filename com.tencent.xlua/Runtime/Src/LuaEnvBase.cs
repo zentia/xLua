@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 using XLua.LuaDLL;
 
 namespace XLua
@@ -50,7 +49,7 @@ namespace XLua
             {
                 AddLoader(loader);
             }
-            nativeLuaEnv = NativeAPI.CreateNativeLuaEnv(Application.temporaryCachePath);
+            nativeLuaEnv = NativeAPI.CreateNativeLuaEnv();
             rawL = NativeAPI.GetLuaState(nativeLuaEnv);
             Lua.lua_atpanic(rawL, StaticLuaCallbacks.Panic);
             Lua.lua_pushstdcallcfunction(rawL, StaticLuaCallbacks.Print);
