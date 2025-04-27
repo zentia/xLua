@@ -476,13 +476,12 @@ struct pesapi_value_ref__
         : L(_L)
         , value_ref(_value_ref)
         , ref_count(1)
-        , userdata(nullptr)
     {
     }
     lua_State* L;
     int value_ref;
     int ref_count;
-    void* userdata;
+    void* internal_fields[0];
 };
 
 pesapi_value_ref pesapi_create_value_ref(pesapi_env env, pesapi_value pvalue)
@@ -543,7 +542,7 @@ pesapi_env pesapi_get_ref_associated_env(pesapi_value_ref value_ref)
 
 void** pesapi_get_ref_internal_fields(pesapi_value_ref value_ref)
 {
-    return &value_ref->userdata;
+    return &value_ref->internal_fields[0];
 }
 
 int pesapi_get_property(pesapi_env env, pesapi_value pobject, const char* key)

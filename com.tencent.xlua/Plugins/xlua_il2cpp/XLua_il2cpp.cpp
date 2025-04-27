@@ -804,11 +804,7 @@ namespace xlua
 	static XLUA_Il2CppGCHandle* FindOrCreateHandleStoreOfValue(struct pesapi_ffi* apis, pesapi_env env, int value, pesapi_value_ref* out_value_ref, Il2CppObject** out_object)
 	{
 		void* out_ptr;
-		if (!apis->get_private(env, value, &out_ptr))
-		{
-			*out_value_ref = nullptr;
-			return nullptr;    // not support, not a object?
-		}
+		apis->get_private(env, value, &out_ptr);
 
 		pesapi_value_ref value_ref = static_cast<pesapi_value_ref>(out_ptr);
 		XLUA_Il2CppGCHandle* res = nullptr;
@@ -827,24 +823,16 @@ namespace xlua
 		if (!res)
 		{
 			value_ref = apis->create_value_ref(env, value);
-
-			res = reinterpret_cast<XLUA_Il2CppGCHandle*>(apis->get_ref_internal_fields(value_ref));
 			*out_object = nullptr;
+			res = reinterpret_cast<XLUA_Il2CppGCHandle*>(apis->get_ref_internal_fields(value_ref));
 		}
 		else
 		{
-#ifdef UNITY_2023_2_OR_NEWER
-			* out_object = il2cpp::gc::GCHandle::GetTarget(reinterpret_cast<Il2CppGCHandle>(*res));
-#else
-			* out_object = il2cpp::gc::GCHandle::GetTarget(*res);
-#endif
-
+			*out_object = il2cpp::gc::GCHandle::GetTarget(*res);
 			if (*out_object == nullptr)
 			{
 				apis->duplicate_value_ref(value_ref);
 			}
-			// assert(*out_object != nullptr);
-			// PLog("found existed luaobject:%p", *out_object);
 		}
 
 		*out_value_ref = value_ref;
@@ -2545,11 +2533,7 @@ namespace xlua
 			PObjectRefInfo* objectInfo = GetPObjectRefInfo(ret);
 			auto targetHandle = il2cpp::gc::GCHandle::GetTargetHandle(ret, 0, il2cpp::gc::HANDLE_WEAK);
 			il2cpp::vm::Exception::RaiseIfError(targetHandle.GetError());
-#ifdef UNITY_2023_2_OR_NEWER
-			* handle_store = reinterpret_cast<XLUA_Il2CppGCHandle>(targetHandle.Get());
-#else
-			* handle_store = targetHandle.Get();
-#endif
+			*handle_store = targetHandle.Get();
 			SetPObjectRefInfoValue(apis, env, objectInfo, value_ref);
 		}
 
@@ -2636,14 +2620,16 @@ namespace xlua
 
 		void AddPendingKillScriptObjects(pesapi_value_ref valueRef)
 		{
-            il2cpp::os::FastAutoLock guard(&pendingKillRefsMutex);
-			pendingKillRefs.insert(valueRef);
-
+            if (apis->get_ref_internal_fields(valueRef))
+            {
+				il2cpp::os::AutoLock guard(&pendingKillRefsMutex);
+				pendingKillRefs.insert(valueRef);
+            }
 		}
 
 		void CleanupPendingKillScriptObjects()
 		{
-            il2cpp::os::FastAutoLock guard(&pendingKillRefsMutex);
+            il2cpp::os::AutoLock guard(&pendingKillRefsMutex);
 			auto size = pendingKillRefs.size();
 			if (size == 0)
 			{
@@ -2684,7 +2670,7 @@ namespace xlua
 		}
 		struct pesapi_ffi* apis;
 		pesapi_env_ref envRef;
-        baselib::ReentrantLock pendingKillRefsMutex;
+        il2cpp::os::Mutex pendingKillRefsMutex;
 		std::unordered_set<pesapi_value_ref> pendingKillRefs;
 
 		MethodInfoHelper<int32_t(Il2CppObject* obj)> objPoolAdd;
