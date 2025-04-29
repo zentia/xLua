@@ -61,10 +61,10 @@ namespace XLua
         public static extern IntPtr GetPapiEnvRef(IntPtr luaEnv);
 
         [DllImport("__Internal", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void AddPendingKillScriptObjects(IntPtr ffiApi, IntPtr luaEnv, IntPtr valueRef);
+        public static extern void AddPendingKillScriptObjects(IntPtr ffiApi, IntPtr valueRef);
 
         [DllImport("__Internal", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void CleanupPendingKillScriptObjects(IntPtr luaEnv);
+        public static extern void CleanupPendingKillScriptObjects();
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static IntPtr InitialPapiEnvRef(IntPtr api, IntPtr envRef, Object obj, MethodBase addMethodBase, MethodBase removeMethodBase)
@@ -79,7 +79,7 @@ namespace XLua
         }
 
         [MethodImpl(MethodImplOptions.InternalCall)]
-        public static void DestroyLuaEnvPrivate(IntPtr luaEnvPrivate)
+        public static void DestroyLuaEnvPrivate()
         {
             throw new NotImplementedException();
         }

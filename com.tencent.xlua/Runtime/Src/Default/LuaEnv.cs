@@ -367,10 +367,6 @@ namespace XLua
 
         public void Dispose(bool dispose)
         {
-#if THREAD_SAFE || HOTFIX_ENABLE
-            lock (luaEnvLock)
-            {
-#endif
             if (disposed) return;
             Tick();
 
@@ -399,9 +395,6 @@ namespace XLua
             translator = null;
 
             disposed = true;
-#if THREAD_SAFE || HOTFIX_ENABLE
-            }
-#endif
         }
 
         public void ClearDelegateBridge()

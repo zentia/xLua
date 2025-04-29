@@ -93,9 +93,14 @@ public class PerfMain : MonoBehaviour
         resultPath = Application.dataPath + "/../../../../noil2cpp";
 #endif
 #endif
+        CreateLuaEnv();
+    }
+
+    private void CreateLuaEnv()
+    {
         var start = Time.realtimeSinceStartup;
         var startMem = System.GC.GetTotalMemory(true);
-		luaenv = new LuaEnv(LoadFromStreamingAssetsPath
+        luaenv = new LuaEnv(LoadFromStreamingAssetsPath
 #if !UNITY_EDITOR && !XLUA_IL2CPP
         , typeof(DelegateBridgeWrap), typeof(ObjectTranslatorWrap)
 #endif
@@ -106,6 +111,11 @@ public class PerfMain : MonoBehaviour
         Debug.Log("startMem: " + startMem + ", endMem: " + endMem + ", " + "cost mem: " + (endMem - startMem));
         luaenv.DoString("require 'luaTest'");
         LuaEvalAttribute.Bind(this, luaenv);
+    }
+
+    private void DestroyLuaEnv()
+    {
+        luaenv.Dispose(true);
     }
 
     void HandleLog(string logString, string stackTrace, LogType type)
@@ -126,6 +136,8 @@ public class PerfMain : MonoBehaviour
             StartTest();
             Application.logMessageReceived -= HandleLog;
             sw.Close();
+            DestroyLuaEnv();
+            CreateLuaEnv();
         }
 
         var loopTimes = 1;

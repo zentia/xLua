@@ -21,7 +21,6 @@ namespace XLua
 
         IntPtr apis;
         IntPtr nativePesapiEnv;
-        IntPtr nativeScriptObjectsRefsMgr;
 
         ObjectPool objectPool = new ObjectPool();
 
@@ -73,7 +72,7 @@ namespace XLua
 
             nativePesapiEnv = XLua.NativeAPI.GetPapiEnvRef(nativeLuaEnv);
             var objectPoolType = typeof(ObjectPool);
-            nativeScriptObjectsRefsMgr = NativeAPI.InitialPapiEnvRef(apis, nativePesapiEnv, objectPool, objectPoolType.GetMethod("Add"), objectPoolType.GetMethod("Remove"));
+            NativeAPI.InitialPapiEnvRef(apis, nativePesapiEnv, objectPool, objectPoolType.GetMethod("Add"), objectPoolType.GetMethod("Remove"));
 
             XLua.NativeAPI.SetObjectToGlobal(apis, nativePesapiEnv, "luaEnv", this);
 
@@ -242,7 +241,7 @@ namespace XLua
 
         public void Tick()
         {
-            XLua.NativeAPI.CleanupPendingKillScriptObjects(nativeScriptObjectsRefsMgr);
+            XLua.NativeAPI.CleanupPendingKillScriptObjects();
         }
 
         public void GC()
@@ -281,9 +280,8 @@ namespace XLua
             {
                 if (disposed)
                     return;
-                XLua.NativeAPI.DestroyLuaEnvPrivate(nativeScriptObjectsRefsMgr);
+                XLua.NativeAPI.DestroyLuaEnvPrivate();
                 XLua.NativeAPI.CleanupPapiEnvRef(apis, nativePesapiEnv);
-                nativeScriptObjectsRefsMgr = IntPtr.Zero;
                 Instance = null;
                 disposed = true;
             }

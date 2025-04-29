@@ -785,14 +785,11 @@ namespace xlua
 
 		return nullptr;
 	}
-	//std::unordered_set<pesapi_value_ref> debug;
+	
 	static void SetPObjectRefInfoValue(struct pesapi_ffi* apis, pesapi_env env, PObjectRefInfo* objectInfo, pesapi_value_ref value_ref)
 	{
-
-
 		objectInfo->Apis = apis;
 		objectInfo->ValueRef = value_ref;
-		objectInfo->EnvPrivate = (void*)apis->get_env_private(env);
 	}
 
 	static int GetPObjectRefInfoValue(struct pesapi_ffi* apis, pesapi_env env, const PObjectRefInfo* objectInfo)
@@ -2602,13 +2599,13 @@ namespace xlua
 			apis->set_property(env, global, key.c_str(), CSRefToLuaValue(apis, env, obj->klass, obj));
 		}
 	}
-
 	class LuaEnvPrivate
 	{
 	public:
 		LuaEnvPrivate(struct pesapi_ffi* inApis, pesapi_env_ref inEnvRef, Il2CppObject* objPool, Il2CppReflectionMethod* objPoolAddMethodInfo, Il2CppReflectionMethod* objPoolRemoveMethodInfo)
 			: apis(inApis), envRef(inEnvRef), objPoolAdd(objPoolAddMethodInfo->method, objPool), objPoolRemove(objPoolRemoveMethodInfo->method, objPool)
 		{
+			instance = this;
 		}
 
 		~LuaEnvPrivate()
@@ -2616,6 +2613,7 @@ namespace xlua
 			const pesapi_env env = apis->get_env_from_ref(envRef);
 			apis->set_env_private(env, nullptr);
 			CleanupPendingKillScriptObjects();
+			instance = nullptr;
 		}
 
 		void AddPendingKillScriptObjects(pesapi_value_ref valueRef)
@@ -2675,7 +2673,9 @@ namespace xlua
 
 		MethodInfoHelper<int32_t(Il2CppObject* obj)> objPoolAdd;
 		MethodInfoHelper<Il2CppObject* (int32_t index)> objPoolRemove;
+		static LuaEnvPrivate* instance;
 	};
+	LuaEnvPrivate* xlua::LuaEnvPrivate::instance = nullptr;
 
 	static void* OnCsObjectEnter(Il2CppObject* obj, void* class_data, LuaEnvPrivate* luaEnvPrivate)
 	{
@@ -2836,11 +2836,15 @@ namespace xlua
 		apis->add_return(info, ret);
 	}
 
-	xlua::LuaEnvPrivate* InitialPapiEnvRef(struct pesapi_ffi* apis, pesapi_env_ref envRef, Il2CppObject *objPool, Il2CppReflectionMethod* objPoolAddMethodInfo, Il2CppReflectionMethod* objPoolRemoveMethodInfo)
+	void InitialPapiEnvRef(struct pesapi_ffi* apis, pesapi_env_ref envRef, Il2CppObject *objPool, Il2CppReflectionMethod* objPoolAddMethodInfo, Il2CppReflectionMethod* objPoolRemoveMethodInfo)
 	{
 		auto env = apis->get_env_from_ref(envRef);
 		xlua::AutoValueScope ValueScope(apis, env);
-
+		if (xlua::LuaEnvPrivate::instance != nullptr)
+		{
+			xlua::XLuaLog(XLuaLogType::Error, "LuaEnvPrivate is exist!");
+			return;
+		}
 		auto luaEnvPrivate = new xlua::LuaEnvPrivate(apis, envRef, objPool, objPoolAddMethodInfo, objPoolRemoveMethodInfo);
 		apis->set_env_private(env, luaEnvPrivate);
 		auto loadType = apis->create_function(env, LoadTypeWrapper, nullptr, nullptr);
@@ -2853,11 +2857,10 @@ namespace xlua
 				apis->set_property(env, global, "loadType", loadType);
 				apis->set_property(env, global, "createFunction", createFunction);
 				pesapi_on_class_not_found(ClassNotFoundCallback);
-				return luaEnvPrivate;
+				return;
 			}
 		}
 		Exception::Raise(Exception::GetInvalidOperationException("can not init global.loadType or global.createFunction"));
-		return nullptr;
 	}
 
 	void CleanupPapiEnvRef(struct pesapi_ffi* apis, pesapi_env_ref envRef)
@@ -2865,9 +2868,14 @@ namespace xlua
 		apis->release_env_ref(envRef);
 	}
 
-	void DestroyLuaEnvPrivate(LuaEnvPrivate* luaEnvPrivate)
+	void DestroyLuaEnvPrivate()
 	{
-		delete luaEnvPrivate;
+		if (xlua::LuaEnvPrivate::instance == nullptr)
+		{
+			xlua::XLuaLog(XLuaLogType::Error, "LuaEnvPrivate already destroy!");
+			return;
+		}
+		delete xlua::LuaEnvPrivate::instance;
 	}
 
 	Il2CppClass* GenericParamGetBaseType(Il2CppMetadataGenericParameterHandle gparam)
@@ -3172,7 +3180,7 @@ extern "C"
 		InternalCalls::Add("XLua.NativeAPI::SetObjectToGlobal(System.IntPtr,System.IntPtr,System.String,System.Object)", (Il2CppMethodPointer)xlua::SetObjectToGlobal);
 		InternalCalls::Add("XLua.NativeAPI::InitialPapiEnvRef(System.IntPtr,System.IntPtr,System.Object,System.Reflection.MethodBase,System.Reflection.MethodBase)", (Il2CppMethodPointer)xlua::InitialPapiEnvRef);
 		InternalCalls::Add("XLua.NativeAPI::CleanupPapiEnvRef(System.IntPtr,System.IntPtr)", (Il2CppMethodPointer)xlua::CleanupPapiEnvRef);
-		InternalCalls::Add("XLua.NativeAPI::DestroyLuaEnvPrivate(System.IntPtr)", (Il2CppMethodPointer)xlua::DestroyLuaEnvPrivate);
+		InternalCalls::Add("XLua.NativeAPI::DestroyLuaEnvPrivate()", (Il2CppMethodPointer)xlua::DestroyLuaEnvPrivate);
 		InternalCalls::Add("XLua.LuaTable::GetLuaTableValueByUInt64(System.IntPtr,System.UInt64,System.Type)", (Il2CppMethodPointer)xlua::GetLuaTableValueByUInt64);
 		InternalCalls::Add("XLua.LuaTable::GetLuaTableValueByString(System.IntPtr,System.String,System.Type)", (Il2CppMethodPointer)xlua::GetLuaTableValueByString);
 		InternalCalls::Add("XLua.LuaTable::SetLuaTableValueByUInt64(System.IntPtr,System.UInt64,System.Object)", (Il2CppMethodPointer)xlua::SetLuaTableValueByUInt64);
@@ -3188,20 +3196,30 @@ extern "C"
 		xlua::s_ExtensionAttribute = Class::FromName(il2cpp_defaults.corlib, "System.Runtime.CompilerServices", "ExtensionAttribute");
 	}
 
-	void AddPendingKillScriptObjects(struct pesapi_ffi* apis, xlua::LuaEnvPrivate* luaEnvPrivate, pesapi_value_ref valueRef)
+	void AddPendingKillScriptObjects(struct pesapi_ffi* apis, pesapi_value_ref valueRef)
 	{
+		if (xlua::LuaEnvPrivate::instance == nullptr)
+		{
+			xlua::XLuaLog(xlua::XLuaLogType::Error, "LuaEnvPrivate is nullptr");
+			return;
+		}
 		pesapi_env env = apis->get_ref_associated_env(valueRef);
 		if (!apis->env_ref_is_valid(env))
 		{
 			apis->release_value_ref(valueRef);
 			return;
 		}
-		luaEnvPrivate->AddPendingKillScriptObjects(valueRef);
+		xlua::LuaEnvPrivate::instance->AddPendingKillScriptObjects(valueRef);
 	}
 
-	void CleanupPendingKillScriptObjects(xlua::LuaEnvPrivate* luaEnvPrivate)
+	void CleanupPendingKillScriptObjects()
 	{
-		luaEnvPrivate->CleanupPendingKillScriptObjects();
+		if (xlua::LuaEnvPrivate::instance == nullptr)
+		{
+			xlua::XLuaLog(xlua::XLuaLogType::Error, "LuaEnvPrivate is nullptr");
+			return;
+		}
+		xlua::LuaEnvPrivate::instance->CleanupPendingKillScriptObjects();
 	}
 
 	void SetLogCallbackInternal(xlua::LogCallbackFunc Log, xlua::LogCallbackFunc logWarning, xlua::LogCallbackFunc logError, xlua::LogCallbackFunc logException)
