@@ -8,7 +8,7 @@ namespace XLua
     {
         protected IntPtr nativeLuaEnv;
 
-        public IntPtr rawL;
+        protected IntPtr rawL;
 
         protected LuaTable _G;
 

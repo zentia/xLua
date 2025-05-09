@@ -79,7 +79,7 @@ SET_GLOBAL_TYPE(IEnumerable)
 	{
 		struct pesapi_ffi* Apis;
 		pesapi_value_ref ValueRef;
-		void* EnvPrivate;
+		pesapi_env env;
 	};
 
 	// sizeof(PObjectRefInfo) do exceed c# sizeof(LuaObject)

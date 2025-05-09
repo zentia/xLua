@@ -10,6 +10,7 @@ namespace XLua
     {
         IntPtr apis; // PObjectRefInfo first ptr
         IntPtr valueRef;
+        IntPtr env;
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         object GetLuaTableValueByString(IntPtr apis, string key, Type resultType)
@@ -101,7 +102,7 @@ namespace XLua
 
         ~LuaTable()
         {
-            if (LuaEnv.Instance != null)
+            if (LuaEnv.Instance != null && LuaEnv.Instance.L == env)
                 XLua.NativeAPI.AddPendingKillScriptObjects(apis, valueRef);
             else
                 UnityEngine.Debug.LogError("LuaEnv is Destroy!");

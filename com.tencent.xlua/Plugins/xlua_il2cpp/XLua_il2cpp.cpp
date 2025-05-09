@@ -790,6 +790,7 @@ namespace xlua
 	{
 		objectInfo->Apis = apis;
 		objectInfo->ValueRef = value_ref;
+		objectInfo->env = env;
 	}
 
 	static int GetPObjectRefInfoValue(struct pesapi_ffi* apis, pesapi_env env, const PObjectRefInfo* objectInfo)
