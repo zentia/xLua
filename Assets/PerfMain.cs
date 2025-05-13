@@ -124,6 +124,13 @@ public class PerfMain : MonoBehaviour
         sw.Flush();
     }
 
+    private void Update()
+    {
+        if (luaenv != null)
+        {
+            luaenv.Tick();
+        }
+    }
     private void OnGUI()
     {
         const float height = 100;

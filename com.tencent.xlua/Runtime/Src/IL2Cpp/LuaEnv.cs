@@ -21,6 +21,7 @@ namespace XLua
 
         IntPtr apis;
         IntPtr nativePesapiEnv;
+        IntPtr luaEnvPrivate;
 
         ObjectPool objectPool = new ObjectPool();
 
@@ -72,7 +73,7 @@ namespace XLua
 
             nativePesapiEnv = XLua.NativeAPI.GetPapiEnvRef(nativeLuaEnv);
             var objectPoolType = typeof(ObjectPool);
-            NativeAPI.InitialPapiEnvRef(apis, nativePesapiEnv, objectPool, objectPoolType.GetMethod("Add"), objectPoolType.GetMethod("Remove"));
+            luaEnvPrivate = NativeAPI.InitialPapiEnvRef(apis, nativePesapiEnv, objectPool, objectPoolType.GetMethod("Add"), objectPoolType.GetMethod("Remove"));
 
             XLua.NativeAPI.SetObjectToGlobal(apis, nativePesapiEnv, "luaEnv", this);
 
@@ -241,14 +242,14 @@ namespace XLua
 
         public void Tick()
         {
-            XLua.NativeAPI.CleanupPendingKillScriptObjects();
+            XLua.NativeAPI.CleanupPendingKillScriptObjects(luaEnvPrivate);
         }
 
         public void GC()
         {
 #if OSGAME
             Int32 sampleIndex = -1;
-            Assets.Plugins.Perf.StatsLite.BeginSample(StatsSampleId.LuaEnv_GC, ref sampleIndex);
+            Assets.Plugins.Perf.StatsLite.BeginSample(Assets.Plugins.Perf.StatsSampleId.LuaEnv_GC, ref sampleIndex);
 #endif
             Tick();
 #if OSGAME
@@ -283,26 +284,13 @@ namespace XLua
                 XLua.NativeAPI.DestroyLuaEnvPrivate();
                 XLua.NativeAPI.CleanupPapiEnvRef(apis, nativePesapiEnv);
                 Instance = null;
+                apis = IntPtr.Zero;
+                nativePesapiEnv = IntPtr.Zero;
+                luaEnvPrivate = IntPtr.Zero;
                 disposed = true;
             }
         }
-
-        internal struct GCAction
-        {
-            public int Reference;
-            public bool IsDelegate;
-        }
-
-        Queue<GCAction> refQueue = new Queue<GCAction>();
-
-        internal void equeueGCAction(GCAction action)
-        {
-            lock (refQueue)
-            {
-                refQueue.Enqueue(action);
-            }
-        }
-
+        
         [UnityEngine.Scripting.Preserve]
         public Type GetTypeByString(string className)
         {

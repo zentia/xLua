@@ -2837,14 +2837,14 @@ namespace xlua
 		apis->add_return(info, ret);
 	}
 
-	void InitialPapiEnvRef(struct pesapi_ffi* apis, pesapi_env_ref envRef, Il2CppObject *objPool, Il2CppReflectionMethod* objPoolAddMethodInfo, Il2CppReflectionMethod* objPoolRemoveMethodInfo)
+	xlua::LuaEnvPrivate* InitialPapiEnvRef(struct pesapi_ffi* apis, pesapi_env_ref envRef, Il2CppObject *objPool, Il2CppReflectionMethod* objPoolAddMethodInfo, Il2CppReflectionMethod* objPoolRemoveMethodInfo)
 	{
 		auto env = apis->get_env_from_ref(envRef);
 		xlua::AutoValueScope ValueScope(apis, env);
 		if (xlua::LuaEnvPrivate::instance != nullptr)
 		{
 			xlua::XLuaLog(XLuaLogType::Error, "LuaEnvPrivate is exist!");
-			return;
+			return nullptr;
 		}
 		auto luaEnvPrivate = new xlua::LuaEnvPrivate(apis, envRef, objPool, objPoolAddMethodInfo, objPoolRemoveMethodInfo);
 		apis->set_env_private(env, luaEnvPrivate);
@@ -2858,7 +2858,7 @@ namespace xlua
 				apis->set_property(env, global, "loadType", loadType);
 				apis->set_property(env, global, "createFunction", createFunction);
 				pesapi_on_class_not_found(ClassNotFoundCallback);
-				return;
+				return luaEnvPrivate;
 			}
 		}
 		Exception::Raise(Exception::GetInvalidOperationException("can not init global.loadType or global.createFunction"));
@@ -3213,9 +3213,9 @@ extern "C"
 		xlua::LuaEnvPrivate::instance->AddPendingKillScriptObjects(valueRef);
 	}
 
-	void CleanupPendingKillScriptObjects()
+	void CleanupPendingKillScriptObjects(const xlua::LuaEnvPrivate* lua_env_private)
 	{
-		if (xlua::LuaEnvPrivate::instance == nullptr)
+		if (xlua::LuaEnvPrivate::instance != lua_env_private && lua_env_private != nullptr)
 		{
 			xlua::XLuaLog(xlua::XLuaLogType::Error, "LuaEnvPrivate is nullptr");
 			return;

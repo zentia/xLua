@@ -104,8 +104,6 @@ namespace XLua
         {
             if (LuaEnv.Instance != null && LuaEnv.Instance.L == env)
                 XLua.NativeAPI.AddPendingKillScriptObjects(apis, valueRef);
-            else
-                UnityEngine.Debug.LogError("LuaEnv is Destroy!");
         }
     }
 }

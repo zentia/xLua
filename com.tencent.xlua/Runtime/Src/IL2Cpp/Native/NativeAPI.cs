@@ -64,7 +64,7 @@ namespace XLua
         public static extern void AddPendingKillScriptObjects(IntPtr ffiApi, IntPtr valueRef);
 
         [DllImport("__Internal", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void CleanupPendingKillScriptObjects();
+        public static extern void CleanupPendingKillScriptObjects(IntPtr luaEnvPrivate);
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static IntPtr InitialPapiEnvRef(IntPtr api, IntPtr envRef, Object obj, MethodBase addMethodBase, MethodBase removeMethodBase)
