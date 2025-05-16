@@ -878,10 +878,11 @@ namespace xlua
 		return FunctionToDelegate(apis, env, luaval, classInfo);
 	}
 
-	int TryTranslateBuiltin(struct pesapi_ffi* apis, pesapi_env env, Il2CppObject* obj)
+	int TryTranslateBuiltin(struct pesapi_ffi* apis, pesapi_env env, Il2CppObject* obj, bool& success)
 	{
 		if (obj)
 		{
+			success = true;
 			if (obj->klass == g_typeofLuaTable)
 			{
 				PObjectRefInfo* objectInfo = GetPObjectRefInfo(obj);
@@ -894,11 +895,13 @@ namespace xlua
 				return apis->create_binary(env, Array::GetFirstElementAddress(buffer), (size_t)buffer->max_length);
 			}
 		}
+		success = false;
 		return 0;
 	}
 
-	static pesapi_value TryTranslatePrimitivePtr(struct pesapi_ffi* apis, pesapi_env env, Il2CppTypeEnum type, void* ptr)
+	static pesapi_value TryTranslatePrimitivePtr(struct pesapi_ffi* apis, pesapi_env env, Il2CppTypeEnum type, void* ptr, bool &success)
 	{
+		success = true;
 		switch (type)
 		{
 		case IL2CPP_TYPE_I1:
@@ -963,11 +966,13 @@ namespace xlua
 		}
 
 		default:
+			success = false;
 			return 0;
 		}
 	}
-	static int TryTranslatePrimitiveWithClass(struct pesapi_ffi* apis, pesapi_env env, void* obj, Il2CppClass* klass)
+	static int TryTranslatePrimitiveWithClass(struct pesapi_ffi* apis, pesapi_env env, void* obj, Il2CppClass* klass, bool& success)
 	{
+		success = true;
 		if (obj)
 		{
 			const Il2CppType* type = Class::GetType(klass);
@@ -986,14 +991,16 @@ namespace xlua
 					t = tp->type;
 				}
 			}
-			return TryTranslatePrimitivePtr(apis, env, t, obj);
+			return TryTranslatePrimitivePtr(apis, env, t, obj, success);
 		}
+		success = false;
 		return 0;
 	}
-	static int TryTranslatePrimitiveWithClass(struct pesapi_ffi* apis, pesapi_env env, Il2CppObject* obj, Il2CppClass* klass = nullptr)
+	static int TryTranslatePrimitiveWithClass(struct pesapi_ffi* apis, pesapi_env env, Il2CppObject* obj, Il2CppClass* klass, bool& success)
 	{
 		if (obj)
 		{
+			success = true;
 			const Il2CppType* type = Class::GetType(klass ? klass : obj->klass);
 			Il2CppTypeEnum t = type->type;
 			if (t == IL2CPP_TYPE_STRING)
@@ -1011,8 +1018,9 @@ namespace xlua
 				}
 			}
 			void* ptr = Object::Unbox(obj);
-			return TryTranslatePrimitivePtr(apis, env, t, ptr);
+			return TryTranslatePrimitivePtr(apis, env, t, ptr, success);
 		}
+		success = false;
 		return 0;
 	}
 	int TranslateValueType(struct pesapi_ffi* apis, pesapi_env env, Il2CppClass* targetClass, void* obj)
@@ -1040,8 +1048,9 @@ namespace xlua
 		return apis->native_object_to_value(env, targetClass, buff, true);
 	}
 
-	int TryTranslateValueType(struct pesapi_ffi* apis, pesapi_env env, Il2CppObject* obj)
+	int TryTranslateValueType(struct pesapi_ffi* apis, pesapi_env env, Il2CppObject* obj, bool& success)
 	{
+		success = true;
 		if (obj && obj->klass)
 		{
 			auto objClass = obj->klass;
@@ -1050,6 +1059,7 @@ namespace xlua
 				return TranslateValueType(apis, env, objClass, obj);
 			}
 		}
+		success = false;
 		return 0;
 	}
 	
@@ -1558,10 +1568,10 @@ namespace xlua
 		{
 			targetClass = Class::GetElementClass(targetClass);
 		}
+		bool success = false;
+		int luaVal = TryTranslatePrimitiveWithClass(apis, env, obj, targetClass != il2cpp_defaults.object_class ? targetClass : nullptr, success);
 
-		int luaVal = TryTranslatePrimitiveWithClass(apis, env, obj, targetClass != il2cpp_defaults.object_class ? targetClass : nullptr);
-
-		if (luaVal)
+		if (success)
 		{
 			return luaVal;
 		}
@@ -1583,10 +1593,10 @@ namespace xlua
 		{
 			targetClass = Class::GetElementClass(targetClass);
 		}
+		bool success = false;
+		int luaVal = TryTranslatePrimitiveWithClass(apis, env, obj, targetClass != il2cpp_defaults.object_class ? targetClass : nullptr, success);
 
-		int luaVal = TryTranslatePrimitiveWithClass(apis, env, obj, targetClass != il2cpp_defaults.object_class ? targetClass : nullptr);
-
-		if (luaVal)
+		if (success)
 		{
 			return luaVal;
 		}
@@ -1599,16 +1609,16 @@ namespace xlua
 				return luaVal;
 			}
 		}
-
-		luaVal = TryTranslateValueType(apis, env, obj);
-		if (luaVal)
+		
+		luaVal = TryTranslateValueType(apis, env, obj, success);
+		if (success)
 		{
 			return luaVal;
 		}
 
-		luaVal = TryTranslateBuiltin(apis, env, obj);
+		luaVal = TryTranslateBuiltin(apis, env, obj, success);
 
-		if (luaVal)
+		if (success)
 		{
 			return luaVal;
 		}
@@ -1652,10 +1662,10 @@ namespace xlua
 			targetClass = Class::GetElementClass(targetClass);
 		}
 		const Il2CppType* type = Class::GetType(targetClass);
+		bool success = false;
+		pesapi_value luaVal = TryTranslatePrimitivePtr(apis, env, type->type, ptr, success);
 
-		pesapi_value luaVal = TryTranslatePrimitivePtr(apis, env, type->type, ptr);
-
-		if (luaVal)
+		if (success)
 		{
 			return luaVal;
 		}
@@ -2318,9 +2328,10 @@ namespace xlua
 			}
 
 			Il2CppObject* obj = (Il2CppObject*)storage - 1;
-			int luaVal = TryTranslatePrimitiveWithClass(apis, env, obj, expectType);
+			bool success = false;
+			int luaVal = TryTranslatePrimitiveWithClass(apis, env, obj, expectType, success);
 
-			if (!luaVal)
+			if (!success)
 			{
 				if (isFieldPtr)
 				{
@@ -2335,7 +2346,7 @@ namespace xlua
 				}
 			}
 
-			if (luaVal)
+			if (success)
 			{
 				apis->add_return(info, luaVal);
 			}
