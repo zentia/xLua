@@ -345,21 +345,26 @@ namespace xlua
             bool exit              = false;
             while (PNode)
             {
-                lua_rawgeti(L, -1, PNode->Value);
-                lua_assert(lua_isuserdata(L, -1));
-                const auto obj                            = (CppObject*)lua_touserdata(L, -1);
-                const LuaClassDefinition* ClassDefinition = FindClassByID(obj->TypeId);
-                if (ClassDefinition && ClassDefinition->Finalize && need_delete && obj->NeedDelete)
+                if (need_delete)
                 {
-                    ClassDefinition->Finalize(&g_pesapi_ffi, KV.first, ClassDefinition->Data, PData);
-                    need_delete = false;
+                    lua_rawgeti(L, -1, PNode->Value);
+                    lua_assert(lua_isuserdata(L, -1));
+                    const auto obj = (CppObject*) lua_touserdata(L, -1);
+                    const LuaClassDefinition* ClassDefinition = FindClassByID(obj->TypeId);
+                    // 值类型需要删除，所以这里必须要执行，但是执行之后，指针会被删除，所以下面的就不要执行了，虚拟机会销毁，所以lua不会内存泄露，LuaEnv也会销毁，所以C#也不会内存泄露
+                    // 因为值类型的内存是手动申请的，所以必须要手动释放
+                    if (ClassDefinition && ClassDefinition->Finalize && need_delete && obj->NeedDelete)
+                    {
+                        ClassDefinition->Finalize(&g_pesapi_ffi, KV.first, ClassDefinition->Data, PData);
+                        need_delete = false;
+                    }
+                    if (ClassDefinition && ClassDefinition->OnExit && !exit)
+                    {
+                        ClassDefinition->OnExit(KV.first, ClassDefinition->Data, PData, KV.second->UserData);
+                        exit = true;
+                    }
+                    lua_pop(L, 1);    
                 }
-                if (ClassDefinition && ClassDefinition->OnExit && !exit)
-                {
-                    ClassDefinition->OnExit(KV.first, ClassDefinition->Data, PData, KV.second->UserData);
-                    exit = true;
-                }
-                lua_pop(L, 1);
                 const ObjectCacheNode* temp = PNode;
                 PNode                       = PNode->Next;
                 delete temp;
