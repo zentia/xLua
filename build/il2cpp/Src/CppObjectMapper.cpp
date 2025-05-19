@@ -305,6 +305,7 @@ namespace xlua
 
     void* CppObjectMapper::GetPrivateData(lua_State* L, int index) const
     {
+        index = lua_absindex(L, index);
         lua_rawgeti(L, LUA_REGISTRYINDEX, m_CachePrivateDataRef);
         lua_pushvalue(L, index);
         lua_rawget(L, -2);
