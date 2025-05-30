@@ -5,6 +5,7 @@ using System.IO;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using UnityEngine.Scripting;
 using XLua.LuaDLL;
 
 [LuaCallCSharp]
@@ -23,9 +24,89 @@ public static class TestUtils
 [CSharpCallLua]
 public delegate void PerfTest(int load);
 
+public class Log
+{
+    public enum Type //为了性能，这个在lua也定义的有，有修改则全改
+    {
+        None = 0,
+        Debug, // 调试日志
+        Info, // 信息日志，比如关键路径当前场景或UI状态、关键信息帐号等
+        Warning, // 警告
+        Error, // 错误信息
+        Fatal // 严重错误
+    }
+}
+public class EntryLogTag
+{
+    public string Name;
+    public Log.Type OutputType;
+
+    public EntryLogTag(Log.Type outputType)
+    {
+        OutputType = outputType;
+    }
+}
+
+public static class LogTag
+{
+    public static void ManualInitStatic()
+    {
+
+    }
+
+    static LogTag()
+    {
+        Type typeElement = typeof(EntryLogTag);
+        Type typeRoot = typeof(LogTag);
+
+        allLogTag.Clear();
+
+        FieldInfo[] kArrayInfo = typeRoot.GetFields(BindingFlags.Public | BindingFlags.Static);
+        foreach (var field in kArrayInfo)
+        {
+            if (field.FieldType != typeElement)
+                continue;
+            var obj = field.GetValue(null);
+            if (obj is EntryLogTag entry)
+            {
+                entry.Name = field.Name;
+                field.SetValue(null, obj);
+                allLogTag.Add(entry);
+            }
+        }
+    }
+
+    private static readonly HashSet<EntryLogTag> allLogTag = new();
+    public static readonly EntryLogTag Network = new(Log.Type.Info);
+    public static readonly EntryLogTag Insight = new(Log.Type.Error);
+}
+
 public class PerfMain : MonoBehaviour
 {
-
+    public static LuaTable GetLogTagValues()
+    {
+        var table = luaenv.NewTable();
+        // 使用反射获取所有public static readonly string字段
+        var fields = typeof(LogTag).GetFields(
+            BindingFlags.Public |
+            BindingFlags.Static |
+            BindingFlags.FlattenHierarchy
+        );
+        foreach (var field in fields)
+        {
+            if (field.FieldType == typeof(EntryLogTag) && field.IsInitOnly)
+            {
+                table.Set(field.Name, field.GetValue(null));
+            }
+        }
+        return table;
+    }
+    [Preserve]
+    public static void LuaDoLog(Log.Type level, EntryLogTag tag, string content)
+    {
+        var name = tag.Name;
+        Debug.Log(name);
+    }
     internal static byte[] LoadFromStreamingAssetsPath(ref string filename)
     {
         try
@@ -79,7 +160,6 @@ public class PerfMain : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        
 #if UNITY_ANDROID || UNITY_IOS
 #if XLUA_IL2CPP
         resultPath = Application.persistentDataPath + "/il2cpp";

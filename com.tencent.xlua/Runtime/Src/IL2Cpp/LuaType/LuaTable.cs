@@ -19,7 +19,7 @@ namespace XLua
         }
 
         [MethodImpl(MethodImplOptions.InternalCall)]
-        object GetLuaTableValueyUInt64(IntPtr apis, ulong index, Type resutlType)
+        object GetLuaTableValueByUInt64(IntPtr apis, ulong index, Type resutlType)
         {
             throw new NotImplementedException();
         }
@@ -54,22 +54,22 @@ namespace XLua
 
         public T Get<T>(int key)
         {
-            return (T)GetLuaTableValueyUInt64(apis, (ulong)key, typeof(T));
+            return (T)GetLuaTableValueByUInt64(apis, (ulong)key, typeof(T));
         }
 
         public void Get<T>(int key, out T value)
         {
-            value = (T)GetLuaTableValueyUInt64(apis, (ulong)key, typeof(T));
+            value = (T)GetLuaTableValueByUInt64(apis, (ulong)key, typeof(T));
         }
 
         public T Get<T>(uint key)
         {
-            return (T)GetLuaTableValueyUInt64(apis, (ulong)key, typeof(T));
+            return (T)GetLuaTableValueByUInt64(apis, (ulong)key, typeof(T));
         }
 
         public T Get<T>(ulong key)
         {
-            return (T)GetLuaTableValueyUInt64(apis, key, typeof(T));
+            return (T)GetLuaTableValueByUInt64(apis, key, typeof(T));
         }
 
         public void Set<T>(string key, T value)

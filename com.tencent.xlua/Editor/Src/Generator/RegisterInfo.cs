@@ -60,7 +60,7 @@ namespace XLua.Editor
                 }
             }
 
-            public static List<RegisterInfoForGenerate> GetRegisterInfos(Dictionary<Type, XLua.Editor.Generator.FileExporter.Script> genTypes, bool isFull)
+            public static List<RegisterInfoForGenerate> GetRegisterInfos(Dictionary<Type, FileExporter.Script> genTypes, bool isFull)
             {
                 BindingFlags flag = BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public;
 
@@ -100,7 +100,7 @@ namespace XLua.Editor
                                 }, false);
                             }
                         }
-                        
+
 
                         foreach (var m in XLua.Utils.GetMethodAndOverrideMethod(type.Key, flag)
                                     .Where(m => !Utils.IsNotSupportedMember(m))

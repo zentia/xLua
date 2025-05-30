@@ -48,8 +48,12 @@ namespace xlua
             GLogErrorCallback(SLogBuffer);
         }
     }
+
+    LuaEnv* LuaEnv::ms_Instance = nullptr;
+
     LuaEnv::LuaEnv()
     {
+        ms_Instance = this;
         L = luaL_newstate();
         luaopen_xlua(L);
         CppObjectMapper.Initialize(L);

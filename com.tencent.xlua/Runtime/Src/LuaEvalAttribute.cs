@@ -53,9 +53,9 @@ namespace XLua
                     {
 #if OSG_PROFILE
                         string chunk = "return function (...)\n"
-                                       + $"    local perfName = '[cs - {targetTypeName}.{fieldInfo.Name}][lua - {entry.expression}]'\n"
+                                       + $"   local perfName = '[cs - {targetTypeName}.{fieldInfo.Name}][lua - {entry.expression}]'\n"
                                        + "    local sampleIndex = StatsService:BeginSampleInternal(StatsSampleId.Lua_CSCallLua, perfName)\n"
-                                       + $"    local re = {entry.expression}(...)\n"
+                                       + $"   local re = {entry.expression}(...)\n"
                                        + "    StatsService:EndSampleByIndex(sampleIndex)\n"
                                        + "    return re\n"
                                        + "end";

@@ -125,7 +125,7 @@ namespace XLua
         public bool TryDelayWrapLoader(RealStatePtr L, Type type)
         {
             LuaAPI.lua_checkstack(L, 1);
-            if (loaded_types.ContainsKey(type)) 
+            if (loaded_types.ContainsKey(type))
                 return true;
             loaded_types.Add(type, true);
 
@@ -568,7 +568,7 @@ namespace XLua
                     LuaAPI.lua_rawget(L, LuaIndexes.LUA_REGISTRYINDEX);
                     if (LuaAPI.lua_type(L, -1) == LuaTypes.LUA_TNUMBER && LuaAPI.xlua_tointeger(L, -1) == reference) //
                     {
-                        //Assets.Plugins.Common.Log.LogW("未配Tag","release delegate ref = " + luaReference);
+                        //LogW(LogTag.Unknown,"release delegate ref = " + luaReference);
                         LuaAPI.lua_pop(L, 1);// pop LUA_REGISTRYINDEX[func]
                         LuaAPI.lua_pushnil(L);
                         LuaAPI.lua_rawset(L, LuaIndexes.LUA_REGISTRYINDEX); // LUA_REGISTRYINDEX[func] = nil
@@ -961,7 +961,7 @@ namespace XLua
             }
             return ret;
         }
-#if UNITY_EDITOR 
+#if UNITY_EDITOR
         public void PushParams(RealStatePtr L, Array ary)
         {
             if (ary != null)

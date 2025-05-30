@@ -1,6 +1,7 @@
 ﻿<linker>
     <assembly fullname="Assembly-CSharp">
         <type fullname="ClassLuaCallCS" preserve="all"/>
+        <type fullname="PerfMain" preserve="all"/>
 
     </assembly>
     <assembly fullname="UnityEngine.CoreModule">

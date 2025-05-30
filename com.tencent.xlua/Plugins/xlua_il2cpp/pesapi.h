@@ -208,7 +208,7 @@ typedef void (*pesapi_set_ref_weak_func)(pesapi_env env, pesapi_value_ref value_
 // Optional api: return false if can not fulfill
 typedef bool (*pesapi_set_owner_func)(pesapi_env env, pesapi_value value, pesapi_value owner);
 typedef pesapi_env(*pesapi_get_ref_associated_env_func)(pesapi_value_ref value_ref);
-typedef void** (*pesapi_get_ref_internal_fields_func)(pesapi_value_ref value_ref);
+typedef uint32_t (*pesapi_get_ref_internal_fields_func)(pesapi_value_ref value_ref);
 
 typedef pesapi_value(*pesapi_get_property_func)(pesapi_env env, pesapi_value object, const char* key);
 typedef void (*pesapi_set_property_func)(pesapi_env env, pesapi_value object, const char* key, pesapi_value value);

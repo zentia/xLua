@@ -41,6 +41,7 @@ bool w_i4ts(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer met
 bool w_i4tsi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_i4tsi4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_i4tso(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_ot(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_oti4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_oto(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
@@ -66,6 +67,7 @@ bool w_vS_r4r4r4_(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPoint
 bool w_vTi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vc(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vi4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
+bool w_vi4os(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vo(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vt(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
 bool w_vtPi4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData);
@@ -122,6 +124,7 @@ static WrapFuncInfo g_wrapFuncInfos[] = {
     {"i4tsi4", w_i4tsi4},
     {"i4tsi4i4", w_i4tsi4i4},
     {"i4tso", w_i4tso},
+    {"o", w_o},
     {"ot", w_ot},
     {"oti4i4", w_oti4i4},
     {"oto", w_oto},
@@ -147,6 +150,7 @@ static WrapFuncInfo g_wrapFuncInfos[] = {
     {"vTi4", w_vTi4},
     {"vc", w_vc},
     {"vi4i4", w_vi4i4},
+    {"vi4os", w_vi4os},
     {"vo", w_vo},
     {"vt", w_vt},
     {"vtPi4", w_vtPi4},

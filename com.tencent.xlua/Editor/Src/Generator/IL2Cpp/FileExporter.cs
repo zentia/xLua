@@ -800,31 +800,16 @@ namespace XLua.Editor.Generator
             }
         }
 
-        public static void GenRegisterInfo(string outDir, Dictionary<Type, Script> types)
+        private static void GenRegisterInfo(Dictionary<Type, Script> types)
         {
-#if XLUA_FULL
-            var registerInfos = RegisterInfoGenerator.GetRegisterInfos(types, true);
-#else
-                var registerInfos = RegisterInfoGenerator.GetRegisterInfos(types, false);
-#endif
-            using (var luaEnv = CreateLuaEnv())
-            {
-                var assetPath = Path.GetFullPath("Packages/com.tencent.xlua/");
-                assetPath = assetPath.Replace("\\", "/");
-                luaEnv.DoString($"package.path = package.path..';{assetPath + "Editor/Resources/xlua/templates"}/?.lua'");
-                var path = Path.Combine(assetPath, "Editor/Resources/xlua/templates/registerinfo.tpl.lua");
-                var bytes = File.ReadAllBytes(path);
-                luaEnv.DoString<LuaFunction>(bytes, path);
-                var func = luaEnv.Global.Get<LuaFunction>("RegisterInfoTemplate");
-                var registerInfoContent = func.Func<List<RegisterInfoForGenerate>, string>(registerInfos);
-                var registerInfoPath = outDir + "RegisterInfo_Gen.cs";
-                using (var textWriter = new StreamWriter(registerInfoPath, false, Encoding.UTF8))
-                {
-                    textWriter.Write(registerInfoContent);
-                    textWriter.Flush();
-                }
-            }
 
+            var registerInfos = RegisterInfoGenerator.GetRegisterInfos(types,
+#if XLUA_FULL
+                true
+#else
+                false
+#endif
+                );
             GenPreLoadInfo(registerInfos);
         }
 
@@ -866,7 +851,7 @@ namespace XLua.Editor.Generator
             GenMarcoHeader(saveTo);
             GenLinkXml("Assets/XLua/", types);
             GenExtensionMethodInfos(csPath, types);
-            GenRegisterInfo(csPath, types);
+            GenRegisterInfo(types);
         }
 
         public static void MoveCppToLib()

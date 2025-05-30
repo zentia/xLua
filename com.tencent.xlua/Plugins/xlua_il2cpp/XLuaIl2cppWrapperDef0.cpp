@@ -1045,6 +1045,26 @@ bool w_i4tso(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
     value_scope.reserve = apis->get_return_num(info);
     return true;
 }
+// XLua.LuaTable GetLogTagValues() declare in PerfMain
+bool w_o(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_o");
+    AutoValueScope value_scope(apis, env);
+    auto TIret = wrapData->TypeInfos[0];
+    int lua_args_len = apis->get_args_len(info);
+
+    if (checkLuaArgument) {
+        if (lua_args_len != 0) 
+            return false;
+
+    }
+
+    typedef Il2CppObject* (*FuncToCall)(const void* method);
+    Il2CppObject* ret = ((FuncToCall)methodPointer)(  method);
+	int r = CSRefToLuaValue(apis, env, TIret, ret);
+	apis->add_return(info, r);
+    value_scope.reserve = apis->get_return_num(info);
+    return true;
+}
 // System.Collections.ObjectModel.ReadOnlyCollection`1[System.String] AsReadOnly() declare in System.Collections.Generic.List`1[System.String]
 bool w_ot(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
     // PLog("Running w_ot");
@@ -1786,6 +1806,38 @@ bool w_vi4i4(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer me
 
     typedef void (*FuncToCall)(int32_t p1, int32_t p2, const void* method);
     ((FuncToCall)methodPointer)( p0, p1,  method);
+    return true;
+}
+// Void LuaDoLog(Type, EntryLogTag, System.String) declare in PerfMain
+bool w_vi4os(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
+    // PLog("Running w_vi4os");
+    auto TIp1 = wrapData->TypeInfos[0];
+    auto TIp2 = wrapData->TypeInfos[1];
+    int lua_args_len = apis->get_args_len(info);
+    int _sv0 = apis->get_arg(info, 0);
+    int _sv1 = apis->get_arg(info, 1);
+    int _sv2 = apis->get_arg(info, 2);
+    if (checkLuaArgument) {
+        if (lua_args_len != 3) 
+            return false;
+
+        if (!converter::Converter<int32_t>::accept(apis, env, _sv0))
+            return false;
+        if (!DataTransfer::IsAssignable(apis, env, _sv1, TIp1, false))
+            return false;
+        if (!converter::Converter<Il2CppString*>::accept(apis, env, _sv2))
+            return false;        
+    }
+        
+    // LuaValToCSVal P any
+    int32_t p0 = converter::Converter<int32_t>::toCpp(apis, env, _sv0);
+    
+    // LuaValToCSVal o/O
+    Il2CppObject* p1 = LuaValueToCSRef(apis, TIp1, env, _sv1);
+    // LuaValToCSVal s
+    Il2CppString* p2 = converter::Converter<Il2CppString*>::toCpp(apis, env, _sv2);
+    typedef void (*FuncToCall)(int32_t p1, Il2CppObject* p2, Il2CppString* p3, const void* method);
+    ((FuncToCall)methodPointer)( p0, p1, p2,  method);
     return true;
 }
 // Void sFuncClassParam(ParaClass) declare in ClassLuaCallCS

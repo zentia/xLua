@@ -27,6 +27,7 @@ namespace XLua
             }
             LuaIndexes.LUA_REGISTRYINDEX = LuaAPI.xlua_get_registry_index();
             Init(loader);
+            AddSearcher(StaticLuaCallbacks.LoadBuiltinLib, -1); // just after the preload searcher
             if (objectTranslator != null)
             {
                 translator = Activator.CreateInstance(objectTranslator, this, rawL, bridgeType) as ObjectTranslator;

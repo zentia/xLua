@@ -8,7 +8,7 @@ namespace XLua
     {
         protected IntPtr nativeLuaEnv;
 
-        protected IntPtr rawL;
+        public IntPtr rawL;
 
         protected LuaTable _G;
 
@@ -57,7 +57,6 @@ namespace XLua
             {
                 throw new Exception("call xlua_setglobal fail!");
             }
-            AddSearcher(StaticLuaCallbacks.LoadBuiltinLib, -1); // just after the preload searcher
             AddSearcher(StaticLuaCallbacks.LoadFromCustomLoaders, -1);
         }
 
@@ -70,7 +69,7 @@ namespace XLua
             nativeLuaEnv = IntPtr.Zero;
         }
 
-        private void AddSearcher(lua_CSFunction searcher, int index)
+        protected void AddSearcher(lua_CSFunction searcher, int index)
         {
             var _L = L;
             //insert the loader

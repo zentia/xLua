@@ -23,16 +23,17 @@ namespace xlua
     {
         LuaEnv();
 
-
         ~LuaEnv()
         {
             CppObjectMapper.UnInitialize(L);
             lua_close(L);
             L = nullptr;
+            ms_Instance = nullptr;
         }
 
         lua_State* L;
 
         xlua::CppObjectMapper CppObjectMapper;
+        static LuaEnv* ms_Instance;
     };
 } // namespace xlua

@@ -573,17 +573,15 @@ namespace XLua
             return 1;
         }
 #endif
+#if !XLUA_IL2CPP || UNITY_EDITOR
         [MonoPInvokeCallback(typeof(LuaCSFunction))]
         internal static int LoadBuiltinLib(RealStatePtr L)
         {
             try
             {
                 string builtin_lib = LuaAPI.lua_tostring(L, 1);
-#if XLUA_IL2CPP && ENABLE_IL2CPP
-                LuaEnv self = LuaEnv.Instance;
-#else
+
                 LuaEnv self = ObjectTranslatorPool.Instance.Find(L).luaEnv;
-#endif
                 LuaCSFunction initer;
 
                 if (self.buildin_initer.TryGetValue(builtin_lib, out initer))
@@ -602,7 +600,7 @@ namespace XLua
                 return LuaAPI.luaL_error(L, "c# exception in LoadBuiltinLib:" + e);
             }
         }
-
+#endif
 #if !XLUA_GENERAL
         [MonoPInvokeCallback(typeof(LuaCSFunction))]
         internal static int LoadFromResource(RealStatePtr L)

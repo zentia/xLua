@@ -56,15 +56,15 @@ namespace XLua
 
         public static bool LoadExtensionMethodInfo()
         {
-            var ExtensionMethodInfos_Gen = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
-                                            select assembly.GetType("XLua.ExtensionMethodInfos_Gen")).FirstOrDefault(x => x != null);
-            if (ExtensionMethodInfos_Gen == null)
-                ExtensionMethodInfos_Gen = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
-                                            select assembly.GetType("XLua.ExtensionMethodInfos_Gen_Internal")).FirstOrDefault(x => x != null);
-            var TryLoadExtensionMethod = ExtensionMethodInfos_Gen.GetMethod("TryLoadExtensionMethod");
-            if (TryLoadExtensionMethod == null) return false;
-            LoadExtensionMethod = (Func<string, MethodInfo[]>)Delegate.CreateDelegate(
-                typeof(Func<string, MethodInfo[]>), null, TryLoadExtensionMethod);
+            var extensionMethodInfosGen = (from assembly in AppDomain.CurrentDomain.GetAssemblies() select assembly.GetType("XLua.ExtensionMethodInfos_Gen")).FirstOrDefault(x => x != null);
+            if (extensionMethodInfosGen == null)
+            {
+                return false;
+            }
+            var tryLoadExtensionMethod = extensionMethodInfosGen.GetMethod("TryLoadExtensionMethod");
+            if (tryLoadExtensionMethod == null) 
+                return false;
+            LoadExtensionMethod = (Func<string, MethodInfo[]>)Delegate.CreateDelegate(typeof(Func<string, MethodInfo[]>), null, tryLoadExtensionMethod);
             return true;
         }
     }

@@ -1,5 +1,6 @@
 {
     "ClassLuaCallCS, Assembly-CSharp":{},
+    "PerfMain, Assembly-CSharp":{},
     "UnityEngine.Vector3, UnityEngine.CoreModule": {
     "Fields": [
       "one",

@@ -283,12 +283,7 @@ namespace XLua
 
         private static object getString(RealStatePtr L, int idx, object target)
         {
-            if (LuaAPI.lua_type(L, idx) == LuaTypes.LUA_TSTRING)
-            {
-                return LuaAPI.lua_tostring(L, idx);
-            }
-
-            throw new LuaException($"{idx} must be a string!");
+            return LuaAPI.lua_tostring(L, idx);
         }
 
         private object getBytes(RealStatePtr L, int idx, object target)

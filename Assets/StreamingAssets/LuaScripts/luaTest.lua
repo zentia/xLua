@@ -2,7 +2,8 @@
 --local dbg = require('emmy_core')
 --dbg.tcpConnect('localhost', 9966)
 require("TypePreload")
-
+local LogTag = CS.PerfMain.GetLogTagValues()
+CS.PerfMain.LuaDoLog(CS.Log.Type.None,LogTag.Network,"a")
 function FuncBasePara(x)
 end
 

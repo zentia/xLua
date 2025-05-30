@@ -275,7 +275,7 @@ namespace XLua
             return firstParameterConstraint;
         }
 
-#if (UNITY_WSA && !ENABLE_IL2CPP) && !UNITY_EDITOR
+#if (!ENABLE_IL2CPP) && !UNITY_EDITOR
         public static List<Assembly> _assemblies;
         public static List<Assembly> GetAssemblies()
         {
@@ -358,20 +358,7 @@ namespace XLua
 			return !LuaAPI.lua_isnil(L, -1);
 		}
 
-		public static RealStatePtr GetMainState(RealStatePtr L)
-		{
-			RealStatePtr ret = default(RealStatePtr);
-			LuaAPI.xlua_pushasciistring(L, LuaEnv.MAIN_SHREAD);
-			LuaAPI.lua_rawget(L, LuaIndexes.LUA_REGISTRYINDEX);
-			if (LuaAPI.lua_isthread(L, -1))
-			{
-				ret = LuaAPI.lua_tothread(L, -1);
-			}
-			LuaAPI.lua_pop(L, 1);
-			return ret;
-		}
-
-#if (UNITY_WSA && !ENABLE_IL2CPP) && !UNITY_EDITOR
+#if (!ENABLE_IL2CPP) && !UNITY_EDITOR
         public static List<Assembly> _assemblies;
         public static List<Assembly> GetAssemblies()
         {

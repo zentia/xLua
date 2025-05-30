@@ -48,6 +48,22 @@ typedef unsigned XLUA_Il2CppGCHandle;
 
 using namespace il2cpp::vm;
 
+struct pesapi_value_ref__
+{
+	pesapi_value_ref__(void* _L, int _value_ref)
+		: L(_L)
+		, value_ref(_value_ref)
+		, ref_count(1)
+		, handle(0)
+	{
+	}
+	void* L;
+	int value_ref;
+	int ref_count;
+	uint32_t handle;
+	Il2CppObject* object;
+};
+
 namespace xlua
 {
 	GLOBAL_TYPE_IMPLEMENT
@@ -510,20 +526,16 @@ namespace xlua
 		return il2cppDelegate;
 	}
 
-	static void* DelegateAllocate(Il2CppClass* klass, Il2CppMethodPointer functionPtr, PObjectRefInfo** outTargetData)
+	static Il2CppDelegate* DelegateAllocate(Il2CppClass* klass, Il2CppMethodPointer functionPtr, PObjectRefInfo** outTargetData)
 	{
-		Il2CppClass* delegateInfoClass = g_typeofLuaTable;
-		if (!delegateInfoClass)
-			return nullptr;
-
-		auto target = il2cpp::vm::Object::New(delegateInfoClass);
+		auto target = il2cpp::vm::Object::New(g_typeofLuaTable);
 
 		Il2CppDelegate* delegate = FunctionPointerToDelegate(functionPtr, klass, target);
 
 		if (MethodIsStatic(delegate->method))
 			return nullptr;
 
-		const MethodInfo* ctor = il2cpp_class_get_method_from_name(delegateInfoClass, ".ctor", 0);
+		const MethodInfo* ctor = il2cpp_class_get_method_from_name(g_typeofLuaTable, ".ctor", 0);
 		typedef void (*NativeCtorPtr)(Il2CppObject* ___this, const MethodInfo* method);
 		((NativeCtorPtr)ctor->methodPointer)(target, ctor);
 
@@ -798,68 +810,177 @@ namespace xlua
 		return apis->get_value_from_ref(env, objectInfo->ValueRef);
 	}
 
-	// out_object luaTable
-	static XLUA_Il2CppGCHandle* FindOrCreateHandleStoreOfValue(struct pesapi_ffi* apis, pesapi_env env, int value, pesapi_value_ref* out_value_ref, Il2CppObject** out_object)
+	struct PesapiValueRefer
+	{
+		size_t operator()(int handle) const
+		{
+			return handle;
+		}
+	};
+
+	//typedef Il2CppHashMap<int, pesapi_value_ref, PesapiValueRefer> PesapiValueRef;
+
+	class LuaEnvPrivate
+	{
+	public:
+		LuaEnvPrivate(struct pesapi_ffi* inApis, pesapi_env_ref inEnvRef, Il2CppObject* objPool, Il2CppReflectionMethod* objPoolAddMethodInfo, Il2CppReflectionMethod* objPoolRemoveMethodInfo)
+			: apis(inApis), envRef(inEnvRef), objPoolAdd(objPoolAddMethodInfo->method, objPool), objPoolRemove(objPoolRemoveMethodInfo->method, objPool)
+		{
+			instance = this;
+		}
+
+		~LuaEnvPrivate()
+		{
+			const pesapi_env env = apis->get_env_from_ref(envRef);
+			apis->set_env_private(env, nullptr);
+			CleanupPendingKillScriptObjects();
+			instance = nullptr;
+		}
+
+		void AddPendingKillScriptObjects(pesapi_value_ref valueRef)
+		{
+			// 不用做无效性检查，应该数据可能无效，但是没有被释放掉
+			il2cpp::os::AutoLock guard(&pendingKillRefsMutex);
+			pendingKillRefs.insert(valueRef);
+		}
+
+		void CleanupPendingKillScriptObjects()
+		{
+			il2cpp::os::AutoLock guard(&pendingKillRefsMutex);
+			auto size = pendingKillRefs.size();
+			if (size == 0)
+			{
+				return;
+			}
+
+			for (const auto& valueRef : pendingKillRefs)
+			{
+				if (valueRef->handle > 0)
+				{
+					if (nullptr != il2cpp::gc::GCHandle::GetTarget(valueRef->handle))
+					{
+						il2cpp::gc::GCHandle::Free(valueRef->handle);
+					}
+					//pesapiValueRef.erase(valueRef->handle);
+				}
+				apis->release_value_ref(valueRef);
+			}
+
+			pendingKillRefs.clear();
+		}
+
+		// 由于GC和弱引用时序无法确定，当先弱引用失效时，对导致dataCache和objectPool对不齐，dataCache数量少于objectPool，所以需要先查找判断
+		int32_t RefCSObject(Il2CppObject* obj)
+		{
+			return objPoolAdd.CallWithInstance(obj);
+		}
+
+		void UnRefCSObject(int32_t idx)
+		{
+			objPoolRemove.CallWithInstance(idx);
+		}
+		struct pesapi_ffi* apis;
+		pesapi_env_ref envRef;
+		il2cpp::os::Mutex pendingKillRefsMutex;
+		std::unordered_set<pesapi_value_ref> pendingKillRefs;
+		/*PesapiValueRef pesapiValueRef;*/
+
+		MethodInfoHelper<int32_t(Il2CppObject* obj)> objPoolAdd;
+		MethodInfoHelper<Il2CppObject* (int32_t index)> objPoolRemove;
+		static LuaEnvPrivate* instance;
+	};
+	LuaEnvPrivate* xlua::LuaEnvPrivate::instance = nullptr;
+
+	// 对象被释放了，但是GC没有及时触发，释放是在tick里面，也有可能隔一帧，不会立即触发，所以有可能返回的对象不是需要的对象
+	// 无论怎样实现都没办法保证
+	// 获取时，应该增加一种校验机制，用来判断当前获取的对象是否是正确的。
+	// Bug是，隔了很多帧之后，拿到了错误的对象，说明引用没有被释放掉，认为GC肯定是不会出错的，弱引用也肯定是不会出错的
+	// 那么就是引用计数出了问题
+	static Il2CppObject* FindOrCreateHandleStoreOfValue(struct pesapi_ffi* apis, pesapi_env env, int value, pesapi_value_ref* out_value_ref)
 	{
 		void* out_ptr;
 		apis->get_private(env, value, &out_ptr);
 
 		pesapi_value_ref value_ref = static_cast<pesapi_value_ref>(out_ptr);
-		XLUA_Il2CppGCHandle* res = nullptr;
+		uint32_t handle = 0;
+		Il2CppObject* obj = nullptr;
 		if (value_ref)
 		{
-			res = reinterpret_cast<XLUA_Il2CppGCHandle*>(apis->get_ref_internal_fields(value_ref));
-			if (!res)
+			handle = value_ref->handle;
+			if (handle == 0)
 			{
-				XLuaLog(XLuaLogType::Error, "invalid internal_fields ptr:%p", res);
+				XLuaLog(XLuaLogType::Error, "invalid internal_fields ptr:%p");
 				apis->release_value_ref(value_ref);
-				res = nullptr;
 				value_ref = nullptr;
 			}
 		}
 
-		if (!res)
+		if (handle == 0)
 		{
 			value_ref = apis->create_value_ref(env, value);
-			*out_object = nullptr;
-			res = reinterpret_cast<XLUA_Il2CppGCHandle*>(apis->get_ref_internal_fields(value_ref));
 		}
 		else
 		{
-			*out_object = il2cpp::gc::GCHandle::GetTarget(*res);
-			if (*out_object == nullptr)
+			obj = il2cpp::gc::GCHandle::GetTarget(value_ref->handle);
+			// 对象被释放了，引用没有及时删掉
+			if (obj == nullptr)
 			{
-				apis->duplicate_value_ref(value_ref);
+				// 无论如何，这个对象应该被认为释放掉了，引用也不应该在使用了
+				// 释放交给GC去做，这里只新建
+				// 增加引用计数的时候，出现错误引用的情况，以为是GC时序导致的问题，增加校验之后，并没有触发
+				// bug的源头是这里增加引用计数的问题
+				// apis->duplicate_value_ref(value_ref);
+				// apis->release_value_ref(value_ref);
+				value_ref = apis->create_value_ref(env, value);
+				XLuaLog(XLuaLogType::Warning, "[XLua]%d->%d->%d", value_ref->handle, value_ref->value_ref, value_ref->ref_count);
+			}
+			else
+			{
+				// 对象虽然没有被释放，但是很有可能摸的别的对象，因为在一帧内有可能被GC掉，然后又新建
+
 			}
 		}
-
+		
 		*out_value_ref = value_ref;
-		return res;
+		return obj;
+	}
+
+	// 存储之前需要先校验已有的handle，如果有重复的认为是无效的
+	// 所有的值引用在lua寄存器中存储，需要新增一个数据结构，频繁访问寄存器会很卡
+	// 既然是查找，应该用handle作为key，value_ref作为value，那么是一个map
+	static void ValidateHandleStoreOfValue(Il2CppObject* object, pesapi_value_ref value_ref, pesapi_ffi* apis, pesapi_env env, PObjectRefInfo* objectRefInfo)
+	{
+		/*if (LuaEnvPrivate::instance == nullptr)
+		{
+			XLuaLog(XLuaLogType::Error, "[XLua] LuaEnvPrivate::instance has been destroyed!");
+			return;
+		}*/
+		auto handle = il2cpp::gc::GCHandle::GetTargetHandle(object, 0, il2cpp::gc::HANDLE_WEAK);
+		il2cpp::vm::Exception::RaiseIfError(handle.GetError());
+		//PesapiValueRef& cache = LuaEnvPrivate::instance->pesapiValueRef;
+		//PesapiValueRef::iterator it = cache.find(handle.Get());
+		//if (it != cache.end())
+		//{
+		//	// 这里仅仅设置为无效，销毁应该让GC去做
+		//	// 实际测试中，这里一次没有触发！！！
+		//	// 跟校验层没有关系，本质是在GC之前弱引用无效，引用计数增加，GC的时候把申请好的弱引用对象释放导致的。
+		//	it->second->handle = 0;
+		//}
+		//cache[handle.Get()] = value_ref;
+		value_ref->handle = handle.Get();
+		SetPObjectRefInfoValue(apis, env, objectRefInfo, value_ref);
+		//XLuaLog(XLuaLogType::Warning, "[XLua]%d->%d->%d->%s->%p", value_ref->handle, value_ref->value_ref, value_ref->ref_count, object->klass->name, object);
 	}
 
 	static Il2CppObject* FunctionToDelegate(struct pesapi_ffi* apis, pesapi_env env, int luaval, LuaClassInfoHeader* classInfo)
 	{
 		pesapi_value_ref value_ref;
-		Il2CppObject* ret = nullptr;
-		XLUA_Il2CppGCHandle* handle_store = FindOrCreateHandleStoreOfValue(apis, env, luaval, &value_ref, &ret);
-		if (!handle_store)
-			return nullptr;
-
+		Il2CppObject* ret = FindOrCreateHandleStoreOfValue(apis, env, luaval, &value_ref);
 		if (ret == nullptr)
 		{
-			// auto iter = debug.find(value_ref);
-			// assert(iter == debug.end());
-			// debug.insert(value_ref);
 			PObjectRefInfo* delegateInfo;
 			ret = (Il2CppObject*)DelegateAllocate(classInfo->TypeId, classInfo->DelegateBridge, &delegateInfo);
-			auto targetHandle = il2cpp::gc::GCHandle::GetTargetHandle(ret, 0, il2cpp::gc::HANDLE_WEAK);
-			il2cpp::vm::Exception::RaiseIfError(targetHandle.GetError());
-#ifdef UNITY_2023_2_OR_NEWER
-			* handle_store = reinterpret_cast<XLUA_Il2CppGCHandle>(targetHandle.Get());
-#else
-			* handle_store = targetHandle.Get();
-#endif
-			SetPObjectRefInfoValue(apis, env, delegateInfo, value_ref);
+			ValidateHandleStoreOfValue(ret, value_ref, apis, env, delegateInfo);
 		}
 		return ret;
 	}
@@ -1231,27 +1352,19 @@ namespace xlua
 					{
 						if (elementClass == g_typeofLuaTable || elementClass == il2cpp_defaults.object_class)
 						{
-							Il2CppClass* persistentObjectInfoClass = g_typeofLuaTable;
-
 							pesapi_value_ref value_ref;
-							Il2CppObject* ret = nullptr;
-							XLUA_Il2CppGCHandle* handle_store = FindOrCreateHandleStoreOfValue(apis, env, -1, &value_ref, &ret);
-							if (!handle_store)
-								break;
-
+							
+							Il2CppObject* ret = FindOrCreateHandleStoreOfValue(apis, env, -1, &value_ref);
+							
 							if (ret == nullptr)
 							{
-								ret = il2cpp::vm::Object::New(persistentObjectInfoClass);
+								ret = il2cpp::vm::Object::New(g_typeofLuaTable);
 
-								const MethodInfo* ctor = il2cpp_class_get_method_from_name(persistentObjectInfoClass, ".ctor", 0);
+								const MethodInfo* ctor = il2cpp_class_get_method_from_name(g_typeofLuaTable, ".ctor", 0);
 								typedef void (*NativeCtorPtr)(Il2CppObject* ___this, const MethodInfo* method);
 								((NativeCtorPtr)ctor->methodPointer)(ret, ctor);
-
 								PObjectRefInfo* objectInfo = GetPObjectRefInfo(ret);
-								auto targetHandle = il2cpp::gc::GCHandle::GetTargetHandle(ret, 0, il2cpp::gc::HANDLE_WEAK);
-								il2cpp::vm::Exception::RaiseIfError(targetHandle.GetError());
-								*handle_store = targetHandle.Get();
-								SetPObjectRefInfoValue(apis, env, objectInfo, value_ref);
+								ValidateHandleStoreOfValue(ret, value_ref, apis, env, objectInfo);
 							}
 							memcpy(elementAddress, &ret, elementSize);
 							Il2CppCodeGenWriteBarrier(&elementAddress, ret);
@@ -1419,7 +1532,10 @@ namespace xlua
 						memcpy(il2cpp::vm::Array::GetFirstElementAddress(clone), binary, elem_size * length);
 						return clone;
 					}
-					else if (klass != il2cpp_defaults.object_class)
+					// 现在有三种字符串，string，这个直接转il2cppString；
+					// byte,这个直接转byte[]
+					// IntPtr,这个裸指针，其它都不支持，不然一定会crash
+					if (klass == g_typeofIntPtr)
 					{
 						size_t length;
 						void* binary = apis->get_value_binary(env, luaval, &length);
@@ -1430,31 +1546,18 @@ namespace xlua
 				{
 					if (klass == g_typeofLuaTable || klass == il2cpp_defaults.object_class)
 					{
-						Il2CppClass* persistentObjectInfoClass = g_typeofLuaTable;
-
 						pesapi_value_ref value_ref;
-						Il2CppObject* ret = nullptr;
-						XLUA_Il2CppGCHandle* handle_store = FindOrCreateHandleStoreOfValue(apis, env, luaval, &value_ref, &ret);
-						if (!handle_store)
-							return nullptr;
-
+						Il2CppObject* ret = FindOrCreateHandleStoreOfValue(apis, env, luaval, &value_ref);
+						
 						if (ret == nullptr)
 						{
-							ret = il2cpp::vm::Object::New(persistentObjectInfoClass);
+							ret = il2cpp::vm::Object::New(g_typeofLuaTable);
 
-							const MethodInfo* ctor = il2cpp_class_get_method_from_name(persistentObjectInfoClass, ".ctor", 0);
+							const MethodInfo* ctor = il2cpp_class_get_method_from_name(g_typeofLuaTable, ".ctor", 0);
 							typedef void (*NativeCtorPtr)(Il2CppObject* ___this, const MethodInfo* method);
 							((NativeCtorPtr)ctor->methodPointer)(ret, ctor);
-
 							PObjectRefInfo* objectInfo = GetPObjectRefInfo(ret);
-							auto targetHandle = il2cpp::gc::GCHandle::GetTargetHandle(ret, 0, il2cpp::gc::HANDLE_WEAK);
-							il2cpp::vm::Exception::RaiseIfError(targetHandle.GetError());
-#ifdef UNITY_2023_2_OR_NEWER
-							* handle_store = reinterpret_cast<XLUA_Il2CppGCHandle>(targetHandle.Get());
-#else
-							* handle_store = targetHandle.Get();
-#endif
-							SetPObjectRefInfoValue(apis, env, objectInfo, value_ref);
+							ValidateHandleStoreOfValue(ret, value_ref, apis, env, objectInfo);
 						}
 						return ret;
 					}
@@ -2489,30 +2592,18 @@ namespace xlua
 		auto env = apis->get_env_from_ref(envRef);
 		AutoValueScope ValueScope(apis, env);
 
-		Il2CppClass* persistentObjectInfoClass = g_typeofLuaTable;
-
 		pesapi_value_ref value_ref;
-		Il2CppObject* ret;
 		apis->create_object(env);
-		XLUA_Il2CppGCHandle* handle_store = FindOrCreateHandleStoreOfValue(apis, env, -1, &value_ref, &ret);
+		Il2CppObject* ret = FindOrCreateHandleStoreOfValue(apis, env, -1, &value_ref);
 
 		if (ret == nullptr)
 		{
-			ret = il2cpp::vm::Object::New(persistentObjectInfoClass);
-
-			const MethodInfo* ctor = il2cpp_class_get_method_from_name(persistentObjectInfoClass, ".ctor", 0);
+			ret = il2cpp::vm::Object::New(g_typeofLuaTable);
+			const MethodInfo* ctor = il2cpp_class_get_method_from_name(g_typeofLuaTable, ".ctor", 0);
 			typedef void (*NativeCtorPtr)(Il2CppObject* ___this, const MethodInfo* method);
 			((NativeCtorPtr)ctor->methodPointer)(ret, ctor);
-
 			PObjectRefInfo* objectInfo = GetPObjectRefInfo(ret);
-			auto targetHandle = il2cpp::gc::GCHandle::GetTargetHandle(ret, 0, il2cpp::gc::HANDLE_WEAK);
-			il2cpp::vm::Exception::RaiseIfError(targetHandle.GetError());
-#ifdef UNITY_2023_2_OR_NEWER
-			* handle_store = reinterpret_cast<XLUA_Il2CppGCHandle>(targetHandle.Get());
-#else
-			* handle_store = targetHandle.Get();
-#endif
-			SetPObjectRefInfoValue(apis, env, objectInfo, value_ref);
+			ValidateHandleStoreOfValue(ret, value_ref, apis, env, objectInfo);
 		}
 
 		return ret;
@@ -2521,31 +2612,20 @@ namespace xlua
 	Il2CppObject* GetGlobalTable(struct pesapi_ffi* apis, intptr_t ptr)
 	{
 		pesapi_env_ref envRef = reinterpret_cast<pesapi_env_ref>(ptr);
-
 		auto env = apis->get_env_from_ref(envRef);
 		AutoValueScope value_scope(apis, env);
-		Il2CppClass* persistentObjectInfoClass = g_typeofLuaTable;
-
-		pesapi_value_ref value_ref;
-		Il2CppObject* ret;
+		pesapi_value_ref value_ref = nullptr;
 		apis->global(env);
-		XLUA_Il2CppGCHandle* handle_store = FindOrCreateHandleStoreOfValue(apis, env, -1, &value_ref, &ret);
-
+		Il2CppObject* ret = FindOrCreateHandleStoreOfValue(apis, env, -1, &value_ref);
 		if (ret == nullptr)
 		{
-			ret = il2cpp::vm::Object::New(persistentObjectInfoClass);
-
-			const MethodInfo* ctor = il2cpp_class_get_method_from_name(persistentObjectInfoClass, ".ctor", 0);
+			ret = il2cpp::vm::Object::New(g_typeofLuaTable);
+			const MethodInfo* ctor = il2cpp_class_get_method_from_name(g_typeofLuaTable, ".ctor", 0);
 			typedef void (*NativeCtorPtr)(Il2CppObject* ___this, const MethodInfo* method);
 			((NativeCtorPtr)ctor->methodPointer)(ret, ctor);
-
 			PObjectRefInfo* objectInfo = GetPObjectRefInfo(ret);
-			auto targetHandle = il2cpp::gc::GCHandle::GetTargetHandle(ret, 0, il2cpp::gc::HANDLE_WEAK);
-			il2cpp::vm::Exception::RaiseIfError(targetHandle.GetError());
-			*handle_store = targetHandle.Get();
-			SetPObjectRefInfoValue(apis, env, objectInfo, value_ref);
+			ValidateHandleStoreOfValue(ret, value_ref, apis, env, objectInfo);
 		}
-
 		return ret;
 	}
 
@@ -2611,83 +2691,6 @@ namespace xlua
 			apis->set_property(env, global, key.c_str(), CSRefToLuaValue(apis, env, obj->klass, obj));
 		}
 	}
-	class LuaEnvPrivate
-	{
-	public:
-		LuaEnvPrivate(struct pesapi_ffi* inApis, pesapi_env_ref inEnvRef, Il2CppObject* objPool, Il2CppReflectionMethod* objPoolAddMethodInfo, Il2CppReflectionMethod* objPoolRemoveMethodInfo)
-			: apis(inApis), envRef(inEnvRef), objPoolAdd(objPoolAddMethodInfo->method, objPool), objPoolRemove(objPoolRemoveMethodInfo->method, objPool)
-		{
-			instance = this;
-		}
-
-		~LuaEnvPrivate()
-		{
-			const pesapi_env env = apis->get_env_from_ref(envRef);
-			apis->set_env_private(env, nullptr);
-			CleanupPendingKillScriptObjects();
-			instance = nullptr;
-		}
-
-		void AddPendingKillScriptObjects(pesapi_value_ref valueRef)
-		{
-            if (apis->get_ref_internal_fields(valueRef))
-            {
-				il2cpp::os::AutoLock guard(&pendingKillRefsMutex);
-				pendingKillRefs.insert(valueRef);
-            }
-		}
-
-		void CleanupPendingKillScriptObjects()
-		{
-            il2cpp::os::AutoLock guard(&pendingKillRefsMutex);
-			auto size = pendingKillRefs.size();
-			if (size == 0)
-			{
-				return;
-			}
-
-			for (const auto& valueRef : pendingKillRefs)
-			{
-				XLUA_Il2CppGCHandle* store = reinterpret_cast<XLUA_Il2CppGCHandle*>(apis->get_ref_internal_fields(valueRef));
-				if (store)
-				{
-#ifdef UNITY_2023_2_OR_NEWER
-					Il2CppGCHandle handle = *store;
-#else
-					int32_t handle = *store;
-#endif
-					if (nullptr != il2cpp::gc::GCHandle::GetTarget(handle))
-					{
-						il2cpp::gc::GCHandle::Free(handle);
-					}
-
-				}
-				apis->release_value_ref(valueRef);
-			}
-
-			pendingKillRefs.clear();
-		}
-
-		// 由于GC和弱引用时序无法确定，当先弱引用失效时，对导致dataCache和objectPool对不齐，dataCache数量少于objectPool，所以需要先查找判断
-		int32_t RefCSObject(Il2CppObject* obj)
-		{
-			return objPoolAdd.CallWithInstance(obj);
-		}
-
-		void UnRefCSObject(int32_t idx)
-		{
-			objPoolRemove.CallWithInstance(idx);
-		}
-		struct pesapi_ffi* apis;
-		pesapi_env_ref envRef;
-        il2cpp::os::Mutex pendingKillRefsMutex;
-		std::unordered_set<pesapi_value_ref> pendingKillRefs;
-
-		MethodInfoHelper<int32_t(Il2CppObject* obj)> objPoolAdd;
-		MethodInfoHelper<Il2CppObject* (int32_t index)> objPoolRemove;
-		static LuaEnvPrivate* instance;
-	};
-	LuaEnvPrivate* xlua::LuaEnvPrivate::instance = nullptr;
 
 	static void* OnCsObjectEnter(Il2CppObject* obj, void* class_data, LuaEnvPrivate* luaEnvPrivate)
 	{

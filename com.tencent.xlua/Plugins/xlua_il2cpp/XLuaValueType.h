@@ -79,6 +79,12 @@ struct a
         uint8_t __padding[1];
     };
 };
+// String
+struct s
+{
+	int32_t p1;
+	Il2CppChar p2;
+};
 // Object
 struct O
 {
@@ -89,12 +95,6 @@ struct O
         };
         uint8_t __padding[1];
     };
-};
-// String
-struct s
-{
-	int32_t p1;
-	Il2CppChar p2;
 };
 // Void
 struct v
