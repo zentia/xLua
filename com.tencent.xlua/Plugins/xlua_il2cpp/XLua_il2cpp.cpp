@@ -855,14 +855,6 @@ namespace xlua
 
 			for (const auto& valueRef : pendingKillRefs)
 			{
-				if (valueRef->handle > 0)
-				{
-					if (nullptr != il2cpp::gc::GCHandle::GetTarget(valueRef->handle))
-					{
-						il2cpp::gc::GCHandle::Free(valueRef->handle);
-					}
-					//pesapiValueRef.erase(valueRef->handle);
-				}
 				apis->release_value_ref(valueRef);
 			}
 
