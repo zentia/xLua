@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using Editor.Src.Generator.IL2Cpp;
 using Newtonsoft.Json;
 using Mono.Reflection;
 using UnityEngine;
@@ -626,16 +627,7 @@ namespace XLua.Editor.Generator
                     FieldWrapperInfos = fieldWrapperInfos
                 };
 
-                using (var textWriter = new StreamWriter(Path.Combine(saveTo, "XLuaIl2CppWrapper.cpp"), false, Encoding.UTF8))
-                {
-                    var path = Path.Combine(luaEnv.root, "Editor/Resources/xlua/templates/il2cppwrapper.tpl.lua");
-                    var bytes = File.ReadAllBytes(path);
-                    luaEnv.env.DoString<LuaFunction>(bytes, path);
-                    var gen = luaEnv.env.Global.Get<LuaFunction>("Gen");
-                    var fileContext = gen.Func<CppWrappersInfo, string>(cppWrapInfo);
-                    textWriter.Write(fileContext);
-                    textWriter.Flush();
-                }
+                UnityExporter.GenWrap(saveTo, luaEnv, cppWrapInfo, "XLuaIl2CppWrapper", "il2cppwrapper");
 
                 using (var textWriter = new StreamWriter(Path.Combine(saveTo, "XLuaValueType.h"), false, Encoding.UTF8))
                 {
@@ -668,48 +660,6 @@ namespace XLua.Editor.Generator
                     var fileContext = gen.Func<CppWrappersInfo, string>(cppWrapInfo);
                     textWriter.Write(fileContext);
                     textWriter.Flush();
-                }
-
-                // clear prev gen
-                if (Directory.Exists(saveTo))
-                {
-                    string[] files = Directory.GetFiles(saveTo);
-
-                    string pattern = @"^XLuaIl2cppWrapperDef\d+\.cpp(.meta)?$";
-
-                    foreach (var file in files)
-                    {
-                        string fileName = Path.GetFileName(file);
-                        if (System.Text.RegularExpressions.Regex.IsMatch(fileName, pattern))
-                        {
-                            try
-                            {
-                                File.Delete(file);
-                            }
-                            catch (Exception e)
-                            {
-                                Debug.LogException(e);
-                            }
-                        }
-                    }
-                }
-
-                const int MAX_WRAPPER_PER_FILE = 1000;
-                for (int i = 0; i < wrapperInfos.Count; i += MAX_WRAPPER_PER_FILE)
-                {
-                    var saveFileName = "XLuaIl2cppWrapperDef" + (i / MAX_WRAPPER_PER_FILE) + ".cpp";
-                    using (StreamWriter textWriter = new StreamWriter(Path.Combine(saveTo, saveFileName), false, Encoding.UTF8))
-                    {
-                        cppWrapInfo.WrapperInfos = wrapperInfos.GetRange(i, Math.Min(MAX_WRAPPER_PER_FILE, wrapperInfos.Count - i));
-                        Debug.Log("XLuaIl2cppWrapperDef" + saveFileName + " with " + cppWrapInfo.WrapperInfos.Count + " wrappers!");
-                        var path = Path.Combine(luaEnv.root, "Editor/Resources/xlua/templates/il2cppwrapperdef.tpl.lua");
-                        var bytes = File.ReadAllBytes(path);
-                        luaEnv.env.DoString<LuaFunction>(bytes, path);
-                        var gen = luaEnv.env.Global.Get<LuaFunction>("Gen");
-                        var fileContext = gen.Func<CppWrappersInfo, string>(cppWrapInfo);
-                        textWriter.Write(fileContext);
-                        textWriter.Flush();
-                    }
                 }
             }
 
