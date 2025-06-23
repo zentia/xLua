@@ -82,7 +82,7 @@ namespace Editor.Src.Generator.IL2Cpp
                 }
             }
         }
-        
+#if UNITY_EXPORT
         private static void GenUnityWrap(string saveTo)
         {
             var luaUnityClasses = LuaUtility.GetLuaUnityClasses();
@@ -106,5 +106,7 @@ namespace Editor.Src.Generator.IL2Cpp
             var saveTo = Path.GetFullPath("DevAssets/Unity");
             GenUnityWrap(saveTo);
         }
+#endif
+        
     }
 }

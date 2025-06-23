@@ -16,8 +16,9 @@ using System.Reflection;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+#if OSGAME
 using Assets.Plugins.Perf;
-
+#endif
 namespace XLua
 {
     class ReferenceEqualsComparer : IEqualityComparer<object>
@@ -984,16 +985,28 @@ namespace XLua
 
             if (LuaAPI.lua_isfunction(L, index))
             {
+#if OSGAME
                 StatsLite.BeginSample(StatsSampleId.xLua_Delegate, "GetDelegate<#LuaFunc>", ref sampleIndex);
+#endif
+                
                 T ret = CreateDelegateBridge(L, typeof(T), index) as T;
+#if OSGAME
                 StatsLite.EndSampleByIndex(ref sampleIndex);
+#endif
+                
                 return ret;
             }
             else if (LuaAPI.lua_type(L, index) == LuaTypes.LUA_TUSERDATA)
             {
+#if OSGAME
                 StatsLite.BeginSample(StatsSampleId.xLua_Delegate, "GetDelegate<T>", ref sampleIndex);
+#endif
+                
                 T ret = (T)SafeGetCSObj(L, index);
+#if OSGAME
                 StatsLite.EndSampleByIndex(ref sampleIndex);
+#endif
+                
                 return ret;
             }
             else

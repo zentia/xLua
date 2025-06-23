@@ -268,7 +268,6 @@ namespace XLua.Editor.Generator
 
         private static readonly string[] WhiteList =
         {
-            "System.Collections.Generic.List`1[Assets.Scripts.UI.InTheGame.TeamRecommend.UITeamRecommendHeroAnnotationItem+ItemShowData, Scripts], mscorlib",
         };
 
         private static HashSet<Type> delegateTypes = new();

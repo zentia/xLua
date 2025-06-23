@@ -9,7 +9,7 @@
 
     </assembly>
     <assembly fullname="mscorlib">
-        <type fullname="System.Collections.Generic.List`1" preserve="all"/>
+        <type fullname="System.Collections.Generic.List`1&lt;System.String&gt;" preserve="all"/>
 
     </assembly>
 
