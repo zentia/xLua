@@ -29,18 +29,6 @@ namespace XLua
     [UnityEngine.Scripting.Preserve]
     public static partial class Utils
     {
-        public static string TraceBack(IntPtr L)
-        {
-            LuaAPI.xlua_getglobal(L, "debug");
-            LuaAPI.lua_pushstring(L, "traceback");
-            LuaAPI.lua_rawget(L, -2);
-            LuaAPI.lua_remove(L, -2);
-            LuaAPI.lua_pushvalue(L, 1);
-            LuaAPI.lua_pushnumber(L, 2);
-            LuaAPI.lua_pcall(L, 2, 1, 0);
-            return LuaAPI.lua_tostring(L, -1);
-        }
-
         public static long TwoIntToLong(int b, int a)
         {
             return (long)a << 32 | b & 0xFFFFFFFFL;

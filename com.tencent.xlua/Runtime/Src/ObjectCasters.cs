@@ -12,25 +12,25 @@ namespace XLua
 
     public class ObjectCheckers
     {
-        Dictionary<Type, ObjectCheck> checkersMap = new Dictionary<Type, ObjectCheck>();
+        Dictionary<Type, ObjectCheck> checkersMap = new ();
         ObjectTranslator translator;
 
         public ObjectCheckers(ObjectTranslator translator)
         {
             this.translator = translator;
-            checkersMap[typeof(sbyte)] = numberCheck;
-            checkersMap[typeof(byte)] = numberCheck;
-            checkersMap[typeof(short)] = numberCheck;
-            checkersMap[typeof(ushort)] = numberCheck;
-            checkersMap[typeof(int)] = numberCheck;
-            checkersMap[typeof(uint)] = numberCheck;
-            checkersMap[typeof(long)] = int64Check;
-            checkersMap[typeof(ulong)] = uint64Check;
-            checkersMap[typeof(double)] = numberCheck;
-            checkersMap[typeof(char)] = numberCheck;
-            checkersMap[typeof(float)] = numberCheck;
-            checkersMap[typeof(bool)] = boolCheck;
-            checkersMap[typeof(string)] = strCheck;
+            checkersMap[typeof(sbyte)] = is_int32;
+            checkersMap[typeof(byte)] = is_uint32;
+            checkersMap[typeof(short)] = is_int32;
+            checkersMap[typeof(ushort)] = is_uint32;
+            checkersMap[typeof(int)] = is_int32;
+            checkersMap[typeof(uint)] = is_uint32;
+            checkersMap[typeof(long)] = is_int64;
+            checkersMap[typeof(ulong)] = is_uint64;
+            checkersMap[typeof(double)] = is_double;
+            checkersMap[typeof(char)] = is_uint32;
+            checkersMap[typeof(float)] = is_double;
+            checkersMap[typeof(bool)] = is_boolean;
+            checkersMap[typeof(string)] = is_string;
             checkersMap[typeof(object)] = objectCheck;
             checkersMap[typeof(byte[])] = bytesCheck;
             checkersMap[typeof(IntPtr)] = intptrCheck;
@@ -49,34 +49,43 @@ namespace XLua
             return LuaAPI.lua_isnil(L, idx) || LuaAPI.lua_istable(L, idx) || (LuaAPI.lua_type(L, idx) == LuaTypes.LUA_TUSERDATA && translator.SafeGetCSObj(L, idx) is LuaTable);
         }
 
-        private bool numberCheck(RealStatePtr L, int idx)
+        private bool is_boolean(RealStatePtr L, int idx)
         {
-            return LuaAPI.lua_type(L, idx) == LuaTypes.LUA_TNUMBER;
+            return LuaEnv.Instance.ffi.is_boolean(L, idx);
+        }
+        private bool is_int32(RealStatePtr L, int idx)
+        {
+            return LuaEnv.Instance.ffi.is_int32(L, idx);
         }
 
-        private bool strCheck(RealStatePtr L, int idx)
+        private bool is_uint32(RealStatePtr L, int idx)
         {
-            return LuaAPI.lua_type(L, idx) == LuaTypes.LUA_TSTRING || LuaAPI.lua_isnil(L, idx);
+            return LuaEnv.Instance.ffi.is_uint32(L, idx);
+        }
+
+        private bool is_int64(RealStatePtr L, int idx)
+        {
+            return Converter.Specializer<Int64>.accept(LuaEnv.Instance.ffi, L, idx);
+        }
+
+        private bool is_uint64(RealStatePtr L, int idx)
+        {
+            return LuaEnv.Instance.ffi.is_uint64(L, idx);
+        }
+
+        private bool is_double(RealStatePtr L, int idx)
+        {
+            return LuaEnv.Instance.ffi.is_double(L, idx);
+        }
+
+        private bool is_string(RealStatePtr L, int idx)
+        {
+            return LuaEnv.Instance.ffi.is_string(L, idx) || LuaEnv.Instance.ffi.is_null(L, idx) || LuaEnv.Instance.ffi.is_undefined(L, idx);
         }
 
         private bool bytesCheck(RealStatePtr L, int idx)
         {
             return LuaAPI.lua_type(L, idx) == LuaTypes.LUA_TSTRING || LuaAPI.lua_isnil(L, idx) || (LuaAPI.lua_type(L, idx) == LuaTypes.LUA_TUSERDATA && translator.SafeGetCSObj(L, idx) is byte[]);
-        }
-
-        private bool boolCheck(RealStatePtr L, int idx)
-        {
-            return LuaAPI.lua_type(L, idx) == LuaTypes.LUA_TBOOLEAN;
-        }
-
-        private bool int64Check(RealStatePtr L, int idx)
-        {
-            return LuaAPI.lua_type(L, idx) == LuaTypes.LUA_TNUMBER || LuaAPI.lua_isint64(L, idx);
-        }
-
-        private bool uint64Check(RealStatePtr L, int idx)
-        {
-            return LuaAPI.lua_type(L, idx) == LuaTypes.LUA_TNUMBER || LuaAPI.lua_isuint64(L, idx);
         }
 
         private bool luaFunctionCheck(RealStatePtr L, int idx)
@@ -209,10 +218,10 @@ namespace XLua
             castersMap[typeof(uint)] = uintCaster;
             castersMap[typeof(long)] = longCaster;
             castersMap[typeof(ulong)] = ulongCaster;
-            castersMap[typeof(double)] = getDouble;
+            castersMap[typeof(double)] = doubleCaster;
             castersMap[typeof(float)] = floatCaster;
-            castersMap[typeof(bool)] = getBoolean;
-            castersMap[typeof(string)] =  getString;
+            castersMap[typeof(bool)] = boolCaster;
+            castersMap[typeof(string)] =  stringCaster;
             castersMap[typeof(object)] = getObject;
             castersMap[typeof(byte[])] = getBytes;
             castersMap[typeof(IntPtr)] = getIntptr;
@@ -223,67 +232,67 @@ namespace XLua
 
         private static object charCaster(RealStatePtr L, int idx, object target)
         {
-            return (char)LuaAPI.xlua_tointeger(L, idx);
+            return Converter.Specializer<char>.toCpp(LuaEnv.Instance.ffi, L, idx);
         }
 
         private static object sbyteCaster(RealStatePtr L, int idx, object target)
         {
-            return (sbyte)LuaAPI.xlua_tointeger(L, idx);
+            return Converter.Specializer<sbyte>.toCpp(LuaEnv.Instance.ffi, L, idx);
         }
 
         private static object byteCaster(RealStatePtr L, int idx, object target)
         {
-            return (byte)LuaAPI.xlua_tointeger(L, idx);
+            return Converter.Specializer<byte>.toCpp(LuaEnv.Instance.ffi, L, idx);
         }
 
         private static object shortCaster(RealStatePtr L, int idx, object target)
         {
-            return (short)LuaAPI.xlua_tointeger(L, idx);
+            return Converter.Specializer<short>.toCpp(LuaEnv.Instance.ffi, L, idx);
         }
 
         private static object ushortCaster(RealStatePtr L, int idx, object target)
         {
-            return (ushort)LuaAPI.xlua_tointeger(L, idx);
+            return Converter.Specializer<ushort>.toCpp(LuaEnv.Instance.ffi, L, idx);
         }
 
         private static object intCaster(RealStatePtr L, int idx, object target)
         {
-            return LuaAPI.xlua_tointeger(L, idx);
+            return Converter.Specializer<int>.toCpp(LuaEnv.Instance.ffi, L, idx);
         }
 
         private static object uintCaster(RealStatePtr L, int idx, object target)
         {
-            return LuaAPI.xlua_touint(L, idx);
+            return Converter.Specializer<uint>.toCpp(LuaEnv.Instance.ffi, L, idx);
         }
 
         private static object longCaster(RealStatePtr L, int idx, object target)
         {
-            return LuaAPI.lua_toint64(L, idx);
+            return Converter.Specializer<Int64>.toCpp(LuaEnv.Instance.ffi, L, idx);
         }
 
         private static object ulongCaster(RealStatePtr L, int idx, object target)
         {
-            return LuaAPI.lua_touint64(L, idx);
+            return Converter.Specializer<UInt64>.toCpp(LuaEnv.Instance.ffi, L, idx);
         }
 
-        private static object getDouble(RealStatePtr L, int idx, object target)
+        private static object doubleCaster(RealStatePtr L, int idx, object target)
         {
-            return LuaAPI.lua_tonumber(L, idx);
+            return Converter.Specializer<double>.toCpp(LuaEnv.Instance.ffi, L, idx);
         }
 
         private static object floatCaster(RealStatePtr L, int idx, object target)
         {
-            return (float)LuaAPI.lua_tonumber(L, idx);
+            return Converter.Specializer<float>.toCpp(LuaEnv.Instance.ffi, L, idx);
         }
 
-        private static object getBoolean(RealStatePtr L, int idx, object target)
+        private static object boolCaster(RealStatePtr L, int idx, object target)
         {
-            return LuaAPI.lua_toboolean(L, idx);
+            return Converter.Specializer<bool>.toCpp(LuaEnv.Instance.ffi, L, idx);
         }
 
-        private static object getString(RealStatePtr L, int idx, object target)
+        private static object stringCaster(RealStatePtr L, int idx, object target)
         {
-            return LuaAPI.lua_tostring(L, idx);
+            return Converter.Specializer<string>.toCpp(LuaEnv.Instance.ffi, L, idx);
         }
 
         private object getBytes(RealStatePtr L, int idx, object target)
@@ -399,7 +408,7 @@ namespace XLua
         {
             castersMap[type] = oc;
         }
-        
+
         private ObjectCast genCaster(Type type)
         {
             ObjectCast fixTypeGetter = (RealStatePtr L, int idx, object target) =>
@@ -411,7 +420,7 @@ namespace XLua
                     return (obj != null && type.IsAssignableFrom(obj.GetType())) ? obj : null;
                 }
                 return null;
-            }; 
+            };
 
             if (typeof(Delegate).IsAssignableFrom(type))
             {
@@ -454,7 +463,7 @@ namespace XLua
                     {
                         return null;
                     }
-                    return translator.CreateInterfaceBridge(L, type, idx);
+                    throw new Exception($"#{idx} not support cast! source type is table, target type is {type.Name}");
                 };
             }
             else if (type.IsEnum())
@@ -542,7 +551,7 @@ namespace XLua
                     throw new Exception($"#{idx} not support cast! source type is table, target type is {type.Name}");
 
                 return null;
-            }; 
+            };
         }
 
         public ObjectCast GetCaster(Type type, Type classType = null, string methodName = null)

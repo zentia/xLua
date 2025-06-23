@@ -46,17 +46,19 @@ namespace XLua
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static void SetGlobalType_IDictionary(Type type)
         {}
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static void SetGlobalType_ILuaGCInterface(Type type)
+        {}
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr GetFFIApi();
 #if XLUA_IL2CPP && ENABLE_IL2CPP
-        
+
         [DllImport("__Internal", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitialXLua(IntPtr PesapiImpl);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr GetRegisterApi();
 
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public static extern IntPtr GetFFIApi();
-        
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr GetPapiEnvRef(IntPtr luaEnv);
 
@@ -68,6 +70,12 @@ namespace XLua
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static IntPtr InitialPapiEnvRef(IntPtr api, IntPtr envRef, Object obj, MethodBase addMethodBase, MethodBase removeMethodBase)
+        {
+            throw new NotImplementedException();
+        }
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static void InitPerf(MethodBase beginSample, MethodBase endSample)
         {
             throw new NotImplementedException();
         }
@@ -178,41 +186,41 @@ namespace XLua
     public delegate void pesapi_callback(IntPtr apis, IntPtr info);
     public delegate void pesapi_function_finalize(IntPtr apis, IntPtr data, IntPtr env_private);
 
-    public delegate IntPtr pesapi_create_null_func(IntPtr env);
+    public delegate int pesapi_create_null_func(IntPtr env);
     public delegate IntPtr pesapi_create_undefined_func(IntPtr env);
-    public delegate IntPtr pesapi_create_boolean_func(IntPtr env, bool value);
-    public delegate IntPtr pesapi_create_int32_func(IntPtr env, int value);
-    public delegate IntPtr pesapi_create_uint32_func(IntPtr env, uint value);
-    public delegate IntPtr pesapi_create_int64_func(IntPtr env, long value);
-    public delegate IntPtr pesapi_create_uint64_func(IntPtr env, ulong value);
-    public delegate IntPtr pesapi_create_double_func(IntPtr env, double value);
-    public delegate IntPtr pesapi_create_string_utf8_func(IntPtr env, string str, UIntPtr length);
+    public delegate int pesapi_create_boolean_func(IntPtr env, bool value);
+    public delegate int pesapi_create_int32_func(IntPtr env, int value);
+    public delegate int pesapi_create_uint32_func(IntPtr env, uint value);
+    public delegate int pesapi_create_int64_func(IntPtr env, long value);
+    public delegate int pesapi_create_uint64_func(IntPtr env, ulong value);
+    public delegate int pesapi_create_double_func(IntPtr env, double value);
+    public delegate int pesapi_create_string_utf8_func(IntPtr env, byte[] str, int length);
     public delegate IntPtr pesapi_create_binary_func(IntPtr env, IntPtr str, UIntPtr length);
     public delegate IntPtr pesapi_create_array_func(IntPtr env);
     public delegate IntPtr pesapi_create_object_func(IntPtr env);
     public delegate IntPtr pesapi_create_function_func(IntPtr env, pesapi_callback native_impl, IntPtr data, pesapi_function_finalize finalize);
     public delegate IntPtr pesapi_create_class_func(IntPtr env, IntPtr type_id);
 
-    public delegate bool pesapi_get_value_bool_func(IntPtr env, IntPtr value);
+    public delegate bool pesapi_get_value_bool_func(IntPtr env, int value);
     public delegate int pesapi_get_value_int32_func(IntPtr env, int value);
-    public delegate uint pesapi_get_value_uint32_func(IntPtr env, IntPtr value);
-    public delegate long pesapi_get_value_int64_func(IntPtr env, IntPtr value);
-    public delegate ulong pesapi_get_value_uint64_func(IntPtr env, IntPtr value);
-    public delegate double pesapi_get_value_double_func(IntPtr env, IntPtr value);
-    public delegate IntPtr pesapi_get_value_string_utf8_func(IntPtr env, IntPtr value, IntPtr buf, ref UIntPtr bufsize);
+    public delegate uint pesapi_get_value_uint32_func(IntPtr env, int value);
+    public delegate long pesapi_get_value_int64_func(IntPtr env, int value);
+    public delegate ulong pesapi_get_value_uint64_func(IntPtr env, int value);
+    public delegate double pesapi_get_value_double_func(IntPtr env, int value);
+    public delegate IntPtr pesapi_get_value_string_utf8_func(IntPtr env, int value, byte[] buf, ref int bufsize);
     public delegate IntPtr pesapi_get_value_binary_func(IntPtr env, IntPtr pvalue, ref UIntPtr bufsize);
     public delegate uint pesapi_get_array_length_func(IntPtr env, IntPtr value);
     public delegate void pesapi_get_array_element_func(IntPtr env, int index, int array_index);
 
-    public delegate bool pesapi_is_null_func(IntPtr env, IntPtr value);
-    public delegate bool pesapi_is_undefined_func(IntPtr env, IntPtr value);
-    public delegate bool pesapi_is_boolean_func(IntPtr env, IntPtr value);
-    public delegate bool pesapi_is_int32_func(IntPtr env, IntPtr value);
-    public delegate bool pesapi_is_uint32_func(IntPtr env, IntPtr value);
-    public delegate bool pesapi_is_int64_func(IntPtr env, IntPtr value);
-    public delegate bool pesapi_is_uint64_func(IntPtr env, IntPtr value);
-    public delegate bool pesapi_is_double_func(IntPtr env, IntPtr value);
-    public delegate bool pesapi_is_string_func(IntPtr env, IntPtr value);
+    public delegate bool pesapi_is_null_func(IntPtr env, int value);
+    public delegate bool pesapi_is_undefined_func(IntPtr env, int value);
+    public delegate bool pesapi_is_boolean_func(IntPtr env, int value);
+    public delegate bool pesapi_is_int32_func(IntPtr env, int value);
+    public delegate bool pesapi_is_uint32_func(IntPtr env, int value);
+    public delegate bool pesapi_is_int64_func(IntPtr env, int value);
+    public delegate bool pesapi_is_uint64_func(IntPtr env, int value);
+    public delegate bool pesapi_is_double_func(IntPtr env, int value);
+    public delegate bool pesapi_is_string_func(IntPtr env, int value);
     public delegate bool pesapi_is_object_func(IntPtr env, IntPtr value);
 
     public delegate bool pesapi_is_userdata_func(IntPtr env, IntPtr value);

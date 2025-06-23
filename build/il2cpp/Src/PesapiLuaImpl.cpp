@@ -194,25 +194,25 @@ bool pesapi_is_boolean(pesapi_env env, pesapi_value pvalue)
 bool pesapi_is_int32(pesapi_env env, pesapi_value pvalue)
 {
     lua_State* L = reinterpret_cast<lua_State*>(env);
-    return lua_isinteger(L, pvalue);
+    return lua_isnumber(L, pvalue);
 }
 
 bool pesapi_is_uint32(pesapi_env env, pesapi_value pvalue)
 {
     lua_State* L = reinterpret_cast<lua_State*>(env);
-    return lua_isinteger(L, pvalue);
+    return lua_isnumber(L, pvalue);
 }
 
 bool pesapi_is_int64(pesapi_env env, pesapi_value pvalue)
 {
     lua_State* L = reinterpret_cast<lua_State*>(env);
-    return lua_isinteger(L, pvalue);
+    return lua_isnumber(L, pvalue);
 }
 
 bool pesapi_is_uint64(pesapi_env env, pesapi_value pvalue)
 {
     lua_State* L = reinterpret_cast<lua_State*>(env);
-    return lua_isinteger(L, pvalue);
+    return lua_isnumber(L, pvalue);
 }
 
 bool pesapi_is_double(pesapi_env env, pesapi_value pvalue)
@@ -509,8 +509,16 @@ void pesapi_release_value_ref(pesapi_value_ref value_ref)
 {
     if (--value_ref->ref_count == 0)
     {
-        xlua::CppObjectMapper::Get()->SetPrivateData(value_ref->L, value_ref->value_ref, nullptr);
-        luaL_unref(value_ref->L, LUA_REGISTRYINDEX, value_ref->value_ref);
+        xlua::LuaEnv* env = xlua::LuaEnv::ms_Instance;
+        if (env && env->L == value_ref->L)
+        {
+            env->CppObjectMapper.SetPrivateData(value_ref->L, value_ref->value_ref, nullptr);
+            luaL_unref(value_ref->L, LUA_REGISTRYINDEX, value_ref->value_ref);
+        }
+        else
+        {
+            LUA_LOG(xlua::LogLevel::Error, "Invalid value_ref");
+        }
         delete value_ref;
     }
 }
@@ -556,7 +564,7 @@ int pesapi_get_property(pesapi_env env, pesapi_value pobject, const char* key)
     lua_getfield(L, pobject, key);
     if (lua_isnil(L, -1))
     {
-        xlua::PLog(xlua::Error, "no such field %s", key);
+        LUA_LOG(xlua::Error, "no such field %s", key);
         return 0;
     }
     return lua_gettop(L);
@@ -619,21 +627,19 @@ void pesapi_set_property_uint64(pesapi_env env, pesapi_value pobject, uint64_t k
     lua_rawseti(L, pobject, key);
 }
 
-int debug_traceback(lua_State* L)
+int error_func(lua_State* L)
 {
-    lua_getglobal(L, "debug");
-    lua_getfield(L, -1, "traceback");
-    lua_remove(L, -2);
-    lua_pushvalue(L, 1);
-    lua_pushnumber(L, 2);
-    lua_call(L, 2, 1);
+    const char* msg = lua_tostring(L, 1);
+    if (!msg)
+        msg = "unknown error";
+    luaL_traceback(L, L, msg, 1);
     return 1;
 }
 
 int pesapi_call_function(pesapi_env env, pesapi_value pfunc, pesapi_value this_object, int argc, const pesapi_value argv[])
 {
     lua_State* L = reinterpret_cast<lua_State*>(env);
-    lua_pushcclosure(L, debug_traceback, 0);
+    lua_pushcfunction(L, error_func);
     int errfunc = lua_gettop(L);
 
     lua_pushvalue(L, pfunc);
@@ -657,7 +663,7 @@ LUAENV_API int pesapi_dostring(pesapi_env env, const uint8_t* code, size_t code_
 {
     lua_State* L = reinterpret_cast<lua_State*>(env);
     int oldTop   = lua_gettop(L);
-    lua_pushcclosure(L, debug_traceback, 0);
+    lua_pushcfunction(L, error_func);
     int errfunc = lua_gettop(L);
 
     int ret = luaL_loadbuffer(L, reinterpret_cast<const char*>(code), code_size, path);

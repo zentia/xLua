@@ -7,6 +7,11 @@
 
 typedef void (*LogCallback)(const char* value);
 
+#define LUA_LOG(level, fmt, ...)                            \
+    xlua::sb_init(&xlua::s_log_buffer);                     \
+    xlua::sb_append(&xlua::s_log_buffer, fmt, __VA_ARGS__); \
+    xlua::PLog(level, xlua::s_log_buffer.data);
+
 namespace xlua
 {
     enum LogLevel : std::uint8_t
@@ -17,7 +22,17 @@ namespace xlua
         Exception = 3,
     };
 
-    void PLog(LogLevel level, const std::string Fmt, ...);
+    struct StringBuffer
+    {
+        char* data;
+        size_t size;
+        size_t capacity;
+    };
+
+    static StringBuffer s_log_buffer;
+    void sb_init(StringBuffer* sb);
+    int sb_append(StringBuffer* sb, const char* fmt, ...);
+    void PLog(LogLevel level, const char* data);
     typedef void (*LogCallback)(const char* value);
     struct LuaEnv
     {

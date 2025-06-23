@@ -1,4 +1,4 @@
---package.cpath = package.cpath .. ';C:/Users/Administrator/AppData/Roaming/JetBrains/Rider2024.2/plugins/EmmyLua/debugger/emmy/windows/x64/?.dll'
+--package.cpath = package.cpath .. ';C:/Users/zentiali/AppData/Roaming/JetBrains/Rider2024.1/plugins/EmmyLua/debugger/emmy/windows/x64/?.dll'
 --local dbg = require('emmy_core')
 --dbg.tcpConnect('localhost', 9966)
 
@@ -19,9 +19,37 @@ function getAssemblyInfo(genTypes)
         if not assemblyInfo[assemblyName] then
             assemblyInfo[assemblyName] = {}
         end
+        if assemblyName == "mscorlib" then
+            local a = 0
+        end
         local types = assemblyInfo[assemblyName]
         if type.IsGenericType then
-            table.insert(types, string.split(type.FullName, '[')[1])
+            local input = type.FullName
+
+            local genericType = string.match(input, "^(.-`%d+)")
+            -- 提取两个类型
+            local ltypes = {}
+            for type in string.gmatch(input, "%[(.-)%]") do
+                -- 分割类型和其他信息
+                local typeName = string.match(type, "([^,]+)")
+                if typeName then
+                    while string.startsWith(typeName, '[') do
+                        typeName = string.sub(typeName, 2)
+                    end
+                    local result = string.gsub(typeName, '+', '/')
+                    table.insert(ltypes, result)
+                end
+            end
+
+            local a = genericType
+            if #ltypes > 0 then
+                a = a .. "&lt;" .. ltypes[1]
+            end
+            for i = 2, #ltypes do
+                a = a .. "," .. ltypes[i]
+            end
+            a = a .. "&gt;"
+            table.insert(types, a)
         elseif type.IsNested then
             local result = string.gsub(type.FullName, '+', '/')
             table.insert(types, result)

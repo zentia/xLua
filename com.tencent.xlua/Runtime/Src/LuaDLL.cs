@@ -248,9 +248,6 @@ namespace XLua.LuaDLL
             return Encoding.UTF8.GetString(buffer);
         }
 
-        [DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
-		public static extern IntPtr lua_atpanic(IntPtr L, lua_CSFunction panicf);
-
 		[DllImport(LUADLL,CallingConvention=CallingConvention.Cdecl)]
 		public static extern void lua_pushnumber(IntPtr L, double number);
 

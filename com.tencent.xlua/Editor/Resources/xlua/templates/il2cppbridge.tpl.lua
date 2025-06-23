@@ -71,7 +71,6 @@ static ]], SToCPPType(bridgeInfo.ReturnSignature), ' b_', bridgeInfo.Signature, 
     struct pesapi_ffi* apis = delegateInfo->Apis;
 
     pesapi_env env = apis->get_ref_associated_env(delegateInfo->ValueRef);
-    AutoValueScope valueScope(apis, env);
     if (!env)
     {
         il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException("LuaEnv had been destroy"));
@@ -79,6 +78,7 @@ static ]], SToCPPType(bridgeInfo.ReturnSignature), ' b_', bridgeInfo.Signature, 
         return {};
 ]], ENDIF(), [[
     }
+    AutoValueScope valueScope(apis, env);
     auto func = apis->get_value_from_ref(env, delegateInfo->ValueRef);
 
     ]], genBridgeArgs(parameterSignatures), [[

@@ -1,16 +1,21 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using XLua.LuaDLL;
 
 namespace XLua
 {
-    public class LuaEnvBase : IDisposable
+    public abstract class LuaEnvBase : IDisposable
     {
         protected IntPtr nativeLuaEnv;
 
         public IntPtr rawL;
 
         protected LuaTable _G;
+        protected IntPtr apis;
+        public pesapi_ffi ffi;
+
+        internal static LuaEnv Instance;
 
         public IntPtr L
         {
@@ -51,13 +56,15 @@ namespace XLua
             }
             nativeLuaEnv = NativeAPI.CreateNativeLuaEnv();
             rawL = NativeAPI.GetLuaState(nativeLuaEnv);
-            Lua.lua_atpanic(rawL, StaticLuaCallbacks.Panic);
             Lua.lua_pushstdcallcfunction(rawL, StaticLuaCallbacks.Print);
             if (0 != Lua.xlua_setglobal(rawL, "print"))
             {
                 throw new Exception("call xlua_setglobal fail!");
             }
             AddSearcher(StaticLuaCallbacks.LoadFromCustomLoaders, -1);
+            apis = NativeAPI.GetFFIApi();
+            ffi = Marshal.PtrToStructure<pesapi_ffi>(apis);
+            Instance = this as LuaEnv;
         }
 
         public virtual void Dispose()

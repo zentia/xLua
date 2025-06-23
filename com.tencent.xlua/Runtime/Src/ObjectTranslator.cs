@@ -16,6 +16,7 @@ using System.Reflection;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using Assets.Plugins.Perf;
 
 namespace XLua
 {
@@ -787,8 +788,7 @@ namespace XLua
                     int obj_index;
                     //lua gc是先把weak table移除后再调用__gc，这期间同一个对象可能再次push到lua，关联到新的index
                     bool is_enum = o.GetType().IsEnum();
-                    if ((is_enum ? enumMap.TryGetValue(o, out obj_index) : reverseMap.TryGetValue(o, out obj_index))
-                        && obj_index == obj_index_to_collect)
+                    if ((is_enum ? enumMap.TryGetValue(o, out obj_index) : reverseMap.TryGetValue(o, out obj_index)) && obj_index == obj_index_to_collect)
                     {
                         if (is_enum)
                         {
@@ -798,6 +798,10 @@ namespace XLua
                         {
                             reverseMap.Remove(o);
                         }
+                    }
+                    if (o is ILuaGCInterface c)
+                    {
+                        c.OnLuaGC();
                     }
                 }
             }
@@ -976,14 +980,21 @@ namespace XLua
 
         public T GetDelegate<T>(RealStatePtr L, int index) where T : class
         {
+            Int32 sampleIndex = -1;
 
             if (LuaAPI.lua_isfunction(L, index))
             {
-                return CreateDelegateBridge(L, typeof(T), index) as T;
+                StatsLite.BeginSample(StatsSampleId.xLua_Delegate, "GetDelegate<#LuaFunc>", ref sampleIndex);
+                T ret = CreateDelegateBridge(L, typeof(T), index) as T;
+                StatsLite.EndSampleByIndex(ref sampleIndex);
+                return ret;
             }
             else if (LuaAPI.lua_type(L, index) == LuaTypes.LUA_TUSERDATA)
             {
-                return (T)SafeGetCSObj(L, index);
+                StatsLite.BeginSample(StatsSampleId.xLua_Delegate, "GetDelegate<T>", ref sampleIndex);
+                T ret = (T)SafeGetCSObj(L, index);
+                StatsLite.EndSampleByIndex(ref sampleIndex);
+                return ret;
             }
             else
             {
@@ -1089,20 +1100,17 @@ namespace XLua
         void pushPrimitive(RealStatePtr L, object o)
         {
             LuaAPI.lua_checkstack(L, 1);
-            if (o is sbyte || o is byte || o is short || o is ushort ||
-                    o is int)
+            if (o is sbyte || o is byte || o is short || o is ushort || o is int)
             {
-                int i = Convert.ToInt32(o);
-                LuaAPI.xlua_pushinteger(L, i);
+                Converter.Specializer<int>.toScript(LuaEnv.Instance.ffi, L, Convert.ToInt32(o));
             }
             else if (o is uint)
             {
-                LuaAPI.xlua_pushuint(L, (uint)o);
+                Converter.Specializer<uint>.toScript(LuaEnv.Instance.ffi, L, (uint)o);
             }
             else if (o is float || o is double)
             {
-                double d = Convert.ToDouble(o);
-                LuaAPI.lua_pushnumber(L, d);
+                Converter.Specializer<double>.toScript(LuaEnv.Instance.ffi, L, Convert.ToDouble(o));
             }
             else if (o is IntPtr)
             {
@@ -1110,20 +1118,19 @@ namespace XLua
             }
             else if (o is char)
             {
-                LuaAPI.xlua_pushinteger(L, (char)o);
+                Converter.Specializer<char>.toScript(LuaEnv.Instance.ffi, L, (char)o);
             }
             else if (o is long)
             {
-                LuaAPI.lua_pushint64(L, Convert.ToInt64(o));
+                Converter.Specializer<Int64>.toScript(LuaEnv.Instance.ffi, L, Convert.ToInt64(o));
             }
             else if (o is ulong)
             {
-                LuaAPI.lua_pushuint64(L, Convert.ToUInt64(o));
+                Converter.Specializer<UInt64>.toScript(LuaEnv.Instance.ffi, L, Convert.ToUInt64(o));
             }
             else if (o is bool)
             {
-                bool b = (bool)o;
-                LuaAPI.lua_pushboolean(L, b);
+                Converter.Specializer<bool>.toScript(LuaEnv.Instance.ffi, L, (bool)o);
             }
             else
             {
@@ -1147,7 +1154,7 @@ namespace XLua
             }
             else if (o is string)
             {
-                LuaAPI.lua_pushstring(L, o as string);
+                Converter.Specializer<string>.toScript(LuaEnv.Instance.ffi, L, o as string);
             }
             else if (type == typeof(byte[]))
             {

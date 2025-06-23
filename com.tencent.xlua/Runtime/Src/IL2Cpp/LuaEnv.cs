@@ -18,7 +18,6 @@ namespace XLua
         private static bool isInitialized = false;
         private static MethodInfo extensionMethodGetMethodInfo;
 
-        IntPtr apis;
         IntPtr nativePesapiEnv;
         IntPtr luaEnvPrivate;
 
@@ -33,9 +32,6 @@ namespace XLua
         public int errorFuncRef = -1;
 
         const int LIB_VERSION_EXPECT = 105;
-        public XLua.pesapi_ffi ffi;
-
-        public static LuaEnv Instance;
 
         public LuaEnv(CustomLoader loader)
         {
@@ -56,20 +52,20 @@ namespace XLua
                     NativeAPI.SetGlobalType_IntPtr(typeof(IntPtr));
                     NativeAPI.SetGlobalType_IEnumerable(typeof(IEnumerable));
                     NativeAPI.SetGlobalType_IDictionary(typeof(IDictionary));
+                    NativeAPI.SetGlobalType_ILuaGCInterface(typeof(ILuaGCInterface));
                     XLua.ExtensionMethodInfo.LoadExtensionMethodInfo();
                     isInitialized = true;
                 }
             }
-            Instance = this;
-            apis = XLua.NativeAPI.GetFFIApi();
+
             Init(loader);
 
             nativePesapiEnv = XLua.NativeAPI.GetPapiEnvRef(nativeLuaEnv);
             var objectPoolType = typeof(ObjectPool);
             luaEnvPrivate = NativeAPI.InitialPapiEnvRef(apis, nativePesapiEnv, objectPool, objectPoolType.GetMethod("Add"), objectPoolType.GetMethod("Remove"));
-
+            var perfType = typeof(Assets.Plugins.Perf.StatsLite);
+            NativeAPI.InitPerf(perfType.GetMethod("beginSample"), perfType.GetMethod("endSampleByIndex"));
             XLua.NativeAPI.SetObjectToGlobal(apis, nativePesapiEnv, "luaEnv", this);
-            ffi = Marshal.PtrToStructure<XLua.pesapi_ffi>(apis);
             _G = (LuaTable)XLua.NativeAPI.GetGlobalTable(apis, nativePesapiEnv);
 
             DoString("require 'vm/init'");
@@ -78,19 +74,19 @@ namespace XLua
         [MonoPInvokeCallback(typeof(XLua.NativeAPI.LogCallback))]
         private static void LogCallback(string msg)
         {
-            Debug.LogFormat(LogType.Log, LogOption.None, null,"{0}", msg);
+            Debug.LogFormat(LogType.Log, LogOption.NoStacktrace, null,"{0}", msg);
         }
 
         [MonoPInvokeCallback(typeof(XLua.NativeAPI.LogCallback))]
         private static void LogWarningCallback(string msg)
         {
-            Debug.LogFormat(LogType.Warning, LogOption.None, null, "{0}", msg);
+            Debug.LogFormat(LogType.Warning, LogOption.NoStacktrace, null, "{0}", msg);
         }
 
         [MonoPInvokeCallback(typeof(XLua.NativeAPI.LogCallback))]
         private static void LogErrorCallback(string msg)
         {
-            Debug.LogFormat(LogType.Error, LogOption.None, null, "{0}", msg);
+            Debug.LogFormat(LogType.Error, LogOption.NoStacktrace, null, "{0}", msg);
         }
 
         [MonoPInvokeCallback(typeof(XLua.NativeAPI.LogCallback))]

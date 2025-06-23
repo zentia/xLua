@@ -76,6 +76,10 @@ namespace xlua
 
         void UnInitialize(lua_State* L);
 
+        bool HasDisposed() const
+        {
+            return m_Disposed;
+        }
         static CppObjectMapper* Get();
         static void CallbackDataGarbageCollected(PesapiCallbackData* Data);
 #if OSG_PROFILE
@@ -107,6 +111,6 @@ namespace xlua
         MetaInfo* GetMetaRefOfClass(lua_State* L, const LuaClassDefinition* classDefinition);
 
         std::vector<PesapiCallbackData*> m_FunctionDatas;
-        static CppObjectMapper* ms_Instance;
+        bool m_Disposed;
     };
 } // namespace xlua

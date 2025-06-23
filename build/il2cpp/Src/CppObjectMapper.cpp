@@ -12,15 +12,13 @@
 int pesapi_dostring(pesapi_env env, const uint8_t* code, size_t code_size, const char* path, pesapi_value_ref value_ref);
 EXTERN_C_START
 int pesapi_create_function(pesapi_env env, pesapi_callback native_impl, void* data, pesapi_function_finalize finalize);
-int debug_traceback(lua_State* L);
+int error_func(lua_State* L);
 EXTERN_C_END
 
 namespace xlua
 {
 
     static int dummy_idx_tag = 0;
-
-    CppObjectMapper* CppObjectMapper::ms_Instance = nullptr;
 
 #if OSG_PROFILE
     int CppObjectMapper::PrefPropertyGetterIndex = 0x100;
@@ -34,6 +32,7 @@ namespace xlua
 #endif
 
     CppObjectMapper::CppObjectMapper()
+        : m_Disposed(true)
     {
         supportOp = {
             {"op_Addition", "__add"},
@@ -128,6 +127,7 @@ namespace xlua
         lua_pushvalue(L, index);
         m_Enumerable = luaL_ref(L, LUA_REGISTRYINDEX);
         lua_settop(L, oldTop);
+        m_Disposed = false;
     }
 
     static int PesapiFunctionCallback(lua_State* L)
@@ -291,16 +291,18 @@ namespace xlua
         auto iterator = m_DataCache.find(ptr);
         if (iterator != m_DataCache.end())
         {
-            iterator->second->Remove(classDefinition->TypeId, true);
-            if (!iterator->second->TypeId)
+            ObjectCacheNode* node = iterator->second;
+            node->Remove(classDefinition->TypeId, true);
+            if (!node->TypeId)
             {
-                void* userdata = iterator->second->UserData;
+                void* userdata = node->UserData;
                 m_DataCache.erase(ptr);
                 if (classDefinition->OnExit)
                 {
                     classDefinition->OnExit(ptr, classDefinition->Data, DataTransfer::GetLuaEnvPrivate(), userdata);
                     // PLog(xlua::Log, "UnBindCppObject 0X%p", ptr);
                 }
+                delete node;
             }
         }
     }
@@ -370,7 +372,7 @@ namespace xlua
                             ClassDefinition->OnExit(KV.first, ClassDefinition->Data, PData, KV.second->UserData);
                             exit = true;
                         }
-                        lua_pop(L, 1);    
+                        lua_pop(L, 1);
                     }
                 }
                 const ObjectCacheNode* temp = PNode;
@@ -389,6 +391,7 @@ namespace xlua
         luaL_unref(L, LUA_REGISTRYINDEX, m_CachePrivateDataRef);
         luaL_unref(L, LUA_REGISTRYINDEX, m_IDictionary);
         luaL_unref(L, LUA_REGISTRYINDEX, m_Enumerable);
+        m_Disposed = true;
     }
 
     // param   --- [1]: obj, [2]: key
@@ -564,25 +567,34 @@ namespace xlua
 #endif
             return 1;
         }
-
+        // https://crashsight.qq.com/crash-reporting/crashes/6dd8864548/898163596C46E5F4374117888D9196A6?pid=1&crashDataType=unSystemExit
+        // 虚拟机销毁的时候，会进入这里。
         int object_gc(lua_State* L)
         {
+            // 类型信息全局唯一，永远不会销毁
             LuaClassDefinition* class_definition = (LuaClassDefinition*)lua_touserdata(L, lua_upvalueindex(1));
 #if OSG_PROFILE
             int index = 0;
             if (pf_stats_begin_sample != nullptr)
                 index = pf_stats_begin_sample(CppObjectMapper::PrefGCIndex, pf_stats_regist_custom_name(class_definition->ScriptName));
 #endif
+            // newuserdata构造出来的，此时不会销毁
             CppObject* cppObject = (CppObject*)lua_touserdata(L, -1);
             const auto instance  = xlua::CppObjectMapper::Get();
-            if (instance == nullptr)
+            // 虚拟机销毁的时候，Ptr指针已经无效了
+            if (instance == nullptr || instance->HasDisposed())
                 return 0;
             instance->UnBindCppObject(L, class_definition, cppObject->Ptr);
             if (cppObject->NeedDelete)
             {
                 // printf("Finalize %p\n", cppObject->Ptr);
+                // 通知C#释放此对象
                 if (class_definition->Finalize)
+                {
+                    // Crash到这里，Finalize是一个静态函数，目的是删除cppObject->Ptr，说明Ptr已经被释放了
+                    // CppObjectMapper在卸载的时候会释放Ptr
                     class_definition->Finalize(&g_pesapi_ffi, cppObject->Ptr, class_definition->Data, L);
+                }
             }
 #if OSG_PROFILE
             if (pf_stats_end_sample_by_index != nullptr)

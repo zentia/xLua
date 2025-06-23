@@ -31,9 +31,9 @@ bool w_]], wrapperInfo.Signature, [[(struct pesapi_ffi* apis, MethodInfo* method
         [[
 
     if (]], #table.filter(parameterSignatures, function(s) return s:sub(1,1) == 'D' end) > 0 and 'true' or 'checkLuaArgument', [[) {
-        if (]], genArgsLenCheck(parameterSignatures), [[) 
+        if (]], genArgsLenCheck(parameterSignatures), [[) {
             return false;
-]], FOR(parameterSignatures, function(x, i)
+        }]], FOR(parameterSignatures, function(x, i)
             return checkLuaArg(x, i - 1)
         end), [[
         

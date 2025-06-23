@@ -11,50 +11,19 @@ namespace xlua
 	typedef void (*FieldWrapFuncPtr)(struct pesapi_ffi* apis, pesapi_callback_info info, FieldInfo* field, size_t offset, Il2CppClass* fieldType);
 	typedef bool (*WrapFuncPtr)(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkArgument, struct WrapData* wrapData);
 
-#define SET_GLOBAL_TYPE_IMPLEMENT(TYPE) \
-    Il2CppClass* g_typeof##TYPE = nullptr; \
-    static void SetGlobalType_##TYPE(Il2CppReflectionType* type) \
-	{ \
-		if (!type) \
-		{ \
-			il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException("type of  " #TYPE " is null"));	\
-        } \
-        g_typeof##TYPE = il2cpp_codegen_class_from_type(type->type); \
-      \
-    }
-
-#define GLOBAL_TYPE_IMPLEMENT \
-SET_GLOBAL_TYPE_IMPLEMENT(ArrayBuffer) \
-SET_GLOBAL_TYPE_IMPLEMENT(LuaTable) \
-SET_GLOBAL_TYPE_IMPLEMENT(Array) \
-SET_GLOBAL_TYPE_IMPLEMENT(IntPtr) \
-SET_GLOBAL_TYPE_IMPLEMENT(IDictionary) \
-SET_GLOBAL_TYPE_IMPLEMENT(IEnumerable) 
+#define LUA_ALL_TYPES(TYPE_ACTION)	\
+	TYPE_ACTION(ArrayBuffer)		\
+	TYPE_ACTION(LuaTable)			\
+	TYPE_ACTION(Array)				\
+	TYPE_ACTION(IntPtr)				\
+	TYPE_ACTION(IDictionary)		\
+	TYPE_ACTION(IEnumerable)		\
+	TYPE_ACTION(ILuaGCInterface)
 
 #define SET_GLOBAL_TYPE_DECLARE(TYPE) extern Il2CppClass* g_typeof##TYPE;
-
-#define GLOBAL_TYPE_DECLARE \
-SET_GLOBAL_TYPE_DECLARE(ArrayBuffer) \
-SET_GLOBAL_TYPE_DECLARE(LuaTable) \
-SET_GLOBAL_TYPE_DECLARE(Array) \
-SET_GLOBAL_TYPE_DECLARE(IntPtr) \
-SET_GLOBAL_TYPE_DECLARE(IDictionary) \
-SET_GLOBAL_TYPE_DECLARE(IEnumerable)
-
-
-#define SET_GLOBAL_TYPE(TYPE) InternalCalls::Add("XLua.NativeAPI::SetGlobalType_" #TYPE "(System.Type)", (Il2CppMethodPointer) xlua::SetGlobalType_##TYPE);
-
-#define GLOBAL_TYPE \
-SET_GLOBAL_TYPE(ArrayBuffer) \
-SET_GLOBAL_TYPE(LuaTable) \
-SET_GLOBAL_TYPE(Array) \
-SET_GLOBAL_TYPE(IntPtr) \
-SET_GLOBAL_TYPE(IDictionary) \
-SET_GLOBAL_TYPE(IEnumerable)
-
-	GLOBAL_TYPE_DECLARE
-
-		struct FieldWrapData
+	LUA_ALL_TYPES(SET_GLOBAL_TYPE_DECLARE)
+#undef SET_GLOBAL_TYPE_DECLARE
+	struct FieldWrapData
 	{
 		FieldWrapFuncPtr Getter;
 		FieldWrapFuncPtr Setter;
@@ -102,7 +71,15 @@ SET_GLOBAL_TYPE(IEnumerable)
 
 	void SetFieldValue(void* ptr, FieldInfo* field, size_t offset, void* value);
 
-	void PLog(const char* Fmt, ...);
+	enum class XLuaLogType
+	{
+		Log,
+		Warning,
+		Error,
+		Exception,
+	};
+
+	void XLuaLog(XLuaLogType type, const char* Fmt, ...);
 
 	// end function in XLua_il2cpp.cpp
 

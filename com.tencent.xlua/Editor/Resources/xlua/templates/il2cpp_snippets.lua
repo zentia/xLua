@@ -142,9 +142,10 @@ function checkLuaArg(signature, index)
 
     if PrimitiveSignatureCppTypeMap[signature] then
         ret = ret ..
-            string.format([[!converter::Converter<%s>::accept(apis, env, _sv%d))
-            return false;]],
-                PrimitiveSignatureCppTypeMap[signature], index)
+            string.format([[!converter::Converter<%s>::accept(apis, env, _sv%d)) {
+            return false;
+        }]],
+                PrimitiveSignatureCppTypeMap[signature], index, index + 1)
     elseif signature == 'p' or signature == 'Pv' then -- IntPtr, void*
         ret = ret ..
             string.format(

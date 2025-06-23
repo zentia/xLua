@@ -47,12 +47,6 @@ namespace XLua
             }
         }
 
-        [MonoPInvokeCallback(typeof(LuaCSFunction))]
-        internal static int Panic(RealStatePtr L)
-        {
-            string reason = String.Format("unprotected error in call to Lua API ({0})", LuaAPI.lua_tostring(L, -1));
-            throw new LuaException(reason);
-        }
 #if !XLUA_IL2CPP || !ENABLE_IL2CPP
         internal LuaCSFunction GcMeta, ToStringMeta, EnumAndMeta, EnumOrMeta;
 
@@ -563,7 +557,7 @@ namespace XLua
 
 
 
-        
+
 
         [MonoPInvokeCallback(typeof(LuaCSFunction))]
         internal static int LoadCS(RealStatePtr L)
@@ -642,7 +636,7 @@ namespace XLua
 #if !ENABLE_IL2CPP || !XLUA_IL2CPP
                 LuaEnv self = ObjectTranslatorPool.Instance.Find(L).luaEnv;
 #else
-                LuaEnv self = LuaEnv.Instance;
+                LuaEnv self = LuaEnv.Instance as LuaEnv;
 #endif
                 foreach (var loader in self.customLoaders)
                 {

@@ -20,6 +20,7 @@ namespace XLua
         public LuaEnv(CustomLoader loader, Type bridgeType = null, Type objectTranslator = null)
         {
             UnityEngine.Debug.Log("Default XLua Env");
+            Converter.Register();
             if (LuaAPI.xlua_get_lib_version() != LIB_VERSION_EXPECT)
             {
                 throw new InvalidProgramException("wrong lib version expect:"
