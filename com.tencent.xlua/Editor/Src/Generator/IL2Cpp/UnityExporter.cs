@@ -5,9 +5,8 @@ using System.Text;
 using UnityEditor;
 using UnityEngine;
 using XLua;
-using XLua.Editor.Generator;
 
-namespace Editor.Src.Generator.IL2Cpp
+namespace XLua.Generator
 {
     public class UnityExporter
     {
@@ -39,8 +38,8 @@ namespace Editor.Src.Generator.IL2Cpp
         }
 
         internal static void GenWrap(
-            string saveTo, 
-            LuaEnvEditor luaEnv, 
+            string saveTo,
+            LuaEnvEditor luaEnv,
             FileExporter.CppWrappersInfo cppWrapInfo,
             string output,
             string lua)
@@ -58,28 +57,23 @@ namespace Editor.Src.Generator.IL2Cpp
         }
 
         private static void GenDef(
-            string saveTo, 
-            LuaEnvEditor luaEnv, 
+            string saveTo,
+            LuaEnvEditor luaEnv,
             FileExporter.CppWrappersInfo cppWrapInfo,
             string output,
             string lua)
         {
-            const int MAX_WRAPPER_PER_FILE = 1000;
-            for (int i = 0; i < cppWrapInfo.WrapperInfos.Count; i += MAX_WRAPPER_PER_FILE)
+            var saveFileName = $"{output}Def.cpp";
+            using (StreamWriter textWriter = new StreamWriter(Path.Combine(saveTo, saveFileName), false, Encoding.UTF8))
             {
-                var saveFileName = $"{output}Def" + (i / MAX_WRAPPER_PER_FILE) + ".cpp";
-                using (StreamWriter textWriter = new StreamWriter(Path.Combine(saveTo, saveFileName), false, Encoding.UTF8))
-                {
-                    cppWrapInfo.WrapperInfos = cppWrapInfo.WrapperInfos.GetRange(i, Math.Min(MAX_WRAPPER_PER_FILE, cppWrapInfo.WrapperInfos.Count - i));
-                    Debug.Log($"{output}Def" + saveFileName + " with " + cppWrapInfo.WrapperInfos.Count + " wrappers!");
-                    var path = Path.Combine(luaEnv.root, $"Editor/Resources/xlua/templates/{lua}def.tpl.lua");
-                    var bytes = File.ReadAllBytes(path);
-                    luaEnv.env.DoString<LuaFunction>(bytes, path);
-                    var gen = luaEnv.env.Global.Get<LuaFunction>("Gen");
-                    var fileContext = gen.Func<FileExporter.CppWrappersInfo, string>(cppWrapInfo);
-                    textWriter.Write(fileContext);
-                    textWriter.Flush();
-                }
+                Debug.Log($"{output}Def" + saveFileName + " with " + cppWrapInfo.WrapperInfos.Count + " wrappers!");
+                var path = Path.Combine(luaEnv.root, $"Editor/Resources/xlua/templates/{lua}def.tpl.lua");
+                var bytes = File.ReadAllBytes(path);
+                luaEnv.env.DoString<LuaFunction>(bytes, path);
+                var gen = luaEnv.env.Global.Get<LuaFunction>("Gen");
+                var fileContext = gen.Func<FileExporter.CppWrappersInfo, string>(cppWrapInfo);
+                textWriter.Write(fileContext);
+                textWriter.Flush();
             }
         }
 #if UNITY_EXPORT
@@ -107,6 +101,6 @@ namespace Editor.Src.Generator.IL2Cpp
             GenUnityWrap(saveTo);
         }
 #endif
-        
+
     }
 }

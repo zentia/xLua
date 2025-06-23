@@ -19,7 +19,7 @@
 #include "gc/WriteBarrier.h"
 #include "pesapi.h"
 #include "TDataTrans.h"
-#include "XluaValueType.h"
+#include "LuaValueType.h"
 
 namespace xlua
 {

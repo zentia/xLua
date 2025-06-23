@@ -5,12 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using Editor.Src.Generator.IL2Cpp;
 using Newtonsoft.Json;
 using Mono.Reflection;
 using UnityEngine;
 
-namespace XLua.Editor.Generator
+namespace XLua.Generator
 {
     internal class LuaEnvEditor : IDisposable
     {
@@ -20,7 +19,7 @@ namespace XLua.Editor.Generator
         {
             env.Dispose();
         }
-    } 
+    }
     public class FileExporter
     {
         internal static LuaEnvEditor CreateLuaEnv()
@@ -480,7 +479,7 @@ namespace XLua.Editor.Generator
 
                 nestedToWrapper.AddRange(type.Key.GetNestedTypes());
             }
-            
+
             var assemblies = AppDomain.CurrentDomain.GetAssemblies();
             delegateTypes.Clear();
             delegateTypes.Add(typeof(Func<float>));
@@ -626,9 +625,9 @@ namespace XLua.Editor.Generator
                     FieldWrapperInfos = fieldWrapperInfos
                 };
 
-                UnityExporter.GenWrap(saveTo, luaEnv, cppWrapInfo, "XLuaIl2CppWrapper", "il2cppwrapper");
+                UnityExporter.GenWrap(saveTo, luaEnv, cppWrapInfo, "LuaIl2CppWrapper", "il2cppwrapper");
 
-                using (var textWriter = new StreamWriter(Path.Combine(saveTo, "XLuaValueType.h"), false, Encoding.UTF8))
+                using (var textWriter = new StreamWriter(Path.Combine(saveTo, "LuaValueType.h"), false, Encoding.UTF8))
                 {
                     var path = Path.Combine(luaEnv.root, "Editor/Resources/xlua/templates/il2cppvaluetype.tpl.lua");
                     var bytes = File.ReadAllBytes(path);
@@ -639,7 +638,7 @@ namespace XLua.Editor.Generator
                     textWriter.Flush();
                 }
 
-                using (var textWriter = new StreamWriter(Path.Combine(saveTo, "XLuaIl2CppFieldWrapper.cpp"), false, Encoding.UTF8))
+                using (var textWriter = new StreamWriter(Path.Combine(saveTo, "LuaIl2CppFieldWrapper.cpp"), false, Encoding.UTF8))
                 {
                     var path = Path.Combine(luaEnv.root, "Editor/Resources/xlua/templates/il2cppfieldwrapper.tpl.lua");
                     var bytes = File.ReadAllBytes(path);
@@ -650,7 +649,7 @@ namespace XLua.Editor.Generator
                     textWriter.Flush();
                 }
 
-                using (var textWriter = new StreamWriter(Path.Combine(saveTo, "XLuaIl2cppBridge.cpp"), false, Encoding.UTF8))
+                using (var textWriter = new StreamWriter(Path.Combine(saveTo, "LuaIl2CppBridge.cpp"), false, Encoding.UTF8))
                 {
                     var path = Path.Combine(luaEnv.root, "Editor/Resources/xlua/templates/il2cppbridge.tpl.lua");
                     var bytes = File.ReadAllBytes(path);

@@ -6,9 +6,8 @@ using System.Runtime.CompilerServices;
 using UnityEditorInternal;
 using XLua.TypeMapping;
 
-namespace XLua.Editor
+namespace XLua.Generator
 {
-    namespace Generator {
 
         class Utils {
 
@@ -17,11 +16,11 @@ namespace XLua.Editor
             private static List<Func<MemberInfo, bool>> InstructionsFilters = new List<Func<MemberInfo, bool>>();
             private static List<Func<Type, bool>> DisallowedTypeFilters = new List<Func<Type, bool>>();
             private static List<Func<MemberInfo, BindingMode>> BindingModeFilters = new List<Func<MemberInfo, BindingMode>>();
-            
+
             public static bool HasFilter = false;
             public static void SetFilters(List<MethodInfo> filters)
             {
-                if (filters == null) 
+                if (filters == null)
                 {
                     HasFilter = false;
                     InstructionsFilters.Clear();
@@ -35,7 +34,7 @@ namespace XLua.Editor
                 {
                     if (filter.GetParameters().Length == 2)
                     {
-                        if (filter.ReturnType == typeof(BindingMode)) 
+                        if (filter.ReturnType == typeof(BindingMode))
                         {
                             var dlg = (Func<FilterAction, MemberInfo, BindingMode>)Delegate.CreateDelegate(typeof(Func<FilterAction, MemberInfo, BindingMode>), filter);
 
@@ -61,16 +60,16 @@ namespace XLua.Editor
                             else if (pType == typeof(Type))
                             {
                                 var dlg = (Func<FilterAction, Type, bool>)Delegate.CreateDelegate(typeof(Func<FilterAction, Type, bool>), filter);
-                                
+
                                 DisallowedTypeFilters.Add((Type type) => {
                                     return dlg(FilterAction.DisallowedType, type);
                                 });
                             }
                         }
                     }
-                    else 
+                    else
                     {
-                        if (filter.ReturnType == typeof(BindingMode)) 
+                        if (filter.ReturnType == typeof(BindingMode))
                         {
                             BindingModeFilters.Add((Func<MemberInfo, BindingMode>)Delegate.CreateDelegate(typeof(Func<MemberInfo, BindingMode>), filter));
                         }
@@ -82,7 +81,7 @@ namespace XLua.Editor
                                 return res ? BindingMode.SlowBinding : BindingMode.FastBinding;
                             });
                         }
-                    }   
+                    }
 
                     // else if (filter.ReturnType == typeof(FilterClass))
                     // {
@@ -172,7 +171,7 @@ namespace XLua.Editor
                 return getMethod == null ? setMethod.IsStatic : getMethod.IsStatic;
             }
 
-            internal static bool isDisallowedType(Type type) 
+            internal static bool isDisallowedType(Type type)
             {
                 var result = false;
                 foreach (var filter in DisallowedTypeFilters)
@@ -182,7 +181,7 @@ namespace XLua.Editor
                 return result;
             }
 
-            internal static BindingMode getBindingMode(MemberInfo mbi) 
+            internal static BindingMode getBindingMode(MemberInfo mbi)
             {
                 BindingMode strictestMode = BindingMode.FastBinding;
                 foreach (var filter in BindingModeFilters)
@@ -193,7 +192,7 @@ namespace XLua.Editor
                 return strictestMode;
             }
 
-            internal static bool shouldNotGetArgumentsInInstructions(MemberInfo mbi) 
+            internal static bool shouldNotGetArgumentsInInstructions(MemberInfo mbi)
             {
                 var result = false;
                 foreach (var filter in InstructionsFilters)
@@ -258,7 +257,7 @@ namespace XLua.Editor
                 {
                     MethodInfo mi = mbi as MethodInfo;
 
-                    if (mi.Name.Contains("$")) 
+                    if (mi.Name.Contains("$"))
                     {
                         // fix #964
                         return true;
@@ -296,7 +295,7 @@ namespace XLua.Editor
                 }
                 return false;
             }
-        
+
             public static bool isDefined(MethodBase test, Type type)
             {
     #if PUERTS_GENERAL
@@ -305,19 +304,19 @@ namespace XLua.Editor
                 return test.IsDefined(type, false);
     #endif
             }
-        
+
             public static Type ToConstraintType(Type type, bool isGenericTypeDefinition)
             {
                 if (type.IsGenericType)
                     return type.GetGenericTypeDefinition().MakeGenericType(
                         type.GetGenericArguments().Select(t=> ToConstraintType(t, isGenericTypeDefinition)).ToArray()
                     );
-                else if (!isGenericTypeDefinition && type.IsGenericParameter && type.BaseType != null && type.BaseType != typeof(object) && type.BaseType != typeof(ValueType)) 
+                else if (!isGenericTypeDefinition && type.IsGenericParameter && type.BaseType != null && type.BaseType != typeof(object) && type.BaseType != typeof(ValueType))
                     return ToConstraintType(type.BaseType, false);
-                else 
+                else
                     return type;
             }
-        
+
             public static bool IsGetterOrSetter(MethodInfo method)
             {
                 return (method.IsSpecialName && method.Name.StartsWith("get_") && method.GetParameters().Length != 1)
@@ -351,9 +350,9 @@ namespace XLua.Editor
                     );
                 else if (type.IsGenericParameter && type.BaseType != null && type.BaseType != typeof(object) && type.BaseType != typeof(ValueType))
                     return RemoveRefAndToConstraintType(type.BaseType);
-                else if (type.IsByRef) 
+                else if (type.IsByRef)
                     return RemoveRefAndToConstraintType(type.GetElementType());
-                else 
+                else
                     return type;
             }
 
@@ -418,7 +417,7 @@ namespace XLua.Editor
                 // else if (type == typeof(Delegate) || type == typeof(Puerts.GenericDelegate))
                 //     return "Function";
 #if CSHARP_7_3_OR_NEWER
-                else if (type == typeof(System.Threading.Tasks.Task)) 
+                else if (type == typeof(System.Threading.Tasks.Task))
                     return "$Task<any>";
 #endif
                 else if (type.IsByRef)
@@ -475,4 +474,3 @@ namespace XLua.Editor
             }
         }
     }
-}

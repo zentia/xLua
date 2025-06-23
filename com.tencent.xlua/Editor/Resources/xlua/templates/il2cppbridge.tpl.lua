@@ -127,7 +127,7 @@ function Gen(genInfos)
 #include "gc/WriteBarrier.h"
 #include "pesapi.h"
 #include "TDataTrans.h"
-#include "XLuaValueType.h"
+#include "LuaValueType.h"
 
 namespace xlua
 {

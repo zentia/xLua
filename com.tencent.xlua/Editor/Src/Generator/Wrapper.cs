@@ -1,7 +1,7 @@
 /*
 * Tencent is pleased to support the open source community by making Puerts available.
 * Copyright (C) 2020 THL A29 Limited, a Tencent company.  All rights reserved.
-* Puerts is licensed under the BSD 3-Clause License, except for the third-party components listed in the file 'LICENSE' which may be subject to their corresponding license terms. 
+* Puerts is licensed under the BSD 3-Clause License, except for the third-party components listed in the file 'LICENSE' which may be subject to their corresponding license terms.
 * This file is subject to the terms and conditions defined in file 'LICENSE', which is part of this source code package.
 */
 
@@ -11,10 +11,8 @@ using System.Linq;
 using System.Reflection;
 using XLua.TypeMapping;
 
-namespace XLua.Editor
+namespace XLua.Generator
 {
-    namespace Generator
-    {
 
         namespace Wrapper
         {
@@ -118,7 +116,7 @@ namespace XLua.Editor
                 {
                     bool IsGenericWrapper = false;
                     TypeGenericArgumentsGenInfo[] GenericArgumentsInfos = null;
-                    
+
 #if PUERTS_GENERAL || UNITY_2019_OR_NEWER
                     // 如果是泛型类，且泛型参数对于PuerTS来说是一个NativeObject类型，则Wrapper可以用泛型处理。
                     // 这里要先识别出NativeObject的参数位置，并将其替换
@@ -185,16 +183,16 @@ namespace XLua.Editor
                     var methodLists = XLua.Utils.GetMethodAndOverrideMethod(type, Utils.Flags)
                         .Where(m => !Utils.IsNotSupportedMember(m))
                         .Where(m => !m.IsSpecialName && XLua.Utils.IsNotGenericOrValidGeneric(m))
-                        .Where(m => 
-                        { 
+                        .Where(m =>
+                        {
                             BindingMode mode = Utils.getBindingMode(m);
                             if (mode == BindingMode.DontBinding || mode == BindingMode.SlowBinding) return false;
-                            if (mode == BindingMode.LazyBinding) lazyCollector.Add(m); 
-                            return true; 
+                            if (mode == BindingMode.LazyBinding) lazyCollector.Add(m);
+                            return true;
                         })
                         .ToArray();
 
-                    var extensionMethodsList = XLua.Editor.Generator.Utils.GetExtensionMethods(type, new HashSet<Type>(genTypes));
+                    var extensionMethodsList = XLua.Generator.Utils.GetExtensionMethods(type, new HashSet<Type>(genTypes));
                     if (extensionMethodsList != null)
                     {
                         extensionMethodsList = new List<MethodInfo>(extensionMethodsList)
@@ -205,12 +203,12 @@ namespace XLua.Editor
                             extensionMethodsList = extensionMethodsList.Where(m => genTypes.Contains(m.DeclaringType)).ToArray();
                         }
                         extensionMethodsList = extensionMethodsList
-                            .Where(m => 
-                            { 
+                            .Where(m =>
+                            {
                                 BindingMode mode = Utils.getBindingMode(m);
                                 if (mode == BindingMode.DontBinding || mode == BindingMode.SlowBinding) return false;
-                                if (mode == BindingMode.LazyBinding) lazyCollector.Add(m); 
-                                return true; 
+                                if (mode == BindingMode.LazyBinding) lazyCollector.Add(m);
+                                return true;
                             }).ToArray();
                     }
 
@@ -226,8 +224,8 @@ namespace XLua.Editor
                         foreach (var m in extensionMethodsList)
                         {
                             if (lazyCollector.Contains(m.Name) && Utils.getBindingMode(m) != BindingMode.LazyBinding)
-                            { 
-                                lazyCollector.Remove(m.Name); 
+                            {
+                                lazyCollector.Remove(m.Name);
                             }
                         }
                     }
@@ -249,28 +247,28 @@ namespace XLua.Editor
                     var operatorGroups = type.GetMethods(Utils.Flags)
                         .Where(m => !Utils.IsNotSupportedMember(m) && m.IsSpecialName && m.Name.StartsWith("op_") && m.IsStatic)
                         .Where(m =>
-                        { 
+                        {
                             if (m.Name == "op_Explicit" || m.Name == "op_Implicit")  { lazyCollector.Add(m); return false; }
                             BindingMode mode = Utils.getBindingMode(m);
                             if (mode == BindingMode.LazyBinding) { lazyCollector.Add(m); return false; }
                             if (mode != BindingMode.FastBinding) return false;
-                            return true; 
+                            return true;
                         })
                         .GroupBy(m => new MethodKey { Name = m.Name, IsStatic = m.IsStatic })
                         .Select(i => i.Cast<MethodBase>().ToList());
                     var constructors = type.GetConstructors(Utils.Flags)
                         .Where(m => !Utils.IsNotSupportedMember(m))
                         .Where(m =>
-                        { 
+                        {
                             BindingMode mode = Utils.getBindingMode(m);
                             if (mode != BindingMode.FastBinding) return false;
                             // constrcutor is not allowed to be lazy
                             // if (mode == BindingMode.LazyBinding) { lazyCollector.Add(m); return false; }
-                            return true; 
+                            return true;
                         })
                         .Cast<MethodBase>()
                         .ToList();
-                    
+
                     return new StaticWrapperInfo
                     {
                         WrapClassName = Utils.GetWrapTypeName(type),
@@ -302,22 +300,22 @@ namespace XLua.Editor
                             .Where(p => !Utils.IsNotSupportedMember(p))
                             .Where(p => !p.IsSpecialName && p.GetIndexParameters().GetLength(0) == 0)
                             .Where(p =>
-                            { 
+                            {
                                 BindingMode mode = Utils.getBindingMode(p);
                                 if (mode == BindingMode.LazyBinding) { lazyCollector.Add(p); return false; }
                                 if (mode != BindingMode.FastBinding) return false;
-                                return true; 
+                                return true;
                             })
                             .Select(p => PropertyGenInfo.FromPropertyInfo(p))
                             .Concat(
                                 type.GetFields(Utils.Flags)
                                     .Where(f => !Utils.IsNotSupportedMember(f))
                                     .Where(f =>
-                                    { 
+                                    {
                                         BindingMode mode = Utils.getBindingMode(f);
                                         if (mode == BindingMode.LazyBinding) { lazyCollector.Add(f); return false; }
                                         if (mode != BindingMode.FastBinding) return false;
-                                        return true; 
+                                        return true;
                                     })
                                     .Select(f => PropertyGenInfo.FromFieldInfo(f))
                             )
@@ -328,19 +326,19 @@ namespace XLua.Editor
                         Events = type.GetEvents(Utils.Flags)
                             .Where(m => !Utils.IsNotSupportedMember(m))
                             .Where(e =>
-                            { 
+                            {
                                 BindingMode mode = Utils.getBindingMode(e);
-                                if (mode == BindingMode.LazyBinding) 
-                                { 
+                                if (mode == BindingMode.LazyBinding)
+                                {
                                     var adder = e.GetAddMethod();
                                     var remover = e.GetRemoveMethod();
                                     if (adder != null && adder.IsPublic) lazyCollector.Add(adder);
                                     if (remover != null && remover.IsPublic) lazyCollector.Add(remover);
 
-                                    return false; 
+                                    return false;
                                 }
                                 if (mode != BindingMode.FastBinding) return false;
-                                return true; 
+                                return true;
                             })
                             .Select(e => EventGenInfo.FromEventInfo(e))
                             .ToArray(),
@@ -364,7 +362,7 @@ namespace XLua.Editor
                 public bool IsOut;
                 public bool IsByRef;
                 public string ExpectJsType;
-                public string ExpectCsType; 
+                public string ExpectCsType;
                 public bool IsParams;
                 public string DefaultValue;
 
@@ -423,12 +421,12 @@ namespace XLua.Editor
                                 valueString = Convert.ToUInt64(value).ToString();
                             }
                             return $"({enumName})({valueString})";
-                        } 
+                        }
                         else if (valueType.IsPrimitive)
                         {
-                            if (valueType == typeof(bool)) 
+                            if (valueType == typeof(bool))
                                 return value.ToString().ToLower();
-                            else if (valueType == typeof(float)) 
+                            else if (valueType == typeof(float))
                             {
                                 if ((float)value == float.PositiveInfinity) return "Single.PositiveInfinity";
                                 if ((float)value == float.NegativeInfinity) return "Single.NegativeInfinity";
@@ -442,9 +440,9 @@ namespace XLua.Editor
                                 if ((double)value == double.NaN) return "Double.NaN";
 
                                 return value.ToString();
-                            } 
-                            else if (valueType == typeof(char)) 
-                                return "(char)" + ((ushort)((char)value)); 
+                            }
+                            else if (valueType == typeof(char))
+                                return "(char)" + ((ushort)((char)value));
 
                             return value.ToString();
                         }
@@ -592,14 +590,14 @@ namespace XLua.Editor
                                     EllipsisedParameterInfos = ellipsisedPInfos.Select(info => ParameterGenInfo.FromParameterInfo(info)).ToArray(),
                                     TypeName = Utils.RemoveRefAndToConstraintType(methodInfo.ReturnType).GetFriendlyName(),
                                     IsVoid = methodInfo.ReturnType == typeof(void),
-                                }; 
+                                };
                                 Utils.FillEnumInfo(optionalInfo, methodInfo.ReturnType);
                                 optionalInfo.HasParams = optionalInfo.ParameterInfos.Any(info => info.IsParams);
-                                ret.Add(optionalInfo); 
+                                ret.Add(optionalInfo);
                             }
                             else
                             {
-                                break; 
+                                break;
                             }
                         }
                     }
@@ -726,7 +724,7 @@ namespace XLua.Editor
                                     OverloadGenInfo existedOverload = null;
                                     if (!distincter.TryGetValue(mark, out existedOverload))
                                     {
-                                        distincter.Add(mark, overload); 
+                                        distincter.Add(mark, overload);
                                     }
                                 }
                                 return distincter.Values.ToList().Where(item => item != null).ToArray();
@@ -741,4 +739,4 @@ namespace XLua.Editor
 
     }
 
-}
+
