@@ -629,6 +629,7 @@ void pesapi_set_property_uint64(pesapi_env env, pesapi_value pobject, uint64_t k
 
 int error_func(lua_State* L)
 {
+    // const char* msg = xlua::get_lua_stacktrace(L);
     const char* msg = lua_tostring(L, 1);
     if (!msg)
         msg = "unknown error";

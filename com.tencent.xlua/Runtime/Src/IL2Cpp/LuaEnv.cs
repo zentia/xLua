@@ -63,8 +63,10 @@ namespace XLua
             nativePesapiEnv = XLua.NativeAPI.GetPapiEnvRef(nativeLuaEnv);
             var objectPoolType = typeof(ObjectPool);
             luaEnvPrivate = NativeAPI.InitialPapiEnvRef(apis, nativePesapiEnv, objectPool, objectPoolType.GetMethod("Add"), objectPoolType.GetMethod("Remove"));
+#if OSGAME
             var perfType = typeof(Assets.Plugins.Perf.StatsLite);
             NativeAPI.InitPerf(perfType.GetMethod("beginSample"), perfType.GetMethod("endSampleByIndex"));
+#endif
             XLua.NativeAPI.SetObjectToGlobal(apis, nativePesapiEnv, "luaEnv", this);
             _G = (LuaTable)XLua.NativeAPI.GetGlobalTable(apis, nativePesapiEnv);
 
