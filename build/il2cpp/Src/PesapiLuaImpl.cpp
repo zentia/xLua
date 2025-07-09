@@ -512,8 +512,8 @@ void pesapi_release_value_ref(pesapi_value_ref value_ref)
         xlua::LuaEnv* env = xlua::LuaEnv::ms_Instance;
         if (env && env->L == value_ref->L)
         {
-            env->CppObjectMapper.SetPrivateData(value_ref->L, value_ref->value_ref, nullptr, "pesapi_release_value_ref");
-            luaL_unref(value_ref->L, LUA_REGISTRYINDEX, value_ref->value_ref);
+            if (env->CppObjectMapper.SetPrivateData(value_ref->L, value_ref->value_ref, nullptr, "pesapi_release_value_ref"))
+                luaL_unref(value_ref->L, LUA_REGISTRYINDEX, value_ref->value_ref);
         }
         else
         {
