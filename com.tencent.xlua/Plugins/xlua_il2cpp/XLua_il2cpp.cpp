@@ -3284,12 +3284,13 @@ extern "C"
 			xlua::XLuaLog(xlua::XLuaLogType::Error, "LuaEnvPrivate is nullptr");
 			return;
 		}
-		pesapi_env env = apis->get_ref_associated_env(valueRef);
-		if (!apis->env_ref_is_valid(env))
-		{
-			apis->release_value_ref(valueRef);
-			return;
-		}
+		// 无论如何不要在多线程中操作lua
+		// pesapi_env env = apis->get_ref_associated_env(valueRef);
+		// if (!apis->env_ref_is_valid(env))
+		// {
+		// 	apis->release_value_ref(valueRef);
+		// 	return;
+		// }
 		xlua::LuaEnvPrivate::instance->AddPendingKillScriptObjects(valueRef);
 	}
 
