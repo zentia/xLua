@@ -230,6 +230,7 @@ typedef pesapi_value(*pesapi_global_func)(pesapi_env env);
 typedef const void* (*pesapi_get_env_private_func)(pesapi_env env);
 typedef void (*pesapi_set_env_private_func)(pesapi_env env, const void* ptr);
 typedef int (*pesapi_next_func)(pesapi_env env, int idx);
+typedef int(*pesapi_get_auth_code_func)();
 
 struct pesapi_ffi
 {
@@ -320,6 +321,7 @@ struct pesapi_ffi
     pesapi_get_env_private_func get_env_private;
     pesapi_set_env_private_func set_env_private;
     pesapi_next_func next;
+    pesapi_get_auth_code_func get_auth_code;
 };
 
 PESAPI_EXTERN pesapi_type_info pesapi_alloc_type_infos(size_t count);

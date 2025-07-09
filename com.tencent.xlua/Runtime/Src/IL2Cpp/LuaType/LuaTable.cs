@@ -10,7 +10,7 @@ namespace XLua
     {
         IntPtr apis; // PObjectRefInfo first ptr
         IntPtr valueRef;
-        IntPtr env;
+        int authCode;
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         object GetLuaTableValueByString(IntPtr apis, string key, Type resultType)
@@ -102,7 +102,7 @@ namespace XLua
 
         ~LuaTable()
         {
-            if (LuaEnv.Instance != null && LuaEnv.Instance.L == env)
+            if (LuaEnv.Instance != null && LuaEnv.Instance.authCode == authCode)
                 XLua.NativeAPI.AddPendingKillScriptObjects(apis, valueRef);
         }
     }

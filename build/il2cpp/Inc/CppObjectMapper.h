@@ -15,6 +15,7 @@ typedef struct
 {
     void* Ptr;
     const void* TypeId;
+    const char* ScriptName;
     bool NeedDelete;
 } CppObject;
 
@@ -70,7 +71,7 @@ namespace xlua
 
         void* GetPrivateData(lua_State* L, int index) const;
 
-        void SetPrivateData(lua_State* L, int index, void* ptr);
+        bool SetPrivateData(lua_State* L, int index, void* ptr, const char* func_name);
 
         int LoadTypeById(lua_State* L, const void* typeId);
 

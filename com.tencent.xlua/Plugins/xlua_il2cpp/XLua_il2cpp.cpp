@@ -822,7 +822,7 @@ namespace xlua
 	{
 		objectInfo->Apis = apis;
 		objectInfo->ValueRef = value_ref;
-		objectInfo->env = env;
+		objectInfo->authCode = apis->get_auth_code();
 	}
 
 	static int GetPObjectRefInfoValue(struct pesapi_ffi* apis, pesapi_env env, const PObjectRefInfo* objectInfo)

@@ -130,10 +130,25 @@ namespace xlua
         m_Disposed = false;
     }
 
+    struct CSharpMethodInfo
+    {
+        std::string Name;
+        bool IsStatic;
+        bool IsGetter;
+        bool IsSetter;
+        bool NeedBoxing;
+        std::vector<void*> OverloadDatas;
+    };
+
     static int PesapiFunctionCallback(lua_State* L)
     {
         PesapiCallbackData* FunctionInfo = reinterpret_cast<PesapiCallbackData*>(lua_touserdata(L, lua_upvalueindex(1)));
         pesapi_callback_info__ info{L, 0, 0};
+        CSharpMethodInfo* method = static_cast<CSharpMethodInfo*>(FunctionInfo->Data);
+        if (method && !method->IsStatic)
+        {
+            info.ArgStart = 1;
+        }
         FunctionInfo->Callback(&g_pesapi_ffi, &info);
         return 1;
     }
@@ -199,6 +214,12 @@ namespace xlua
 
     int CppObjectMapper::FindOrAddCppObject(lua_State* L, const void* typeId, void* ptr, bool passByPointer)
     {
+        if (typeId == nullptr)
+        {
+            LUA_LOG_ERROR("typeId is null!");
+            lua_pushnil(L);
+            return lua_gettop(L);
+        }
         if (ptr == nullptr)
         {
             lua_pushnil(L);
@@ -214,12 +235,19 @@ namespace xlua
                 if (const xlua::ObjectCacheNode* node = item->Find(typeId))
                 {
                     // printf("find in cache:%p\n", Ptr);
-                    // 这里由于是弱引用，所以值不一定会存在
+                    // 这里由于是弱引用，所以值不一定会存在，但是由于GC函数不是立即执行，也就是说这里有可能拿错对象
                     lua_rawgeti(L, LUA_REGISTRYINDEX, m_CacheRef);
                     if (lua_rawgeti(L, -1, node->Value) != LUA_TNIL)
                     {
-                        lua_remove(L, -2);
-                        return lua_gettop(L);
+                        // 校验一下这个对象对不对
+                        CppObject* o = static_cast<CppObject*>(lua_touserdata(L, -1));
+                        // 如果两个值类型相同，仍有可能拿错对象
+                        if (o->Ptr == ptr)
+                        {
+                            lua_remove(L, -2);
+                            return lua_gettop(L);
+                        }
+                        LUA_LOG_WARNING("FindOrAddCppObject error! o is %s", o->ScriptName);
                     }
                     lua_pop(L, 2);
                     // 不存在，删掉无效ref
@@ -233,6 +261,12 @@ namespace xlua
             }
         }
         const LuaClassDefinition* classDefinition = LoadClassByID(typeId);
+        if (classDefinition == nullptr)
+        {
+            LUA_LOG_ERROR("LoadClassByID error");
+            lua_pushnil(L);
+            return lua_gettop(L);
+        }
         BindCppObject(L, classDefinition, ptr, passByPointer);
         return lua_gettop(L);
     }
@@ -242,9 +276,14 @@ namespace xlua
         CppObject* obj           = static_cast<CppObject*>(lua_newuserdata(L, sizeof(CppObject)));
         obj->Ptr                 = ptr;
         obj->TypeId              = classDefinition->TypeId;
+        obj->ScriptName = classDefinition->ScriptName;
         obj->NeedDelete          = !passByPointer;
         const MetaInfo* metaInfo = GetMetaRefOfClass(L, classDefinition);
         lua_rawgeti(L, LUA_REGISTRYINDEX, metaInfo->ref);
+        if (lua_isnil(L, -1))
+        {
+            LUA_LOG_ERROR("BindCppObject error!");
+        }
         lua_setmetatable(L, -2);
 
         lua_rawgeti(L, LUA_REGISTRYINDEX, m_CacheRef);
@@ -259,20 +298,6 @@ namespace xlua
         }
         else
         {
-            /*if (strcmp(classDefinition->ScriptName, "List`1") == 0)
-            {
-                int top = lua_gettop(L);
-                lua_getglobal(L, "debug");
-                lua_getfield(L, -1, "traceback");
-                lua_pushstring(L, classDefinition->ScriptName);
-                lua_pushinteger(L, 1);
-                if (lua_pcall(L, 2, 1, 0) == LUA_OK)
-                {
-                    const char* msg = lua_tostring(L, -1);
-                    PLog(xlua::Log, "0X%p %s", ptr, msg);
-                }
-                lua_settop(L,top);
-            }*/
             void* userdata = nullptr;
             if (classDefinition->OnEnter)
             {
@@ -323,10 +348,17 @@ namespace xlua
         return data;
     }
 
-    void CppObjectMapper::SetPrivateData(lua_State* L, int index, void* ptr)
+    bool CppObjectMapper::SetPrivateData(lua_State* L, int index, void* ptr, const char* func_name)
     {
         lua_rawgeti(L, LUA_REGISTRYINDEX, m_CachePrivateDataRef);
+        // table index is nil, crash
         lua_rawgeti(L, LUA_REGISTRYINDEX, index);
+        if (lua_isnil(L, -1))
+        {
+            LUA_LOG_ERROR("SetPrivateData error, index is %d! invoke by %s", index, func_name);
+            lua_pop(L, 2);
+            return false;
+        }
         if (ptr == nullptr)
         {
             lua_pushnil(L);
@@ -337,6 +369,7 @@ namespace xlua
         }
         lua_rawset(L, -3);
         lua_pop(L, 1);
+        return true;
     }
 
     void CppObjectMapper::UnInitialize(lua_State* L)
@@ -375,8 +408,9 @@ namespace xlua
                         lua_pop(L, 1);
                     }
                 }
-                const ObjectCacheNode* temp = PNode;
+                ObjectCacheNode* temp = PNode;
                 PNode                       = PNode->Next;
+                // 存在重复释放的可能
                 delete temp;
             }
         }
@@ -449,10 +483,7 @@ namespace xlua
             lua_call(L, 2, 1);
             return 1;
         }
-        else
-        {
-            return 0;
-        }
+        return 0;
     }
 
     namespace
@@ -896,6 +927,14 @@ namespace xlua
                 if (strcmp(FunctionInfo->Name, "Invoke") == 0)
                 {
                     lua_pushstring(L, "__call");
+                    lua_pushlightuserdata(L, FunctionInfo);
+                    lua_pushlightuserdata(L, FunctionInfo->Data);
+                    lua_pushcclosure(L, method_wrap, 2);
+                    lua_rawset(L, meta);
+                }
+                else if (strcmp(FunctionInfo->Name, "ToString") == 0)
+                {
+                    lua_pushstring(L, "__tostring");
                     lua_pushlightuserdata(L, FunctionInfo);
                     lua_pushlightuserdata(L, FunctionInfo->Data);
                     lua_pushcclosure(L, method_wrap, 2);

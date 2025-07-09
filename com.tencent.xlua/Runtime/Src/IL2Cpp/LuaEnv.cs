@@ -41,7 +41,7 @@ namespace XLua
                 if (!isInitialized)
                 {
                     //only once is enough
-                    XLua.NativeAPI.SetLogCallback(LogCallback, LogWarningCallback, LogErrorCallback, LogExceptionCallback);
+
                     XLua.NativeAPI.InitialXLua(XLua.NativeAPI.GetRegisterApi());
                     extensionMethodGetMethodInfo = typeof(XLua.ExtensionMethodInfo).GetMethod("Get");
 
@@ -71,30 +71,6 @@ namespace XLua
             _G = (LuaTable)XLua.NativeAPI.GetGlobalTable(apis, nativePesapiEnv);
 
             DoString("require 'vm/init'");
-        }
-
-        [MonoPInvokeCallback(typeof(XLua.NativeAPI.LogCallback))]
-        private static void LogCallback(string msg)
-        {
-            Debug.LogFormat(LogType.Log, LogOption.NoStacktrace, null,"{0}", msg);
-        }
-
-        [MonoPInvokeCallback(typeof(XLua.NativeAPI.LogCallback))]
-        private static void LogWarningCallback(string msg)
-        {
-            Debug.LogFormat(LogType.Warning, LogOption.NoStacktrace, null, "{0}", msg);
-        }
-
-        [MonoPInvokeCallback(typeof(XLua.NativeAPI.LogCallback))]
-        private static void LogErrorCallback(string msg)
-        {
-            Debug.LogFormat(LogType.Error, LogOption.NoStacktrace, null, "{0}", msg);
-        }
-
-        [MonoPInvokeCallback(typeof(XLua.NativeAPI.LogCallback))]
-        private static void LogExceptionCallback(string msg)
-        {
-            UnityEngine.Debug.LogException(new LuaException(msg));
         }
 
         static IntPtr storeCallback = IntPtr.Zero;

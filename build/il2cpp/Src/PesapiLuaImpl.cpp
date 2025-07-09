@@ -495,7 +495,7 @@ pesapi_value_ref pesapi_create_value_ref(pesapi_env env, pesapi_value pvalue)
     lua_pushvalue(L, pvalue);
     int ref                    = luaL_ref(L, LUA_REGISTRYINDEX);
     pesapi_value_ref value_ref = new pesapi_value_ref__(mL, ref);
-    xlua::CppObjectMapper::Get()->SetPrivateData(L, ref, value_ref);
+    xlua::CppObjectMapper::Get()->SetPrivateData(L, ref, value_ref, "pesapi_create_value_ref");
     return value_ref;
 }
 
@@ -512,7 +512,7 @@ void pesapi_release_value_ref(pesapi_value_ref value_ref)
         xlua::LuaEnv* env = xlua::LuaEnv::ms_Instance;
         if (env && env->L == value_ref->L)
         {
-            env->CppObjectMapper.SetPrivateData(value_ref->L, value_ref->value_ref, nullptr);
+            env->CppObjectMapper.SetPrivateData(value_ref->L, value_ref->value_ref, nullptr, "pesapi_release_value_ref");
             luaL_unref(value_ref->L, LUA_REGISTRYINDEX, value_ref->value_ref);
         }
         else
@@ -602,14 +602,13 @@ bool pesapi_set_private(pesapi_env env, pesapi_value pobject, void* ptr)
         return false;
     }
     xlua::CppObjectMapper* mapper = xlua::CppObjectMapper::Get();
-    mapper->SetPrivateData(L, index, ptr);
-    return true;
+    return mapper->SetPrivateData(L, index, ptr, "pesapi_set_private");
 }
 
 int pesapi_get_property_uint64(pesapi_env env, pesapi_value pobject, uint64_t key)
 {
     lua_State* L = reinterpret_cast<lua_State*>(env);
-    lua_rawgeti(L, pobject, key);
+    lua_geti(L, pobject, key);
     return lua_gettop(L);
 }
 
@@ -633,7 +632,7 @@ int error_func(lua_State* L)
     const char* msg = lua_tostring(L, 1);
     if (!msg)
         msg = "unknown error";
-    luaL_traceback(L, L, msg, 1);
+    luaL_traceback(L, L, msg, 4);
     return 1;
 }
 
@@ -727,6 +726,11 @@ int pesapi_next(pesapi_env env, int idx)
     return lua_next(L, idx);
 }
 
+int pesapi_get_auth_code()
+{
+    return xlua::LuaEnv::ms_AuthCode;
+}
+
 pesapi_ffi g_pesapi_ffi{
     &pesapi_create_null,
     &pesapi_create_undefined,
@@ -814,6 +818,8 @@ pesapi_ffi g_pesapi_ffi{
     &pesapi_global,
     &pesapi_get_env_private,
     &pesapi_set_env_private,
+    &pesapi_next,
+    &pesapi_get_auth_code
 };
 EXTERN_C_START
 struct pesapi_type_info__

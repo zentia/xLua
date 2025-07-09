@@ -51,10 +51,11 @@ namespace XLUA_NAMESPACE
             return *this;
         }
 
-        ~ObjectCacheNode()
+        // 重复释放
+        /*~ObjectCacheNode()
         {
             delete Next;
-        }
+        }*/
 
         ObjectCacheNode* Find(const void* typeId)
         {

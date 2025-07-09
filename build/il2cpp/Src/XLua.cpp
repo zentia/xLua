@@ -72,32 +72,24 @@ namespace xlua
         }
     }
 
-    char* get_lua_stacktrace(lua_State* L)
+    void get_lua_stacktrace()
     {
         lua_Debug ar;
         int level = 0;
-        sb_init();
-        if (!s_log_buffer.data)
-            return nullptr;
-        const char* msg = lua_tostring(L, -1);
-        if (!msg)
-            msg = "unknown error";
-        sb_append("%s crash traceback:\n", msg);
-
+        LuaEnv* env = LuaEnv::ms_Instance;
+        if (env == nullptr)
+            return;
+        lua_State* L = env->L;
+        if (L == nullptr)
+            return;
         while (lua_getstack(L, level, &ar))
         {
             if (lua_getinfo(L, "Snl", &ar))
             {
-                sb_append("  [%d] %s:%d -- %s [%s]\n", level, ar.short_src, ar.currentline, ar.name ? ar.name : "?",
-                    ar.what ? ar.what : "?");
-            }
-            else
-            {
-                sb_append("  [%d] (failed to get debug info)\n", level);
+                sb_append("\n%s:%d", ar.short_src, ar.currentline);
             }
             level++;
         }
-        return s_log_buffer.data;
     }
 
     namespace
@@ -105,8 +97,10 @@ namespace xlua
         
         int panic(lua_State* L)
         {
-            get_lua_stacktrace(L);
-            PLog(Exception);
+            const char* msg = lua_tostring(L, -1);
+            if (!msg)
+                msg = "unknown error";
+            LUA_LOG_ERROR(msg);
             return 0;
         }    
     }
@@ -135,10 +129,12 @@ namespace xlua
     }
 
     LuaEnv* LuaEnv::ms_Instance = nullptr;
+    int LuaEnv::ms_AuthCode = 0;
 
     LuaEnv::LuaEnv()
     {
         ms_Instance = this;
+        ms_AuthCode++;
         L = luaL_newstate();
         luaopen_xlua(L);
 
@@ -183,6 +179,13 @@ extern "C" {
         xlua::GLogWarningCallback = LogWarning;
         xlua::GLogErrorCallback = LogError;
         xlua::GLogExceptionCallback = logException;
+    }
+
+    PESAPI_MODULE_EXPORT const char* GetLuaStackTrace()
+    {
+        xlua::sb_init();
+        xlua::get_lua_stacktrace();
+        return xlua::s_log_buffer.data;
     }
 
     PESAPI_MODULE_EXPORT pesapi_func_ptr* GetRegisterApi()

@@ -51,6 +51,42 @@ namespace XLua
         {}
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr GetFFIApi();
+#if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN || (UNITY_WSA && !UNITY_EDITOR)
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+#endif
+        public delegate void LogCallback(string content);
+
+        [DllImport("__Internal", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void SetLogCallbackInternal(IntPtr log, IntPtr logWarning, IntPtr logError, IntPtr logException);
+
+        //[UnityEngine.Scripting.RequiredByNativeCodeAttribute()]
+        public static void SetLogCallback(LogCallback log, LogCallback logWarning, LogCallback logError, LogCallback logException)
+        {
+#if !UNITY_EDITOR || UNITY_STANDALONE_WIN
+            GCHandle.Alloc(log);
+            GCHandle.Alloc(logWarning);
+            GCHandle.Alloc(logError);
+#endif
+            IntPtr fn1 = log == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(log);
+            IntPtr fn2 = logWarning == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(logWarning);
+            IntPtr fn3 = logError == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(logError);
+            IntPtr fn4 = logException == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(logException);
+
+            try
+            {
+#if !UNITY_EDITOR
+                SetLogCallbackInternal(fn1, fn2, fn3, fn4);
+#endif
+                LuaDLL.Lua.SetLogCallback(fn1, fn2, fn3, fn4);
+            }
+            catch (DllNotFoundException)
+            {
+                UnityEngine.Debug.LogError("[XLua001] XLua Native Plugin(s) is missing. You can solve this problem following the FAQ.");
+                throw;
+            }
+        }
+        [DllImport(DLLNAME, CharSet = CharSet.Ansi)]
+        public static extern IntPtr GetLuaStackTrace();
 #if XLUA_IL2CPP && ENABLE_IL2CPP
 
         [DllImport("__Internal", CallingConvention = CallingConvention.Cdecl)]
@@ -140,11 +176,6 @@ namespace XLua
             throw new NotImplementedException();
         }
 
-#if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN || (UNITY_WSA && !UNITY_EDITOR)
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-#endif
-        public delegate void LogCallback(string content);
-
         [MonoPInvokeCallback(typeof(LogCallback))]
         public static void LogImpl(string msg)
         {
@@ -153,33 +184,6 @@ namespace XLua
 
         public static LogCallback Log = LogImpl;
 
-        [DllImport("__Internal", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void SetLogCallbackInternal(IntPtr log, IntPtr logWarning, IntPtr logError, IntPtr logException);
-
-        //[UnityEngine.Scripting.RequiredByNativeCodeAttribute()]
-        public static void SetLogCallback(LogCallback log, LogCallback logWarning, LogCallback logError, LogCallback logException)
-        {
-#if !UNITY_EDITOR || UNITY_STANDALONE_WIN
-            GCHandle.Alloc(log);
-            GCHandle.Alloc(logWarning);
-            GCHandle.Alloc(logError);
-#endif
-            IntPtr fn1 = log == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(log);
-            IntPtr fn2 = logWarning == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(logWarning);
-            IntPtr fn3 = logError == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(logError);
-            IntPtr fn4 = logException == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(logException);
-
-            try
-            {
-                SetLogCallbackInternal(fn1, fn2, fn3, fn4);
-                LuaDLL.Lua.SetLogCallback(fn1, fn2, fn3, fn4);
-            }
-            catch (DllNotFoundException)
-            {
-                UnityEngine.Debug.LogError("[XLua001] XLua Native Plugin(s) is missing. You can solve this problem following the FAQ.");
-                throw;
-            }
-        }
 #endif
     }
 
@@ -284,6 +288,8 @@ namespace XLua
     public delegate void pesapi_set_env_private_func(IntPtr env, IntPtr ptr);
     public delegate int pesapi_next_func(IntPtr env, int idx);
 
+    public delegate int pesapi_get_auth_code();
+
     [StructLayout(LayoutKind.Sequential)]
     public struct pesapi_ffi
     {
@@ -374,5 +380,6 @@ namespace XLua
         public pesapi_get_env_private_func get_env_private;
         public pesapi_set_env_private_func set_env_private;
         public pesapi_next_func next;
+        public pesapi_get_auth_code get_auth_code;
     }
 }

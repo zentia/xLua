@@ -7,10 +7,12 @@
 
 typedef void (*LogCallback)(const char* value);
 
-#define LUA_LOG(level, fmt, ...)                \
+#define LUA_LOG(level, ...)                     \
     xlua::sb_init();                            \
-    xlua::sb_append(fmt, __VA_ARGS__);          \
+    xlua::sb_append(__VA_ARGS__);               \
     xlua::PLog(level)
+#define LUA_LOG_ERROR(...) LUA_LOG(xlua::LogLevel::Error, __VA_ARGS__)
+#define LUA_LOG_WARNING(...) LUA_LOG(xlua::LogLevel::Warning, __VA_ARGS__)
 
 namespace xlua
 {
@@ -32,7 +34,7 @@ namespace xlua
     
     void sb_init();
     int sb_append(const char* fmt, ...);
-    char* get_lua_stacktrace(lua_State* L);
+    void get_lua_stacktrace();
     void PLog(LogLevel level);
     typedef void (*LogCallback)(const char* value);
     struct LuaEnv
@@ -51,5 +53,6 @@ namespace xlua
 
         xlua::CppObjectMapper CppObjectMapper;
         static LuaEnv* ms_Instance;
+        static int ms_AuthCode;
     };
 } // namespace xlua

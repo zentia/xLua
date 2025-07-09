@@ -72,6 +72,7 @@ set ( XLUA_CORE
     il2cpp/Inc/sparsehashtable.h
     il2cpp/Inc/sparsetable.h
     il2cpp/Inc/type_traits.h
+    il2cpp/Inc/pesapi.h
 )
 
 list (APPEND XLUA_CORE memory_leak_checker.c)

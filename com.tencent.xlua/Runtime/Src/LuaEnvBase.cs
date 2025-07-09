@@ -1,6 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+#if OSGAME
+using Assets.Plugins.Common;
+#endif
+using UnityEngine;
 using XLua.LuaDLL;
 
 namespace XLua
@@ -14,6 +18,7 @@ namespace XLua
         protected LuaTable _G;
         protected IntPtr apis;
         public pesapi_ffi ffi;
+        internal int authCode;
 
         internal static LuaEnv Instance;
 
@@ -50,6 +55,7 @@ namespace XLua
 
         protected void Init(CustomLoader loader)
         {
+            NativeAPI.SetLogCallback(LogCallback, LogWarningCallback, LogErrorCallback, LogExceptionCallback);
             if (loader != null)
             {
                 AddLoader(loader);
@@ -64,6 +70,7 @@ namespace XLua
             AddSearcher(StaticLuaCallbacks.LoadFromCustomLoaders, -1);
             apis = NativeAPI.GetFFIApi();
             ffi = Marshal.PtrToStructure<pesapi_ffi>(apis);
+            authCode = ffi.get_auth_code();
             Instance = this as LuaEnv;
         }
 
@@ -95,6 +102,44 @@ namespace XLua
             Lua.lua_pushstdcallcfunction(_L, searcher);
             Lua.xlua_rawseti(_L, -2, index);
             Lua.lua_pop(_L, 1);
+        }
+
+        [MonoPInvokeCallback(typeof(XLua.NativeAPI.LogCallback))]
+        private static void LogCallback(string msg)
+        {
+            Debug.LogFormat(LogType.Log, LogOption.NoStacktrace, null,"{0}", msg);
+        }
+
+        [MonoPInvokeCallback(typeof(XLua.NativeAPI.LogCallback))]
+        private static void LogWarningCallback(string msg)
+        {
+            Debug.LogFormat(LogType.Warning, LogOption.NoStacktrace, null, "{0}", msg);
+        }
+
+        [MonoPInvokeCallback(typeof(XLua.NativeAPI.LogCallback))]
+        private static void LogErrorCallback(string msg)
+        {
+#if OSGAME
+            Log.LogCustom(Log.Type.Fatal, Log.OsgLogOption.LuaStackTrace, LogTag.Lua, msg);
+#else
+            Debug.LogFormat(LogType.Error, LogOption.NoStacktrace, null, "{0}", msg);
+#endif
+            
+        }
+
+        [MonoPInvokeCallback(typeof(XLua.NativeAPI.LogCallback))]
+        private static void LogExceptionCallback(string msg)
+        {
+            Debug.LogException(new LuaException(msg));
+        }
+
+        public static string GetLuaStackTrace()
+        {
+            if (Instance == null)
+            {
+                return "";
+            }
+            return Marshal.PtrToStringAnsi(NativeAPI.GetLuaStackTrace());
         }
     }
 }
