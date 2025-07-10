@@ -61,7 +61,7 @@ struct pesapi_value_ref__
 	int value_ref;
 	int ref_count;
 	uint32_t handle;
-	Il2CppObject* object;
+	int authCode;
 };
 
 namespace xlua
@@ -2537,6 +2537,11 @@ namespace xlua
 		auto type = il2cpp_codegen_class_from_type(rtype->type);
 
 		pesapi_env env = apis->get_ref_associated_env(objectInfo->ValueRef);
+		if (env == nullptr)
+		{
+			il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException("LuaEnv had been destroy"));
+			return nullptr;
+		}
 		AutoValueScope ValueScope(apis, env);
 		auto obj = apis->get_value_from_ref(env, objectInfo->ValueRef);
 		const char* str = key_std.c_str();
@@ -2555,6 +2560,11 @@ namespace xlua
 		auto type = il2cpp_codegen_class_from_type(rtype->type);
 
 		pesapi_env env = apis->get_ref_associated_env(objectInfo->ValueRef);
+		if (env == nullptr)
+		{
+			il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException("LuaEnv had been destroy"));
+			return nullptr;
+		}
 		AutoValueScope ValueScope(apis, env);
 
 		auto obj = apis->get_value_from_ref(env, objectInfo->ValueRef);
@@ -2574,6 +2584,11 @@ namespace xlua
 		std::string key_std = il2cpp::utils::StringUtils::Utf16ToUtf8(utf16);
 
 		pesapi_env env = apis->get_ref_associated_env(objectInfo->ValueRef);
+		if (env == nullptr)
+		{
+			il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException("LuaEnv had been destroy"));
+			return;
+		}
 		AutoValueScope ValueScope(apis, env);
 
 		auto obj = apis->get_value_from_ref(env, objectInfo->ValueRef);
@@ -2585,6 +2600,11 @@ namespace xlua
 		PObjectRefInfo* objectInfo = GetPObjectRefInfo(luaTable);
 
 		pesapi_env env = apis->get_ref_associated_env(objectInfo->ValueRef);
+		if (env == nullptr)
+		{
+			il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException("LuaEnv had been destroy"));
+			return;
+		}
 		AutoValueScope ValueScope(apis, env);
 
 		auto obj = apis->get_value_from_ref(env, objectInfo->ValueRef);
@@ -2596,6 +2616,11 @@ namespace xlua
 		PObjectRefInfo* objectInfo = GetPObjectRefInfo(luaTable);
 
 		pesapi_env env = apis->get_ref_associated_env(objectInfo->ValueRef);
+		if (env == nullptr)
+		{
+			il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException("LuaEnv had been destroy"));
+			return 0;
+		}
 		AutoValueScope ValueScope(apis, env);
 
 		auto obj = apis->get_value_from_ref(env, objectInfo->ValueRef);

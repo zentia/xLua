@@ -470,6 +470,11 @@ void pesapi_close_scope_placement(pesapi_env env, int scope)
     lua_pop(L, scope);
 }
 
+int pesapi_get_auth_code()
+{
+    return xlua::LuaEnv::ms_AuthCode;
+}
+
 struct pesapi_value_ref__
 {
     pesapi_value_ref__(lua_State* _L, int _value_ref)
@@ -478,11 +483,13 @@ struct pesapi_value_ref__
         , ref_count(1)
         , userdata(0)
     {
+        authCode = pesapi_get_auth_code();
     }
     lua_State* L;
     int value_ref;
     int ref_count;
     uint32_t userdata;
+    int authCode;
 };
 
 pesapi_value_ref pesapi_create_value_ref(pesapi_env env, pesapi_value pvalue)
@@ -526,6 +533,11 @@ void pesapi_release_value_ref(pesapi_value_ref value_ref)
 int pesapi_get_value_from_ref(pesapi_env env, pesapi_value_ref value_ref)
 {
     lua_State* L = reinterpret_cast<lua_State*>(env);
+    if (value_ref->authCode != pesapi_get_auth_code())
+    {
+        lua_pushnil(L);
+        LUA_LOG(xlua::LogLevel::Error, "Invalid value_ref when invoke pesapi_get_value_from_ref");
+    }
     lua_rawgeti(L, LUA_REGISTRYINDEX, value_ref->value_ref);
     return lua_gettop(L);
 }
@@ -549,6 +561,8 @@ pesapi_env pesapi_get_ref_associated_env(pesapi_value_ref value_ref)
     if (xlua::LuaEnv::ms_Instance == nullptr)
         return nullptr;
     if (xlua::LuaEnv::ms_Instance->L != value_ref->L)
+        return nullptr;
+    if (pesapi_get_auth_code() != value_ref->authCode)
         return nullptr;
     return reinterpret_cast<pesapi_env>(value_ref->L);
 }
@@ -724,11 +738,6 @@ int pesapi_next(pesapi_env env, int idx)
 {
     lua_State* L = reinterpret_cast<lua_State*>(env);
     return lua_next(L, idx);
-}
-
-int pesapi_get_auth_code()
-{
-    return xlua::LuaEnv::ms_AuthCode;
 }
 
 pesapi_ffi g_pesapi_ffi{
