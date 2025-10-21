@@ -10,7 +10,7 @@ function defineValueType(valueTypeInfo)
 
 struct ]], valueTypeInfo.Signature, [[
 
-{]], IF(#fieldSignatures == 0),[[
+{]], IF(#fieldSignatures == 0), [[
 
     union
     {
@@ -19,15 +19,16 @@ struct ]], valueTypeInfo.Signature, [[
         };
         uint8_t __padding[1];
     };]],
-            ELSE(), 
-            FOR(fieldSignatures, function(s, i)
-        return TaggedTemplateEngine('', IF(isNullableStruct(valueTypeInfo.Signature) and i - 1 == valueTypeInfo.NullableHasValuePosition), 
+        ELSE(),
+        FOR(fieldSignatures, function(s, i)
+            return TaggedTemplateEngine('',
+                IF(isNullableStruct(valueTypeInfo.Signature) and i - 1 == valueTypeInfo.NullableHasValuePosition),
                 string.format('\n\t%s hasValue;', SToCPPType(s)),
-                ELSE(), 
-                string.format('\n\t%s p%d;', SToCPPType(s), i), 
+                ELSE(),
+                string.format('\n\t%s p%d;', SToCPPType(s), i),
                 ENDIF())
-    end),
-            ENDIF(), '\n};'
+        end),
+        ENDIF(), '\n};'
     )
 end
 

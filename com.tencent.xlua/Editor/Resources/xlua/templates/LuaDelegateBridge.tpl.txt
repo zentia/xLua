@@ -11,6 +11,7 @@ require "TemplateCommon"
 %>
 namespace XLua
 {
+    [UnityEngine.Scripting.Preserve]
     public partial class DelegateBridgeWrap : DelegateBridge
     {
 		public DelegateBridgeWrap(int reference, LuaEnv luaenv) : base(reference, luaenv)

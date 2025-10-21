@@ -16,7 +16,7 @@ public static class ExtensionMethodInfos_Gen
     {
         if (false) {}]], FOR(getExtendedTypeToExtensionTypeInfo(rawInfo), function(e)
             return TaggedTemplateEngine([[
-            
+
         else if (typeof(]], e.extendedType, [[).AssemblyQualifiedName == assemblyQualifiedName)
         {
             return ExtensionMethodInfo.GetExtensionMethods(typeof(]], e.extendedType, ')',
@@ -47,7 +47,7 @@ function getExtendedTypeToExtensionTypeInfo(rawInfo)
         for _, v in ipairs(t) do
             table.insert(t1, CS.XLua.TypeExtensions.GetFriendlyName(v))
         end
-        
+
         table.insert(info, { extendedType = extendedType, extendedTypes = t1 })
     end
     return info

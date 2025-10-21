@@ -10,6 +10,7 @@
 #include <cstring>
 #include <map>
 #include "lua.hpp"
+#include "CppObjectMapper.h"
 
 namespace xlua
 {
@@ -94,7 +95,7 @@ namespace xlua
             auto clsDef = FindClassByID(TypeId);
             if (!clsDef && ClassNotFoundCallback)
             {
-                if (!ClassNotFoundCallback(TypeId))
+                if (!ClassNotFoundCallback(TypeId, &g_pesapi_ffi))
                 {
                     return nullptr;
                 }

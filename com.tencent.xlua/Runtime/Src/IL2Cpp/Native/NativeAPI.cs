@@ -47,46 +47,10 @@ namespace XLua
         public static void SetGlobalType_IDictionary(Type type)
         {}
         [MethodImpl(MethodImplOptions.InternalCall)]
-        public static void SetGlobalType_ILuaGCInterface(Type type)
+        public static void SetGlobalType_LuaException(Type type)
         {}
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr GetFFIApi();
-#if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN || (UNITY_WSA && !UNITY_EDITOR)
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-#endif
-        public delegate void LogCallback(string content);
-
-        [DllImport("__Internal", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void SetLogCallbackInternal(IntPtr log, IntPtr logWarning, IntPtr logError, IntPtr logException);
-
-        //[UnityEngine.Scripting.RequiredByNativeCodeAttribute()]
-        public static void SetLogCallback(LogCallback log, LogCallback logWarning, LogCallback logError, LogCallback logException)
-        {
-#if !UNITY_EDITOR || UNITY_STANDALONE_WIN
-            GCHandle.Alloc(log);
-            GCHandle.Alloc(logWarning);
-            GCHandle.Alloc(logError);
-#endif
-            IntPtr fn1 = log == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(log);
-            IntPtr fn2 = logWarning == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(logWarning);
-            IntPtr fn3 = logError == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(logError);
-            IntPtr fn4 = logException == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(logException);
-
-            try
-            {
-#if !UNITY_EDITOR
-                SetLogCallbackInternal(fn1, fn2, fn3, fn4);
-#endif
-                LuaDLL.Lua.SetLogCallback(fn1, fn2, fn3, fn4);
-            }
-            catch (DllNotFoundException)
-            {
-                UnityEngine.Debug.LogError("[XLua001] XLua Native Plugin(s) is missing. You can solve this problem following the FAQ.");
-                throw;
-            }
-        }
-        [DllImport(DLLNAME, CharSet = CharSet.Ansi)]
-        public static extern IntPtr GetLuaStackTrace();
 #if XLUA_IL2CPP && ENABLE_IL2CPP
 
         [DllImport("__Internal", CallingConvention = CallingConvention.Cdecl)]
@@ -102,7 +66,7 @@ namespace XLua
         public static extern void AddPendingKillScriptObjects(IntPtr ffiApi, IntPtr valueRef);
 
         [DllImport("__Internal", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void CleanupPendingKillScriptObjects(IntPtr luaEnvPrivate);
+        public static extern void CleanupPendingKillScriptObjects(IntPtr luaEnvPrivate, IntPtr apis);
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static IntPtr InitialPapiEnvRef(IntPtr api, IntPtr envRef, Object obj, MethodBase addMethodBase, MethodBase removeMethodBase)
@@ -123,7 +87,7 @@ namespace XLua
         }
 
         [MethodImpl(MethodImplOptions.InternalCall)]
-        public static void DestroyLuaEnvPrivate()
+        public static void DestroyLuaEnvPrivate(IntPtr apis)
         {
             throw new NotImplementedException();
         }
@@ -175,15 +139,6 @@ namespace XLua
         {
             throw new NotImplementedException();
         }
-
-        [MonoPInvokeCallback(typeof(LogCallback))]
-        public static void LogImpl(string msg)
-        {
-            UnityEngine.Debug.Log("debug msg: " + msg);
-        }
-
-        public static LogCallback Log = LogImpl;
-
 #endif
     }
 
@@ -271,7 +226,8 @@ namespace XLua
     public delegate void pesapi_set_ref_week_func(IntPtr env, IntPtr value_ref);
     public delegate bool pesapi_set_owner_func(IntPtr env, IntPtr value, IntPtr owner);
     public delegate IntPtr pesapi_get_ref_associated_env_func(IntPtr value_ref);
-    public delegate IntPtr pesapi_get_ref_internal_fields_func(IntPtr value_ref, ref uint pinternal_field_count);
+    public delegate IntPtr pesapi_get_ref_internal_fields_func(IntPtr value_ref);
+    public delegate void pesapi_set_ref_internal_fields_func(IntPtr value_ref, uint handle);
 
     public delegate IntPtr pesapi_get_property_func(IntPtr env, IntPtr objectPtr, string key);
     public delegate void pesapi_set_property_func(IntPtr env, IntPtr objectPtr, string key, IntPtr value);
@@ -280,15 +236,22 @@ namespace XLua
     public delegate IntPtr pesapi_get_property_uint64_func(IntPtr env, IntPtr objectPtr, ulong key);
     public delegate void pesapi_set_property_uint64_func(IntPtr env, IntPtr objectPtr, ulong key, IntPtr value);
 
-    public delegate int pesapi_call_function_func(IntPtr env, IntPtr func, IntPtr this_object, int argc, int[] argv);
+    public delegate int pesapi_prepare_function_func(IntPtr env);
+
+    public delegate int pesapi_call_function_func(IntPtr env, int errFunc, int argc);
     public delegate IntPtr pesapi_dostring_func(IntPtr env, IntPtr code, UIntPtr code_size, string path);
     public delegate IntPtr pesapi_loadstring_func(IntPtr env, IntPtr code, UIntPtr code_size, string path);
     public delegate IntPtr pesapi_global_func(IntPtr env);
     public delegate IntPtr pesapi_get_env_private_func(IntPtr env);
     public delegate void pesapi_set_env_private_func(IntPtr env, IntPtr ptr);
     public delegate int pesapi_next_func(IntPtr env, int idx);
-
     public delegate int pesapi_get_auth_code();
+    public delegate void pesapi_debug_func(string msg);
+    public delegate void pesapi_info_func(string msg);
+    public delegate void pesapi_warning_func(string msg);
+    public delegate void pesapi_error_func(string msg);
+    public delegate void pesapi_fatal_func(string msg);
+    public delegate void pesapi_snapshot_func(IntPtr env, string content);
 
     [StructLayout(LayoutKind.Sequential)]
     public struct pesapi_ffi
@@ -367,12 +330,14 @@ namespace XLua
         public pesapi_set_owner_func set_owner;
         public pesapi_get_ref_associated_env_func get_ref_associated_env;
         public pesapi_get_ref_internal_fields_func get_ref_internal_fields;
+        public pesapi_set_ref_internal_fields_func set_ref_internal_fields;
         public pesapi_get_property_func get_property;
         public pesapi_set_property_func set_property;
         public pesapi_get_private_func get_private;
         public pesapi_set_private_func set_private;
         public pesapi_get_property_uint64_func get_property_uint64;
         public pesapi_set_property_uint64_func set_property_uint64;
+        public pesapi_prepare_function_func prepare_function;
         public pesapi_call_function_func call_function;
         public pesapi_dostring_func dostring;
         public pesapi_loadstring_func loadstring;
@@ -381,5 +346,11 @@ namespace XLua
         public pesapi_set_env_private_func set_env_private;
         public pesapi_next_func next;
         public pesapi_get_auth_code get_auth_code;
+        public pesapi_debug_func debug;
+        public pesapi_info_func info;
+        public pesapi_warning_func warning;
+        public pesapi_error_func error;
+        public pesapi_fatal_func fatal;
+        public pesapi_snapshot_func snapshot;
     }
 }

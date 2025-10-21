@@ -18,7 +18,7 @@ function PreLoadInfoTemplate(normalTypes)
     --    return string.format('\n    t = %s', t)
     --end)
     return string.format([[
-local t    
+local t
 %s
 ]], arg1)
 end

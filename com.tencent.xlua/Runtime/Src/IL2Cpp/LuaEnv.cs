@@ -35,7 +35,9 @@ namespace XLua
 
         public LuaEnv(CustomLoader loader)
         {
-            UnityEngine.Debug.Log("Native XLua Env");
+#if OSGAME
+            osgame_log.info(osgame_log.cat.Lua, "Native XLua Env");
+#endif
             if (!isInitialized)
             {
                 if (!isInitialized)
@@ -52,7 +54,7 @@ namespace XLua
                     NativeAPI.SetGlobalType_IntPtr(typeof(IntPtr));
                     NativeAPI.SetGlobalType_IEnumerable(typeof(IEnumerable));
                     NativeAPI.SetGlobalType_IDictionary(typeof(IDictionary));
-                    NativeAPI.SetGlobalType_ILuaGCInterface(typeof(ILuaGCInterface));
+                    NativeAPI.SetGlobalType_LuaException(typeof(LuaException));
                     XLua.ExtensionMethodInfo.LoadExtensionMethodInfo();
                     isInitialized = true;
                 }
@@ -111,7 +113,7 @@ namespace XLua
 
         public void Tick()
         {
-            XLua.NativeAPI.CleanupPendingKillScriptObjects(luaEnvPrivate);
+            XLua.NativeAPI.CleanupPendingKillScriptObjects(luaEnvPrivate, apis);
         }
 
         public void GC()
@@ -145,7 +147,7 @@ namespace XLua
             {
                 if (disposed)
                     return;
-                XLua.NativeAPI.DestroyLuaEnvPrivate();
+                XLua.NativeAPI.DestroyLuaEnvPrivate(apis);
                 XLua.NativeAPI.CleanupPapiEnvRef(apis, nativePesapiEnv);
                 Instance = null;
                 apis = IntPtr.Zero;

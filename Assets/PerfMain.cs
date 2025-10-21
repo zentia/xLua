@@ -254,7 +254,8 @@ public class PerfMain : MonoBehaviour
                     }
                     catch (Exception e)
                     {
-                        Debug.LogException(e);
+                        if (e is not LuaException)
+                            Debug.LogException(e);
                     }
                 }
             });

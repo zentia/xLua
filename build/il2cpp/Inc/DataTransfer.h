@@ -1,7 +1,7 @@
 #pragma once
 
-#include "LuaClassRegister.h"
 #include "DataTransfer.h"
+#include "LuaClassRegister.h"
 
 #include "lua.hpp"
 
@@ -18,7 +18,7 @@
 
 namespace xlua
 {
-class DataTransfer
+class GameCoreDataTransfer
 {
 public:
     FORCEINLINE static void* GetLuaEnvPrivate()

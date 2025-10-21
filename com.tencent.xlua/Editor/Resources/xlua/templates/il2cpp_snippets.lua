@@ -33,7 +33,8 @@ PrimitiveSignatureCppTypeDefaultValueMap = {
 }
 
 function isStructOrNullableStruct(signature)
-    return (string.startsWith(signature, sigs.StructPrefix) or string.startsWith(signature, sigs.NullableStructPrefix)) and string.endsWith(signature, '_')
+    return (string.startsWith(signature, sigs.StructPrefix) or string.startsWith(signature, sigs.NullableStructPrefix)) and
+            string.endsWith(signature, '_')
 end
 
 function isNullableStruct(signature)
@@ -73,10 +74,12 @@ end
 function getThis(signature)
     local getLuaThis = 'pesapi_value luaThis = apis->get_holder(info);'
     if signature == 't' then
-        return string.format([[%s
+        return string.format([[
+    %s
     auto self = apis->get_native_object_ptr(env, luaThis);]], getLuaThis)
     elseif signature == 'T' then
-        return string.format([[%s
+        return string.format([[
+        %s
         auto self = apis->get_native_object_ptr(env, luaThis);
         auto ptrType = (Il2CppClass*) apis->get_native_object_typeid(env, luaThis);
         if (il2cpp::vm::Class::IsValueType(ptrType))
@@ -93,14 +96,14 @@ function getArgValue(signature, LuaName, isRef)
     if PrimitiveSignatureCppTypeMap[signature] then
         if isRef then
             return string.format('converter::Converter<std::reference_wrapper<%s>>::toCpp(apis, env, %s)',
-                PrimitiveSignatureCppTypeMap[signature], LuaName)
+                    PrimitiveSignatureCppTypeMap[signature], LuaName)
         else
             return string.format('converter::Converter<%s>::toCpp(apis, env, %s)',
-                PrimitiveSignatureCppTypeMap[signature],
-                LuaName)
+                    PrimitiveSignatureCppTypeMap[signature],
+                    LuaName)
         end
-    elseif ((signature == 'Pv' or signature == 'p') or signature:sub(1,1) == 'T') and not isRef then
-        return string.format('DataTransfer::GetPointer(apis, env, %s)', LuaName)
+    elseif ((signature == 'Pv' or signature == 'p') or signature:sub(1, 1) == 'T') and not isRef then
+        return string.format('xlua::DataTransfer::GetPointer(apis, env, %s)', LuaName)
     else
         if PrimitiveSignatureCppTypeMap[signature] then
             if signature == 'v' then
@@ -128,7 +131,7 @@ function checkLuaArg(signature, index)
         local elmSignature = string.sub(signature, 2)
         local elmClassDecl = ''
         if elmSignature == 'o' or elmSignature == 'O' or ((string.startsWith(elmSignature, sigs.StructPrefix) or string.startsWith(elmSignature, sigs.NullableStructPrefix)) and string.endsWith(elmSignature, '_')) then
-            elmClassDecl = string.format('auto %s_V = il2cpp::vm::Class::GetElementClass(%s);', typeInfoVar, typeInfoVar)
+            elmClassDecl = string.format('auto %s_V = il2cpp_class_get_element_class(%s);', typeInfoVar, typeInfoVar)
         end
         ret = string.format([[
         %sif(lua_args_len > %d && ]], elmClassDecl, index)
@@ -142,31 +145,32 @@ function checkLuaArg(signature, index)
 
     if PrimitiveSignatureCppTypeMap[signature] then
         ret = ret ..
-            string.format([[!converter::Converter<%s>::accept(apis, env, _sv%d)) {
+                string.format([[!converter::Converter<%s>::accept(apis, env, _sv%d)) {
             return false;
         }]],
-                PrimitiveSignatureCppTypeMap[signature], index, index + 1)
-    elseif signature == 'p' or signature == 'Pv' then -- IntPtr, void*
+                        PrimitiveSignatureCppTypeMap[signature], index, index + 1)
+    elseif signature == 'p' or signature == 'Pv' then
+        -- IntPtr, void*
         ret = ret ..
-            string.format(
-                '!apis->is_binary(env, _sv%d) && !apis->is_null(env, _sv%d) && !apis->is_undefined(env, _sv%d)) return false;',
-                index, index, index)
+                string.format(
+                        '!apis->is_binary(env, _sv%d) && !apis->is_null(env, _sv%d) && !apis->is_undefined(env, _sv%d)) return false;',
+                        index, index, index)
     elseif signature:sub(1, 1) == 'P' then
         ret = ret .. string.format('!apis->is_object(env, _sv%d)) return false;', index)
     elseif signature == 's' then
         ret = ret ..
-            string.format([[
+                string.format([[
 !converter::Converter<Il2CppString*>::accept(apis, env, _sv%d))
             return false;]], index)
     elseif signature == 'o' or signature == 'a' then
         ret = ret ..
-            string.format([[!DataTransfer::IsAssignable(apis, env, _sv%d, %s, false))
+                string.format([[!xlua::DataTransfer::IsAssignable(apis, env, _sv%d, %s, false))
             return false;]], index, typeInfoVar)
-    elseif signature == 'O' or signature:sub(1,1) == 'T' then
+    elseif signature == 'O' or signature:sub(1, 1) == 'T' then
         return ''
     elseif (string.startsWith(signature, sigs.StructPrefix) or string.startsWith(signature, sigs.NullableStructPrefix)) and string.endsWith(signature, '_') then
         ret = ret ..
-            string.format([[!DataTransfer::IsAssignable(apis, env, _sv%d, %s, true))
+                string.format([[!xlua::DataTransfer::IsAssignable(apis, env, _sv%d, %s, true))
             return false;]], index, typeInfoVar)
     else
         ret = ret .. [[!!true)
@@ -191,11 +195,11 @@ function refSetback(signature, index)
         if val then
             if string.startsWith(elementSignature, sigs.StructPrefix) and string.endsWith(elementSignature, '_') then
                 return string.format([[
-                
+
     int ret%d;
     if (p%d == &up%d)
     {
-        ret%d = %s;    
+        ret%d = %s;
         apis->update_boxed_value(env, _sv%d, ret%d);
     }
     else
@@ -211,7 +215,7 @@ function refSetback(signature, index)
     return ''
 end
 
-function refSetReturn(signature, index) 
+function refSetReturn(signature, index)
     local first = string.sub(signature, 1, 1)
     if first == 'P' and signature ~= 'Pv' then
         local elementSignature = string.sub(signature, 2)
@@ -236,13 +240,14 @@ end
 
 function returnToCS(signature)
     return string.format([[
- %s
+%s
     return ret;
     ]], LuaValToCSVal(signature, 'luaret', 'ret', -1, 'TIret'))
 end
 
 function LuaValToCSVal(signature, LuaName, CSName, index)
-    if signature == 's' then -- string
+    if signature == 's' then
+        -- string
         return string.format([[
     // LuaValToCSVal s
     Il2CppString* %s = converter::Converter<Il2CppString*>::toCpp(apis, env, %s);]], CSName, LuaName)
@@ -251,28 +256,31 @@ function LuaValToCSVal(signature, LuaName, CSName, index)
     Il2CppString* u%s = converter::Converter<std::reference_wrapper<Il2CppString*>>::toCpp(apis, env, %s); // string ref
     Il2CppString** %s = &u%s;
         ]], CSName, LuaName, CSName, CSName)
-    elseif signature == 'o' or signature == 'O' or signature == 'a' then -- object
+    elseif signature == 'o' or signature == 'O' or signature == 'a' then
+        -- object
         return string.format([[
-    
+
     // LuaValToCSVal o/O
     Il2CppObject* %s = LuaValueToCSRef(apis, TI%s, env, %s);
 ]], CSName, CSName, LuaName)
     elseif signature == 'Po' or signature == 'PO' or signature == 'Pa' or signature == 'To' or signature == 'TO' or signature == 'Ta' then
         return string.format([[     // LuaValToCSVal Po/PO
-    Il2CppObject* u%s = DataTransfer::GetPointer<Il2CppObject>(apis, env, apis->unboxing(env, %s)); // object ret
+    Il2CppObject* u%s = xlua::DataTransfer::GetPointer<Il2CppObject>(apis, env, apis->unboxing(env, %s)); // object ret
     Il2CppObject** %s = &u%s;
         ]], CSName, LuaName, CSName, CSName)
-    elseif (string.startsWith(signature, sigs.StructPrefix) or string.startsWith(signature, sigs.NullableStructPrefix)) and string.endsWith(signature, '_') then -- valuetype
-        return string.format([[     
+    elseif (string.startsWith(signature, sigs.StructPrefix) or string.startsWith(signature, sigs.NullableStructPrefix)) and string.endsWith(signature, '_') then
+        -- valuetype
+        return string.format([[
     // LuaValToCSVal struct
-    %s* p%s = DataTransfer::GetPointer<%s>(apis, env, %s);
+    %s* p%s = xlua::DataTransfer::GetPointer<%s>(apis, env, %s);
     %s %s = p%s ? *p%s : %s {};
         ]], signature, CSName, signature, LuaName, signature, CSName, CSName, CSName, signature)
-    elseif (string.startsWith(signature, 'P' .. sigs.StructPrefix) or string.startsWith(signature, 'T' .. sigs.StructPrefix)) and string.endsWith(signature, '_') then -- valuetype ref
+    elseif (string.startsWith(signature, 'P' .. sigs.StructPrefix) or string.startsWith(signature, 'T' .. sigs.StructPrefix)) and string.endsWith(signature, '_') then
+        -- valuetype ref
         local s = string.sub(signature, 2)
-        return string.format([[     
+        return string.format([[
     // LuaValToCSVal Pstruct
-    %s* %s = DataTransfer::GetPointer<%s>(apis, env, apis->unboxing(env, %s)); // valuetype ref
+    %s* %s = xlua::DataTransfer::GetPointer<%s>(apis, env, apis->unboxing(env, %s)); // valuetype ref
     %s u%s;
     if (!%s) {
         memset(&u%s, 0, sizeof(%s));
@@ -283,22 +291,23 @@ function LuaValToCSVal(signature, LuaName, CSName, index)
         local s = string.sub(signature, 2)
         if PrimitiveSignatureCppTypeMap[s] then
             if index then
-                return string.format([[     
+                return string.format([[
     // LuaValToCSVal P primitive
     %s u%s = %s;
     if (%d < lua_args_len)
         u%s = %s;
     %s* %s = &u%s;
-]], SToCPPType(s), CSName, PrimitiveSignatureCppTypeDefaultValueMap[s], index, CSName, getArgValue(s, LuaName, true), SToCPPType(s), CSName, CSName)
+]], SToCPPType(s), CSName, PrimitiveSignatureCppTypeDefaultValueMap[s], index, CSName, getArgValue(s, LuaName, true),
+                        SToCPPType(s), CSName, CSName)
             else
-                return string.format([[     
+                return string.format([[
     // LuaValToCSVal P primitive
     %s u%s = %s;
     %s* %s = &u%s;
-]], SToCPPType(s), CSName, getArgValue(s, LuaName, true), SToCPPType(s), CSName, CSName)    
+]], SToCPPType(s), CSName, getArgValue(s, LuaName, true), SToCPPType(s), CSName, CSName)
             end
         else
-            return string.format([[ 
+            return string.format([[
     // LuaValToCSVal P not primitive
     %s %s = %s;
 ]], SToCPPType(signature), CSName, getArgValue(s, LuaName, true))
@@ -307,7 +316,7 @@ function LuaValToCSVal(signature, LuaName, CSName, index)
         local si = string.sub(signature, 2)
         local start = tonumber(string.match(LuaName, '_sv(%d+)'))
         if PrimitiveSignatureCppTypeMap[si] then
-            return string.format([[     
+            return string.format([[
     // LuaValToCSVal primitive params
     Il2CppArray* %s = Params<%s>::PackPrimitive(apis, env, info, TI%s, lua_args_len, %d);
 ]], CSName, PrimitiveSignatureCppTypeMap[si], CSName, start)
@@ -340,12 +349,12 @@ function LuaValToCSVal(signature, LuaName, CSName, index)
             return string.format([[
     // LuaValToCSVal string with default
     Il2CppString* %s = OptionalParameter<Il2CppString*>::GetString(apis, env, info, method, wrapData, lua_args_len, %d);]],
-                CSName, start)
+                    CSName, start)
         elseif si == 'o' or si == 'O' then
             return string.format([[
     // LuaValToCSVal ref with default
     Il2CppObject* %s = OptionalParameter<Il2CppObject*>::GetRefType(apis, env, info, method, wrapData, lua_args_len, %d, TI%s);]],
-                CSName, start, CSName)
+                    CSName, start, CSName)
         elseif (string.startsWith(si, sigs.StructPrefix) or string.startsWith(si, sigs.NullableStructPrefix)) and string.endsWith(si, '_') then
             return string.format([[
     // LuaValToCSVal valuetype with default
@@ -358,7 +367,6 @@ function LuaValToCSVal(signature, LuaName, CSName, index)
         end
     else
         return string.format([[
-        
     // LuaValToCSVal P any
     %s %s = %s;
 ]], SToCPPType(signature), CSName, getArgValue(signature, LuaName))
@@ -374,25 +382,28 @@ function CSValToLuaVal(signature, CSName)
     TIName = 'TI' .. TIName
     if PrimitiveSignatureCppTypeMap[signature] then
         return string.format('converter::Converter<%s>::toScript(apis, env, %s)', PrimitiveSignatureCppTypeMap
-            [signature],
-            CSName)
-    elseif signature == 'O' then -- System.Object
+        [signature],
+                CSName)
+    elseif signature == 'O' then
+        -- System.Object
         return string.format('CSRefToLuaValue(apis, env, %s, %s)', TIName, CSName)
-    elseif signature == 'o' or signature == 'a' then -- classes except System.Object
+    elseif signature == 'o' or signature == 'a' then
+        -- classes except System.Object
         return string.format('CSRefToLuaValue(apis, env, %s, %s)', TIName, CSName)
     elseif string.startsWith(signature, sigs.NullableStructPrefix) and string.endsWith(signature, '_') then
-        return string.format('DataTransfer::CopyNullableValueType(apis, env, %s, %s)', CSName, TIName)
+        return string.format('xlua::DataTransfer::CopyNullableValueType(apis, env, %s, %s)', CSName, TIName)
     elseif signature == 's' then
         return string.format('converter::Converter<Il2CppString*>::toScript(apis, env, %s)', CSName)
-    elseif signature == 'p' or signature == 'Pv' then -- IntPtr, void*
+    elseif signature == 'p' or signature == 'Pv' then
+        -- IntPtr, void*
         return string.format('apis->create_binary(env, %s, 0)', CSName)
     elseif string.startsWith(signature, sigs.StructPrefix) and string.endsWith(signature, '_') then
-        return string.format('DataTransfer::CopyValueType(apis, env, %s, %s)', CSName, TIName)
-    elseif (signature:sub(1, 1) == 'P' and signature ~= 'Pv') or signature:sub(1,1) == 'T' then
+        return string.format('xlua::DataTransfer::CopyValueType(apis, env, %s, %s)', CSName, TIName)
+    elseif (signature:sub(1, 1) == 'P' and signature ~= 'Pv') or signature:sub(1, 1) == 'T' then
         local elemSignature = string.sub(signature, 2)
         if PrimitiveSignatureCppTypeMap[elemSignature] then
             return string.format('converter::Converter<std::reference_wrapper<%s>>::toScript(apis, env, *%s)',
-                PrimitiveSignatureCppTypeMap[elemSignature], CSName)
+                    PrimitiveSignatureCppTypeMap[elemSignature], CSName)
         elseif isStruct(elemSignature) or signature == 'Po' or signature == 'PO' or signature == 'Pa' then
             return string.format('apis->boxing(env, apis->native_object_to_value(env, %s, %s, false))', TIName, CSName)
         end
@@ -402,18 +413,21 @@ end
 
 function genArgsLenCheck(parameterSignatures)
     local requireNum = 0
-    local parameterCount = #parameterSignatures 
+    local parameterCount = #parameterSignatures
     while requireNum < parameterCount and parameterSignatures[requireNum + 1]:sub(1, 1) ~= 'V' and parameterSignatures[requireNum + 1]:sub(1, 1) ~= 'D' do
         requireNum = requireNum + 1
     end
-    if parameterCount > 0 and parameterSignatures[parameterCount]:sub(1,1) == 'T' and requireNum > 0 then
+    if parameterCount > 0 and parameterSignatures[parameterCount]:sub(1, 1) == 'T' and requireNum > 0 then
         requireNum = requireNum - 1
     end
-    return requireNum ~= #parameterSignatures and string.format('lua_args_len < %d || lua_args_len > %d', requireNum, #parameterSignatures) or string.format('lua_args_len != %d', #parameterSignatures)
+    return requireNum ~= #parameterSignatures and
+            string.format('lua_args_len < %d || lua_args_len > %d', requireNum, #parameterSignatures) or
+            string.format('lua_args_len != %d', #parameterSignatures)
 end
 
 function declareTypeInfo(wrapperInfo)
-    local returnHasTypeInfo = wrapperInfo.ReturnSignature and not PrimitiveSignatureCppTypeMap[getSignatureWithoutRefAndPrefix(wrapperInfo.ReturnSignature)]
+    local returnHasTypeInfo = wrapperInfo.ReturnSignature and
+            not PrimitiveSignatureCppTypeMap[getSignatureWithoutRefAndPrefix(wrapperInfo.ReturnSignature)]
     local ret = {}
     local i = 0
     if returnHasTypeInfo then
@@ -427,5 +441,5 @@ function declareTypeInfo(wrapperInfo)
             i = i + 1
         end
     end
-    return string.format('\n    %s', table.concat(ret, '\n    ')) 
+    return string.format('\n    %s', table.concat(ret, '\n    '))
 end

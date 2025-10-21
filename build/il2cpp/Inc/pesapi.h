@@ -115,7 +115,7 @@ typedef void (*pesapi_finalize)(struct pesapi_ffi* apis, void* Ptr, void* class_
 typedef void (*pesapi_function_finalize)(struct pesapi_ffi* apis, void* data, void* env_private);
 typedef void* (*pesapi_on_native_object_enter)(void* ptr, void* class_data, void* env_private);
 typedef void (*pesapi_on_native_object_exit)(void* ptr, void* class_data, void* env_private, void* userdata);
-typedef bool (*pesapi_class_not_found_callback)(const void* type_id);
+typedef bool (*pesapi_class_not_found_callback)(const void* type_id, struct pesapi_ffi* apis);
 typedef void (*pesapi_func_ptr)(void);
 
 #ifdef BUILDING_PES_EXTENSION
@@ -209,6 +209,7 @@ typedef void (*pesapi_set_ref_weak_func)(pesapi_env env, pesapi_value_ref value_
 typedef bool (*pesapi_set_owner_func)(pesapi_env env, pesapi_value value, pesapi_value owner);
 typedef pesapi_env(*pesapi_get_ref_associated_env_func)(pesapi_value_ref value_ref);
 typedef uint32_t (*pesapi_get_ref_internal_fields_func)(pesapi_value_ref value_ref);
+typedef void (*pesapi_set_ref_internal_fields_func)(pesapi_value_ref value_ref, uint32_t handle);
 
 typedef pesapi_value(*pesapi_get_property_func)(pesapi_env env, pesapi_value object, const char* key);
 typedef void (*pesapi_set_property_func)(pesapi_env env, pesapi_value object, const char* key, pesapi_value value);
@@ -218,8 +219,9 @@ typedef bool (*pesapi_set_private_func)(pesapi_env env, pesapi_value object, voi
 typedef pesapi_value(*pesapi_get_property_uint64_func)(pesapi_env env, pesapi_value object, uint64_t key);
 typedef void (*pesapi_set_property_uint64_func)(pesapi_env env, pesapi_value object, uint64_t key, pesapi_value value);
 
-typedef pesapi_value(*pesapi_call_function_func)(
-    pesapi_env env, pesapi_value func, pesapi_value this_object, int argc, const pesapi_value argv[]);
+typedef pesapi_value(*pesapi_prepare_function_func)(pesapi_env env);
+typedef void(*pesapi_debug_function_func)(pesapi_env env);
+typedef pesapi_value(*pesapi_call_function_func)(pesapi_env env, pesapi_value errfunc, int argc);
 
 typedef int (*pesapi_dostring_func)(
     pesapi_env env, const uint8_t* code, size_t code_size, const char* path, pesapi_value_ref value_ref);
@@ -231,6 +233,12 @@ typedef const void* (*pesapi_get_env_private_func)(pesapi_env env);
 typedef void (*pesapi_set_env_private_func)(pesapi_env env, const void* ptr);
 typedef int (*pesapi_next_func)(pesapi_env env, int idx);
 typedef int(*pesapi_get_auth_code_func)();
+typedef void (*pesapi_debug_func)(const char* msg);
+typedef void (*pesapi_info_func)(const char* msg);
+typedef void (*pesapi_warning_func)(const char* msg);
+typedef void (*pesapi_error_func)(const char* msg);
+typedef void (*pesapi_fatal_func)(const char* msg);
+typedef void (*pesapi_snapshot_func)(pesapi_env env, const char* msg);
 
 struct pesapi_ffi
 {
@@ -308,12 +316,14 @@ struct pesapi_ffi
     pesapi_set_owner_func set_owner;
     pesapi_get_ref_associated_env_func get_ref_associated_env;
     pesapi_get_ref_internal_fields_func get_ref_internal_fields;
+    pesapi_set_ref_internal_fields_func set_ref_internal_fields;
     pesapi_get_property_func get_property;
     pesapi_set_property_func set_property;
     pesapi_get_private_func get_private;
     pesapi_set_private_func set_private;
     pesapi_get_property_uint64_func get_property_uint64;
     pesapi_set_property_uint64_func set_property_uint64;
+    pesapi_prepare_function_func prepare_function;
     pesapi_call_function_func call_function;
     pesapi_dostring_func dostring;
     pesapi_loadstring_func loadstring;
@@ -322,6 +332,12 @@ struct pesapi_ffi
     pesapi_set_env_private_func set_env_private;
     pesapi_next_func next;
     pesapi_get_auth_code_func get_auth_code;
+    pesapi_debug_func debug;
+    pesapi_info_func info;
+    pesapi_warning_func warning;
+    pesapi_error_func error;
+    pesapi_fatal_func fatal;
+    pesapi_snapshot_func snapshot;
 };
 
 PESAPI_EXTERN pesapi_type_info pesapi_alloc_type_infos(size_t count);

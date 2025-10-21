@@ -1,6 +1,6 @@
- --package.cpath = package.cpath .. ';C:/Users/Administrator/AppData/Roaming/JetBrains/Rider2024.2/plugins/EmmyLua/debugger/emmy/windows/x64/?.dll'
- --local dbg = require('emmy_core')
- --dbg.tcpConnect('localhost', 9966)
+--package.cpath = package.cpath .. ';C:/Users/Administrator/AppData/Roaming/JetBrains/Rider2024.2/plugins/EmmyLua/debugger/emmy/windows/x64/?.dll'
+--local dbg = require('emmy_core')
+--dbg.tcpConnect('localhost', 9966)
 
 require("tte")
 require("il2cpp_snippets")
@@ -10,53 +10,43 @@ function genGetField(fieldWrapperInfo)
     if isStructOrNullableStruct(signature) then
         if needThis(fieldWrapperInfo) then
             return [[
-            
+
     auto ret = (char*)self + offset;
     apis->add_return(info, apis->native_object_to_value(env, TIret, ret, false));]]
         else
             return [[
-    
+
     auto ret = GetValueTypeFieldPtr(nullptr, fieldInfo, offset);
     apis->add_return(info, apis->native_object_to_value(env, TIret, ret, false));]]
         end
     else
         return string.format([[
-    
+        
     %s ret;
     GetFieldValue(%s, fieldInfo, offset, &ret);
-
     %s]], SToCPPType(fieldWrapperInfo.ReturnSignature), needThis(fieldWrapperInfo) and 'self' or 'nullptr',
-            returnToLua(fieldWrapperInfo.ReturnSignature))
+                returnToLua(fieldWrapperInfo.ReturnSignature))
     end
 end
 
 function genFieldWrapper(fieldWrapperInfo)
     return TaggedTemplateEngine(
             [[
-static void ifg_]], fieldWrapperInfo.Signature, [[(struct pesapi_ffi* apis, pesapi_callback_info info, FieldInfo* fieldInfo, size_t offset, Il2CppClass* TIret) {
-    // PLog("Running ifg_]], fieldWrapperInfo.Signature, [[");
-    pesapi_env env = apis->get_env(info);]], 
-            IF(needThis(fieldWrapperInfo)), [[
+static void ifg_]], fieldWrapperInfo.Signature,
+            [[(pesapi_ffi* apis, pesapi_callback_info info, FieldInfo* fieldInfo, size_t offset, Il2CppClass* TIret) {
+    pesapi_env env = apis->get_env(info);]],
+            IF(needThis(fieldWrapperInfo)), '\n', getThis(fieldWrapperInfo.ThisSignature), '\n', ENDIF(), '',
+            IF(needDebug(fieldWrapperInfo)), string.format('\tapis->snapshot(env, \"ifg_%s\");\n', fieldWrapperInfo.Signature),
+            ENDIF(), '', genGetField(fieldWrapperInfo), [[
 
-    ]], getThis(fieldWrapperInfo.ThisSignature), [[
-
-    ]], ENDIF(), [[
-]], genGetField(fieldWrapperInfo), [[
-    
 }
 
-static void ifs_]], fieldWrapperInfo.Signature, [[(struct pesapi_ffi* apis, pesapi_callback_info info, FieldInfo* fieldInfo, size_t offset, Il2CppClass* TIp) {
-    // PLog("Running ifs_]], fieldWrapperInfo.Signature, [[");
-    pesapi_env env = apis->get_env(info);]], 
-            IF(needThis(fieldWrapperInfo)), [[
-
-    ]], getThis(fieldWrapperInfo.ThisSignature), [[
-
-    ]], ENDIF(), '', 
-            LuaValToCSVal(fieldWrapperInfo.ReturnSignature, "apis->get_arg(info, 0)", "p"), [[
-            
-    SetFieldValue(]], needThis(fieldWrapperInfo) and 'self, ' or 'nullptr, ', 'fieldInfo, offset, ',
-        table.indexOf({ 'o', 's', 'p', 'a' }, fieldWrapperInfo.Signature) ~= -1 and 'p' or '&p',[[);
+static void ifs_]], fieldWrapperInfo.Signature,
+            [[(pesapi_ffi* apis, pesapi_callback_info info, FieldInfo* fieldInfo, size_t offset, Il2CppClass* TIp) {
+    pesapi_env env = apis->get_env(info);]],
+            IF(needThis(fieldWrapperInfo)), '\n', getThis(fieldWrapperInfo.ThisSignature), '\n', ENDIF(), '',
+            LuaValToCSVal(fieldWrapperInfo.ReturnSignature, "apis->get_arg(info, 0)", "p"), '\n\tSetFieldValue(', needThis(fieldWrapperInfo) and 'self, ' or 'nullptr, ', 'fieldInfo, offset, ',
+            table.indexOf({ 'o', 's', 'p', 'a' }, fieldWrapperInfo.Signature) ~= -1 and 'p' or '&p', [[);
 }
 ]])
 end
@@ -69,20 +59,6 @@ function Gen(genInfos)
 #include "il2cpp-api.h"
 #include "il2cpp-class-internals.h"
 #include "il2cpp-object-internals.h"
-#include "vm/InternalCalls.h"
-#include "vm/Object.h"
-#include "vm/Array.h"
-#include "vm/Runtime.h"
-#include "vm/Reflection.h"
-#include "vm/MetadataCache.h"
-#include "vm/Field.h"
-#include "vm/GenericClass.h"
-#include "vm/Thread.h"
-#include "vm/Method.h"
-#include "vm/Parameter.h"
-#include "vm/Image.h"
-#include "utils/StringUtils.h"
-#include "gc/WriteBarrier.h"
 #include "pesapi.h"
 #include "TDataTrans.h"
 #include "LuaValueType.h"

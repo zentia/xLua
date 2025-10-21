@@ -368,7 +368,9 @@ namespace XLua.Generator
                         types.Add(type, line.Value);
                     else
                     {
-                        Debug.LogError(line.Key);
+#if OSGAME
+                        osgame_log.error(osgame_log.cat.Lua, line.Key);
+#endif
                     }
                 }
             }
@@ -527,7 +529,9 @@ namespace XLua.Generator
                     }
                     catch (Exception e)
                     {
-                        Debug.LogWarning(string.Format("get instructions of {0} ({2}:{3}) throw {1}", mb, e.Message, mb.DeclaringType == null ? "" : mb.DeclaringType.Assembly.GetName().Name, mb.DeclaringType));
+#if OSGAME
+                        osgame_log.warning(osgame_log.cat.Lua, "get instructions of {} ({}:{}) throw {}", mb.ToString(), e.Message, mb.DeclaringType == null ? "" : mb.DeclaringType.Assembly.GetName().Name, mb.DeclaringType.ToString());
+#endif
                         return new MethodBase[] { };
                     }
                 });
@@ -717,38 +721,6 @@ namespace XLua.Generator
             }
         }
 
-        public static void GenMarcoHeader(string outDir)
-        {
-            var filePath = outDir + "unityenv_for_xlua.h";
-
-            using (var luaEnv = CreateLuaEnv())
-            {
-                var path = Path.Combine(luaEnv.root, "Editor/Resources/xlua/templates/unityenv_for_xlua.h.tpl.lua");
-                var bytes = File.ReadAllBytes(path);
-                luaEnv.env.DoString<LuaFunction>(bytes, path);
-                var func = luaEnv.env.Global.Get<LuaFunction>("unityenv_for_xlua");
-                var defines = new List<string>()
-                {
-#if UNITY_2021_1_OR_NEWER
-                    "UNITY_2021_1_OR_NEWER",
-#endif
-#if UNITY_2022_1_OR_NEWER
-                    "UNITY_2022_1_OR_NEWER",
-#endif
-#if !UNITY_IPHONE
-                    "XLUA_SHARED"
-#endif
-                };
-                string macroHeaderContent = func.Func<List<string>, string>(defines);
-
-                using (StreamWriter textWriter = new StreamWriter(filePath, false, Encoding.UTF8))
-                {
-                    textWriter.Write(macroHeaderContent);
-                    textWriter.Flush();
-                }
-            }
-        }
-
         private static void GenRegisterInfo(Dictionary<Type, Script> types)
         {
 
@@ -794,7 +766,6 @@ namespace XLua.Generator
         {
             var saveTo = Path.Combine(Path.GetFullPath("Packages/com.tencent.xlua/"), "Plugins/xlua_il2cpp/");
             var types = GenCPPWrap(saveTo);
-            GenMarcoHeader(saveTo);
             GenLinkXml("Assets/XLua/", types);
             GenExtensionMethodInfos(csPath, types);
             GenRegisterInfo(types);

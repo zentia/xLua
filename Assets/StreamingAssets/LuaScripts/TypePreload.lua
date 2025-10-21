@@ -1,4 +1,4 @@
-local t    
+local t
 
 t = CS.ClassLuaCallCS
 t = CS.PerfMain

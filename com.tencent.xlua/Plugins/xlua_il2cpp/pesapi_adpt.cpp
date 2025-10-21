@@ -1,12 +1,10 @@
-#include "unityenv_for_xlua.h"
-
 #define PESAPI_ADPT_C
 
 #include "pesapi.h"
 
 EXTERN_C_START
 
-#ifdef XLUA_SHARED
+#if !IL2CPP_TARGET_IOS
 
 typedef pesapi_type_info (*pesapi_alloc_type_infosType)(size_t count);
 static pesapi_alloc_type_infosType pesapi_alloc_type_infos_ptr;
@@ -105,7 +103,7 @@ const void* pesapi_find_type_id (const char* module_name, const char* type_name)
 #endif
 
 void pesapi_init(pesapi_func_ptr* func_array){
-#ifdef XLUA_SHARED
+#if !IL2CPP_TARGET_IOS
     pesapi_alloc_type_infos_ptr                 = (pesapi_alloc_type_infosType)             func_array[0];
     pesapi_set_type_info_ptr                    = (pesapi_set_type_infoType)                func_array[1];
     pesapi_create_signature_info_ptr            = (pesapi_create_signature_infoType)        func_array[2];

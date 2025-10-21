@@ -4,7 +4,9 @@
 #include "XLua.h"
 #include "lua.hpp"
 #include "pesapi.h"
-
+#if WITH_BIANQUE
+#include "logger/osgame_log.h"
+#endif
 #if OSG_PROFILE
     #include "cmlua/cmlua.h"
 #endif
@@ -130,7 +132,7 @@ namespace xlua
         m_Disposed = false;
     }
 
-    struct CSharpMethodInfo
+    struct GameCoreCSharpMethodInfo
     {
         std::string Name;
         bool IsStatic;
@@ -144,7 +146,7 @@ namespace xlua
     {
         PesapiCallbackData* FunctionInfo = reinterpret_cast<PesapiCallbackData*>(lua_touserdata(L, lua_upvalueindex(1)));
         pesapi_callback_info__ info{L, 0, 0};
-        CSharpMethodInfo* method = static_cast<CSharpMethodInfo*>(FunctionInfo->Data);
+        GameCoreCSharpMethodInfo* method = static_cast<GameCoreCSharpMethodInfo*>(FunctionInfo->Data);
         if (method && !method->IsStatic)
         {
             info.ArgStart = 1;
@@ -164,7 +166,7 @@ namespace xlua
     {
         if (CallbackData->Finalize)
         {
-            CallbackData->Finalize(&g_pesapi_ffi, CallbackData->Data, DataTransfer::GetLuaEnvPrivate());
+            CallbackData->Finalize(&g_pesapi_ffi, CallbackData->Data, GameCoreDataTransfer::GetLuaEnvPrivate());
         }
         CppObjectMapper* instance = Get();
         if (instance != nullptr)
@@ -216,7 +218,9 @@ namespace xlua
     {
         if (typeId == nullptr)
         {
-            LUA_LOG_ERROR("typeId is null!");
+#if WITH_BIANQUE            
+            osgame_log->error_with_stack_trace(osgame_log->cat.Lua, "typeId is null!");
+#endif            
             lua_pushnil(L);
             return lua_gettop(L);
         }
@@ -247,7 +251,9 @@ namespace xlua
                             lua_remove(L, -2);
                             return lua_gettop(L);
                         }
-                        LUA_LOG_WARNING("FindOrAddCppObject error! o is %s", o->ScriptName);
+#if WITH_BIANQUE                                                
+                        osgame_log->warning_with_stack_trace(osgame_log->cat.Lua, "FindOrAddCppObject error! o is {}", o->ScriptName);
+#endif                        
                     }
                     lua_pop(L, 2);
                     // 不存在，删掉无效ref
@@ -263,7 +269,9 @@ namespace xlua
         const LuaClassDefinition* classDefinition = LoadClassByID(typeId);
         if (classDefinition == nullptr)
         {
-            LUA_LOG_ERROR("LoadClassByID error");
+#if WITH_BIANQUE            
+            osgame_log->error_with_stack_trace(osgame_log->cat.Lua, "LoadClassByID error");
+#endif            
             lua_pushnil(L);
             return lua_gettop(L);
         }
@@ -282,7 +290,9 @@ namespace xlua
         lua_rawgeti(L, LUA_REGISTRYINDEX, metaInfo->ref);
         if (lua_isnil(L, -1))
         {
-            LUA_LOG_ERROR("BindCppObject error!");
+#if WITH_BIANQUE            
+            osgame_log->error_with_stack_trace(osgame_log->cat.Lua, "BindCppObject error!");
+#endif            
         }
         lua_setmetatable(L, -2);
 
@@ -301,7 +311,7 @@ namespace xlua
             void* userdata = nullptr;
             if (classDefinition->OnEnter)
             {
-                userdata = classDefinition->OnEnter(ptr, classDefinition->Data, DataTransfer::GetLuaEnvPrivate());
+                userdata = classDefinition->OnEnter(ptr, classDefinition->Data, GameCoreDataTransfer::GetLuaEnvPrivate());
                 // PLog(xlua::Log, "BindCppObject 0X%p", ptr);
             }
             auto ret     = m_DataCache.insert({ptr, new ObjectCacheNode(classDefinition->TypeId, userdata)});
@@ -324,7 +334,7 @@ namespace xlua
                 m_DataCache.erase(ptr);
                 if (classDefinition->OnExit)
                 {
-                    classDefinition->OnExit(ptr, classDefinition->Data, DataTransfer::GetLuaEnvPrivate(), userdata);
+                    classDefinition->OnExit(ptr, classDefinition->Data, GameCoreDataTransfer::GetLuaEnvPrivate(), userdata);
                     // PLog(xlua::Log, "UnBindCppObject 0X%p", ptr);
                 }
                 delete node;
@@ -355,7 +365,9 @@ namespace xlua
         lua_rawgeti(L, LUA_REGISTRYINDEX, index);
         if (lua_isnil(L, -1))
         {
-            LUA_LOG_ERROR("SetPrivateData error, index is %d! invoke by %s", index, func_name);
+#if WITH_BIANQUE            
+            osgame_log->error(osgame_log->cat.Lua, "SetPrivateData error, index is {}! invoke by {}", index, func_name);
+#endif            
             lua_pop(L, 2);
             return false;
         }
@@ -374,7 +386,7 @@ namespace xlua
 
     void CppObjectMapper::UnInitialize(lua_State* L)
     {
-        const auto PData = DataTransfer::GetLuaEnvPrivate();
+        const auto PData = GameCoreDataTransfer::GetLuaEnvPrivate();
         lua_rawgeti(L, LUA_REGISTRYINDEX, m_CacheRef);
         for (auto& KV : m_DataCache)
         {
@@ -400,13 +412,13 @@ namespace xlua
                             ClassDefinition->Finalize(&g_pesapi_ffi, KV.first, ClassDefinition->Data, PData);
                             need_delete = false;
                         }
-                        if (ClassDefinition && ClassDefinition->OnExit && !exit)
+                        if (ClassDefinition && ClassDefinition->OnExit && !exit && PData)
                         {
                             ClassDefinition->OnExit(KV.first, ClassDefinition->Data, PData, KV.second->UserData);
                             exit = true;
                         }
-                        lua_pop(L, 1);
                     }
+                    lua_pop(L, 1);
                 }
                 ObjectCacheNode* temp = PNode;
                 PNode                       = PNode->Next;

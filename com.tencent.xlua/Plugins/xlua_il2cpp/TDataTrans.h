@@ -2,9 +2,12 @@
 
 #include "pesapi.h"
 #include <stdarg.h>
-#include "vm/Class.h"
+#include "utils/StringUtils.h"
 #include "vm/String.h"
 #include "vm/Array.h"
+#include "vm/Exception.h"
+#include "il2cpp-object-internals.h"
+#include "gc/WriteBarrier.h"
 
 namespace xlua
 {
@@ -18,7 +21,7 @@ namespace xlua
 	TYPE_ACTION(IntPtr)				\
 	TYPE_ACTION(IDictionary)		\
 	TYPE_ACTION(IEnumerable)		\
-	TYPE_ACTION(ILuaGCInterface)
+	TYPE_ACTION(LuaException)
 
 #define SET_GLOBAL_TYPE_DECLARE(TYPE) extern Il2CppClass* g_typeof##TYPE;
 	LUA_ALL_TYPES(SET_GLOBAL_TYPE_DECLARE)
@@ -48,7 +51,7 @@ namespace xlua
 	{
 		struct pesapi_ffi* Apis;
 		pesapi_value_ref ValueRef;
-		pesapi_env env;
+		int authCode;
 	};
 
 	// sizeof(PObjectRefInfo) do exceed c# sizeof(LuaObject)
@@ -111,7 +114,7 @@ namespace xlua
 	{
 		static bool IsDelegate(Il2CppClass* klass)
 		{
-			return il2cpp::vm::Class::IsAssignableFrom(il2cpp_defaults.delegate_class, klass) &&
+			return il2cpp_class_is_assignable_from(il2cpp_defaults.delegate_class, klass) &&
 				klass != il2cpp_defaults.delegate_class && klass != il2cpp_defaults.multicastdelegate_class;
 		}
 
@@ -128,7 +131,7 @@ namespace xlua
 			auto objClass = (Il2CppClass*)apis->get_native_object_typeid(env, value);
 			if (objClass)
 			{
-				return il2cpp::vm::Class::IsAssignableFrom(klass, objClass);
+				return il2cpp_class_is_assignable_from(klass, objClass);
 			}
 			if (apis->is_binary(env, value))
 			{
@@ -136,7 +139,11 @@ namespace xlua
 			}
 			if (apis->is_array(env, value))
 			{
-				return il2cpp::vm::Class::IsAssignableFrom(g_typeofArray, klass);
+				if (il2cpp_class_is_assignable_from(g_typeofArray, klass))
+				{
+					return true;
+				}
+				return klass == g_typeofLuaTable;
 			}
 			return false;
 		}
@@ -537,7 +544,7 @@ namespace xlua
 		static Il2CppArray* PackRef(struct pesapi_ffi* apis, pesapi_env env, pesapi_callback_info info, Il2CppClass* typeId, int length, int start)
 		{
 			Il2CppArray* ret = il2cpp::vm::Array::NewSpecific(typeId, length - start > 0 ? length - start : 0);
-			auto elemTypeId = il2cpp::vm::Class::GetElementClass(typeId);
+			auto elemTypeId = il2cpp_class_get_element_class(typeId);
 			for (int i = start; i < length; i++)
 			{
 				il2cpp_array_setref(ret, i - start, LuaValueToCSRef(apis, elemTypeId, env, apis->get_arg(info, i)));
@@ -559,32 +566,31 @@ namespace xlua
 			return ret;
 		}
 
-		static void UnPackPrimitive(struct pesapi_ffi* apis, pesapi_env env, Il2CppArray* array, uint32_t arrayLength, Il2CppClass* typeId, pesapi_value* argv)
+		static void UnPackPrimitive(struct pesapi_ffi* apis, pesapi_env env, Il2CppArray* array, uint32_t arrayLength, Il2CppClass* typeId)
 		{
 			T* arr = reinterpret_cast<T*>(il2cpp::vm::Array::GetFirstElementAddress(array));
 			for (uint32_t i = 0; i < arrayLength; i++)
 			{
-				argv[i] = converter::Converter<T>::toScript(apis, env, arr[i]);
+				converter::Converter<T>::toScript(apis, env, arr[i]);
 			}
 		}
 
-		static void UnPackRefOrBoxedValueType(struct pesapi_ffi* apis,
-			pesapi_env env, Il2CppArray* array, uint32_t arrayLength, Il2CppClass* typeId, pesapi_value* argv)
+		static void UnPackRefOrBoxedValueType(struct pesapi_ffi* apis, pesapi_env env, Il2CppArray* array, uint32_t arrayLength, Il2CppClass* typeId)
 		{
 			Il2CppObject** arr = reinterpret_cast<Il2CppObject**>(il2cpp::vm::Array::GetFirstElementAddress(array));
 			for (uint32_t i = 0; i < arrayLength; i++)
 			{
-				argv[i] = CSRefToLuaValue(apis, env, typeId, arr[i]);
+				CSRefToLuaValue(apis, env, typeId, arr[i]);
 			}
 		}
 
-		static void UnPackValueType(struct pesapi_ffi* apis, pesapi_env env, Il2CppArray* array, uint32_t arrayLength, Il2CppClass* typeId, pesapi_value* argv)
+		static void UnPackValueType(struct pesapi_ffi* apis, pesapi_env env, Il2CppArray* array, uint32_t arrayLength, Il2CppClass* typeId)
 		{
 			T* arr = reinterpret_cast<T*>(il2cpp::vm::Array::GetFirstElementAddress(array));
-			auto elemTypeId = il2cpp::vm::Class::GetElementClass(typeId);
+			auto elemTypeId = il2cpp_class_get_element_class(typeId);
 			for (uint32_t i = 0; i < arrayLength; i++)
 			{
-				argv[i] = DataTransfer::CopyValueType(apis, env, &arr[i], elemTypeId);
+				DataTransfer::CopyValueType(apis, env, &arr[i], elemTypeId);
 			}
 		}
 	};
@@ -651,4 +657,11 @@ namespace xlua
 		}
 	};
 
+	inline Il2CppException* GetLuaException(const char* msg)
+	{
+		Il2CppException* ex = (Il2CppException*)il2cpp_object_new(g_typeofLuaException);
+		il2cpp_runtime_object_init((Il2CppObject*)ex);
+		IL2CPP_OBJECT_SETREF(ex, message, il2cpp::vm::String::NewWrapper(msg));
+		return ex;
+	}
 }    // namespace xlua

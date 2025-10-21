@@ -1,17 +1,15 @@
-﻿#include "unityenv_for_xlua.h"
-#include "il2cpp-config.h"
+﻿#include "il2cpp-config.h"
 #include "codegen/il2cpp-codegen.h"
 
 #include "il2cpp-api.h"
+#include "il2cpp-extend-api.h"
 #include "il2cpp-class-internals.h"
 #include "il2cpp-object-internals.h"
 #include "mono-structs.h"
+#include "os/Mutex.h"
 #include "vm/InternalCalls.h"
-#include "vm/Object.h"
 #include "vm/Array.h"
-#include "vm/Runtime.h"
 #include "vm/Reflection.h"
-#include "vm/MetadataCache.h"
 #include "vm/Field.h"
 #include "vm/GenericClass.h"
 #include "vm/Thread.h"
@@ -19,6 +17,7 @@
 #include "vm/Parameter.h"
 #include "vm/Image.h"
 #include "vm/GenericContainer.h"
+#include "vm/Type.h"
 #include "utils/StringUtils.h"
 #include "utils/Memory.h"
 #include "gc/WriteBarrier.h"
@@ -34,6 +33,7 @@
 #include <sstream>
 
 #include "utils/MemoryRead.h"
+#include "vm/Exception.h"
 #include "vm/GlobalMetadataFileInternals.h"
 
 // Because we need to hold the C# object pointer, we must ensure that GC does not do memory reorganization
@@ -45,28 +45,9 @@ typedef Il2CppGCHandle XLUA_Il2CppGCHandle;
 typedef unsigned XLUA_Il2CppGCHandle;
 #endif
 
-
-using namespace il2cpp::vm;
-
-struct pesapi_value_ref__
-{
-	pesapi_value_ref__(void* _L, int _value_ref)
-		: L(_L)
-		, value_ref(_value_ref)
-		, ref_count(1)
-		, handle(0)
-	{
-	}
-	void* L;
-	int value_ref;
-	int ref_count;
-	uint32_t handle;
-	int authCode;
-};
-
 namespace xlua
 {
-	
+
 	struct CSharpMethodInfo
 	{
 		std::string Name;
@@ -108,12 +89,12 @@ namespace xlua
 
 	const Il2CppClass* CSharpTypeToTypeId(Il2CppObject* type)
 	{
-		return (type && Class::IsAssignableFrom(il2cpp_defaults.systemtype_class, type->klass)) ? il2cpp_codegen_class_from_type(((Il2CppReflectionType*)type)->type) : nullptr;
+		return (type && il2cpp_class_is_assignable_from(il2cpp_defaults.systemtype_class, type->klass)) ? il2cpp_codegen_class_from_type(((Il2CppReflectionType*)type)->type) : nullptr;
 	}
 
 	static void* ObjectAllocate(Il2CppClass* klass)
 	{
-		if (Class::IsValuetype(klass))
+		if (il2cpp_class_is_valuetype(klass))
 		{
 			auto size = klass->native_size > 0 ? klass->native_size : (klass->instance_size - sizeof(Il2CppObject));
 			auto buff = (void*)(new uint8_t[size]);
@@ -122,7 +103,7 @@ namespace xlua
 		}
 		else
 		{
-			auto obj = il2cpp::vm::Object::New(klass);
+			auto obj = il2cpp_object_new(klass);
 			return obj;
 		}
 	}
@@ -139,14 +120,13 @@ namespace xlua
 
 	static MethodInfoHelper<Il2CppArray* (Il2CppString*)> g_ExtensionMethodGetHelper;
 
-	static Il2CppClass* s_ParamArrayAttribute;
 	static Il2CppClass* s_ExtensionAttribute;
 
-	static bool RegisterType(Il2CppClass* oklass);
+	static bool RegisterType(Il2CppClass* oklass, pesapi_ffi* apis);
 
-	static bool ClassNotFoundCallback(const void* typeId)
+	static bool ClassNotFoundCallback(const void* typeId, pesapi_ffi* apis)
 	{
-		return RegisterType((Il2CppClass*)typeId);
+		return RegisterType((Il2CppClass*)typeId, apis);
 	}
 
 	static void SetExtensionMethodGet(Il2CppReflectionMethod* method)
@@ -156,18 +136,26 @@ namespace xlua
 
 	static std::string GetTypeSignature(const Il2CppType* type);
 
+	namespace
+	{
+		Il2CppClass* get_class_from_type(const Il2CppType* type)
+		{
+			Il2CppClass* klass = il2cpp_class_from_il2cpp_type(type);
+			il2cpp_class_init(klass);
+			return klass;
+		}
+	}
+
 	static bool IsPtrToSelf(const Il2CppType* type, const Il2CppClass* selfClass)
 	{
 		if (type->byref && (type->type == IL2CPP_TYPE_VALUETYPE || type->type == IL2CPP_TYPE_TYPEDBYREF))
 		{
-			Il2CppClass* klass = Class::FromIl2CppType(type, false);
-			Class::Init(klass);
-			return Class::FromIl2CppType(&(klass->byval_arg)) == selfClass;
+			Il2CppClass* klass = get_class_from_type(type);
+			return il2cpp_class_from_il2cpp_type(&(klass->byval_arg)) == selfClass;
 		}
 		if (type->type == IL2CPP_TYPE_PTR)
 		{
-			Il2CppClass* klass = Class::FromIl2CppType(type, false);
-			Class::Init(klass);
+			Il2CppClass* klass = get_class_from_type(type);
 			return klass->element_class == selfClass;
 		}
 		return false;
@@ -175,8 +163,7 @@ namespace xlua
 
 	static std::string GetValueTypeFieldsSignature(const Il2CppType* type)
 	{
-		Il2CppClass* klass = Class::FromIl2CppType(type, false);
-		Class::Init(klass);
+		Il2CppClass* klass = get_class_from_type(type);
 		std::string ret = "";
 		for (uint16_t index = 0; index < klass->field_count; index++)
 		{
@@ -255,15 +242,13 @@ namespace xlua
 		case IL2CPP_TYPE_SZARRAY:
 		case IL2CPP_TYPE_CLASS:
 		{
-			Il2CppClass* klass = Class::FromIl2CppType(type, false);
-			Class::Init(klass);
+			Il2CppClass* klass = get_class_from_type(type);
 			ret = (klass == xlua::g_typeofArrayBuffer) ? "a" : "o";
 			break;
 		}
 		case IL2CPP_TYPE_GENERICINST:
 		{
-			Il2CppClass* klass = Class::FromIl2CppType(type, false);
-			Class::Init(klass);
+			Il2CppClass* klass = get_class_from_type(type);
 			if (!klass->byval_arg.valuetype)
 			{
 				ret = "o";
@@ -273,15 +258,14 @@ namespace xlua
 		case IL2CPP_TYPE_VALUETYPE:
 		case IL2CPP_TYPE_TYPEDBYREF:
 		{
-			Il2CppClass* klass = Class::FromIl2CppType(type, false);
-			Class::Init(klass);
+			Il2CppClass* klass = get_class_from_type(type);
 
-			if (Type::IsEnum(type) || Class::GetParent(klass) == il2cpp_defaults.enum_class)
+			if (il2cpp::vm::Type::IsEnum(type) || il2cpp_class_get_parent(klass) == il2cpp_defaults.enum_class)
 			{
-				auto baseType = Type::GetUnderlyingType(type);
+				auto baseType = il2cpp::vm::Type::GetUnderlyingType(type);
 				if (baseType == type)
 				{
-					Il2CppClass* klass = Class::FromIl2CppType(type, false);
+					Il2CppClass* klass = il2cpp_class_from_type(type);
 					ret = GetTypeSignature(klass->fields[0].type);
 					break;
 				}
@@ -289,7 +273,7 @@ namespace xlua
 				break;
 			}
 
-			if (il2cpp::vm::Class::IsNullable(klass))
+			if (il2cpp_class_is_nullable(klass))
 			{
 				ret = "N_" + GetValueTypeFieldsSignature(type) + "_";
 			}
@@ -300,82 +284,19 @@ namespace xlua
 			break;
 		}
 		default:
-			Exception::Raise(Exception::GetInvalidOperationException("not support type"));
+			il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException("not support type"));
 		}
 
 		return type->byref ? "P" + ret : ret;
-	}
-
-	class CustomAttributeDataReader
-	{
-	public:
-		uint32_t GetCount() const
-		{
-			return count;
-		}
-		const char* GetDataBufferStart() const
-		{
-			return (const char*)(((uint32_t*)bufferStart) + count);
-		}
-		bool IterateAttributeCtorsImpl(const MethodInfo** attributeCtor, const char** ctorBuffer) const
-		{
-			if (*ctorBuffer < GetDataBufferStart())
-			{
-				MethodIndex ctorIndex = il2cpp::utils::Read32(ctorBuffer);
-				*attributeCtor = il2cpp::vm::MetadataCache::GetMethodInfoFromMethodDefinitionIndex(image, ctorIndex);
-				return true;
-			}
-
-			*attributeCtor = NULL;
-			return false;
-		}
-		bool IterateAttributeCtors(const MethodInfo** attributeCtor, const char* ctorBuffer) const
-		{
-			while (IterateAttributeCtorsImpl(attributeCtor, &ctorBuffer))
-			{
-				if ((*attributeCtor)->klass == s_ParamArrayAttribute)
-					return true;
-			}
-
-			return false;
-		}
-
-		const Il2CppImage* image;
-		const char* bufferStart;
-		const char* bufferEnd;
-		uint32_t count;
-	};
-
-	static bool HasParamArray(const MethodInfo* method)
-	{
-		if (method->parameters_count == 0)
-		{
-			return false;
-		}
-
-		const MethodInfo* methodWithParameterAttributeInformation = method;
-		if (method->is_inflated)
-			methodWithParameterAttributeInformation = method->genericMethod->methodDefinition;
-
-		auto reader = il2cpp::vm::MetadataCache::GetCustomAttributeDataReader(methodWithParameterAttributeInformation->klass->image, Method::GetParameterToken(method, method->parameters_count - 1));
-		if (reader.GetCount() == 0)
-		{
-			return false;
-		}
-		void* ptr = &reader;
-		CustomAttributeDataReader* customReader = (CustomAttributeDataReader*)ptr;
-		const char* bufferStart = customReader->bufferStart;
-		const MethodInfo* ctor;
-		return (customReader->IterateAttributeCtors(&ctor, bufferStart));
 	}
 
 	static std::string GetParameterSignature(const MethodInfo* method, int index)
 	{
 		if (kInvalidIl2CppMethodSlot != method->slot)
 		{
-			Class::Init(method->klass);
+			il2cpp_class_init(method->klass);
 		}
-		const Il2CppType* type = Method::GetParam(method, index);
+		const Il2CppType* type = il2cpp::vm::Method::GetParam(method, index);
 
 		if (type)
 		{
@@ -384,9 +305,9 @@ namespace xlua
 				return "D" + GetTypeSignature(type);
 			}
 
-			if ((index == method->parameters_count - 1) && HasParamArray(method))
+			if ((index == method->parameters_count - 1) && il2cpp_has_param_array(method))
 			{
-				Il2CppClass* parameterKlass = Class::FromIl2CppType(type, false);
+				Il2CppClass* parameterKlass = get_class_from_type(type);
 				return "V" + GetTypeSignature(&parameterKlass->element_class->byval_arg);
 			}
 			else
@@ -396,13 +317,13 @@ namespace xlua
 		}
 		else
 		{
-			Exception::Raise(Exception::GetInvalidOperationException("invalid parameter index"));
+			il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException("invalid parameter index"));
 		}
 	}
 
 	static bool IsDelegate(Il2CppClass* klass)
 	{
-		return Class::HasParent(klass, il2cpp_defaults.delegate_class) && klass != il2cpp_defaults.delegate_class && klass != il2cpp_defaults.multicastdelegate_class;
+		return il2cpp_class_has_parent(klass, il2cpp_defaults.delegate_class) && klass != il2cpp_defaults.delegate_class && klass != il2cpp_defaults.multicastdelegate_class;
 	}
 
 	static bool IsCtor(const MethodInfo* method)
@@ -417,7 +338,7 @@ namespace xlua
 
 	static bool IsExtensionMethod(const MethodInfo* method)
 	{
-		return Method::HasAttribute(method, s_ExtensionAttribute);
+		return il2cpp::vm::Method::HasAttribute(method, s_ExtensionAttribute);
 	}
 
 	static std::string GetMethodSignature(const MethodInfo* method, bool isBridge, bool isExtensionMethod)
@@ -434,7 +355,7 @@ namespace xlua
 		else
 		{
 			signature += GetTypeSignature(method->return_type);
-			if (!isBridge && Method::IsInstance(method))
+			if (!isBridge && il2cpp::vm::Method::IsInstance(method))
 			{
 				signature += (il2cpp_defaults.object_class == method->klass) ? "T" : "t";
 			}
@@ -456,7 +377,7 @@ namespace xlua
 
 	Il2CppMethodPointer GetMethodPointer(const MethodInfo* method)
 	{
-		auto ret = MetadataCache::GetMethodPointer(method->klass->image, method->token);
+		auto ret = il2cpp_get_method_pointer(method->klass->image, method->token);
 		if (!ret)
 		{
 			ret = method->methodPointer;
@@ -468,21 +389,21 @@ namespace xlua
 	{
 		if (kInvalidIl2CppMethodSlot != method->slot)
 		{
-			Class::Init(method->klass);
+			il2cpp_class_init(method->klass);
 		}
-		return Class::FromIl2CppType(Method::GetReturnType(method), false);
+		return il2cpp_class_from_il2cpp_type(il2cpp::vm::Method::GetReturnType(method));
 	}
 
 	Il2CppClass* GetParameterType(const MethodInfo* method, int index)
 	{
 		if (kInvalidIl2CppMethodSlot != method->slot)
 		{
-			Class::Init(method->klass);
+			il2cpp_class_init(method->klass);
 		}
-		const Il2CppType* type = Method::GetParam(method, index);
+		const Il2CppType* type = il2cpp::vm::Method::GetParam(method, index);
 		if (type)
 		{
-			return Class::FromIl2CppType(type, false);
+			return il2cpp_class_from_il2cpp_type(type);
 		}
 		else
 		{
@@ -523,8 +444,8 @@ namespace xlua
 #if OSG_PROFILE
 		AutoScopePerf perf(delegateType->name);
 #endif
-		Il2CppObject* delegate = il2cpp::vm::Object::New(delegateType);
-		const MethodInfo* invoke = il2cpp::vm::Runtime::GetDelegateInvoke(delegateType);
+		Il2CppObject* delegate = il2cpp_object_new(delegateType);
+		const MethodInfo* invoke = il2cpp_runtime_get_delegate_invoke(delegateType);
 
 		const MethodInfo* method = NULL;
 		{
@@ -550,13 +471,13 @@ namespace xlua
 			}
 		}
 		Il2CppDelegate* il2cppDelegate = (Il2CppDelegate*)delegate;
-		Type::ConstructClosedDelegate(il2cppDelegate, target, functionPtr, method);
+		il2cpp::vm::Type::ConstructClosedDelegate(il2cppDelegate, target, functionPtr, method);
 		return il2cppDelegate;
 	}
 
 	static Il2CppDelegate* DelegateAllocate(Il2CppClass* klass, Il2CppMethodPointer functionPtr, PObjectRefInfo** outTargetData)
 	{
-		auto target = il2cpp::vm::Object::New(xlua::g_typeofLuaTable);
+		auto target = il2cpp_object_new(xlua::g_typeofLuaTable);
 
 		Il2CppDelegate* delegate = FunctionPointerToDelegate(functionPtr, klass, target);
 
@@ -590,9 +511,9 @@ namespace xlua
 				if (csharpMethodInfo->NeedBoxing)
 				{
 					auto ptrType = (Il2CppClass*)apis->get_native_object_typeid(env, luaThis);
-					if (Class::IsValuetype(ptrType))
+					if (il2cpp_class_is_valuetype(ptrType))
 					{
-						self = Object::Box(ptrType, self);
+						self = il2cpp_value_box(ptrType, self);
 					}
 				}
 			}
@@ -611,11 +532,11 @@ namespace xlua
 		}
 		catch (Il2CppExceptionWrapper& exception)
 		{
-			Il2CppClass* klass = il2cpp::vm::Object::GetClass(exception.ex);
-			const MethodInfo* toStringMethod = il2cpp::vm::Class::GetMethodFromName(klass, "ToString", 0);
+			Il2CppClass* klass = il2cpp_object_get_class(exception.ex);
+			const MethodInfo* toStringMethod = il2cpp_class_get_method_from_name(klass, "ToString", 0);
 
 			Il2CppException* outException = NULL;
-			Il2CppString* result = (Il2CppString*)il2cpp::vm::Runtime::Invoke(toStringMethod, exception.ex, NULL, &outException);
+			Il2CppString* result = (Il2CppString*)il2cpp_runtime_invoke(toStringMethod, exception.ex, NULL, &outException);
 			if (outException != NULL)
 			{
 				std::string err_info = "unknow c# execption for " + csharpMethodInfo->Name;
@@ -651,12 +572,12 @@ namespace xlua
 		{
 			IL2CPP_ASSERT(ptr);
 			src = (char*)ptr + offset;
-			Field::SetValueRaw(field->type, value, src, true);
+			il2cpp::vm::Field::SetValueRaw(field->type, value, src, true);
 		}
 		else
 		{
-			il2cpp::vm::Runtime::ClassInit(field->parent);
-			Field::StaticGetValue(field, value);
+			il2cpp_runtime_class_init(field->parent);
+			il2cpp::vm::Field::StaticGetValue(field, value);
 		}
 	}
 
@@ -669,15 +590,15 @@ namespace xlua
 		}
 		else
 		{
-			Class::SetupFields(field->parent);
+			il2cpp_class_setup_fields(field->parent);
 
 			void* threadStaticData = nullptr;
 			if (field->offset == THREAD_STATIC_FIELD_OFFSET)
 			{
-				threadStaticData = Thread::GetThreadStaticDataForThread(
+				threadStaticData = il2cpp::vm::Thread::GetThreadStaticDataForThread(
 					field->parent->thread_static_fields_offset, il2cpp::vm::Thread::CurrentInternal());
 				IL2CPP_ASSERT(NULL != threadStaticData);
-				int threadStaticFieldOffset = MetadataCache::GetThreadLocalStaticOffsetForField(field);
+				int threadStaticFieldOffset = il2cpp_get_thread_local_static_offset_for_field(field);
 				return ((char*)threadStaticData) + threadStaticFieldOffset;
 			}
 			else
@@ -695,62 +616,21 @@ namespace xlua
 		{
 			IL2CPP_ASSERT(ptr);
 			dest = (char*)ptr + offset;
-			Field::SetValueRaw(field->type, dest, value, true);
+			il2cpp::vm::Field::SetValueRaw(field->type, dest, value, true);
 		}
 		else
 		{
-			Field::StaticSetValue(field, value);
+			il2cpp::vm::Field::StaticSetValue(field, value);
 		}
 	}
 
 	void* GetDefaultValuePtr(const MethodInfo* method, uint32_t index)
 	{
 		bool isExplicitySetNullDefaultValue = false;
-		Il2CppObject* defaultValue = Parameter::GetDefaultParameterValueObject(method, index, &isExplicitySetNullDefaultValue);
-		return (defaultValue && Class::IsValuetype(Class::FromIl2CppType(Method::GetParam(method, index), false)))
-			? Object::Unbox(defaultValue)
+		Il2CppObject* defaultValue = il2cpp::vm::Parameter::GetDefaultParameterValueObject(method, index, &isExplicitySetNullDefaultValue);
+		return (defaultValue && il2cpp_class_is_valuetype(il2cpp_class_from_il2cpp_type(il2cpp::vm::Method::GetParam(method, index))))
+			? il2cpp_object_unbox(defaultValue)
 			: defaultValue;
-	}
-
-	typedef void (*LogCallbackFunc)(const char* value);
-
-	static LogCallbackFunc GLogCallback = nullptr;
-	static LogCallbackFunc GLogWarningCallback = nullptr;
-	static LogCallbackFunc GLogErrorCallback = nullptr;
-	static LogCallbackFunc GLogExceptionCallback = nullptr;
-
-	void XLuaLog(XLuaLogType type, const char* Fmt, ...)
-	{
-		static char SLogBuffer[1024];
-		va_list list;
-		va_start(list, Fmt);
-		vsnprintf(SLogBuffer, sizeof(SLogBuffer), Fmt, list);
-		va_end(list);
-		switch (type)
-		{
-		case XLuaLogType::Log:
-			if (GLogCallback)
-			{
-				GLogCallback(SLogBuffer);
-			}
-			break;
-		case XLuaLogType::Warning:
-			if (GLogWarningCallback)
-			{
-				GLogWarningCallback(SLogBuffer);
-			}
-			break;
-		case XLuaLogType::Error:
-			if (GLogErrorCallback)
-			{
-				GLogErrorCallback(SLogBuffer);
-			}
-		case XLuaLogType::Exception:
-			if (GLogExceptionCallback)
-			{
-				GLogExceptionCallback(SLogBuffer);
-			}
-		}
 	}
 
 	static void* CtorCallback(struct pesapi_ffi* apis, pesapi_callback_info info)
@@ -792,11 +672,11 @@ namespace xlua
 		}
 		catch (Il2CppExceptionWrapper& exception)
 		{
-			Il2CppClass* klass = il2cpp::vm::Object::GetClass(exception.ex);
-			const MethodInfo* toStringMethod = il2cpp::vm::Class::GetMethodFromName(klass, "ToString", 0);
+			Il2CppClass* klass = il2cpp_object_get_class(exception.ex);
+			const MethodInfo* toStringMethod = il2cpp_class_get_method_from_name(klass, "ToString", 0);
 
 			Il2CppException* outException = nullptr;
-			Il2CppString* result = (Il2CppString*)il2cpp::vm::Runtime::Invoke(toStringMethod, exception.ex, nullptr, &outException);
+			Il2CppString* result = (Il2CppString*)il2cpp_runtime_invoke(toStringMethod, exception.ex, nullptr, &outException);
 			if (outException != nullptr)
 			{
 				std::string err_info = "unknown c# exception for constructor of " + classInfo->Name;
@@ -817,7 +697,7 @@ namespace xlua
 
 		return nullptr;
 	}
-	
+
 	static void SetPObjectRefInfoValue(struct pesapi_ffi* apis, pesapi_env env, PObjectRefInfo* objectInfo, pesapi_value_ref value_ref)
 	{
 		objectInfo->Apis = apis;
@@ -830,15 +710,6 @@ namespace xlua
 		return apis->get_value_from_ref(env, objectInfo->ValueRef);
 	}
 
-	struct PesapiValueRefer
-	{
-		size_t operator()(int handle) const
-		{
-			return handle;
-		}
-	};
-
-	//typedef Il2CppHashMap<int, pesapi_value_ref, PesapiValueRefer> PesapiValueRef;
 
 	class LuaEnvPrivate
 	{
@@ -857,32 +728,9 @@ namespace xlua
 			instance = nullptr;
 		}
 
-		void AddPendingKillScriptObjects(pesapi_value_ref valueRef)
-		{
-			// https://crashsight.qq.com/crash-reporting/crashes/6dd8864548/707DDF1A61776B90C176606A20400122?pid=1&crashDataType=unSystemExit
-			// il2cpp的锁会crash，试一下std的
-			//il2cpp::os::AutoLock guard(&pendingKillRefsMutex);
-			std::lock_guard<std::mutex> guard(pendingKillRefsMutex);
-			// 不用做无效性检查，应该数据可能无效，但是没有被释放掉
-			pendingKillRefs.insert(valueRef);
-		}
-
 		void CleanupPendingKillScriptObjects()
 		{
-			std::lock_guard<std::mutex> guard(pendingKillRefsMutex);
-			//il2cpp::os::AutoLock guard(&pendingKillRefsMutex);
-			auto size = pendingKillRefs.size();
-			if (size == 0)
-			{
-				return;
-			}
-
-			for (const auto& valueRef : pendingKillRefs)
-			{
-				apis->release_value_ref(valueRef);
-			}
-
-			pendingKillRefs.clear();
+			il2cpp_cleanup_pending_kill_script_objects((release_value_ref_func)apis->release_value_ref);
 		}
 
 		// 由于GC和弱引用时序无法确定，当先弱引用失效时，对导致dataCache和objectPool对不齐，dataCache数量少于objectPool，所以需要先查找判断
@@ -897,11 +745,6 @@ namespace xlua
 		}
 		struct pesapi_ffi* apis;
 		pesapi_env_ref envRef;
-		//il2cpp::os::Mutex pendingKillRefsMutex;
-		std::mutex pendingKillRefsMutex;
-		std::unordered_set<pesapi_value_ref> pendingKillRefs;
-		/*PesapiValueRef pesapiValueRef;*/
-
 		MethodInfoHelper<int32_t(Il2CppObject* obj)> objPoolAdd;
 		MethodInfoHelper<Il2CppObject* (int32_t index)> objPoolRemove;
 		static LuaEnvPrivate* instance;
@@ -923,10 +766,10 @@ namespace xlua
 		Il2CppObject* obj = nullptr;
 		if (value_ref)
 		{
-			handle = value_ref->handle;
+			handle = apis->get_ref_internal_fields(value_ref);
 			if (handle == 0)
 			{
-				xlua::XLuaLog(XLuaLogType::Error, "invalid internal_fields ptr:%p");
+				apis->error("invalid internal_fields ptr");
 				apis->release_value_ref(value_ref);
 				value_ref = nullptr;
 			}
@@ -938,7 +781,7 @@ namespace xlua
 		}
 		else
 		{
-			obj = il2cpp::gc::GCHandle::GetTarget(value_ref->handle);
+			obj = il2cpp::gc::GCHandle::GetTarget(apis->get_ref_internal_fields(value_ref));
 			// 对象被释放了，引用没有及时删掉
 			if (obj == nullptr)
 			{
@@ -949,7 +792,6 @@ namespace xlua
 				// apis->duplicate_value_ref(value_ref);
 				// apis->release_value_ref(value_ref);
 				value_ref = apis->create_value_ref(env, value);
-				xlua::XLuaLog(XLuaLogType::Warning, "[XLua]%d->%d->%d", value_ref->handle, value_ref->value_ref, value_ref->ref_count);
 			}
 			else
 			{
@@ -957,7 +799,7 @@ namespace xlua
 
 			}
 		}
-		
+
 		*out_value_ref = value_ref;
 		return obj;
 	}
@@ -967,11 +809,6 @@ namespace xlua
 	// 既然是查找，应该用handle作为key，value_ref作为value，那么是一个map
 	static void ValidateHandleStoreOfValue(Il2CppObject* object, pesapi_value_ref value_ref, pesapi_ffi* apis, pesapi_env env, PObjectRefInfo* objectRefInfo)
 	{
-		/*if (LuaEnvPrivate::instance == nullptr)
-		{
-			XLuaLog(XLuaLogType::Error, "[XLua] LuaEnvPrivate::instance has been destroyed!");
-			return;
-		}*/
 		auto handle = il2cpp::gc::GCHandle::GetTargetHandle(object, 0, il2cpp::gc::HANDLE_WEAK);
 		il2cpp::vm::Exception::RaiseIfError(handle.GetError());
 		//PesapiValueRef& cache = LuaEnvPrivate::instance->pesapiValueRef;
@@ -984,9 +821,8 @@ namespace xlua
 		//	it->second->handle = 0;
 		//}
 		//cache[handle.Get()] = value_ref;
-		value_ref->handle = handle.Get();
+		apis->set_ref_internal_fields(value_ref, handle.Get());
 		SetPObjectRefInfoValue(apis, env, objectRefInfo, value_ref);
-		//XLuaLog(XLuaLogType::Warning, "[XLua]%d->%d->%d->%s->%p", value_ref->handle, value_ref->value_ref, value_ref->ref_count, object->klass->name, object);
 	}
 
 	static Il2CppObject* FunctionToDelegate(struct pesapi_ffi* apis, pesapi_env env, int luaval, LuaClassInfoHeader* classInfo)
@@ -1030,14 +866,14 @@ namespace xlua
 			{
 				Il2CppArray* buffer = reinterpret_cast<Il2CppArray*>(obj);
 
-				return apis->create_binary(env, Array::GetFirstElementAddress(buffer), (size_t)buffer->max_length);
+				return apis->create_binary(env, il2cpp::vm::Array::GetFirstElementAddress(buffer), (size_t)buffer->max_length);
 			}
 		}
 		success = false;
 		return 0;
 	}
 
-	static pesapi_value TryTranslatePrimitivePtr(struct pesapi_ffi* apis, pesapi_env env, Il2CppTypeEnum type, void* ptr, bool &success)
+	static pesapi_value TryTranslatePrimitivePtr(struct pesapi_ffi* apis, pesapi_env env, Il2CppTypeEnum type, void* ptr, bool& success)
 	{
 		success = true;
 		switch (type)
@@ -1113,7 +949,7 @@ namespace xlua
 		success = true;
 		if (obj)
 		{
-			const Il2CppType* type = Class::GetType(klass);
+			const Il2CppType* type = il2cpp_class_get_type(klass);
 			Il2CppTypeEnum t = type->type;
 			if (t == IL2CPP_TYPE_STRING)
 			{
@@ -1121,9 +957,9 @@ namespace xlua
 				std::string str = il2cpp::utils::StringUtils::Utf16ToUtf8(utf16);
 				return apis->create_string_utf8(env, str.c_str(), str.size());
 			}
-			if (t == IL2CPP_TYPE_VALUETYPE && Class::IsEnum(klass))
+			if (t == IL2CPP_TYPE_VALUETYPE && il2cpp_class_is_enum(klass))
 			{
-				const Il2CppType* tp = Class::GetEnumBaseType(klass);
+				const Il2CppType* tp = il2cpp_class_enum_basetype(klass);
 				if (tp != nullptr)
 				{
 					t = tp->type;
@@ -1139,7 +975,7 @@ namespace xlua
 		if (obj)
 		{
 			success = true;
-			const Il2CppType* type = Class::GetType(klass ? klass : obj->klass);
+			const Il2CppType* type = il2cpp_class_get_type(klass ? klass : obj->klass);
 			Il2CppTypeEnum t = type->type;
 			if (t == IL2CPP_TYPE_STRING)
 			{
@@ -1147,15 +983,15 @@ namespace xlua
 				std::string str = il2cpp::utils::StringUtils::Utf16ToUtf8(utf16);
 				return apis->create_string_utf8(env, str.c_str(), str.size());
 			}
-			if (t == IL2CPP_TYPE_VALUETYPE && Class::IsEnum(obj->klass))
+			if (t == IL2CPP_TYPE_VALUETYPE && il2cpp_class_is_enum(obj->klass))
 			{
-				const Il2CppType* tp = Class::GetEnumBaseType(obj->klass);
+				const Il2CppType* tp = il2cpp_class_enum_basetype(obj->klass);
 				if (tp != nullptr)
 				{
 					t = tp->type;
 				}
 			}
-			void* ptr = Object::Unbox(obj);
+			void* ptr = il2cpp_object_unbox(obj);
 			return TryTranslatePrimitivePtr(apis, env, t, ptr, success);
 		}
 		success = false;
@@ -1182,7 +1018,7 @@ namespace xlua
 		}
 
 		auto buff = new uint8_t[len];
-		memcpy(buff, Object::Unbox(obj), len);
+		memcpy(buff, il2cpp_object_unbox(obj), len);
 		return apis->native_object_to_value(env, targetClass, buff, true);
 	}
 
@@ -1192,7 +1028,7 @@ namespace xlua
 		if (obj && obj->klass)
 		{
 			auto objClass = obj->klass;
-			if (Class::IsValuetype(objClass))
+			if (il2cpp_class_is_valuetype(objClass))
 			{
 				return TranslateValueType(apis, env, objClass, obj);
 			}
@@ -1200,7 +1036,7 @@ namespace xlua
 		success = false;
 		return 0;
 	}
-	
+
 	union PrimitiveValueType
 	{
 		int8_t i1;
@@ -1219,11 +1055,11 @@ namespace xlua
 	static Il2CppObject* LuaTableToCSArray(struct pesapi_ffi* apis, Il2CppClass* klass, pesapi_env env, int luaval)
 	{
 		uint32_t len = apis->get_array_length(env, luaval);
-		Il2CppArray* array = Array::NewSpecific(klass, len);
-		Il2CppClass* elementClass = Class::GetElementClass(klass);
-		const Il2CppType* type = Class::GetType(elementClass);
+		Il2CppArray* array = il2cpp::vm::Array::NewSpecific(klass, len);
+		Il2CppClass* elementClass = il2cpp_class_get_element_class(klass);
+		const Il2CppType* type = il2cpp_class_get_type(elementClass);
 		int t = type->type;
-		int elementSize = il2cpp::vm::Class::GetArrayElementSize(elementClass);
+		int elementSize = il2cpp_class_array_element_size(elementClass);
 		for (int i = 0; i < len; i++)
 		{
 			void* elementAddress = il2cpp_array_addr_with_size(array, elementSize, i);
@@ -1342,7 +1178,7 @@ namespace xlua
 						LuaClassInfoHeader* luaClassInfo = (LuaClassInfoHeader*)pesapi_get_class_data(elementClass, true);
 						if (!luaClassInfo)
 						{
-							Exception::Raise(Exception::GetInvalidOperationException("call not load type of delegate"));
+							il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException("call not load type of delegate"));
 						}
 						Il2CppObject* v = FunctionToDelegate(apis, env, -1, luaClassInfo);
 						memcpy(elementAddress, &v, elementSize);
@@ -1370,12 +1206,12 @@ namespace xlua
 						if (elementClass == xlua::g_typeofLuaTable || elementClass == il2cpp_defaults.object_class)
 						{
 							pesapi_value_ref value_ref;
-							
+
 							Il2CppObject* ret = FindOrCreateHandleStoreOfValue(apis, env, -1, &value_ref);
-							
+
 							if (ret == nullptr)
 							{
-								ret = il2cpp::vm::Object::New(xlua::g_typeofLuaTable);
+								ret = il2cpp_object_new(xlua::g_typeofLuaTable);
 
 								const MethodInfo* ctor = il2cpp_class_get_method_from_name(xlua::g_typeofLuaTable, ".ctor", 0);
 								typedef void (*NativeCtorPtr)(Il2CppObject* ___this, const MethodInfo* method);
@@ -1390,9 +1226,9 @@ namespace xlua
 					break;
 				}
 				auto objClass = (Il2CppClass*)apis->get_native_object_typeid(env, -1);
-				if (Class::IsAssignableFrom(elementClass, objClass))
+				if (il2cpp_class_is_assignable_from(elementClass, objClass))
 				{
-					Il2CppObject* v = Class::IsValuetype(objClass) ? Object::Box(objClass, ptr) : (Il2CppObject*)ptr;
+					Il2CppObject* v = il2cpp_class_is_valuetype(objClass) ? il2cpp_value_box(objClass, ptr) : (Il2CppObject*)ptr;
 					memcpy(elementAddress, &v, elementSize);
 					Il2CppCodeGenWriteBarrier(&elementAddress, v);
 				}
@@ -1415,7 +1251,7 @@ namespace xlua
 			klass = il2cpp_defaults.object_class;
 		}
 
-		const Il2CppType* type = Class::GetType(klass);
+		const Il2CppType* type = il2cpp_class_get_type(klass);
 		int t = type->type;
 
 		PrimitiveValueType data;
@@ -1530,7 +1366,7 @@ namespace xlua
 					LuaClassInfoHeader* luaClassInfo = (LuaClassInfoHeader*)pesapi_get_class_data(klass, true);
 					if (!luaClassInfo)
 					{
-						Exception::Raise(Exception::GetInvalidOperationException("call not load type of delegate"));
+						il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException("call not load type of delegate"));
 					}
 					return FunctionToDelegate(apis, env, luaval, luaClassInfo);
 				}
@@ -1556,7 +1392,7 @@ namespace xlua
 					{
 						size_t length;
 						void* binary = apis->get_value_binary(env, luaval, &length);
-						return Object::Box(klass, binary);
+						return il2cpp_value_box(klass, binary);
 					}
 				}
 				if (apis->is_object(env, luaval))
@@ -1565,10 +1401,10 @@ namespace xlua
 					{
 						pesapi_value_ref value_ref;
 						Il2CppObject* ret = FindOrCreateHandleStoreOfValue(apis, env, luaval, &value_ref);
-						
+
 						if (ret == nullptr)
 						{
-							ret = il2cpp::vm::Object::New(xlua::g_typeofLuaTable);
+							ret = il2cpp_object_new(xlua::g_typeofLuaTable);
 
 							const MethodInfo* ctor = il2cpp_class_get_method_from_name(xlua::g_typeofLuaTable, ".ctor", 0);
 							typedef void (*NativeCtorPtr)(Il2CppObject* ___this, const MethodInfo* method);
@@ -1631,24 +1467,24 @@ namespace xlua
 				return nullptr;
 			}
 			auto objClass = (Il2CppClass*)apis->get_native_object_typeid(env, luaval);
-			if (Class::IsAssignableFrom(klass, objClass))
+			if (il2cpp_class_is_assignable_from(klass, objClass))
 			{
-				return Class::IsValuetype(objClass) ? Object::Box(objClass, ptr) : (Il2CppObject*)ptr;
+				return il2cpp_class_is_valuetype(objClass) ? il2cpp_value_box(objClass, ptr) : (Il2CppObject*)ptr;
 			}
 			return nullptr;
 		}
 		case IL2CPP_TYPE_VALUETYPE:
 		{
 			// not that t and type->type can be different
-			if (type->type == IL2CPP_TYPE_VALUETYPE && Type::IsEnum(type))
+			if (type->type == IL2CPP_TYPE_VALUETYPE && il2cpp::vm::Type::IsEnum(type))
 			{
-				t = Class::GetEnumBaseType(Type::GetClass(type))->type;
+				t = il2cpp_class_enum_basetype(il2cpp::vm::Type::GetClass(type))->type;
 				goto handle_underlying;
 			}
 			else
 			{
 				auto objClass = (Il2CppClass*)apis->get_native_object_typeid(env, luaval);
-				if (!Class::IsAssignableFrom(klass, objClass))
+				if (!il2cpp_class_is_assignable_from(klass, objClass))
 				{
 					return nullptr;
 				}
@@ -1658,19 +1494,19 @@ namespace xlua
 					std::string message = "expect ValueType: ";
 					message += klass->name;
 					message += ", by got null";
-					Exception::Raise(Exception::GetInvalidOperationException(message.c_str()));
+					il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException(message.c_str()));
 					return nullptr;
 				}
 			}
 			break;
 		}
 		case IL2CPP_TYPE_GENERICINST:
-			t = GenericClass::GetTypeDefinition(type->data.generic_class)->byval_arg.type;
+			t = il2cpp::vm::GenericClass::GetTypeDefinition(type->data.generic_class)->byval_arg.type;
 			goto handle_underlying;
 		default:
 			IL2CPP_ASSERT(0);
 		}
-		return Object::Box(klass, toBox);
+		return il2cpp_value_box(klass, toBox);
 	}
 
 	int CSValueToLuaValue(struct pesapi_ffi* apis, pesapi_env env, Il2CppClass* targetClass, void* obj)
@@ -1684,9 +1520,9 @@ namespace xlua
 			targetClass = il2cpp_defaults.object_class;
 		}
 
-		if (Class::IsEnum(targetClass))
+		if (il2cpp_class_is_enum(targetClass))
 		{
-			targetClass = Class::GetElementClass(targetClass);
+			targetClass = il2cpp_class_get_element_class(targetClass);
 		}
 		bool success = false;
 		int luaVal = TryTranslatePrimitiveWithClass(apis, env, obj, targetClass != il2cpp_defaults.object_class ? targetClass : nullptr, success);
@@ -1709,9 +1545,9 @@ namespace xlua
 			targetClass = il2cpp_defaults.object_class;
 		}
 
-		if (Class::IsEnum(targetClass))
+		if (il2cpp_class_is_enum(targetClass))
 		{
-			targetClass = Class::GetElementClass(targetClass);
+			targetClass = il2cpp_class_get_element_class(targetClass);
 		}
 		bool success = false;
 		int luaVal = TryTranslatePrimitiveWithClass(apis, env, obj, targetClass != il2cpp_defaults.object_class ? targetClass : nullptr, success);
@@ -1721,7 +1557,7 @@ namespace xlua
 			return luaVal;
 		}
 
-		if (Class::IsValuetype(targetClass))
+		if (il2cpp_class_is_valuetype(targetClass))
 		{
 			luaVal = TranslateValueType(apis, env, targetClass, obj);
 			if (luaVal)
@@ -1729,7 +1565,7 @@ namespace xlua
 				return luaVal;
 			}
 		}
-		
+
 		luaVal = TryTranslateValueType(apis, env, obj, success);
 		if (success)
 		{
@@ -1763,7 +1599,7 @@ namespace xlua
 			targetClass = il2cpp_defaults.object_class;
 		}
 
-		bool isNullable = Class::IsNullable(targetClass);
+		bool isNullable = il2cpp_class_is_nullable(targetClass);
 
 		if (isNullable)
 		{
@@ -1777,11 +1613,11 @@ namespace xlua
 			ptr = valueStart;
 		}
 
-		if (Class::IsEnum(targetClass))
+		if (il2cpp_class_is_enum(targetClass))
 		{
-			targetClass = Class::GetElementClass(targetClass);
+			targetClass = il2cpp_class_get_element_class(targetClass);
 		}
-		const Il2CppType* type = Class::GetType(targetClass);
+		const Il2CppType* type = il2cpp_class_get_type(targetClass);
 		bool success = false;
 		pesapi_value luaVal = TryTranslatePrimitivePtr(apis, env, type->type, ptr, success);
 
@@ -1811,7 +1647,7 @@ namespace xlua
 		if (apis->is_userdata(env, luaValue) && (ptr = apis->get_native_object_ptr(env, luaValue)))
 		{
 			auto objClass = (Il2CppClass*)apis->get_native_object_typeid(env, luaValue);
-			if (Class::IsAssignableFrom(klass, objClass))
+			if (il2cpp_class_is_assignable_from(klass, objClass))
 			{
 				hasValue = true;
 				memcpy(storage, ptr, valueSize);
@@ -1819,7 +1655,7 @@ namespace xlua
 		}
 		else
 		{
-			const Il2CppType* type = Class::GetType(klass);
+			const Il2CppType* type = il2cpp_class_get_type(klass);
 			PrimitiveValueType data;
 			data.i8 = 0;
 			int t = type->type;
@@ -1947,9 +1783,9 @@ namespace xlua
 			}
 			case IL2CPP_TYPE_VALUETYPE:
 			{
-				if (type->type == IL2CPP_TYPE_VALUETYPE && Type::IsEnum(type))
+				if (type->type == IL2CPP_TYPE_VALUETYPE && il2cpp::vm::Type::IsEnum(type))
 				{
-					t = Class::GetEnumBaseType(Type::GetClass(type))->type;
+					t = il2cpp_class_enum_basetype(il2cpp::vm::Type::GetClass(type))->type;
 					goto handle_underlying;
 				}
 				break;
@@ -2002,11 +1838,10 @@ namespace xlua
 			}
 			for (int i = csArgStart; i < method->parameters_count; ++i)
 			{
-				auto parameterType = Method::GetParam(method, i);
+				auto parameterType = il2cpp::vm::Method::GetParam(method, i);
 				bool hasDefault = parameterType->attrs && PARAM_ATTRIBUTE_HAS_DEFAULT;
 				bool isLastArgument = i == (method->parameters_count - 1);
-				Il2CppClass* parameterKlass = Class::FromIl2CppType(parameterType);
-				Class::Init(parameterKlass);
+				Il2CppClass* parameterKlass = get_class_from_type(parameterType);
 				int luaValue = apis->get_arg(info, i - csArgStart);
 
 				if ((hasDefault || (isLastArgument && hasParamArray)) && apis->is_undefined(env, luaValue))
@@ -2102,7 +1937,7 @@ namespace xlua
 				case IL2CPP_TYPE_FNPTR:
 				case IL2CPP_TYPE_PTR:
 				{
-					if (apis->is_function(env, luaValue) && DataTransfer::IsDelegate(parameterKlass))
+					if (apis->is_function(env, luaValue) && xlua::DataTransfer::IsDelegate(parameterKlass))
 					{
 						continue;
 					}
@@ -2114,7 +1949,7 @@ namespace xlua
 					if (ptr)
 					{
 						auto objClass = (Il2CppClass*)apis->get_native_object_typeid(env, luaValue);
-						if (!Class::IsAssignableFrom(parameterKlass, objClass))
+						if (!il2cpp_class_is_assignable_from(parameterKlass, objClass))
 						{
 							return false;
 						}
@@ -2127,22 +1962,22 @@ namespace xlua
 					break;
 				}
 				case IL2CPP_TYPE_VALUETYPE:
-					if (parameterType->type == IL2CPP_TYPE_VALUETYPE && Type::IsEnum(parameterType))
+					if (parameterType->type == IL2CPP_TYPE_VALUETYPE && il2cpp::vm::Type::IsEnum(parameterType))
 					{
-						t = Class::GetEnumBaseType(Type::GetClass(parameterType))->type;
+						t = il2cpp_class_enum_basetype(il2cpp::vm::Type::GetClass(parameterType))->type;
 						goto handle_underlying;
 					}
 					else
 					{
 						auto objClass = (Il2CppClass*)apis->get_native_object_typeid(env, luaValue);
-						if (!objClass || !Class::IsAssignableFrom(parameterKlass, objClass))
+						if (!objClass || !il2cpp_class_is_assignable_from(parameterKlass, objClass))
 						{
 							return false;
 						}
 					}
 					break;
 				case IL2CPP_TYPE_GENERICINST:
-					t = GenericClass::GetTypeDefinition(parameterType->data.generic_class)->byval_arg.type;
+					t = il2cpp::vm::GenericClass::GetTypeDefinition(parameterType->data.generic_class)->byval_arg.type;
 					goto handle_underlying;
 				default:
 					IL2CPP_ASSERT(0);
@@ -2161,23 +1996,22 @@ namespace xlua
 		int returnCount = 0;
 		for (int i = csArgStart; i < method->parameters_count; ++i)
 		{
-			auto parameterType = Method::GetParam(method, i);
+			auto parameterType = il2cpp::vm::Method::GetParam(method, i);
 			bool passedByReference = parameterType->byref;
 			bool hasDefault = parameterType->attrs & PARAM_ATTRIBUTE_HAS_DEFAULT;
 			bool isLastArgument = i == (method->parameters_count - 1);
-			Il2CppClass* parameterKlass = Class::FromIl2CppType(parameterType);
-			Class::Init(parameterKlass);
+			Il2CppClass* parameterKlass = get_class_from_type(parameterType);
 
 			if (isLastArgument && hasParamArray)
 			{
 				int luaParamStart = i - csArgStart;
-				auto elementType = Class::FromIl2CppType(&parameterKlass->element_class->byval_arg);
+				auto elementType = il2cpp_class_from_il2cpp_type(&parameterKlass->element_class->byval_arg);
 				auto arrayLen = lua_args_len - luaParamStart > 0 ? lua_args_len - luaParamStart : 0;
-				auto array = Array::NewSpecific(parameterKlass, arrayLen);
-				if (Class::IsValuetype(elementType))
+				auto array = il2cpp::vm::Array::NewSpecific(parameterKlass, arrayLen);
+				if (il2cpp_class_is_valuetype(elementType))
 				{
 					auto valueSize = elementType->instance_size - sizeof(Il2CppObject);
-					char* addr = Array::GetFirstElementAddress(array);
+					char* addr = il2cpp::vm::Array::GetFirstElementAddress(array);
 					for (int j = luaParamStart; j < lua_args_len; ++j)
 					{
 						void* storage = addr + valueSize * (j - 1 + csArgStart);
@@ -2197,12 +2031,12 @@ namespace xlua
 
 			int luaValue = apis->get_arg(info, i - csArgStart);
 
-			if (Class::IsValuetype(parameterKlass))
+			if (il2cpp_class_is_valuetype(parameterKlass))
 			{
-				if (Class::IsNullable(parameterKlass))
+				if (il2cpp_class_is_nullable(parameterKlass))
 				{
 					void* storage = alloca(parameterKlass->instance_size - sizeof(Il2CppObject));
-					auto underlyClass = Class::GetNullableArgument(parameterKlass);
+					auto underlyClass = il2cpp_class_get_nullable_argument(parameterKlass);
 					uint32_t valueSize = underlyClass->instance_size - sizeof(Il2CppObject);
 					bool hasValue = GetValueTypeFromLua(apis, env, luaValue, underlyClass, storage);
 					*(static_cast<uint8_t*>(storage) + valueSize) = hasValue;
@@ -2212,7 +2046,7 @@ namespace xlua
 				{
 					returnCount++;
 					luaValue = LuaObjectUnRef(apis, env, luaValue);
-					auto underlyClass = Class::FromIl2CppType(&parameterKlass->byval_arg);
+					auto underlyClass = il2cpp_class_from_type(&parameterKlass->byval_arg);
 					size_t storageSize = underlyClass->instance_size - sizeof(Il2CppObject);
 					void* storage = alloca(storageSize);
 					memset(storage, 0, storageSize);
@@ -2257,7 +2091,7 @@ namespace xlua
 				returnCount++;
 				void** arg = (void**)alloca(sizeof(void*));
 				*arg = nullptr;
-				auto underlyClass = Class::FromIl2CppType(&parameterKlass->byval_arg);
+				auto underlyClass = il2cpp_class_from_type(&parameterKlass->byval_arg);
 				luaValue = LuaObjectUnRef(apis, env, luaValue);
 				if (luaValue)
 				{
@@ -2265,7 +2099,7 @@ namespace xlua
 					if (ptr)
 					{
 						auto objClass = (Il2CppClass*)apis->get_native_object_typeid(env, luaValue);
-						if (Class::IsAssignableFrom(underlyClass, objClass))
+						if (il2cpp_class_is_assignable_from(underlyClass, objClass))
 						{
 							*arg = ptr;
 						}
@@ -2279,7 +2113,7 @@ namespace xlua
 			}
 			else if (parameterKlass->byval_arg.type == IL2CPP_TYPE_PTR)
 			{
-				auto underlyClass = Class::FromIl2CppType(&parameterKlass->element_class->byval_arg);
+				auto underlyClass = il2cpp_class_from_il2cpp_type(&parameterKlass->element_class->byval_arg);
 				void* storage = alloca(underlyClass->instance_size - sizeof(Il2CppObject));
 				luaValue = LuaObjectUnRef(apis, env, luaValue);
 				args[i] = GetValueTypeFromLua(apis, env, luaValue, underlyClass, storage) ? storage : nullptr;
@@ -2294,7 +2128,7 @@ namespace xlua
 		//Il2CppObject* ret = Runtime::InvokeWithThrow(method, self, args); //返回ValueType有boxing
 		void* returnValue = NULL;
 		bool returnIsValueType = false;
-		Il2CppClass* returnType = Class::FromIl2CppType(method->return_type);
+		Il2CppClass* returnType = il2cpp_class_from_il2cpp_type(method->return_type);
 		if (method->return_type->type == IL2CPP_TYPE_VOID)
 		{
 			method->invoker_method(method->methodPointer, method, self, args, NULL);
@@ -2303,7 +2137,7 @@ namespace xlua
 		{
 			if (method->return_type->valuetype)
 			{
-				Class::Init(returnType);
+				il2cpp_class_init(returnType);
 				returnValue = alloca(returnType->instance_size - sizeof(Il2CppObject));
 				method->invoker_method(method->methodPointer, method, self, args, returnValue);
 				returnIsValueType = true;
@@ -2313,7 +2147,7 @@ namespace xlua
 				method->invoker_method(method->methodPointer, method, self, args, &returnValue);
 				if (method->return_type->byref)
 				{
-					if (Class::IsValuetype(returnType))
+					if (il2cpp_class_is_valuetype(returnType))
 					{
 						returnIsValueType = true;
 					}
@@ -2329,15 +2163,15 @@ namespace xlua
 		int idx = 0;
 		for (int i = csArgStart; i < method->parameters_count; ++i)
 		{
-			auto parameterType = Method::GetParam(method, i);
+			auto parameterType = il2cpp::vm::Method::GetParam(method, i);
 			bool passedByReference = parameterType->byref;
-			Il2CppClass* parameterKlass = Class::FromIl2CppType(parameterType);
+			Il2CppClass* parameterKlass = il2cpp_class_from_type(parameterType);
 
 			int luaValue = apis->get_arg(info, i - csArgStart);
 
-			if (Class::IsValuetype(parameterKlass) && passedByReference)
+			if (il2cpp_class_is_valuetype(parameterKlass) && passedByReference)
 			{
-				if (Class::IsNullable(parameterKlass))
+				if (il2cpp_class_is_nullable(parameterKlass))
 				{
 					bool hasValue = !!*(static_cast<uint8_t*>(args[i]) + parameterKlass->instance_size - sizeof(Il2CppObject));
 					if (!hasValue)
@@ -2346,8 +2180,8 @@ namespace xlua
 						continue;
 					}
 				}
-				auto underlyClass = Class::FromIl2CppType(&parameterKlass->byval_arg);
-				if (Class::IsValuetype(underlyClass))
+				auto underlyClass = il2cpp_class_from_type(&parameterKlass->byval_arg);
+				if (il2cpp_class_is_valuetype(underlyClass))
 				{
 					returnValueArray[idx++] = CSValueToLuaValue(apis, env, underlyClass, args[i]);
 				}
@@ -2360,12 +2194,12 @@ namespace xlua
 			else if (passedByReference)
 			{
 				Il2CppObject** arg = (Il2CppObject**)args[i];
-				auto underlyClass = Class::FromIl2CppType(&parameterKlass->byval_arg);
+				auto underlyClass = il2cpp_class_from_type(&parameterKlass->byval_arg);
 				returnValueArray[idx++] = CSRefToLuaValue(apis, env, underlyClass, *arg);
 			}
 			else if (parameterKlass->byval_arg.type == IL2CPP_TYPE_PTR)
 			{
-				auto underlyClass = Class::FromIl2CppType(&parameterKlass->element_class->byval_arg);
+				auto underlyClass = il2cpp_class_from_type(&parameterKlass->element_class->byval_arg);
 				Il2CppObject* ptr = (Il2CppObject*)(((uint8_t*)args[i]) - sizeof(Il2CppObject));
 				LuaObjectSetRef(apis, env, luaValue, CSRefToLuaValue(apis, env, underlyClass, ptr));
 			}
@@ -2408,23 +2242,23 @@ namespace xlua
 			csThis = apis->get_native_object_ptr(env, luaThis);
 		}
 
-		if (Class::IsValuetype(fieldType))
+		if (il2cpp_class_is_valuetype(fieldType))
 		{
 			void* storage = nullptr;
 			bool isFieldPtr = true;
 			auto expectType = fieldType;
-			if (Class::IsNullable(fieldType))
+			if (il2cpp_class_is_nullable(fieldType))
 			{
-				expectType = Class::GetNullableArgument(fieldType);
+				expectType = il2cpp_class_get_nullable_argument(fieldType);
 			}
-			if (Class::IsEnum(fieldType))
+			if (il2cpp_class_is_enum(fieldType))
 			{
-				expectType = Class::GetElementClass(fieldType);
+				expectType = il2cpp_class_get_element_class(fieldType);
 			}
 
 			if ((field->type->attrs & FIELD_ATTRIBUTE_STATIC))
 			{
-				int t = Class::GetType(fieldType)->type;
+				int t = il2cpp_class_get_type(fieldType)->type;
 				if (t >= IL2CPP_TYPE_BOOLEAN && t <= IL2CPP_TYPE_R8 || t == IL2CPP_TYPE_I || t == IL2CPP_TYPE_U)
 				{
 					storage = alloca(expectType->instance_size - sizeof(Il2CppObject));
@@ -2489,12 +2323,12 @@ namespace xlua
 			csThis = apis->get_native_object_ptr(env, luaThis);
 		}
 		int luaValue = apis->get_arg(info, 0);
-		if (Class::IsValuetype(fieldType))
+		if (il2cpp_class_is_valuetype(fieldType))
 		{
-			if (Class::IsNullable(fieldType))
+			if (il2cpp_class_is_nullable(fieldType))
 			{
 				void* storage = alloca(fieldType->instance_size - sizeof(Il2CppObject));
-				auto underlyClass = Class::GetNullableArgument(fieldType);
+				auto underlyClass = il2cpp_class_get_nullable_argument(fieldType);
 				uint32_t valueSize = underlyClass->instance_size - sizeof(Il2CppObject);
 				bool hasValue = GetValueTypeFromLua(apis, env, luaValue, underlyClass, storage);
 				*(static_cast<uint8_t*>(storage) + valueSize) = hasValue;
@@ -2640,7 +2474,7 @@ namespace xlua
 
 		if (ret == nullptr)
 		{
-			ret = il2cpp::vm::Object::New(xlua::g_typeofLuaTable);
+			ret = il2cpp_object_new(xlua::g_typeofLuaTable);
 			const MethodInfo* ctor = il2cpp_class_get_method_from_name(xlua::g_typeofLuaTable, ".ctor", 0);
 			typedef void (*NativeCtorPtr)(Il2CppObject* ___this, const MethodInfo* method);
 			((NativeCtorPtr)ctor->methodPointer)(ret, ctor);
@@ -2661,7 +2495,7 @@ namespace xlua
 		Il2CppObject* ret = FindOrCreateHandleStoreOfValue(apis, env, -1, &value_ref);
 		if (ret == nullptr)
 		{
-			ret = il2cpp::vm::Object::New(xlua::g_typeofLuaTable);
+			ret = il2cpp_object_new(xlua::g_typeofLuaTable);
 			const MethodInfo* ctor = il2cpp_class_get_method_from_name(xlua::g_typeofLuaTable, ".ctor", 0);
 			typedef void (*NativeCtorPtr)(Il2CppObject* ___this, const MethodInfo* method);
 			((NativeCtorPtr)ctor->methodPointer)(ret, ctor);
@@ -2687,7 +2521,7 @@ namespace xlua
 
 		if (apis->has_caught(env))
 		{
-			Exception::Raise(Exception::GetInvalidOperationException(apis->get_exception_as_string(env, true)));
+			il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException(apis->get_exception_as_string(env, true)));
 			return nullptr;
 		}
 		return LuaValueToCSRef(apis, il2cpp_codegen_class_from_type(__type->type), env, ret);
@@ -2709,7 +2543,7 @@ namespace xlua
 
 		if (apis->has_caught(env))
 		{
-			Exception::Raise(Exception::GetInvalidOperationException(apis->get_exception_as_string(env, true)));
+			il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException(apis->get_exception_as_string(env, true)));
 			return nullptr;
 		}
 		if (ValueScope.scope != ret && __type != nullptr)
@@ -2734,26 +2568,42 @@ namespace xlua
 		}
 	}
 
-	static void* OnCsObjectEnter(Il2CppObject* obj, void* class_data, LuaEnvPrivate* luaEnvPrivate)
+	static void* OnCsObjectEnter(void* ptr, LuaClassInfo* classInfo, LuaEnvPrivate* luaEnvPrivate)
 	{
-		return reinterpret_cast<void*>(luaEnvPrivate->RefCSObject(obj));
+		if (!classInfo) return nullptr;
+		if (classInfo->IsValueType)
+		{
+			if (classInfo->TypeId->has_references)
+			{
+				return reinterpret_cast<void*>(luaEnvPrivate->RefCSObject(Box(classInfo->TypeId, ptr)));
+			}
+			return nullptr;
+		}
+		else
+		{
+			return reinterpret_cast<void*>(luaEnvPrivate->RefCSObject((Il2CppObject*)ptr));
+		}
 	}
 
-	static void OnCsObjectExit(Il2CppObject* ptr, LuaClassInfo* class_data, LuaEnvPrivate* luaEnvPrivate, void* userdata)
+	static void OnCsObjectExit(void* ptr, LuaClassInfo* classInfo, LuaEnvPrivate* luaEnvPrivate, void* userdata)
 	{
-		intptr_t idx = reinterpret_cast<intptr_t>(userdata);
-		if (luaEnvPrivate)
-			luaEnvPrivate->UnRefCSObject(idx);
-		if (g_typeofILuaGCInterface && Class::IsAssignableFrom(g_typeofILuaGCInterface, class_data->TypeId))
+		if (!classInfo) return;
+		if (classInfo->IsValueType || classInfo->TypeId->has_references)
 		{
-			const MethodInfo* onLuaGC = il2cpp::vm::Class::GetMethodFromName(class_data->TypeId, "OnLuaGC", 0);
+			intptr_t idx = reinterpret_cast<intptr_t>(userdata);
+			luaEnvPrivate->UnRefCSObject(idx);
+		}
+
+		/*if (g_typeofILuaGCInterface && il2cpp_class_is_assignable_from(g_typeofILuaGCInterface, classInfo->TypeId))
+		{
+			const MethodInfo* onLuaGC = il2cpp_class_get_method_from_name(classInfo->TypeId, "OnLuaGC", 0);
 			Il2CppException* exception = NULL;
-			il2cpp::vm::Runtime::Invoke(onLuaGC, ptr, NULL, &exception);
+			il2cpp_runtime_invoke(onLuaGC, ptr, NULL, &exception);
 			if (exception != NULL)
 			{
 				il2cpp::vm::Exception::Raise(exception);
 			}
-		}
+		}*/
 	}
 
 	static void FreeCSharpMethodInfo(CSharpMethodInfo* csharpMethodInfo)
@@ -2785,12 +2635,12 @@ namespace xlua
 		{
 			return true;
 		}
-		return klass != il2cpp_defaults.void_class && !IsPrimitive(type->type) && IL2CPP_TYPE_ENUM != type->type && !Type::IsEnum(type) && Class::GetParent(klass) != il2cpp_defaults.enum_class;
+		return klass != il2cpp_defaults.void_class && !IsPrimitive(type->type) && IL2CPP_TYPE_ENUM != type->type && !il2cpp::vm::Type::IsEnum(type) && il2cpp_class_get_parent(klass) != il2cpp_defaults.enum_class;
 	}
 
 	static void SetParamArrayFlagAndOptionalNum(WrapData* data, const MethodInfo* method)
 	{
-		data->HasParamArray = HasParamArray(method);
+		data->HasParamArray = il2cpp_has_param_array(method);
 		data->OptionalNum = 0;
 
 		for (uint32_t i = 0; i < method->parameters_count; ++i)
@@ -2804,18 +2654,18 @@ namespace xlua
 
 	static WrapData* CreateOverloadData(const MethodInfo* method, bool isExtensionMethod)
 	{
-		bool isStatic = !Method::IsInstance(method) && !isExtensionMethod;
+		bool isStatic = !il2cpp::vm::Method::IsInstance(method) && !isExtensionMethod;
 		std::vector<Il2CppClass*> usedTypes;
-		const Il2CppType* type = Method::GetReturnType(method);
+		const Il2CppType* type = il2cpp::vm::Method::GetReturnType(method);
 		Il2CppClass* klass = il2cpp_codegen_class_from_type(type);
 		if (TypeInfoPassToLuaFilter(type, klass))
 		{
 			usedTypes.push_back(klass);
 		}
-		size_t paramCount = Method::GetParamCount(method);
+		size_t paramCount = il2cpp::vm::Method::GetParamCount(method);
 		for (size_t index = isExtensionMethod ? 1 : 0; index < paramCount; ++index)
 		{
-			type = Method::GetParam(method, index);
+			type = il2cpp::vm::Method::GetParam(method, index);
 			klass = il2cpp_codegen_class_from_type(type);
 			if (TypeInfoPassToLuaFilter(type, klass))
 			{
@@ -2863,7 +2713,7 @@ namespace xlua
 		for (int i = 0; i < argc; ++i)
 		{
 			Il2CppReflectionMethod* reflectionMethod = (Il2CppReflectionMethod*)apis->get_native_object_ptr(env, apis->get_arg(info, i));
-			if (!reflectionMethod || !Class::IsAssignableFrom(il2cpp_defaults.method_info_class, reflectionMethod->object.klass))
+			if (!reflectionMethod || !il2cpp_class_is_assignable_from(il2cpp_defaults.method_info_class, reflectionMethod->object.klass))
 			{
 				apis->throw_by_string(info, "expect a MethodInfo");
 				FreeCSharpMethodInfo(csharpMethodInfo);
@@ -2903,13 +2753,13 @@ namespace xlua
 		apis->add_return(info, ret);
 	}
 
-	xlua::LuaEnvPrivate* InitialPapiEnvRef(struct pesapi_ffi* apis, pesapi_env_ref envRef, Il2CppObject *objPool, Il2CppReflectionMethod* objPoolAddMethodInfo, Il2CppReflectionMethod* objPoolRemoveMethodInfo)
+	xlua::LuaEnvPrivate* InitialPapiEnvRef(struct pesapi_ffi* apis, pesapi_env_ref envRef, Il2CppObject* objPool, Il2CppReflectionMethod* objPoolAddMethodInfo, Il2CppReflectionMethod* objPoolRemoveMethodInfo)
 	{
 		auto env = apis->get_env_from_ref(envRef);
 		xlua::AutoValueScope ValueScope(apis, env);
 		if (xlua::LuaEnvPrivate::instance != nullptr)
 		{
-			xlua::XLuaLog(XLuaLogType::Error, "LuaEnvPrivate is exist!");
+			apis->error("LuaEnvPrivate is exist!");
 			return nullptr;
 		}
 		auto luaEnvPrivate = new xlua::LuaEnvPrivate(apis, envRef, objPool, objPoolAddMethodInfo, objPoolRemoveMethodInfo);
@@ -2927,7 +2777,7 @@ namespace xlua
 				return luaEnvPrivate;
 			}
 		}
-		Exception::Raise(Exception::GetInvalidOperationException("can not init global.loadType or global.createFunction"));
+		il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException("can not init global.loadType or global.createFunction"));
 	}
 
 	void CleanupPapiEnvRef(struct pesapi_ffi* apis, pesapi_env_ref envRef)
@@ -2935,84 +2785,20 @@ namespace xlua
 		apis->release_env_ref(envRef);
 	}
 
-	void DestroyLuaEnvPrivate()
+	void DestroyLuaEnvPrivate(pesapi_ffi* apis)
 	{
 		if (xlua::LuaEnvPrivate::instance == nullptr)
 		{
-			xlua::XLuaLog(XLuaLogType::Error, "LuaEnvPrivate already destroy!");
+			apis->error("LuaEnvPrivate already destroy!");
 			return;
 		}
 		delete xlua::LuaEnvPrivate::instance;
+		xlua::LuaEnvPrivate::instance = nullptr;
 	}
 
-	Il2CppClass* GenericParamGetBaseType(Il2CppMetadataGenericParameterHandle gparam)
+	bool RegisterType(Il2CppClass* oklass, pesapi_ffi* apis)
 	{
-		Il2CppClass** constraints = Class::GetOrCreateMonoGenericParameterInfo(gparam)->constraints;
-
-		Il2CppClass* base_class = il2cpp_defaults.object_class;
-
-		if (constraints)
-		{
-			for (int i = 0; constraints[i]; ++i)
-			{
-				Il2CppClass* constraint = constraints[i];
-
-				if (Class::IsInterface(constraint))
-				{
-					continue;
-				}
-
-				Il2CppType* constraint_type = &constraint->byval_arg;
-				if (constraint_type->type == IL2CPP_TYPE_VAR || constraint_type->type == IL2CPP_TYPE_MVAR)
-				{
-					Il2CppMetadataGenericParameterHandle constraint_param = constraint_type->data.genericParameterHandle;
-					Il2CppGenericParameterInfo constraint_info = MetadataCache::GetGenericParameterInfo(constraint_param);
-					if ((constraint_info.flags & IL2CPP_GENERIC_PARAMETER_ATTRIBUTE_REFERENCE_TYPE_CONSTRAINT) == 0 &&
-						(constraint_info.flags & IL2CPP_GENERIC_PARAMETER_ATTRIBUTE_NOT_NULLABLE_VALUE_TYPE_CONSTRAINT) == 0)
-					{
-						continue;
-					}
-				}
-
-				base_class = constraint;
-			}
-		}
-
-		if (base_class == il2cpp_defaults.object_class)
-		{
-			Il2CppGenericParameterInfo gparamInfo = MetadataCache::GetGenericParameterInfo(gparam);
-			if ((gparamInfo.flags & IL2CPP_GENERIC_PARAMETER_ATTRIBUTE_NOT_NULLABLE_VALUE_TYPE_CONSTRAINT) != 0)
-			{
-				base_class = il2cpp_defaults.value_type_class;
-			}
-		}
-
-		return base_class;
-	}
-
-	static const MethodInfo* MakeGenericMethodByConstraintedArguments(const MethodInfo* method)
-	{
-		if (!Method::IsGeneric(method) || Method::IsInflated(method))
-		{
-			return method;
-		}
-
-		Il2CppMetadataGenericContainerHandle containerHandle = MetadataCache::GetGenericContainerFromMethod(method->methodMetadataHandle);
-
-		uint32_t count = MetadataCache::GetGenericContainerCount(containerHandle);
-		const Il2CppType** genericArguments = (const Il2CppType**)alloca(count * sizeof(Il2CppType*));
-
-		for (uint32_t i = 0; i < count; i++)
-		{
-			Il2CppMetadataGenericParameterHandle param = GenericContainer::GetGenericParameter(containerHandle, i);
-			genericArguments[i] = &(GenericParamGetBaseType(param)->byval_arg);
-		}
-		return MetadataCache::GetGenericInstanceMethod(method, genericArguments, count);
-	}
-
-	bool RegisterType(Il2CppClass* oklass)
-	{
-		Class::Init(oklass);
+		il2cpp_class_init(oklass);
 
 		if (pesapi_get_class_data(oklass, false))
 		{
@@ -3024,13 +2810,13 @@ namespace xlua
 		LuaClassInfo* classInfo = new LuaClassInfo();
 		classInfo->Name = oklass->name;
 		classInfo->TypeId = oklass;
-		classInfo->SuperTypeId = Class::GetParent(oklass);
-		classInfo->IsValueType = Class::IsValuetype(oklass);
+		classInfo->SuperTypeId = il2cpp_class_get_parent(oklass);
+		classInfo->IsValueType = il2cpp_class_is_valuetype(oklass);
 
 		auto AddMethod = [&](const MethodInfo* method, bool isGetter, bool isSetter, const char* name) -> bool
 			{
 				bool isExtensionMethod = IsExtensionMethod(method);
-				bool isStatic = !Method::IsInstance(method) && !isExtensionMethod;
+				bool isStatic = !il2cpp::vm::Method::IsInstance(method) && !isExtensionMethod;
 				for (int i = 0; i < classInfo->Methods.size(); ++i)
 				{
 					if (classInfo->Methods[i].IsStatic == isStatic && classInfo->Methods[i].IsGetter == isGetter && classInfo->Methods[i].IsSetter == isSetter && classInfo->Methods[i].Name == name)
@@ -3051,14 +2837,14 @@ namespace xlua
 			};
 		if (isDelegate)
 		{
-			MethodInfo* invoke = (MethodInfo*)il2cpp::vm::Class::GetMethodFromName(oklass, "Invoke", -1);
+			MethodInfo* invoke = (MethodInfo*)il2cpp_class_get_method_from_name(oklass, "Invoke", -1);
 			try
 			{
 				std::string signature = GetMethodSignature(invoke, true, false);
 				classInfo->DelegateBridge = FindBridgeFunc(signature.c_str());
 				if (classInfo->DelegateBridge == nullptr)
 				{
-					xlua::XLuaLog(XLuaLogType::Exception, "%s(%s) not found delegate bridge", oklass->name, signature.c_str());
+					apis->fatal(il2cpp::utils::StringUtils::Printf("%s %s not found delegate bridge", oklass->name, signature.c_str()).c_str());
 					return false;
 				}
 			}
@@ -3074,17 +2860,17 @@ namespace xlua
 			auto etype = oklass->byval_arg.type;
 			if (etype != IL2CPP_TYPE_SZARRAY && etype != IL2CPP_TYPE_ARRAY)
 			{
-				Class::SetupMethods(oklass);
+				il2cpp_class_setup_methods(oklass);
 				for (uint16_t i = 0; i < oklass->method_count; ++i)
 				{
 					const MethodInfo* method = oklass->methods[i];
-					if (!IsCCtor(method) && !Method::IsGeneric(method))
+					if (!IsCCtor(method) && !il2cpp::vm::Method::IsGeneric(method))
 					{
 						const char* name = method->name;
 						if (!(method->flags & METHOD_ATTRIBUTE_PUBLIC))
 						{
 							name = strrchr(name, '.'); // if Explicit Interface Implementation
-							if (!name) 
+							if (!name)
 								continue;
 							++name;
 						}
@@ -3101,7 +2887,7 @@ namespace xlua
 						}
 					}
 				}
-				Class::SetupFields(oklass);
+				il2cpp_class_setup_fields(oklass);
 				for (uint16_t i = 0; i < oklass->field_count; i++)
 				{
 					FieldInfo* field = &oklass->fields[i];
@@ -3139,22 +2925,22 @@ namespace xlua
 						fieldData->Setter = nullptr;
 					}
 					fieldData->FieldInfo = field;
-					fieldData->Offset = (int32_t)Field::GetOffset(field) - (Class::IsValuetype(Field::GetParent(field)) ? sizeof(Il2CppObject) : 0);
-					fieldData->TypeInfo = Class::FromIl2CppType(field->type, false);
+					fieldData->Offset = (int32_t)il2cpp::vm::Field::GetOffset(field) - (il2cpp_class_is_valuetype(il2cpp::vm::Field::GetParent(field)) ? sizeof(Il2CppObject) : 0);
+					fieldData->TypeInfo = il2cpp_class_from_type(field->type);
 					classInfo->Fields.push_back({ std::string(field->name), isStatic, isReadonly, fieldData });
 				}
 			}
-			std::string assemblyQualifiedName(Type::GetName(&oklass->byval_arg, IL2CPP_TYPE_NAME_FORMAT_ASSEMBLY_QUALIFIED));
+			std::string assemblyQualifiedName(il2cpp::vm::Type::GetName(&oklass->byval_arg, IL2CPP_TYPE_NAME_FORMAT_ASSEMBLY_QUALIFIED));
 			if (!assemblyQualifiedName.empty())
 			{
 				Il2CppArray* extensionMethods = g_ExtensionMethodGetHelper.Call(il2cpp::vm::String::NewWrapper(assemblyQualifiedName.c_str()));
 				if (extensionMethods)
 				{
-					uint32_t len = Array::GetLength(extensionMethods);
+					uint32_t len = il2cpp::vm::Array::GetLength(extensionMethods);
 					Il2CppReflectionMethod** arr = reinterpret_cast<Il2CppReflectionMethod**>(il2cpp::vm::Array::GetFirstElementAddress(extensionMethods));
 					for (uint32_t i = 0; i < len; ++i)
 					{
-						AddMethod(MakeGenericMethodByConstraintedArguments(arr[i]->method), false, false, arr[i]->method->name);
+						AddMethod(il2cpp_make_generic_method_by_constraints_arguments(arr[i]->method), false, false, arr[i]->method->name);
 					}
 				}
 			}
@@ -3218,19 +3004,19 @@ namespace xlua
 		for (auto& field : classInfo->Fields)
 		{
 			pesapi_set_property_info(
-				properties, 
-				pos++, 
-				field.Name.c_str(), 
-				field.IsStatic, 
-				GetterCallback, 
-				field.IsReadonly ? nullptr : SetterCallback, 
-				field.Data, 
-				field.Data, 
+				properties,
+				pos++,
+				field.Name.c_str(),
+				field.IsStatic,
+				GetterCallback,
+				field.IsReadonly ? nullptr : SetterCallback,
+				field.Data,
+				field.Data,
 				nullptr
 			);
 		}
-		const bool dictionary = Class::IsAssignableFrom(xlua::g_typeofIDictionary, oklass);
-		const bool enumerable = !dictionary && Class::IsAssignableFrom(xlua::g_typeofIEnumerable, oklass);
+		const bool dictionary = il2cpp_class_is_assignable_from(xlua::g_typeofIDictionary, oklass);
+		const bool enumerable = !dictionary && il2cpp_class_is_assignable_from(xlua::g_typeofIEnumerable, oklass);
 		pesapi_define_class(
 			classInfo->TypeId,
 			classInfo->SuperTypeId,
@@ -3243,10 +3029,7 @@ namespace xlua
 			dictionary,
 			enumerable);
 
-		if (!classInfo->IsValueType)
-		{
-			pesapi_trace_native_object_lifecycle(classInfo->TypeId, (pesapi_on_native_object_enter)&OnCsObjectEnter, (pesapi_on_native_object_exit)&OnCsObjectExit);
-		}
+		pesapi_trace_native_object_lifecycle(classInfo->TypeId, (pesapi_on_native_object_enter)&OnCsObjectEnter, (pesapi_on_native_object_exit)&OnCsObjectExit);
 		return true;
 	}
 
@@ -3276,65 +3059,50 @@ extern "C"
 
 	void InitialXLua(pesapi_func_ptr* func_array)
 	{
-#define SET_GLOBAL_TYPE(TYPE) InternalCalls::Add("XLua.NativeAPI::SetGlobalType_" #TYPE "(System.Type)", (Il2CppMethodPointer) xlua::SetGlobalType_##TYPE);
+#define SET_GLOBAL_TYPE(TYPE) il2cpp::vm::InternalCalls::Add("XLua.NativeAPI::SetGlobalType_" #TYPE "(System.Type)", (Il2CppMethodPointer) xlua::SetGlobalType_##TYPE);
 		LUA_ALL_TYPES(SET_GLOBAL_TYPE)
 #undef SET_GLOBAL_TYPE
-		InternalCalls::Add("XLua.NativeAPI::GetMethodPointer(System.Reflection.MethodBase)", (Il2CppMethodPointer)xlua::GetMethodPointer);
-		InternalCalls::Add("XLua.NativeAPI::DoString(System.IntPtr,System.IntPtr,System.Byte[],System.String,XLua.LuaTable,System.Type)", (Il2CppMethodPointer)xlua::DoString);
-		InternalCalls::Add("XLua.NativeAPI::LoadString(System.IntPtr,System.IntPtr,System.Byte[],System.String,XLua.LuaTable,System.Type)", (Il2CppMethodPointer)xlua::LoadString);
-		InternalCalls::Add("XLua.NativeAPI::SetObjectToGlobal(System.IntPtr,System.IntPtr,System.String,System.Object)", (Il2CppMethodPointer)xlua::SetObjectToGlobal);
-		InternalCalls::Add("XLua.NativeAPI::InitialPapiEnvRef(System.IntPtr,System.IntPtr,System.Object,System.Reflection.MethodBase,System.Reflection.MethodBase)", (Il2CppMethodPointer)xlua::InitialPapiEnvRef);
-		InternalCalls::Add("XLua.NativeAPI::InitPerf(System.Reflection.MethodBase,System.Reflection.MethodBase)", (Il2CppMethodPointer)xlua::InitPerf);
-		InternalCalls::Add("XLua.NativeAPI::CleanupPapiEnvRef(System.IntPtr,System.IntPtr)", (Il2CppMethodPointer)xlua::CleanupPapiEnvRef);
-		InternalCalls::Add("XLua.NativeAPI::DestroyLuaEnvPrivate()", (Il2CppMethodPointer)xlua::DestroyLuaEnvPrivate);
-		InternalCalls::Add("XLua.LuaTable::GetLuaTableValueByUInt64(System.IntPtr,System.UInt64,System.Type)", (Il2CppMethodPointer)xlua::GetLuaTableValueByUInt64);
-		InternalCalls::Add("XLua.LuaTable::GetLuaTableValueByString(System.IntPtr,System.String,System.Type)", (Il2CppMethodPointer)xlua::GetLuaTableValueByString);
-		InternalCalls::Add("XLua.LuaTable::SetLuaTableValueByUInt64(System.IntPtr,System.UInt64,System.Object)", (Il2CppMethodPointer)xlua::SetLuaTableValueByUInt64);
-		InternalCalls::Add("XLua.LuaTable::SetLuaTableValueByString(System.IntPtr,System.String,System.Object)", (Il2CppMethodPointer)xlua::SetLuaTableValueByString);
-		InternalCalls::Add("XLua.LuaTable::GetLuaTableLength(System.IntPtr)", (Il2CppMethodPointer)xlua::GetLuaTableLength);
-		InternalCalls::Add("XLua.NativeAPI::CSRefToLuaValue(System.IntPtr,System.IntPtr,System.Type,System.Object)", (Il2CppMethodPointer)xlua::CSRefToLuaValue);
-		InternalCalls::Add("XLua.NativeAPI::NewTable(System.IntPtr,System.IntPtr)", (Il2CppMethodPointer)xlua::NewTable);
-		InternalCalls::Add("XLua.NativeAPI::GetGlobalTable(System.IntPtr,System.IntPtr)", (Il2CppMethodPointer)xlua::GetGlobalTable);
-		InternalCalls::Add("XLua.NativeAPI::SetExtensionMethodGet(System.Reflection.MethodBase)", (Il2CppMethodPointer)xlua::SetExtensionMethodGet);
+			il2cpp::vm::InternalCalls::Add("XLua.NativeAPI::GetMethodPointer(System.Reflection.MethodBase)", (Il2CppMethodPointer)xlua::GetMethodPointer);
+		il2cpp::vm::InternalCalls::Add("XLua.NativeAPI::DoString(System.IntPtr,System.IntPtr,System.Byte[],System.String,XLua.LuaTable,System.Type)", (Il2CppMethodPointer)xlua::DoString);
+		il2cpp::vm::InternalCalls::Add("XLua.NativeAPI::LoadString(System.IntPtr,System.IntPtr,System.Byte[],System.String,XLua.LuaTable,System.Type)", (Il2CppMethodPointer)xlua::LoadString);
+		il2cpp::vm::InternalCalls::Add("XLua.NativeAPI::SetObjectToGlobal(System.IntPtr,System.IntPtr,System.String,System.Object)", (Il2CppMethodPointer)xlua::SetObjectToGlobal);
+		il2cpp::vm::InternalCalls::Add("XLua.NativeAPI::InitialPapiEnvRef(System.IntPtr,System.IntPtr,System.Object,System.Reflection.MethodBase,System.Reflection.MethodBase)", (Il2CppMethodPointer)xlua::InitialPapiEnvRef);
+		il2cpp::vm::InternalCalls::Add("XLua.NativeAPI::InitPerf(System.Reflection.MethodBase,System.Reflection.MethodBase)", (Il2CppMethodPointer)xlua::InitPerf);
+		il2cpp::vm::InternalCalls::Add("XLua.NativeAPI::CleanupPapiEnvRef(System.IntPtr,System.IntPtr)", (Il2CppMethodPointer)xlua::CleanupPapiEnvRef);
+		il2cpp::vm::InternalCalls::Add("XLua.NativeAPI::DestroyLuaEnvPrivate(System.IntPtr)", (Il2CppMethodPointer)xlua::DestroyLuaEnvPrivate);
+		il2cpp::vm::InternalCalls::Add("XLua.LuaTable::GetLuaTableValueByUInt64(System.IntPtr,System.UInt64,System.Type)", (Il2CppMethodPointer)xlua::GetLuaTableValueByUInt64);
+		il2cpp::vm::InternalCalls::Add("XLua.LuaTable::GetLuaTableValueByString(System.IntPtr,System.String,System.Type)", (Il2CppMethodPointer)xlua::GetLuaTableValueByString);
+		il2cpp::vm::InternalCalls::Add("XLua.LuaTable::SetLuaTableValueByUInt64(System.IntPtr,System.UInt64,System.Object)", (Il2CppMethodPointer)xlua::SetLuaTableValueByUInt64);
+		il2cpp::vm::InternalCalls::Add("XLua.LuaTable::SetLuaTableValueByString(System.IntPtr,System.String,System.Object)", (Il2CppMethodPointer)xlua::SetLuaTableValueByString);
+		il2cpp::vm::InternalCalls::Add("XLua.LuaTable::GetLuaTableLength(System.IntPtr)", (Il2CppMethodPointer)xlua::GetLuaTableLength);
+		il2cpp::vm::InternalCalls::Add("XLua.NativeAPI::CSRefToLuaValue(System.IntPtr,System.IntPtr,System.Type,System.Object)", (Il2CppMethodPointer)xlua::CSRefToLuaValue);
+		il2cpp::vm::InternalCalls::Add("XLua.NativeAPI::NewTable(System.IntPtr,System.IntPtr)", (Il2CppMethodPointer)xlua::NewTable);
+		il2cpp::vm::InternalCalls::Add("XLua.NativeAPI::GetGlobalTable(System.IntPtr,System.IntPtr)", (Il2CppMethodPointer)xlua::GetGlobalTable);
+		il2cpp::vm::InternalCalls::Add("XLua.NativeAPI::SetExtensionMethodGet(System.Reflection.MethodBase)", (Il2CppMethodPointer)xlua::SetExtensionMethodGet);
 		pesapi_init(func_array);
 
-		xlua::s_ParamArrayAttribute = Class::FromName(il2cpp_defaults.corlib, "System", "ParamArrayAttribute");
-		xlua::s_ExtensionAttribute = Class::FromName(il2cpp_defaults.corlib, "System.Runtime.CompilerServices", "ExtensionAttribute");
+		xlua::s_ExtensionAttribute = il2cpp_class_from_name(il2cpp_defaults.corlib, "System.Runtime.CompilerServices", "ExtensionAttribute");
+		il2cpp_extend_init();
 	}
 
 	void AddPendingKillScriptObjects(struct pesapi_ffi* apis, pesapi_value_ref valueRef)
 	{
 		if (xlua::LuaEnvPrivate::instance == nullptr)
 		{
-			xlua::XLuaLog(xlua::XLuaLogType::Error, "LuaEnvPrivate is nullptr");
+			apis->error("LuaEnvPrivate is nullptr");
 			return;
 		}
-		// 无论如何不要在多线程中操作lua
-		// pesapi_env env = apis->get_ref_associated_env(valueRef);
-		// if (!apis->env_ref_is_valid(env))
-		// {
-		// 	apis->release_value_ref(valueRef);
-		// 	return;
-		// }
-		xlua::LuaEnvPrivate::instance->AddPendingKillScriptObjects(valueRef);
+		il2cpp_add_pending_kill_script_objects(valueRef);
 	}
 
-	void CleanupPendingKillScriptObjects(const xlua::LuaEnvPrivate* lua_env_private)
+	void CleanupPendingKillScriptObjects(const xlua::LuaEnvPrivate* lua_env_private, pesapi_ffi* apis)
 	{
 		if (xlua::LuaEnvPrivate::instance != lua_env_private && lua_env_private != nullptr)
 		{
-			xlua::XLuaLog(xlua::XLuaLogType::Error, "LuaEnvPrivate is nullptr");
+			apis->error("LuaEnvPrivate is nullptr");
 			return;
 		}
 		xlua::LuaEnvPrivate::instance->CleanupPendingKillScriptObjects();
-	}
-
-	void SetLogCallbackInternal(xlua::LogCallbackFunc Log, xlua::LogCallbackFunc logWarning, xlua::LogCallbackFunc logError, xlua::LogCallbackFunc logException)
-	{
-		xlua::GLogCallback = Log;
-		xlua::GLogWarningCallback = logWarning;
-		xlua::GLogErrorCallback = logError;
-		xlua::GLogExceptionCallback = logException;
 	}
 #ifdef __cplusplus
 }

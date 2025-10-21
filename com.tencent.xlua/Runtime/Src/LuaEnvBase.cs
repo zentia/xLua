@@ -21,7 +21,6 @@ namespace XLua
         internal int authCode;
 
         internal static LuaEnv Instance;
-
         public IntPtr L
         {
             get
@@ -55,7 +54,6 @@ namespace XLua
 
         protected void Init(CustomLoader loader)
         {
-            NativeAPI.SetLogCallback(LogCallback, LogWarningCallback, LogErrorCallback, LogExceptionCallback);
             if (loader != null)
             {
                 AddLoader(loader);
@@ -102,44 +100,6 @@ namespace XLua
             Lua.lua_pushstdcallcfunction(_L, searcher);
             Lua.xlua_rawseti(_L, -2, index);
             Lua.lua_pop(_L, 1);
-        }
-
-        [MonoPInvokeCallback(typeof(XLua.NativeAPI.LogCallback))]
-        private static void LogCallback(string msg)
-        {
-            Debug.LogFormat(LogType.Log, LogOption.NoStacktrace, null,"{0}", msg);
-        }
-
-        [MonoPInvokeCallback(typeof(XLua.NativeAPI.LogCallback))]
-        private static void LogWarningCallback(string msg)
-        {
-            Debug.LogFormat(LogType.Warning, LogOption.NoStacktrace, null, "{0}", msg);
-        }
-
-        [MonoPInvokeCallback(typeof(XLua.NativeAPI.LogCallback))]
-        private static void LogErrorCallback(string msg)
-        {
-#if OSGAME
-            Log.LogCustom(Log.Type.Fatal, Log.OsgLogOption.LuaStackTrace, LogTag.Lua, msg);
-#else
-            Debug.LogFormat(LogType.Error, LogOption.NoStacktrace, null, "{0}", msg);
-#endif
-            
-        }
-
-        [MonoPInvokeCallback(typeof(XLua.NativeAPI.LogCallback))]
-        private static void LogExceptionCallback(string msg)
-        {
-            Debug.LogException(new LuaException(msg));
-        }
-
-        public static string GetLuaStackTrace()
-        {
-            if (Instance == null)
-            {
-                return "";
-            }
-            return Marshal.PtrToStringAnsi(NativeAPI.GetLuaStackTrace());
         }
     }
 }

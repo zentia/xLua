@@ -5,49 +5,49 @@
 -- Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 
 local friendlyNameMap = {
-	["System.Object"] = "object",
-	["System.String"] = "string",
-	["System.Boolean"] = "bool",
-	["System.Byte"] = "byte",
-	["System.Char"] = "char",
-	["System.Decimal"] = "decimal",
-	["System.Double"] = "double",
-	["System.Int16"] = "short",
-	["System.Int32"] = "int",
-	["System.Int64"] = "long",
-	["System.SByte"] = "sbyte",
-	["System.Single"] = "float",
-	["System.UInt16"] = "ushort",
-	["System.UInt32"] = "uint",
-	["System.UInt64"] = "ulong",
-	["System.Void"] = "void",
+    ["System.Object"] = "object",
+    ["System.String"] = "string",
+    ["System.Boolean"] = "bool",
+    ["System.Byte"] = "byte",
+    ["System.Char"] = "char",
+    ["System.Decimal"] = "decimal",
+    ["System.Double"] = "double",
+    ["System.Int16"] = "short",
+    ["System.Int32"] = "int",
+    ["System.Int64"] = "long",
+    ["System.SByte"] = "sbyte",
+    ["System.Single"] = "float",
+    ["System.UInt16"] = "ushort",
+    ["System.UInt32"] = "uint",
+    ["System.UInt64"] = "ulong",
+    ["System.Void"] = "void",
 }
 
 local csKeywords = {
-"abstract", "as", "base", "bool",
-"break", "byte", "case", "catch",
-"char", "checked", "class", "const",
-"continue", "decimal", "default", "delegate",
-"do", "double", "else", "enum",
-"event", "explicit", "extern", "false",
-"finally", "fixed", "float", "for",
-"foreach", "goto", "if", "implicit",
-"in", "int", "interface",
-"internal", "is", "lock", "long",
-"namespace", "new", "null", "object",
-"operator", "out", "override",
-"params", "private", "protected", "public",
-"readonly", "ref", "return", "sbyte",
-"sealed", "short", "sizeof", "stackalloc",
-"static", "string", "struct", "switch",
-"this", "throw", "true", "try",
-"typeof", "uint", "ulong", "unchecked",
-"unsafe", "ushort", "using", "virtual",
-"void", "volatile", "while"
+    "abstract", "as", "base", "bool",
+    "break", "byte", "case", "catch",
+    "char", "checked", "class", "const",
+    "continue", "decimal", "default", "delegate",
+    "do", "double", "else", "enum",
+    "event", "explicit", "extern", "false",
+    "finally", "fixed", "float", "for",
+    "foreach", "goto", "if", "implicit",
+    "in", "int", "interface",
+    "internal", "is", "lock", "long",
+    "namespace", "new", "null", "object",
+    "operator", "out", "override",
+    "params", "private", "protected", "public",
+    "readonly", "ref", "return", "sbyte",
+    "sealed", "short", "sizeof", "stackalloc",
+    "static", "string", "struct", "switch",
+    "this", "throw", "true", "try",
+    "typeof", "uint", "ulong", "unchecked",
+    "unsafe", "ushort", "using", "virtual",
+    "void", "volatile", "while"
 }
 
 for _, kw in ipairs(csKeywords) do
-    csKeywords[kw] = '@'..kw
+    csKeywords[kw] = '@' .. kw
 end
 for i = 1, #csKeywords do
     csKeywords[i] = nil
@@ -59,103 +59,103 @@ end
 
 local fixChecker = {
     --["System.String"] = "LuaAPI.lua_isstring",
-	["System.Boolean"] = "LuaTypes.LUA_TBOOLEAN == LuaAPI.lua_type",
-	["System.Byte"] = "LuaTypes.LUA_TNUMBER == LuaAPI.lua_type",
-	["System.Char"] = "LuaTypes.LUA_TNUMBER == LuaAPI.lua_type",
-	--["System.Decimal"] = "LuaTypes.LUA_TNUMBER == LuaAPI.lua_type",
-	["System.Double"] = "LuaTypes.LUA_TNUMBER == LuaAPI.lua_type",
-	["System.Int16"] = "LuaTypes.LUA_TNUMBER == LuaAPI.lua_type",
-	["System.Int32"] = "LuaTypes.LUA_TNUMBER == LuaAPI.lua_type",
-	--["System.Int64"] = "LuaTypes.LUA_TNUMBER == LuaAPI.lua_type",
-	["System.SByte"] = "LuaTypes.LUA_TNUMBER == LuaAPI.lua_type",
-	["System.Single"] = "LuaTypes.LUA_TNUMBER == LuaAPI.lua_type",
-	["System.UInt16"] = "LuaTypes.LUA_TNUMBER == LuaAPI.lua_type",
-	["System.UInt32"] = "LuaTypes.LUA_TNUMBER == LuaAPI.lua_type",
-	--["System.UInt64"] = "LuaTypes.LUA_TNUMBER == LuaAPI.lua_type",
-	["System.IntPtr"] = "LuaTypes.LUA_TLIGHTUSERDATA == LuaAPI.lua_type",
+    ["System.Boolean"] = "LuaTypes.LUA_TBOOLEAN == LuaAPI.lua_type",
+    ["System.Byte"] = "LuaTypes.LUA_TNUMBER == LuaAPI.lua_type",
+    ["System.Char"] = "LuaTypes.LUA_TNUMBER == LuaAPI.lua_type",
+    --["System.Decimal"] = "LuaTypes.LUA_TNUMBER == LuaAPI.lua_type",
+    ["System.Double"] = "LuaTypes.LUA_TNUMBER == LuaAPI.lua_type",
+    ["System.Int16"] = "LuaTypes.LUA_TNUMBER == LuaAPI.lua_type",
+    ["System.Int32"] = "LuaTypes.LUA_TNUMBER == LuaAPI.lua_type",
+    --["System.Int64"] = "LuaTypes.LUA_TNUMBER == LuaAPI.lua_type",
+    ["System.SByte"] = "LuaTypes.LUA_TNUMBER == LuaAPI.lua_type",
+    ["System.Single"] = "LuaTypes.LUA_TNUMBER == LuaAPI.lua_type",
+    ["System.UInt16"] = "LuaTypes.LUA_TNUMBER == LuaAPI.lua_type",
+    ["System.UInt32"] = "LuaTypes.LUA_TNUMBER == LuaAPI.lua_type",
+    --["System.UInt64"] = "LuaTypes.LUA_TNUMBER == LuaAPI.lua_type",
+    ["System.IntPtr"] = "LuaTypes.LUA_TLIGHTUSERDATA == LuaAPI.lua_type",
 }
 
 local typedCaster = {
-	["System.Byte"] = "LuaAPI.xlua_tointeger",
-	["System.Char"] = "LuaAPI.xlua_tointeger",
-	["System.Int16"] = "LuaAPI.xlua_tointeger",
-	["System.SByte"] = "LuaAPI.xlua_tointeger",
-	["System.Single"] = "LuaAPI.lua_tonumber",
-	["System.UInt16"] = "LuaAPI.xlua_tointeger",
+    ["System.Byte"] = "LuaAPI.xlua_tointeger",
+    ["System.Char"] = "LuaAPI.xlua_tointeger",
+    ["System.Int16"] = "LuaAPI.xlua_tointeger",
+    ["System.SByte"] = "LuaAPI.xlua_tointeger",
+    ["System.Single"] = "LuaAPI.lua_tonumber",
+    ["System.UInt16"] = "LuaAPI.xlua_tointeger",
 }
 
 local fixCaster = {
-	["System.Double"] = "LuaAPI.lua_tonumber",
+    ["System.Double"] = "LuaAPI.lua_tonumber",
     ["System.String"] = "LuaAPI.lua_tostring",
-	["System.Boolean"] = "LuaAPI.lua_toboolean",
+    ["System.Boolean"] = "LuaAPI.lua_toboolean",
     ["System.Byte[]"] = "LuaAPI.lua_tobytes",
-	["System.IntPtr"] = "LuaAPI.lua_touserdata",
-	["System.UInt32"] = "LuaAPI.xlua_touint",
-	["System.UInt64"] = "LuaAPI.lua_touint64",
-	["System.Int32"] = "LuaAPI.xlua_tointeger",
-	["System.Int64"] = "LuaAPI.lua_toint64",
+    ["System.IntPtr"] = "LuaAPI.lua_touserdata",
+    ["System.UInt32"] = "LuaAPI.xlua_touint",
+    ["System.UInt64"] = "LuaAPI.lua_touint64",
+    ["System.Int32"] = "LuaAPI.xlua_tointeger",
+    ["System.Int64"] = "LuaAPI.lua_toint64",
 }
 
 local fixPush = {
-	["System.Byte"] = "LuaAPI.xlua_pushinteger",
-	["System.Char"] = "LuaAPI.xlua_pushinteger",
-	["System.Int16"] = "LuaAPI.xlua_pushinteger",
-	["System.Int32"] = "LuaAPI.xlua_pushinteger",
-	["System.Int64"] = "LuaAPI.lua_pushint64",
-	["System.SByte"] = "LuaAPI.xlua_pushinteger",
-	["System.Single"] = "LuaAPI.lua_pushnumber",
-	["System.UInt16"] = "LuaAPI.xlua_pushinteger",
-	["System.UInt32"] = "LuaAPI.xlua_pushuint",
-	["System.UInt64"] = "LuaAPI.lua_pushuint64",
+    ["System.Byte"] = "LuaAPI.xlua_pushinteger",
+    ["System.Char"] = "LuaAPI.xlua_pushinteger",
+    ["System.Int16"] = "LuaAPI.xlua_pushinteger",
+    ["System.Int32"] = "LuaAPI.xlua_pushinteger",
+    ["System.Int64"] = "LuaAPI.lua_pushint64",
+    ["System.SByte"] = "LuaAPI.xlua_pushinteger",
+    ["System.Single"] = "LuaAPI.lua_pushnumber",
+    ["System.UInt16"] = "LuaAPI.xlua_pushinteger",
+    ["System.UInt32"] = "LuaAPI.xlua_pushuint",
+    ["System.UInt64"] = "LuaAPI.lua_pushuint64",
     ["System.Double"] = "LuaAPI.lua_pushnumber",
     ["System.String"] = "LuaAPI.lua_pushstring",
-	["System.Byte[]"] = "LuaAPI.lua_pushstring",
-	["System.Boolean"] = "LuaAPI.lua_pushboolean",
-	["System.IntPtr"] = "LuaAPI.lua_pushlightuserdata",
-	["System.Decimal"] = "translator.PushDecimal",
-	["System.Object"] = "translator.PushAny",
+    ["System.Byte[]"] = "LuaAPI.lua_pushstring",
+    ["System.Boolean"] = "LuaAPI.lua_pushboolean",
+    ["System.IntPtr"] = "LuaAPI.lua_pushlightuserdata",
+    ["System.Decimal"] = "translator.PushDecimal",
+    ["System.Object"] = "translator.PushAny",
 }
 
 local notranslator = {
-	["System.Byte"] = true,
-	["System.Char"] = true,
-	["System.Int16"] = true,
-	["System.Int32"] = true,
-	["System.Int64"] = true,
-	["System.SByte"] = true,
-	["System.Single"] = true,
-	["System.UInt16"] = true,
-	["System.UInt32"] = true,
-	["System.UInt64"] = true,
+    ["System.Byte"] = true,
+    ["System.Char"] = true,
+    ["System.Int16"] = true,
+    ["System.Int32"] = true,
+    ["System.Int64"] = true,
+    ["System.SByte"] = true,
+    ["System.Single"] = true,
+    ["System.UInt16"] = true,
+    ["System.UInt32"] = true,
+    ["System.UInt64"] = true,
     ["System.Double"] = true,
     ["System.String"] = true,
-	["System.Boolean"] = true,
+    ["System.Boolean"] = true,
     ["System.Void"] = true,
-	["System.IntPtr"] = true,
-	["System.Byte[]"] = true,
+    ["System.IntPtr"] = true,
+    ["System.Byte[]"] = true,
 }
 
 function ForEachCsList(...)
     local list_count = select('#', ...) - 1
-	local callback = select(list_count + 1, ...)
-	for i = 1, list_count do
-	    local list = select(i, ...)
-		for i = 0, (list.Count or list.Length) - 1 do 
-			callback(list[i], i)
-		end
-	end
+    local callback = select(list_count + 1, ...)
+    for i = 1, list_count do
+        local list = select(i, ...)
+        for i = 0, (list.Count or list.Length) - 1 do
+            callback(list[i], i)
+        end
+    end
 end
 
 function CalcCsList(list, predicate)
     local count = 0
-    for i = 0, (list.Count or list.Length) - 1 do 
+    for i = 0, (list.Count or list.Length) - 1 do
         if predicate(list[i], i) then count = count + 1 end
     end
     return count
 end
 
 function IfAny(list, predicate)
-    for i = 0, (list.Count or list.Length) - 1 do 
+    for i = 0, (list.Count or list.Length) - 1 do
         if predicate(list[i], i) then return true end
     end
     return false
@@ -173,7 +173,7 @@ end
 local xLuaClasses
 function SetXLuaClasses(list)
     xLuaClasses = {}
-	ForEachCsList(list, function(t)
+    ForEachCsList(list, function(t)
         xLuaClasses[t.Name] = true
     end)
 end
@@ -183,26 +183,29 @@ local valueType = typeof(CS.System.ValueType)
 
 local function _CsFullTypeName(t)
     if t.IsArray then
-	    local element_name, element_is_array = _CsFullTypeName(t:GetElementType())
-		if element_is_array then
-		    local bracket_pos = element_name:find('%[')
-			return element_name:sub(1, bracket_pos - 1) .. '[' .. string.rep(',', t:GetArrayRank() - 1) .. ']' .. element_name:sub(bracket_pos, -1), true
-		else
+        local element_name, element_is_array = _CsFullTypeName(t:GetElementType())
+        if element_is_array then
+            local bracket_pos = element_name:find('%[')
+            return
+                element_name:sub(1, bracket_pos - 1) ..
+                '[' .. string.rep(',', t:GetArrayRank() - 1) .. ']' .. element_name:sub(bracket_pos, -1), true
+        else
             return element_name .. '[' .. string.rep(',', t:GetArrayRank() - 1) .. ']', true
-	    end
+        end
     elseif t.IsByRef then
         return _CsFullTypeName(t:GetElementType())
     elseif t.IsGenericParameter then
-        return (t.BaseType == objType or t.BaseType == valueType) and t.Name or _CsFullTypeName(t.BaseType) --TODO:应该判断是否类型约束
+        return (t.BaseType == objType or t.BaseType == valueType) and t.Name or
+            _CsFullTypeName(t.BaseType) --TODO:应该判断是否类型约束
     end
 
-    local name = t.FullName:gsub("&", ""):gsub("%+", ".") 
-    if not t.IsGenericType then 
+    local name = t.FullName:gsub("&", ""):gsub("%+", ".")
+    if not t.IsGenericType then
         return friendlyNameMap[name] or name
     end
-	local genericParameter = ""
+    local genericParameter = ""
     ForEachCsList(t:GetGenericArguments(), function(at, ati)
-        if ati ~= 0 then  genericParameter = genericParameter .. ', ' end
+        if ati ~= 0 then genericParameter = genericParameter .. ', ' end
         genericParameter = genericParameter .. _CsFullTypeName(at)
     end)
     return name:gsub("`%d+", '<' .. genericParameter .. '>'):gsub("%[[^,%]].*", ""), false
@@ -221,9 +224,10 @@ end
 
 function CSVariableName(t)
     if t.IsArray then
-	    return CSVariableName(t:GetElementType()) .. '_'.. t:GetArrayRank() ..'_'
-	end
-    return t:ToString():gsub("&", ""):gsub("%+", ""):gsub("`", "_"):gsub("%.", ""):gsub("%[", "_"):gsub("%]", "_"):gsub(",", "")
+        return CSVariableName(t:GetElementType()) .. '_' .. t:GetArrayRank() .. '_'
+    end
+    return t:ToString():gsub("&", ""):gsub("%+", ""):gsub("`", "_"):gsub("%.", ""):gsub("%[", "_"):gsub("%]", "_"):gsub(
+        ",", "")
 end
 
 local function getSafeFullName(t)
@@ -234,30 +238,44 @@ local function getSafeFullName(t)
     if t.IsGenericParameter then
         return t.BaseType == objType and t.Name or getSafeFullName(t.BaseType)
     end
-	
-	if not t.FullName then return "" end
+
+    if not t.FullName then return "" end
 
     return t.FullName:gsub("&", "")
 end
 
 function GetCheckStatement(t, idx, is_v_params)
-    local cond_start = is_v_params and "(LuaTypes.LUA_TNONE == LuaAPI.lua_type(L, ".. idx ..") || " or ""
-	local cond_end = is_v_params and ")" or ""
+    local cond_start = is_v_params and "(LuaTypes.LUA_TNONE == LuaAPI.lua_type(L, " .. idx .. ") || " or ""
+    local cond_end = is_v_params and ")" or ""
     local testname = getSafeFullName(t)
-    if testname ==  "System.String" or testname == "System.Byte[]" then
-        return cond_start .. "(LuaAPI.lua_isnil(L, " .. idx .. ") || LuaAPI.lua_type(L, ".. idx ..") == LuaTypes.LUA_TSTRING)" .. cond_end
+    if testname == "System.String" or testname == "System.Byte[]" then
+        return cond_start ..
+            "(LuaAPI.lua_isnil(L, " ..
+            idx .. ") || LuaAPI.lua_type(L, " .. idx .. ") == LuaTypes.LUA_TSTRING)" .. cond_end
     elseif testname == "System.Int64" then
-        return cond_start .. "(LuaTypes.LUA_TNUMBER == LuaAPI.lua_type(L, ".. idx ..") || LuaAPI.lua_isint64(L, ".. idx .."))" .. cond_end
+        return cond_start ..
+            "(LuaTypes.LUA_TNUMBER == LuaAPI.lua_type(L, " ..
+            idx .. ") || LuaAPI.lua_isint64(L, " .. idx .. "))" .. cond_end
     elseif testname == "System.UInt64" then
-        return cond_start .. "(LuaTypes.LUA_TNUMBER == LuaAPI.lua_type(L, ".. idx ..") || LuaAPI.lua_isuint64(L, ".. idx .."))" .. cond_end
+        return cond_start ..
+            "(LuaTypes.LUA_TNUMBER == LuaAPI.lua_type(L, " .. idx .. ") || LuaAPI.lua_isuint64(L, " .. idx ..
+            "))" .. cond_end
     elseif testname == "System.Decimal" then
-	    return cond_start .. "(LuaTypes.LUA_TNUMBER == LuaAPI.lua_type(L, ".. idx ..") || translator.IsDecimal(L, ".. idx .."))" .. cond_end
+        return cond_start ..
+            "(LuaTypes.LUA_TNUMBER == LuaAPI.lua_type(L, " .. idx .. ") || translator.IsDecimal(L, " ..
+            idx .. "))" .. cond_end
     elseif testname == "XLua.LuaTable" then
-        return cond_start .. "(LuaAPI.lua_isnil(L, " .. idx .. ") || LuaAPI.lua_type(L, ".. idx ..") == LuaTypes.LUA_TTABLE)" .. cond_end
-	elseif testname == "XLua.LuaFunction" then
-        return cond_start .. "(LuaAPI.lua_isnil(L, " .. idx .. ") || LuaAPI.lua_type(L, ".. idx ..") == LuaTypes.LUA_TFUNCTION)" .. cond_end
+        return cond_start ..
+            "(LuaAPI.lua_isnil(L, " ..
+            idx .. ") || LuaAPI.lua_type(L, " .. idx .. ") == LuaTypes.LUA_TTABLE)" .. cond_end
+    elseif testname == "XLua.LuaFunction" then
+        return cond_start ..
+            "(LuaAPI.lua_isnil(L, " ..
+            idx .. ") || LuaAPI.lua_type(L, " .. idx .. ") == LuaTypes.LUA_TFUNCTION)" .. cond_end
     end
-    return cond_start .. (fixChecker[testname] or ("translator.Assignable<" .. CsFullTypeName(t).. ">")) .. "(L, ".. idx ..")" .. cond_end
+    return cond_start ..
+        (fixChecker[testname] or ("translator.Assignable<" .. CsFullTypeName(t) .. ">")) ..
+        "(L, " .. idx .. ")" .. cond_end
 end
 
 local delegateType = typeof(CS.System.Delegate)
@@ -276,11 +294,11 @@ function MethodParameters(method)
         return method:GetParameters()
     else
         local parameters = method:GetParameters()
-		if parameters[0].ParameterType.IsInterface then
-		    return parameters
-		end
+        if parameters[0].ParameterType.IsInterface then
+            return parameters
+        end
         local ret = {}
-        for i = 1, parameters.Length - 1 do 
+        for i = 1, parameters.Length - 1 do
             ret[i - 1] = parameters[i]
         end
         ret.Length = parameters.Length - 1
@@ -300,41 +318,42 @@ end
 
 function GetCasterStatement(t, idx, var_name, need_declare, is_v_params)
     local testname = getSafeFullName(t)
-	local statement = ""
+    local statement = ""
     local is_struct = IsStruct(t)
-	
+
     if need_declare then
         if t.IsEnum then
             statement = "long " .. var_name
         else
             statement = CsFullTypeName(t) .. " " .. var_name
         end
-        
+
         if is_struct and not typedCaster[testname] and not fixCaster[testname] then
             statement = statement .. ";"
         else
             statement = statement .. " = "
         end
     elseif not is_struct then
-	    statement = var_name .. " = "
+        statement = var_name .. " = "
     end
-	
+
     if is_v_params then
-        return statement .. "translator.GetParams<" .. CsFullTypeName(t:GetElementType()).. ">" .. "(L, ".. idx ..")" 
+        return statement .. "translator.GetParams<" .. CsFullTypeName(t:GetElementType()) .. ">" .. "(L, " .. idx .. ")"
     elseif typedCaster[testname] then
-        return statement .. "(" .. CsFullTypeName(t) .. ")" ..typedCaster[testname] .. "(L, ".. idx ..")" 
-	elseif IsDelegate(t) then
-	    return statement .. "translator.GetDelegate<" .. CsFullTypeName(t).. ">" .. "(L, ".. idx ..")" 
+        return statement .. "(" .. CsFullTypeName(t) .. ")" .. typedCaster[testname] .. "(L, " .. idx .. ")"
+    elseif IsDelegate(t) then
+        return statement .. "translator.GetDelegate<" .. CsFullTypeName(t) .. ">" .. "(L, " .. idx .. ")"
     elseif fixCaster[testname] then
-        return statement .. fixCaster[testname] .. "(L, ".. idx ..")" 
+        return statement .. fixCaster[testname] .. "(L, " .. idx .. ")"
     elseif testname == "System.Object" then
-        return statement .. "translator.GetObject(L, ".. idx ..", typeof(" .. CsFullTypeName(t) .."))"
+        return statement .. "translator.GetObject(L, " .. idx .. ", typeof(" .. CsFullTypeName(t) .. "))"
     elseif is_struct then
-        return statement .. "translator.Get(L, ".. idx ..", out " .. var_name .. ")"
-	elseif t.IsGenericParameter and not t.DeclaringMethod then
-	    return statement .. "translator.GetByType<"..t.Name..">(L, ".. idx ..")" 
+        return statement .. "translator.Get(L, " .. idx .. ", out " .. var_name .. ")"
+    elseif t.IsGenericParameter and not t.DeclaringMethod then
+        return statement .. "translator.GetByType<" .. t.Name .. ">(L, " .. idx .. ")"
     else
-        return statement .. "("..CsFullTypeName(t)..")translator.GetObject(L, ".. idx ..", typeof(" .. CsFullTypeName(t) .."))" 
+        return statement ..
+            "(" .. CsFullTypeName(t) .. ")translator.GetObject(L, " .. idx .. ", typeof(" .. CsFullTypeName(t) .. "))"
     end
 end
 
@@ -356,38 +375,39 @@ function GetSelfStatement(t)
     local fulltypename = CsFullTypeName(t)
     local is_struct = IsStruct(t)
     if is_struct then
-	    return fulltypename .. " gen_to_be_invoked;translator.Get(L, 1, out gen_to_be_invoked)"
-	else
-	    if t == objectType then
+        return fulltypename .. " gen_to_be_invoked;translator.Get(L, 1, out gen_to_be_invoked)"
+    else
+        if t == objectType then
             return "object gen_to_be_invoked = translator.FastGetCSObj(L, 1)"
         else
             return fulltypename .. " gen_to_be_invoked = (" .. fulltypename .. ")translator.FastGetCSObj(L, 1)"
         end
-	end
-    
+    end
 end
 
 local GetNullableUnderlyingType = CS.System.Nullable.GetUnderlyingType
 
 function GetPushStatement(t, variable, is_v_params)
     if is_v_params then
-	    local item_push = GetPushStatement(t:GetElementType(), variable..'[__gen_i]')
-		return 'if ('.. variable ..' != null)  { for (int __gen_i = 0; __gen_i < ' .. variable .. '.Length; ++__gen_i) ' .. item_push .. '; }'
-	end
+        local item_push = GetPushStatement(t:GetElementType(), variable .. '[__gen_i]')
+        return 'if (' ..
+            variable ..
+            ' != null)  { for (int __gen_i = 0; __gen_i < ' .. variable .. '.Length; ++__gen_i) ' .. item_push .. '; }'
+    end
     if t.IsByRef then t = t:GetElementType() end
     local testname = getSafeFullName(t)
     if fixPush[testname] then
-        return fixPush[testname] .. "(L, ".. variable ..")"
+        return fixPush[testname] .. "(L, " .. variable .. ")"
     elseif t.IsEnum then
-        return "translator.PushAny(L, System.Convert.ToInt64("..variable.."))"
+        return "translator.PushAny(L, System.Convert.ToInt64(" .. variable .. "))"
     elseif genPushAndUpdateTypes[t] then
-        return "translator.Push".. CSVariableName(t) .."(L, "..variable..")"
+        return "translator.Push" .. CSVariableName(t) .. "(L, " .. variable .. ")"
     elseif t.IsGenericParameter and not t.DeclaringMethod then
-	    return "translator.PushByType(L, "..variable..")"
-	elseif t.IsInterface or GetNullableUnderlyingType(t) then
-	    return "translator.PushAny(L, "..variable..")"
+        return "translator.PushByType(L, " .. variable .. ")"
+    elseif t.IsInterface or GetNullableUnderlyingType(t) then
+        return "translator.PushAny(L, " .. variable .. ")"
     else
-        return "translator.Push(L, "..variable..")"
+        return "translator.Push(L, " .. variable .. ")"
     end
 end
 
@@ -395,9 +415,9 @@ function GetUpdateStatement(t, idx, variable)
     if t.IsByRef then t = t:GetElementType() end
     if typeof(CS.System.Decimal) == t then error('Decimal not update!') end
     if genPushAndUpdateTypes[t] then
-        return "translator.Update".. CSVariableName(t) .."(L, ".. idx ..", "..variable..")"
+        return "translator.Update" .. CSVariableName(t) .. "(L, " .. idx .. ", " .. variable .. ")"
     else
-        return "translator.Update(L, ".. idx ..", "..variable..")"
+        return "translator.Update(L, " .. idx .. ", " .. variable .. ")"
     end
 end
 
@@ -407,10 +427,10 @@ end
 
 function CallNeedTranslator(overload, isdelegate)
     if not overload.IsStatic and not isdelegate then return true end
-	local ret_type_name = getSafeFullName(overload.ReturnType)
-    if not notranslator[ret_type_name] then return true end 
+    local ret_type_name = getSafeFullName(overload.ReturnType)
+    if not notranslator[ret_type_name] then return true end
     local parameters = overload:GetParameters()
-    return IfAny(overload:GetParameters(), function(parameter) 
+    return IfAny(overload:GetParameters(), function(parameter)
         return IsParams(parameter) or (not notranslator[getSafeFullName(parameter.ParameterType)])
     end)
 end
@@ -437,15 +457,15 @@ function GenericArgumentList(type)
     local type_constraints = ""
     if type.IsGenericTypeDefinition then
         generic_arg_list = "<"
-        
+
         local constraints = {}
-        
+
         ForEachCsList(type:GetGenericArguments(), function(generic_arg, gai)
             local constraint = {}
             if gai ~= 0 then generic_arg_list = generic_arg_list .. ", " end
-            
+
             generic_arg_list = generic_arg_list .. generic_arg.Name
-            
+
             if has_generic_flag(generic_arg.GenericParameterAttributes, GenericParameterAttributes.ReferenceTypeConstraint) then
                 table.insert(constraint, 'class')
             end

@@ -84,6 +84,7 @@ namespace XLua.CSObjectWrap
 }
 namespace XLua
 {
+    [UnityEngine.Scripting.Preserve]
 	public partial class ObjectTranslatorWrap : ObjectTranslator
 	{
 		static XLua.CSObjectWrap.XLua_Gen_Initer_Register__ s_gen_reg_dumb_obj = new XLua.CSObjectWrap.XLua_Gen_Initer_Register__();
@@ -95,6 +96,7 @@ namespace XLua
 		}
 	}
 	
+	[UnityEngine.Scripting.Preserve]
 	internal partial class InternalGlobalsWrap : InternalGlobals
     {
 	    <%

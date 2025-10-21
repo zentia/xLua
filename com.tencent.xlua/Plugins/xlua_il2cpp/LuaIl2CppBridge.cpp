@@ -3,23 +3,11 @@
 #include "il2cpp-api.h"
 #include "il2cpp-class-internals.h"
 #include "il2cpp-object-internals.h"
-#include "vm/InternalCalls.h"
-#include "vm/Object.h"
 #include "vm/Array.h"
-#include "vm/Runtime.h"
-#include "vm/Reflection.h"
-#include "vm/MetadataCache.h"
-#include "vm/Field.h"
-#include "vm/GenericClass.h"
-#include "vm/Thread.h"
-#include "vm/Method.h"
-#include "vm/Parameter.h"
-#include "vm/Image.h"
-#include "utils/StringUtils.h"
-#include "gc/WriteBarrier.h"
 #include "pesapi.h"
 #include "TDataTrans.h"
 #include "LuaValueType.h"
+#include "vm/Exception.h"
 
 namespace xlua
 {
@@ -39,26 +27,24 @@ static Il2CppObject* b_Opi4O(void* target, void* p0, int32_t p1, Il2CppObject* p
     pesapi_env env = apis->get_ref_associated_env(delegateInfo->ValueRef);
     if (!env)
     {
-        il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException("LuaEnv had been destroy"));
+        il2cpp::vm::Exception::Raise(xlua::GetLuaException("LuaEnv had been destroy"));
         return {};
     }
     AutoValueScope valueScope(apis, env);
+    auto err_func = apis->prepare_function(env);
     auto func = apis->get_value_from_ref(env, delegateInfo->ValueRef);
-
-    pesapi_value argv[3]{
-    apis->create_binary(env, p0, 0),
-            converter::Converter<int32_t>::toScript(apis, env, p1),
-            CSRefToLuaValue(apis, env, TIp2, p2)
-    };
-    auto luaret = apis->call_function(env, func, 0, 3, argv);
+    apis->create_binary(env, p0, 0);
+	converter::Converter<int32_t>::toScript(apis, env, p1);
+	CSRefToLuaValue(apis, env, TIp2, p2);
+    auto luaret = apis->call_function(env, err_func, 3);
 
     if (apis->has_caught(env))
     {
         auto msg = apis->get_exception_as_string(env, true);
-        il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException(msg));
+        il2cpp::vm::Exception::Raise(xlua::GetLuaException(msg));
         return {};
     }
-         
+
     // LuaValToCSVal o/O
     Il2CppObject* ret = LuaValueToCSRef(apis, TIret, env, luaret);
 
@@ -77,24 +63,21 @@ static bool b_bs(void* target, Il2CppString* p0, MethodInfo* method) {
     pesapi_env env = apis->get_ref_associated_env(delegateInfo->ValueRef);
     if (!env)
     {
-        il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException("LuaEnv had been destroy"));
+        il2cpp::vm::Exception::Raise(xlua::GetLuaException("LuaEnv had been destroy"));
         return {};
     }
     AutoValueScope valueScope(apis, env);
+    auto err_func = apis->prepare_function(env);
     auto func = apis->get_value_from_ref(env, delegateInfo->ValueRef);
-
-    pesapi_value argv[1]{
-    converter::Converter<Il2CppString*>::toScript(apis, env, p0)
-    };
-    auto luaret = apis->call_function(env, func, 0, 1, argv);
+    converter::Converter<Il2CppString*>::toScript(apis, env, p0);
+    auto luaret = apis->call_function(env, err_func, 1);
 
     if (apis->has_caught(env))
     {
         auto msg = apis->get_exception_as_string(env, true);
-        il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException(msg));
+        il2cpp::vm::Exception::Raise(xlua::GetLuaException(msg));
         return {};
     }
-             
     // LuaValToCSVal P any
     bool ret = converter::Converter<bool>::toCpp(apis, env, luaret);
 
@@ -115,26 +98,23 @@ static int32_t b_i4i4sTo(void* target, int32_t p0, Il2CppString* p1, void* p2, M
     pesapi_env env = apis->get_ref_associated_env(delegateInfo->ValueRef);
     if (!env)
     {
-        il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException("LuaEnv had been destroy"));
+        il2cpp::vm::Exception::Raise(xlua::GetLuaException("LuaEnv had been destroy"));
         return {};
     }
     AutoValueScope valueScope(apis, env);
+    auto err_func = apis->prepare_function(env);
     auto func = apis->get_value_from_ref(env, delegateInfo->ValueRef);
-
-    pesapi_value argv[3]{
-    converter::Converter<int32_t>::toScript(apis, env, p0),
-            converter::Converter<Il2CppString*>::toScript(apis, env, p1),
-            // unknown ret signature: To
-    };
-    auto luaret = apis->call_function(env, func, 0, 3, argv);
+    converter::Converter<int32_t>::toScript(apis, env, p0);
+	converter::Converter<Il2CppString*>::toScript(apis, env, p1);
+	// unknown ret signature: To;
+    auto luaret = apis->call_function(env, err_func, 3);
 
     if (apis->has_caught(env))
     {
         auto msg = apis->get_exception_as_string(env, true);
-        il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException(msg));
+        il2cpp::vm::Exception::Raise(xlua::GetLuaException(msg));
         return {};
     }
-             
     // LuaValToCSVal P any
     int32_t ret = converter::Converter<int32_t>::toCpp(apis, env, luaret);
 
@@ -153,24 +133,21 @@ static int32_t b_i4p(void* target, void* p0, MethodInfo* method) {
     pesapi_env env = apis->get_ref_associated_env(delegateInfo->ValueRef);
     if (!env)
     {
-        il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException("LuaEnv had been destroy"));
+        il2cpp::vm::Exception::Raise(xlua::GetLuaException("LuaEnv had been destroy"));
         return {};
     }
     AutoValueScope valueScope(apis, env);
+    auto err_func = apis->prepare_function(env);
     auto func = apis->get_value_from_ref(env, delegateInfo->ValueRef);
-
-    pesapi_value argv[1]{
-    apis->create_binary(env, p0, 0)
-    };
-    auto luaret = apis->call_function(env, func, 0, 1, argv);
+    apis->create_binary(env, p0, 0);
+    auto luaret = apis->call_function(env, err_func, 1);
 
     if (apis->has_caught(env))
     {
         auto msg = apis->get_exception_as_string(env, true);
-        il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException(msg));
+        il2cpp::vm::Exception::Raise(xlua::GetLuaException(msg));
         return {};
     }
-             
     // LuaValToCSVal P any
     int32_t ret = converter::Converter<int32_t>::toCpp(apis, env, luaret);
 
@@ -191,25 +168,22 @@ static int32_t b_i4ss(void* target, Il2CppString* p0, Il2CppString* p1, MethodIn
     pesapi_env env = apis->get_ref_associated_env(delegateInfo->ValueRef);
     if (!env)
     {
-        il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException("LuaEnv had been destroy"));
+        il2cpp::vm::Exception::Raise(xlua::GetLuaException("LuaEnv had been destroy"));
         return {};
     }
     AutoValueScope valueScope(apis, env);
+    auto err_func = apis->prepare_function(env);
     auto func = apis->get_value_from_ref(env, delegateInfo->ValueRef);
-
-    pesapi_value argv[2]{
-    converter::Converter<Il2CppString*>::toScript(apis, env, p0),
-            converter::Converter<Il2CppString*>::toScript(apis, env, p1)
-    };
-    auto luaret = apis->call_function(env, func, 0, 2, argv);
+    converter::Converter<Il2CppString*>::toScript(apis, env, p0);
+	converter::Converter<Il2CppString*>::toScript(apis, env, p1);
+    auto luaret = apis->call_function(env, err_func, 2);
 
     if (apis->has_caught(env))
     {
         auto msg = apis->get_exception_as_string(env, true);
-        il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException(msg));
+        il2cpp::vm::Exception::Raise(xlua::GetLuaException(msg));
         return {};
     }
-             
     // LuaValToCSVal P any
     int32_t ret = converter::Converter<int32_t>::toCpp(apis, env, luaret);
 
@@ -228,22 +202,22 @@ static Il2CppObject* b_o(void* target, MethodInfo* method) {
     pesapi_env env = apis->get_ref_associated_env(delegateInfo->ValueRef);
     if (!env)
     {
-        il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException("LuaEnv had been destroy"));
+        il2cpp::vm::Exception::Raise(xlua::GetLuaException("LuaEnv had been destroy"));
         return {};
     }
     AutoValueScope valueScope(apis, env);
+    auto err_func = apis->prepare_function(env);
     auto func = apis->get_value_from_ref(env, delegateInfo->ValueRef);
-
     pesapi_value *argv = nullptr;
-    auto luaret = apis->call_function(env, func, 0, 0, argv);
+    auto luaret = apis->call_function(env, err_func, 0);
 
     if (apis->has_caught(env))
     {
         auto msg = apis->get_exception_as_string(env, true);
-        il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException(msg));
+        il2cpp::vm::Exception::Raise(xlua::GetLuaException(msg));
         return {};
     }
-         
+
     // LuaValToCSVal o/O
     Il2CppObject* ret = LuaValueToCSRef(apis, TIret, env, luaret);
 
@@ -260,22 +234,21 @@ static float b_r4(void* target, MethodInfo* method) {
     pesapi_env env = apis->get_ref_associated_env(delegateInfo->ValueRef);
     if (!env)
     {
-        il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException("LuaEnv had been destroy"));
+        il2cpp::vm::Exception::Raise(xlua::GetLuaException("LuaEnv had been destroy"));
         return {};
     }
     AutoValueScope valueScope(apis, env);
+    auto err_func = apis->prepare_function(env);
     auto func = apis->get_value_from_ref(env, delegateInfo->ValueRef);
-
     pesapi_value *argv = nullptr;
-    auto luaret = apis->call_function(env, func, 0, 0, argv);
+    auto luaret = apis->call_function(env, err_func, 0);
 
     if (apis->has_caught(env))
     {
         auto msg = apis->get_exception_as_string(env, true);
-        il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException(msg));
+        il2cpp::vm::Exception::Raise(xlua::GetLuaException(msg));
         return {};
     }
-             
     // LuaValToCSVal P any
     float ret = converter::Converter<float>::toCpp(apis, env, luaret);
 
@@ -292,18 +265,18 @@ static void b_v(void* target, MethodInfo* method) {
     pesapi_env env = apis->get_ref_associated_env(delegateInfo->ValueRef);
     if (!env)
     {
-        il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException("LuaEnv had been destroy"));
+        il2cpp::vm::Exception::Raise(xlua::GetLuaException("LuaEnv had been destroy"));
     }
     AutoValueScope valueScope(apis, env);
+    auto err_func = apis->prepare_function(env);
     auto func = apis->get_value_from_ref(env, delegateInfo->ValueRef);
-
     pesapi_value *argv = nullptr;
-    auto luaret = apis->call_function(env, func, 0, 0, argv);
+    auto luaret = apis->call_function(env, err_func, 0);
 
     if (apis->has_caught(env))
     {
         auto msg = apis->get_exception_as_string(env, true);
-        il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException(msg));
+        il2cpp::vm::Exception::Raise(xlua::GetLuaException(msg));
     }
 
 }
@@ -319,20 +292,18 @@ static void b_vS__(void* target, struct S__ p0, MethodInfo* method) {
     pesapi_env env = apis->get_ref_associated_env(delegateInfo->ValueRef);
     if (!env)
     {
-        il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException("LuaEnv had been destroy"));
+        il2cpp::vm::Exception::Raise(xlua::GetLuaException("LuaEnv had been destroy"));
     }
     AutoValueScope valueScope(apis, env);
+    auto err_func = apis->prepare_function(env);
     auto func = apis->get_value_from_ref(env, delegateInfo->ValueRef);
-
-    pesapi_value argv[1]{
-    DataTransfer::CopyValueType(apis, env, p0, TIp0)
-    };
-    auto luaret = apis->call_function(env, func, 0, 1, argv);
+    xlua::DataTransfer::CopyValueType(apis, env, p0, TIp0);
+    auto luaret = apis->call_function(env, err_func, 1);
 
     if (apis->has_caught(env))
     {
         auto msg = apis->get_exception_as_string(env, true);
-        il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException(msg));
+        il2cpp::vm::Exception::Raise(xlua::GetLuaException(msg));
     }
 
 }
@@ -348,20 +319,18 @@ static void b_vS_r4r4r4_(void* target, struct S_r4r4r4_ p0, MethodInfo* method) 
     pesapi_env env = apis->get_ref_associated_env(delegateInfo->ValueRef);
     if (!env)
     {
-        il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException("LuaEnv had been destroy"));
+        il2cpp::vm::Exception::Raise(xlua::GetLuaException("LuaEnv had been destroy"));
     }
     AutoValueScope valueScope(apis, env);
+    auto err_func = apis->prepare_function(env);
     auto func = apis->get_value_from_ref(env, delegateInfo->ValueRef);
-
-    pesapi_value argv[1]{
-    DataTransfer::CopyValueType(apis, env, p0, TIp0)
-    };
-    auto luaret = apis->call_function(env, func, 0, 1, argv);
+    xlua::DataTransfer::CopyValueType(apis, env, p0, TIp0);
+    auto luaret = apis->call_function(env, err_func, 1);
 
     if (apis->has_caught(env))
     {
         auto msg = apis->get_exception_as_string(env, true);
-        il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException(msg));
+        il2cpp::vm::Exception::Raise(xlua::GetLuaException(msg));
     }
 
 }
@@ -375,20 +344,18 @@ static void b_vi4(void* target, int32_t p0, MethodInfo* method) {
     pesapi_env env = apis->get_ref_associated_env(delegateInfo->ValueRef);
     if (!env)
     {
-        il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException("LuaEnv had been destroy"));
+        il2cpp::vm::Exception::Raise(xlua::GetLuaException("LuaEnv had been destroy"));
     }
     AutoValueScope valueScope(apis, env);
+    auto err_func = apis->prepare_function(env);
     auto func = apis->get_value_from_ref(env, delegateInfo->ValueRef);
-
-    pesapi_value argv[1]{
-    converter::Converter<int32_t>::toScript(apis, env, p0)
-    };
-    auto luaret = apis->call_function(env, func, 0, 1, argv);
+    converter::Converter<int32_t>::toScript(apis, env, p0);
+    auto luaret = apis->call_function(env, err_func, 1);
 
     if (apis->has_caught(env))
     {
         auto msg = apis->get_exception_as_string(env, true);
-        il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException(msg));
+        il2cpp::vm::Exception::Raise(xlua::GetLuaException(msg));
     }
 
 }
@@ -402,21 +369,19 @@ static void b_vi4i4(void* target, int32_t p0, int32_t p1, MethodInfo* method) {
     pesapi_env env = apis->get_ref_associated_env(delegateInfo->ValueRef);
     if (!env)
     {
-        il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException("LuaEnv had been destroy"));
+        il2cpp::vm::Exception::Raise(xlua::GetLuaException("LuaEnv had been destroy"));
     }
     AutoValueScope valueScope(apis, env);
+    auto err_func = apis->prepare_function(env);
     auto func = apis->get_value_from_ref(env, delegateInfo->ValueRef);
-
-    pesapi_value argv[2]{
-    converter::Converter<int32_t>::toScript(apis, env, p0),
-            converter::Converter<int32_t>::toScript(apis, env, p1)
-    };
-    auto luaret = apis->call_function(env, func, 0, 2, argv);
+    converter::Converter<int32_t>::toScript(apis, env, p0);
+	converter::Converter<int32_t>::toScript(apis, env, p1);
+    auto luaret = apis->call_function(env, err_func, 2);
 
     if (apis->has_caught(env))
     {
         auto msg = apis->get_exception_as_string(env, true);
-        il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException(msg));
+        il2cpp::vm::Exception::Raise(xlua::GetLuaException(msg));
     }
 
 }
@@ -432,20 +397,18 @@ static void b_vo(void* target, Il2CppObject* p0, MethodInfo* method) {
     pesapi_env env = apis->get_ref_associated_env(delegateInfo->ValueRef);
     if (!env)
     {
-        il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException("LuaEnv had been destroy"));
+        il2cpp::vm::Exception::Raise(xlua::GetLuaException("LuaEnv had been destroy"));
     }
     AutoValueScope valueScope(apis, env);
+    auto err_func = apis->prepare_function(env);
     auto func = apis->get_value_from_ref(env, delegateInfo->ValueRef);
-
-    pesapi_value argv[1]{
-    CSRefToLuaValue(apis, env, TIp0, p0)
-    };
-    auto luaret = apis->call_function(env, func, 0, 1, argv);
+    CSRefToLuaValue(apis, env, TIp0, p0);
+    auto luaret = apis->call_function(env, err_func, 1);
 
     if (apis->has_caught(env))
     {
         auto msg = apis->get_exception_as_string(env, true);
-        il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException(msg));
+        il2cpp::vm::Exception::Raise(xlua::GetLuaException(msg));
     }
 
 }
@@ -461,20 +424,18 @@ static void b_vp(void* target, void* p0, MethodInfo* method) {
     pesapi_env env = apis->get_ref_associated_env(delegateInfo->ValueRef);
     if (!env)
     {
-        il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException("LuaEnv had been destroy"));
+        il2cpp::vm::Exception::Raise(xlua::GetLuaException("LuaEnv had been destroy"));
     }
     AutoValueScope valueScope(apis, env);
+    auto err_func = apis->prepare_function(env);
     auto func = apis->get_value_from_ref(env, delegateInfo->ValueRef);
-
-    pesapi_value argv[1]{
-    apis->create_binary(env, p0, 0)
-    };
-    auto luaret = apis->call_function(env, func, 0, 1, argv);
+    apis->create_binary(env, p0, 0);
+    auto luaret = apis->call_function(env, err_func, 1);
 
     if (apis->has_caught(env))
     {
         auto msg = apis->get_exception_as_string(env, true);
-        il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException(msg));
+        il2cpp::vm::Exception::Raise(xlua::GetLuaException(msg));
     }
 
 }
@@ -492,21 +453,19 @@ static void b_vpO(void* target, void* p0, Il2CppObject* p1, MethodInfo* method) 
     pesapi_env env = apis->get_ref_associated_env(delegateInfo->ValueRef);
     if (!env)
     {
-        il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException("LuaEnv had been destroy"));
+        il2cpp::vm::Exception::Raise(xlua::GetLuaException("LuaEnv had been destroy"));
     }
     AutoValueScope valueScope(apis, env);
+    auto err_func = apis->prepare_function(env);
     auto func = apis->get_value_from_ref(env, delegateInfo->ValueRef);
-
-    pesapi_value argv[2]{
-    apis->create_binary(env, p0, 0),
-            CSRefToLuaValue(apis, env, TIp1, p1)
-    };
-    auto luaret = apis->call_function(env, func, 0, 2, argv);
+    apis->create_binary(env, p0, 0);
+	CSRefToLuaValue(apis, env, TIp1, p1);
+    auto luaret = apis->call_function(env, err_func, 2);
 
     if (apis->has_caught(env))
     {
         auto msg = apis->get_exception_as_string(env, true);
-        il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException(msg));
+        il2cpp::vm::Exception::Raise(xlua::GetLuaException(msg));
     }
 
 }
@@ -522,21 +481,19 @@ static void b_vpi4(void* target, void* p0, int32_t p1, MethodInfo* method) {
     pesapi_env env = apis->get_ref_associated_env(delegateInfo->ValueRef);
     if (!env)
     {
-        il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException("LuaEnv had been destroy"));
+        il2cpp::vm::Exception::Raise(xlua::GetLuaException("LuaEnv had been destroy"));
     }
     AutoValueScope valueScope(apis, env);
+    auto err_func = apis->prepare_function(env);
     auto func = apis->get_value_from_ref(env, delegateInfo->ValueRef);
-
-    pesapi_value argv[2]{
-    apis->create_binary(env, p0, 0),
-            converter::Converter<int32_t>::toScript(apis, env, p1)
-    };
-    auto luaret = apis->call_function(env, func, 0, 2, argv);
+    apis->create_binary(env, p0, 0);
+	converter::Converter<int32_t>::toScript(apis, env, p1);
+    auto luaret = apis->call_function(env, err_func, 2);
 
     if (apis->has_caught(env))
     {
         auto msg = apis->get_exception_as_string(env, true);
-        il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException(msg));
+        il2cpp::vm::Exception::Raise(xlua::GetLuaException(msg));
     }
 
 }
@@ -554,21 +511,19 @@ static void b_vps(void* target, void* p0, Il2CppString* p1, MethodInfo* method) 
     pesapi_env env = apis->get_ref_associated_env(delegateInfo->ValueRef);
     if (!env)
     {
-        il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException("LuaEnv had been destroy"));
+        il2cpp::vm::Exception::Raise(xlua::GetLuaException("LuaEnv had been destroy"));
     }
     AutoValueScope valueScope(apis, env);
+    auto err_func = apis->prepare_function(env);
     auto func = apis->get_value_from_ref(env, delegateInfo->ValueRef);
-
-    pesapi_value argv[2]{
-    apis->create_binary(env, p0, 0),
-            converter::Converter<Il2CppString*>::toScript(apis, env, p1)
-    };
-    auto luaret = apis->call_function(env, func, 0, 2, argv);
+    apis->create_binary(env, p0, 0);
+	converter::Converter<Il2CppString*>::toScript(apis, env, p1);
+    auto luaret = apis->call_function(env, err_func, 2);
 
     if (apis->has_caught(env))
     {
         auto msg = apis->get_exception_as_string(env, true);
-        il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException(msg));
+        il2cpp::vm::Exception::Raise(xlua::GetLuaException(msg));
     }
 
 }
@@ -584,20 +539,18 @@ static void b_vs(void* target, Il2CppString* p0, MethodInfo* method) {
     pesapi_env env = apis->get_ref_associated_env(delegateInfo->ValueRef);
     if (!env)
     {
-        il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException("LuaEnv had been destroy"));
+        il2cpp::vm::Exception::Raise(xlua::GetLuaException("LuaEnv had been destroy"));
     }
     AutoValueScope valueScope(apis, env);
+    auto err_func = apis->prepare_function(env);
     auto func = apis->get_value_from_ref(env, delegateInfo->ValueRef);
-
-    pesapi_value argv[1]{
-    converter::Converter<Il2CppString*>::toScript(apis, env, p0)
-    };
-    auto luaret = apis->call_function(env, func, 0, 1, argv);
+    converter::Converter<Il2CppString*>::toScript(apis, env, p0);
+    auto luaret = apis->call_function(env, err_func, 1);
 
     if (apis->has_caught(env))
     {
         auto msg = apis->get_exception_as_string(env, true);
-        il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException(msg));
+        il2cpp::vm::Exception::Raise(xlua::GetLuaException(msg));
     }
 
 }

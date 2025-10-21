@@ -4,7 +4,7 @@
 
 require('tte')
 
-local function compare(a,b)
+local function compare(a, b)
     return a.name < b.name
 end
 
@@ -59,22 +59,22 @@ function getAssemblyInfo(genTypes)
     end
     local ret = {}
     for i, v in pairs(assemblyInfo) do
-        table.insert(ret, {name = i, types = v})
+        table.insert(ret, { name = i, types = v })
     end
     table.sort(ret, compare)
     return ret
 end
 
-function LinkXMLTemplate(genTypes) 
+function LinkXMLTemplate(genTypes)
     return string.format([[
 <linker>
 %s
-</linker>]], FOR(getAssemblyInfo(genTypes), function(assemblyInfo) 
+</linker>]], FOR(getAssemblyInfo(genTypes), function(assemblyInfo)
         return string.format([[
     <assembly fullname="%s">
 %s
     </assembly>
-    ]], assemblyInfo.name, FOR(assemblyInfo.types, function(type) 
+    ]], assemblyInfo.name, FOR(assemblyInfo.types, function(type)
             return string.format([[
         <type fullname="%s" preserve="all"/>
 ]], type)

@@ -4,7 +4,6 @@
 #include "il2cpp-api.h"
 #include "il2cpp-class-internals.h"
 #include "il2cpp-object-internals.h"
-#include "vm/Object.h"
 #include "pesapi.h"
 #include "TDataTrans.h"
 

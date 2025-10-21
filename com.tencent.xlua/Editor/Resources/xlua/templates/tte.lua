@@ -7,6 +7,7 @@ function TTFor:new(str)
     self.str = str
     return self
 end
+
 function TTFor:tostring()
     return self.str
 end
@@ -31,8 +32,8 @@ function TTIf:tostring()
     error('invalid TTE use. please sure that you use the template literal as tagged template')
 end
 
-local TTEndif = { }
-local TTElse = { }
+local TTEndif = {}
+local TTElse = {}
 local TTElseif = {}
 TTElseif.__index = TTElseif
 
@@ -52,7 +53,7 @@ end
 
 function TTElseif:tostring()
     error('invalid TTE use. please sure that you use the template literal as tagged template')
-end    
+end
 
 function isInstanceOf(obj, class)
     local mt = getmetatable(obj)
@@ -64,15 +65,17 @@ function isInstanceOf(obj, class)
     end
     return false
 end
+
 local scopeLevel = 0
 local resultInScope = {}
-function enterScope() 
+function enterScope()
     scopeLevel = scopeLevel + 1
     local curScopeLevel = scopeLevel
     resultInScope[curScopeLevel] = {}
     return curScopeLevel
 end
-function exitScope(curScopeLevel) 
+
+function exitScope(curScopeLevel)
     local ret = resultInScope[curScopeLevel]
     resultInScope[curScopeLevel] = {}
     scopeLevel = scopeLevel - 1
@@ -103,9 +106,11 @@ end
 function string.trim(s)
     return string.gsub(s, "^%s*(.-)%s*$", "%1")
 end
+
 function string.startsWith(str, prefix)
     return string.sub(str, 1, string.len(prefix)) == prefix
 end
+
 function string.endsWith(str, suffix)
     return string.sub(str, -string.len(suffix)) == suffix
 end
@@ -146,7 +151,7 @@ function table.join(tbl, sep)
         for i = 1, #tbl - 1 do
             ret = ret .. tbl[i] .. sep
         end
-        ret = ret .. tbl[#tbl]    
+        ret = ret .. tbl[#tbl]
     end
     return ret
 end
@@ -187,21 +192,23 @@ function TaggedTemplateEngine(...)
             table.insert(exps, v)
         else
             table.insert(str, v)
-        end    
+        end
     end
-    
+
     local ret = ''
     local justAddedAnEmptyExp = false
     local ifStack = {}
     local i = 0
-    
+
     ---@param str1 string
     ---@param str2 string
     function WillConnectWithAnEmptyLine(str1, str2)
-        if not str1 or not str2 then return {} end
+        if not str1 or not str2 then
+            return {}
+        end
         local str1LastLineSeq = string.lastIndexOf(str1, '\n')
         local str2FirstLineSeq = string.find(str2, '\n')
-        if str1LastLineSeq ~= -1 and string.trim(string.sub(str1, str1LastLineSeq)) == "" and str2FirstLineSeq ~= -1 and string.trim(string.sub(str2,0, str2FirstLineSeq)) == "" then
+        if str1LastLineSeq ~= -1 and string.trim(string.sub(str1, str1LastLineSeq)) == "" and str2FirstLineSeq ~= -1 and string.trim(string.sub(str2, 0, str2FirstLineSeq)) == "" then
             return str1LastLineSeq, str2FirstLineSeq
         else
             return {}
@@ -223,6 +230,7 @@ function TaggedTemplateEngine(...)
         end
         ret = ret .. s
     end
+
     while i < #str - 1 do
         i = i + 1
         -- handle str
@@ -232,17 +240,17 @@ function TaggedTemplateEngine(...)
         justAddedAnEmptyExp = false
 
         -- handle exp
-        if exps[i] == IF then 
-            error('tte.IF must be used as a function') 
+        if exps[i] == IF then
+            error('tte.IF must be used as a function')
         end
-        if exps[i] == ENDIF then 
-            error('tte.ENDIF must be used as a function') 
+        if exps[i] == ENDIF then
+            error('tte.ENDIF must be used as a function')
         end
-        if exps[i] == ELSE then 
-            error('tte.ELSE must be used as a function') 
+        if exps[i] == ELSE then
+            error('tte.ELSE must be used as a function')
         end
-        if exps[i] == ELSEIF then 
-            error('tte.ELSEIF must be used as a function') 
+        if exps[i] == ELSEIF then
+            error('tte.ELSEIF must be used as a function')
         end
         local continue = false
         if #ifStack > 0 then
@@ -264,10 +272,10 @@ function TaggedTemplateEngine(...)
                 if (isInstanceOf(exps[i], TTIf)) then
                     ifStack.push(IF:new(false))
                 end
-                continue = true                
+                continue = true
             end
         end
-        if not continue and isInstanceOf(exps[i] ,TTIf) then
+        if not continue and isInstanceOf(exps[i], TTIf) then
             table.insert(ifStack, exps[i])
             justAddedAnEmptyExp = true
             continue = true
@@ -293,11 +301,11 @@ function TaggedTemplateEngine(...)
             end
             if type(exps[i]) == 'string' and string.trim(exps[i]) == "" then
                 justAddedAnEmptyExp = true
-            end    
+            end
         end
     end
     appendStr(str[i + 1])
-    
+
     if scopeLevel > 0 then
         table.insert(resultInScope[scopeLevel], ret)
     end
@@ -315,6 +323,7 @@ function Elser:new(b, contentFn)
         self.done = true
     end
 end
+
 function Elser:ELSE(contentFn)
     if not self.done then
         local scope = enterScope()
@@ -325,6 +334,7 @@ function Elser:ELSE(contentFn)
     end
     return self
 end
+
 function Elser:ELSEIF(b, contentFn)
     if not self.done and b then
         local scope = enterScope()
@@ -335,23 +345,28 @@ function Elser:ELSEIF(b, contentFn)
     end
     return self
 end
+
 function Elser:toString()
     return self.content or ""
 end
-function IF(b, contentFn) 
+
+function IF(b, contentFn)
     if (not contentFn) then
         return TTIf:new(b)
-    else 
+    else
         return Elser:new(b, contentFn)
     end
 end
-function ELSE() 
+
+function ELSE()
     return TTElse
 end
-function ELSEIF(b) 
+
+function ELSEIF(b)
     return TTElseif:new(b)
 end
-function ENDIF() 
+
+function ENDIF()
     return TTEndif
 end
 
@@ -359,7 +374,9 @@ function FOR(arr, fn, joiner)
     if not joiner then
         joiner = ''
     end
-    if (not arr or type(arr) ~= 'table') then return '' end
+    if (not arr or type(arr) ~= 'table') then
+        return ''
+    end
 
     local scope = enterScope()
     local ret = {}
@@ -382,7 +399,7 @@ function FOR(arr, fn, joiner)
                 if string.trim(t1) == '' then
                     table.insert(t, string.sub(v, 1, lastLineSeq))
                 else
-                    table.insert(t, v)    
+                    table.insert(t, v)
                 end
             end
         end
@@ -392,7 +409,9 @@ end
 
 function listToLuaArray(csArr)
     local arr = {}
-    if (not csArr) then return arr end
+    if (not csArr) then
+        return arr
+    end
 
     for i = 1, csArr.Count do
         table.insert(arr, csArr[i - 1])
@@ -404,8 +423,18 @@ function needThis(wrapperInfo)
     return wrapperInfo.ThisSignature == 't' or wrapperInfo.ThisSignature == 'T'
 end
 
+local debugList = {}
+function needDebug(wrapperInfo)
+    for i, v in ipairs(debugList) do
+        if wrapperInfo.Signature == v then
+            return true
+        end
+    end
+    return false
+end
+
 function getSignatureWithoutRefAndPrefix(signature)
-    if signature:sub(1,1) == 'P' or signature:sub(1,1) == 'D' then
+    if signature:sub(1, 1) == 'P' or signature:sub(1, 1) == 'D' then
         return string.sub(signature, 2)
     else
         return signature
