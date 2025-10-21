@@ -248,7 +248,14 @@ public class PerfMain : MonoBehaviour
             {
                 for (int i = 0; i < loop_times; i++)
                 {
-                    funcBaseParm(i);
+                    try
+                    {
+                        funcBaseParm(i);
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.LogException(e);
+                    }
                 }
             });
             sw.Close();
