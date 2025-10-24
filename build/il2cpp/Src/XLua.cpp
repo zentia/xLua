@@ -130,6 +130,12 @@ PESAPI_MODULE_EXPORT const char* GetLuaDebugSnapshot()
 {
     return xlua::s_debug_info.data;
 }
+
+PESAPI_MODULE_EXPORT void CrashLua()
+{
+    int* ptr = nullptr;
+    (*(ptr + 1)) = 0; // crash lua
+}
 #ifdef __cplusplus
 }
 #endif

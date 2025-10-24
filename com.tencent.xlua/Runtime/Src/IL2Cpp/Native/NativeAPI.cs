@@ -51,6 +51,8 @@ namespace XLua
         {}
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr GetFFIApi();
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public static extern void CrashLua();
 #if XLUA_IL2CPP && ENABLE_IL2CPP
 
         [DllImport("__Internal", CallingConvention = CallingConvention.Cdecl)]

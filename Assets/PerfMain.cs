@@ -141,7 +141,7 @@ public class PerfMain : MonoBehaviour
         }
         catch (System.Exception e)
         {
-            
+
         }
         return null;
     }
@@ -320,8 +320,7 @@ public class PerfMain : MonoBehaviour
             sw.Close();
         }
 
-
-        if (GUI.Button(new Rect(0, height*2, width, height), $"LuaAccessCSBaseMemberFunc"))
+        if (GUI.Button(new Rect(0, height * 2, width, height), "LuaCrash"))
         {
             var fs = new FileStream($"{resultPath}LuaAccessCSBaseMemberFunc.log", FileMode.Create);
             sw = new StreamWriter(fs);
@@ -329,7 +328,8 @@ public class PerfMain : MonoBehaviour
             PerformanceTest("lua call C# member function : base parameter member function : ", loopTimes, func);
             sw.Close();
         }
-        if (GUI.Button(new Rect(width * 1, height*2, width, height), "LuaConstructClass"))
+
+        if (GUI.Button(new Rect(width * 1, height * 2, width, height), "LuaConstructClass"))
         {
             var fs = new FileStream($"{resultPath}LuaConstructClass.log", FileMode.Create);
             sw = new StreamWriter(fs);
@@ -338,7 +338,7 @@ public class PerfMain : MonoBehaviour
             PerformanceTest("lua construct class : ", loopTimes, func);
             sw.Close();
         }
-        if (GUI.Button(new Rect(width * 2, height*2, width, height), $"FuncClassPara"))
+        if (GUI.Button(new Rect(width * 2, height * 2, width, height), $"FuncClassPara"))
         {
             var fs = new FileStream($"{resultPath}FuncClassPara.log", FileMode.Create);
             sw = new StreamWriter(fs);
@@ -353,7 +353,7 @@ public class PerfMain : MonoBehaviour
             });
             sw.Close();
         }
-        if (GUI.Button(new Rect(width * 3, height*2, width, height), $"FuncStructPara"))
+        if (GUI.Button(new Rect(width * 3, height * 2, width, height), $"FuncStructPara"))
         {
             var fs = new FileStream($"{resultPath}FuncStructPara.log", FileMode.Create);
             sw = new StreamWriter(fs);
@@ -368,7 +368,7 @@ public class PerfMain : MonoBehaviour
             });
             sw.Close();
         }
-        if (GUI.Button(new Rect(width * 4, height*2, width, height), $"FuncTwoBasePara"))
+        if (GUI.Button(new Rect(width * 4, height * 2, width, height), $"FuncTwoBasePara"))
         {
             var fs = new FileStream($"{resultPath}FuncTwoBasePara.log", FileMode.Create);
             sw = new StreamWriter(fs);
@@ -382,7 +382,7 @@ public class PerfMain : MonoBehaviour
             });
             sw.Close();
         }
-        if (GUI.Button(new Rect(width * 5, height*2, width, height), $"luaTable"))
+        if (GUI.Button(new Rect(width * 5, height * 2, width, height), $"luaTable"))
         {
             var fs = new FileStream($"{resultPath}luaTable.log", FileMode.Create);
             sw = new StreamWriter(fs);
@@ -396,6 +396,7 @@ public class PerfMain : MonoBehaviour
             });
             sw.Close();
         }
+
     }
 
     private void PerformanceTest(string title, int loopTimes, PerfTest execute)
@@ -680,7 +681,7 @@ public interface ITableAccess
 public class ClassLuaCallCS : ParaClass
 {
     public int[] array;
-    public List<string> list = new List<string>(){"a","b"};
+    public List<string> list = new List<string>() { "a", "b" };
     public Dictionary<string, int> dictionary;
 
     [LuaCallCSharp]
@@ -768,6 +769,7 @@ public class ClassLuaCallCS : ParaClass
 
     public int funcBaseParam(int x)
     {
+        XLua.NativeAPI.CrashLua();
         return x;
     }
 
@@ -966,7 +968,7 @@ public class ClassLuaCallCS : ParaClass
         {
             foreach (var v in param)
             {
-                Debug.LogFormat("Int16:{0}",v);
+                Debug.LogFormat("Int16:{0}", v);
             }
         }
     }
@@ -977,7 +979,7 @@ public class ClassLuaCallCS : ParaClass
         {
             foreach (var v in param)
             {
-                Debug.LogFormat("Int32:{0}",v);
+                Debug.LogFormat("Int32:{0}", v);
             }
         }
     }

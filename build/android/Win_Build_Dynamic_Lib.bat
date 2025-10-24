@@ -45,10 +45,10 @@ for /l %%a in (0,1,2) do (
 				 -DTARGET_PLATFORM:STRING=android^
 				 -DANDROID_STL=c++_static
 				 
-				 %ANDROID_NDK_ROOT%\prebuilt\windows-x86_64\bin\make --trace -j12
-				 %ANDROID_NDK_ROOT%\prebuilt\windows-x86_64\bin\make install
+				%ANDROID_NDK_ROOT%\prebuilt\windows-x86_64\bin\make --trace -j12
+				%ANDROID_NDK_ROOT%\prebuilt\windows-x86_64\bin\make install
 				move /Y libGameCore.so libGameCore_Symbol.so
-				 %ANDROID_NDK_ROOT%\toolchains\llvm\prebuilt\windows-x86_64\bin\llvm-strip.exe -s libGameCore_Symbol.so -o libGameCore.so
+				%ANDROID_NDK_ROOT%\toolchains\llvm\prebuilt\windows-x86_64\bin\llvm-strip.exe -s libGameCore_Symbol.so -o libGameCore.so
 			)
 			cd ..
 		)

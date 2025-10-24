@@ -519,14 +519,7 @@ void pesapi_snapshot(pesapi_env env, const char* msg)
     int oldTop = lua_gettop(L);
     if (oldTop == 0)
         return;
-    int arg = 0;
-    lua_State* L1 = L;
-    if (lua_isthread(L, 1))
-    {
-        arg = 1;
-    }
-    int level = (int)luaL_optinteger(L, arg + 2, (L == L1) ? 1 : 0);
-    xlua::snapshot_lua_debug_info(L, level, msg);
+    xlua::snapshot_lua_debug_info(L, 0, msg);
 }
 
 struct pesapi_value_ref__
