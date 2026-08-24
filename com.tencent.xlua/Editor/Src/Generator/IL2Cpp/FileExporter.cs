@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using Newtonsoft.Json;
 using Mono.Reflection;
+using UnityEditor;
 using UnityEngine;
 
 namespace XLua.Generator
@@ -267,6 +268,9 @@ namespace XLua.Generator
 
         private static readonly string[] WhiteList =
         {
+            "ActorInfoDoc.ActorInfo, Scripts",
+            "Assets.Scripts.GameLogic.ActorInfoExt, Scripts",
+            "Assets.Scripts.UI.CardComponent.Item.UICardItemFacade, Scripts",
         };
 
         private static HashSet<Type> delegateTypes = new();
@@ -325,13 +329,64 @@ namespace XLua.Generator
                     return null;
                 types[i] = item;
             }
+            try
+            {
+                return type.MakeGenericType(types);
+            }
+            catch (Exception e)
+            {
+                Debug.LogErrorFormat("{0}:key={1}", e.Message, key);
+            }
+            return null;
+        }
 
-            return type.MakeGenericType(types);
+        /// <summary>
+        /// 与 DevAssets/CSTypeUsedInLua 目录命名对齐：Android / iOS / OpenHarmony / PC
+        /// </summary>
+        public static string GetPlatformDirName(BuildTarget buildTarget)
+        {
+            return buildTarget switch
+            {
+                BuildTarget.StandaloneWindows64 => "PC",
+                BuildTarget.StandaloneWindows => "PC",
+                _ => buildTarget.ToString()
+            };
+        }
+
+        /// <summary>
+        /// GenLua 按平台落盘根目录：DevAssets/GenLua/{Platform}
+        /// </summary>
+        public static string GetPlatformGenRoot()
+        {
+            return GetPlatformGenRoot(EditorUserBuildSettings.activeBuildTarget);
+        }
+
+        public static string GetPlatformGenRoot(BuildTarget buildTarget)
+        {
+            return Path.Combine("DevAssets", "GenLua", GetPlatformDirName(buildTarget));
+        }
+
+        public static string GetCsTypeUsedInLuaJsonPath()
+        {
+            return GetCsTypeUsedInLuaJsonPath(EditorUserBuildSettings.activeBuildTarget);
+        }
+
+        public static string GetCsTypeUsedInLuaJsonPath(BuildTarget buildTarget)
+        {
+            return Path.Combine("DevAssets", "CSTypeUsedInLua", GetPlatformDirName(buildTarget), "CSTypeUsedInLua.json");
         }
 
         private static Dictionary<Type, Script> GenCPPWrap(string saveTo)
         {
-            var jsonString = File.ReadAllText("DevAssets/CSTypeUsedInLua.json");
+            var jsonPath = GetCsTypeUsedInLuaJsonPath();
+            if (!File.Exists(jsonPath))
+            {
+                throw new FileNotFoundException(
+                    $"CSTypeUsedInLua.json not found for BuildTarget={EditorUserBuildSettings.activeBuildTarget}: {Path.GetFullPath(jsonPath)}");
+            }
+
+            Debug.Log($"[XLua][Gen] Read CSTypeUsedInLua from: {jsonPath}");
+            var jsonString = File.ReadAllText(jsonPath);
             var scripts = JsonConvert.DeserializeObject<Dictionary<string, Script>>(jsonString);
 
             foreach (var type in WhiteList)
@@ -368,9 +423,7 @@ namespace XLua.Generator
                         types.Add(type, line.Value);
                     else
                     {
-#if OSGAME
                         osgame_log.error(osgame_log.cat.Lua, line.Key);
-#endif
                     }
                 }
             }
@@ -529,9 +582,7 @@ namespace XLua.Generator
                     }
                     catch (Exception e)
                     {
-#if OSGAME
                         osgame_log.warning(osgame_log.cat.Lua, "get instructions of {} ({}:{}) throw {}", mb.ToString(), e.Message, mb.DeclaringType == null ? "" : mb.DeclaringType.Assembly.GetName().Name, mb.DeclaringType.ToString());
-#endif
                         return new MethodBase[] { };
                     }
                 });
@@ -688,7 +739,7 @@ namespace XLua.Generator
                 luaEnv.env.DoString<LuaFunction>(bytes, path);
                 var func = luaEnv.env.Global.Get<LuaFunction>("TypingTemplate");
                 var fileContent = func.Func<List<KeyValuePair<Type, List<Type>>>, string>(extendedType2extensionType);
-                var filePath = outDir + "ExtensionMethodInfos_Gen.cs";
+                var filePath = Path.Combine(outDir, "ExtensionMethodInfos_Gen.cs");
                 using (var textWriter = new StreamWriter(filePath, false, Encoding.UTF8))
                 {
                     textWriter.Write(fileContent);
@@ -712,7 +763,7 @@ namespace XLua.Generator
                 luaEnv.env.DoString<LuaFunction>(bytes, path);
                 var func = luaEnv.env.Global.Get<LuaFunction>("LinkXMLTemplate");
                 var linkXMLContent = func.Func<List<Type>, string>(genTypes);
-                var linkXMLPath = outDir + "link.xml";
+                var linkXMLPath = Path.Combine(outDir, "link.xml");
                 using (var textWriter = new StreamWriter(linkXMLPath, false, Encoding.UTF8))
                 {
                     textWriter.Write(linkXMLContent);
@@ -721,7 +772,7 @@ namespace XLua.Generator
             }
         }
 
-        private static void GenRegisterInfo(Dictionary<Type, Script> types)
+        private static void GenRegisterInfo(Dictionary<Type, Script> types, string typePreLoadPath)
         {
 
             var registerInfos = RegisterInfoGenerator.GetRegisterInfos(types,
@@ -731,7 +782,7 @@ namespace XLua.Generator
                 false
 #endif
                 );
-            GenPreLoadInfo(registerInfos);
+            GenPreLoadInfo(registerInfos, typePreLoadPath);
         }
 
         private static Type[] PreLoadTypeBlackList =
@@ -743,6 +794,11 @@ namespace XLua.Generator
 
         public static void GenPreLoadInfo(List<RegisterInfoForGenerate> registerInfos)
         {
+            GenPreLoadInfo(registerInfos, Path.Combine(Configure.RootDir, "LuaScripts", "TypePreLoad.lua"));
+        }
+
+        public static void GenPreLoadInfo(List<RegisterInfoForGenerate> registerInfos, string registerInfoPath)
+        {
             var types = registerInfos.Select(item => item.Type).Where(item => !PreLoadTypeBlackList.Contains(item)).ToList();
             // var delegateTypes = delegateInvokes.Select(item => item.DeclaringType).Where(item => !PreLoadTypeBlackList.Contains(item)).ToList();
             using (var luaEnv = CreateLuaEnv())
@@ -753,7 +809,11 @@ namespace XLua.Generator
                 luaEnv.env.DoString<LuaFunction>(bytes, name);
                 var func = luaEnv.env.Global.Get<LuaFunction>("PreLoadInfoTemplate");
                 var registerInfoContent = func.Func<List<Type>, string>(types);
-                var registerInfoPath = $"{Configure.RootDir}/LuaScripts/TypePreLoad.lua";
+                var dir = Path.GetDirectoryName(registerInfoPath);
+                if (!string.IsNullOrEmpty(dir))
+                {
+                    Directory.CreateDirectory(dir);
+                }
                 using (var textWriter = new StreamWriter(registerInfoPath, false, new UTF8Encoding(false)))
                 {
                     textWriter.Write(registerInfoContent);
@@ -764,11 +824,19 @@ namespace XLua.Generator
 
         public static void Gen(string csPath)
         {
-            var saveTo = Path.Combine(Path.GetFullPath("Packages/com.tencent.xlua/"), "Plugins/xlua_il2cpp/");
-            var types = GenCPPWrap(saveTo);
-            GenLinkXml("Assets/XLua/", types);
-            GenExtensionMethodInfos(csPath, types);
-            GenRegisterInfo(types);
+            // csPath 保留以兼容旧调用签名；产物改为按平台写入 DevAssets/GenLua/{Platform}
+            var genRoot = GetPlatformGenRoot();
+            Directory.CreateDirectory(genRoot);
+
+            var xluaIl2CppDir = Path.Combine(genRoot, "xlua_il2cpp");
+            Directory.CreateDirectory(xluaIl2CppDir);
+
+            Debug.Log($"[XLua][Gen] Output root: {Path.GetFullPath(genRoot)} (BuildTarget={EditorUserBuildSettings.activeBuildTarget}, Platform={GetPlatformDirName(EditorUserBuildSettings.activeBuildTarget)})");
+
+            var types = GenCPPWrap(xluaIl2CppDir);
+            GenLinkXml(genRoot, types);
+            GenExtensionMethodInfos(genRoot, types);
+            GenRegisterInfo(types, Path.Combine(genRoot, "TypePreLoad.lua"));
         }
     }
 }

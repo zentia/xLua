@@ -131,6 +131,5 @@ namespace xlua
 
         std::vector<PesapiCallbackData*> m_FunctionDatas;
         bool m_Disposed;
-        bool m_FixPtrError;
     };
 } // namespace xlua

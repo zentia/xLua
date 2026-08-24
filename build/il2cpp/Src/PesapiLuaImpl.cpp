@@ -658,7 +658,7 @@ void pesapi_release_value_ref(pesapi_value_ref value_ref)
         }
         else
         {
-            osgame_log->error_with_stack_trace(osgame_log->cat.Lua, "Invalid value_ref");
+            osgame_log->error(osgame_log->cat.Lua, "Invalid value_ref");
         }
         delete value_ref;
     }
@@ -670,7 +670,7 @@ int pesapi_get_value_from_ref(pesapi_env env, pesapi_value_ref value_ref)
     if (value_ref->authCode != pesapi_get_auth_code())
     {
         lua_pushnil(L);
-        osgame_log->error_with_stack_trace(osgame_log->cat.Lua, "Invalid value_ref when invoke pesapi_get_value_from_ref");
+        osgame_log->error(osgame_log->cat.Lua, "Invalid value_ref when invoke pesapi_get_value_from_ref");
     }
     lua_rawgeti(L, LUA_REGISTRYINDEX, value_ref->value_ref);
     return lua_gettop(L);
@@ -719,7 +719,7 @@ int pesapi_get_property(pesapi_env env, pesapi_value pobject, const char* key)
     lua_getfield(L, pobject, key);
     if (lua_isnil(L, -1))
     {
-        osgame_log->error_with_stack_trace(osgame_log->cat.Lua, "no such field {}", key);
+        osgame_log->error(osgame_log->cat.Lua, "no such field {}", key);
         return 0;
     }
     return lua_gettop(L);

@@ -50,7 +50,7 @@ namespace xlua
 
 	struct CSharpMethodInfo
 	{
-		std::string Name;
+		const char* Name;
 		bool IsStatic;
 		bool IsGetter;
 		bool IsSetter;
@@ -96,10 +96,18 @@ namespace xlua
 	{
 		if (il2cpp_class_is_valuetype(klass))
 		{
-			auto size = klass->native_size > 0 ? klass->native_size : (klass->instance_size - sizeof(Il2CppObject));
-			auto buff = (void*)(new uint8_t[size]);
-			memset(buff, 0, size);
-			return buff;
+			if (klass->has_references)
+			{
+				auto obj = il2cpp_object_new(klass);
+				return il2cpp_object_unbox(obj);
+			}
+			else
+			{
+				auto size = klass->native_size > 0 ? klass->native_size : (klass->instance_size - sizeof(Il2CppObject));
+				auto buff = (void*)(new uint8_t[size]);
+				memset(buff, 0, size);
+				return buff;
+			}
 		}
 		else
 		{
@@ -121,6 +129,7 @@ namespace xlua
 	static MethodInfoHelper<Il2CppArray* (Il2CppString*)> g_ExtensionMethodGetHelper;
 
 	static Il2CppClass* s_ExtensionAttribute;
+	static const MethodInfo* s_UnityEngineObjectOpEqualityMethodInfo;
 
 	static bool RegisterType(Il2CppClass* oklass, pesapi_ffi* apis);
 
@@ -446,7 +455,8 @@ namespace xlua
 #endif
 		Il2CppObject* delegate = il2cpp_object_new(delegateType);
 		const MethodInfo* invoke = il2cpp_runtime_get_delegate_invoke(delegateType);
-
+		if (invoke == nullptr)
+			return nullptr;
 		const MethodInfo* method = NULL;
 		{
 			//std::lock_guard<std::recursive_mutex> lock(WrapFuncPtrToMethodInfoMutex);
@@ -480,7 +490,8 @@ namespace xlua
 		auto target = il2cpp_object_new(xlua::g_typeofLuaTable);
 
 		Il2CppDelegate* delegate = FunctionPointerToDelegate(functionPtr, klass, target);
-
+		if (delegate == nullptr)
+			return nullptr;
 		if (MethodIsStatic(delegate->method))
 			return nullptr;
 
@@ -513,21 +524,51 @@ namespace xlua
 					auto ptrType = (Il2CppClass*)apis->get_native_object_typeid(env, luaThis);
 					if (il2cpp_class_is_valuetype(ptrType))
 					{
-						self = il2cpp_value_box(ptrType, self);
+						self = DataTransfer::GetValueTypeForCSharp(ptrType, self);
 					}
+#if IL2CPP_TARGET_WINDOWS
+					else
+					{
+						Il2CppObject* obj = (Il2CppObject*)self;
+						if (obj && !il2cpp_class_is_assignable_from(ptrType, obj->klass))
+						{
+							apis->fatal(il2cpp::utils::StringUtils::Printf("target class name is %s, src class name is %s", ptrType->name, obj->klass->name).c_str());
+						}
+					}
+#endif
+				}
+#if IL2CPP_TARGET_WINDOWS
+				else
+				{
+					auto ptrType = (Il2CppClass*)apis->get_native_object_typeid(env, luaThis);
+					if (!il2cpp_class_is_valuetype(ptrType))
+					{
+						Il2CppObject* obj = (Il2CppObject*)self;
+						if (obj && !il2cpp_class_is_assignable_from(ptrType, obj->klass))
+						{
+							apis->fatal(il2cpp::utils::StringUtils::Printf("target class name is %s, src class name is %s", ptrType->name, obj->klass->name).c_str());
+						}
+					}
+				}
+#endif
+				if (self == nullptr)
+				{
+					std::string err_info = "self is null " + std::string(csharpMethodInfo->Name);
+					apis->throw_by_string(info, err_info.c_str());
+					return;
 				}
 			}
 			WrapData** wrapDatas = csharpMethodInfo->OverloadDatas.data();
 			bool checkArgument = *wrapDatas && *(wrapDatas + 1);
 			while (*wrapDatas)
 			{
-				if ((*wrapDatas)->Wrap(apis, (*wrapDatas)->Method, (*wrapDatas)->MethodPointer, info, env, self, checkArgument, *wrapDatas))
+				if ((((*wrapDatas))->MethodPointer && ((*wrapDatas))->Method && (((*wrapDatas))->Wrap)(apis, ((*wrapDatas))->Method, ((*wrapDatas))->MethodPointer, info, env, self, checkArgument, (*wrapDatas))))
 				{
 					return;
 				}
 				++wrapDatas;
 			}
-			std::string err_info = "invalid arguments to " + csharpMethodInfo->Name;
+			std::string err_info = "invalid arguments to " + std::string(csharpMethodInfo->Name);
 			apis->throw_by_string(info, err_info.c_str());
 		}
 		catch (Il2CppExceptionWrapper& exception)
@@ -539,7 +580,7 @@ namespace xlua
 			Il2CppString* result = (Il2CppString*)il2cpp_runtime_invoke(toStringMethod, exception.ex, NULL, &outException);
 			if (outException != NULL)
 			{
-				std::string err_info = "unknow c# execption for " + csharpMethodInfo->Name;
+				std::string err_info = "Unknown c# exception for " + std::string(csharpMethodInfo->Name);
 				apis->throw_by_string(info, err_info.c_str());
 			}
 			else
@@ -554,14 +595,22 @@ namespace xlua
 	static void GetterCallback(struct pesapi_ffi* apis, pesapi_callback_info info)
 	{
 		FieldWrapData* wrapData = static_cast<FieldWrapData*>(apis->get_userdata(info));
-		wrapData->Getter(apis, info, wrapData->FieldInfo, wrapData->Offset, wrapData->TypeInfo);
+		if (!wrapData->Getter(apis, info, wrapData->FieldInfo, wrapData->Offset, wrapData->TypeInfo))
+		{
+			apis->throw_by_string(info, il2cpp::utils::StringUtils::Printf("Field get failed!, self is null, name is %s", wrapData->FieldInfo->name).c_str());
+		}
 	}
 
 	static void SetterCallback(struct pesapi_ffi* apis, pesapi_callback_info info)
 	{
 		FieldWrapData* wrapData = static_cast<FieldWrapData*>(apis->get_userdata(info));
 		if (wrapData->Setter)
-			wrapData->Setter(apis, info, wrapData->FieldInfo, wrapData->Offset, wrapData->TypeInfo);
+		{
+			if (!wrapData->Setter(apis, info, wrapData->FieldInfo, wrapData->Offset, wrapData->TypeInfo))
+			{
+				apis->throw_by_string(info, il2cpp::utils::StringUtils::Printf("Field set failed!, self is null, name is %s", wrapData->FieldInfo->name).c_str());
+			}
+		}
 	}
 
 	void GetFieldValue(void* ptr, FieldInfo* field, size_t offset, void* value)
@@ -583,7 +632,7 @@ namespace xlua
 
 	void* GetValueTypeFieldPtr(void* obj, FieldInfo* field, size_t offset)
 	{
-		if (!(field->type->attrs * FIELD_ATTRIBUTE_STATIC))
+		if (!(field->type->attrs & FIELD_ATTRIBUTE_STATIC))
 		{
 			IL2CPP_ASSERT(obj);
 			return (char*)obj + offset;
@@ -620,6 +669,7 @@ namespace xlua
 		}
 		else
 		{
+			il2cpp_runtime_class_init(field->parent);
 			il2cpp::vm::Field::StaticSetValue(field, value);
 		}
 	}
@@ -636,10 +686,9 @@ namespace xlua
 	static void* CtorCallback(struct pesapi_ffi* apis, pesapi_callback_info info)
 	{
 		LuaClassInfo* classInfo = reinterpret_cast<LuaClassInfo*>(apis->get_userdata(info));
-		// or will crash in macos.
 		if (!classInfo->IsValueType && *(classInfo->CtorWrapDatas) == nullptr)
 		{
-			apis->throw_by_string(info, "no vlaid constructor is found");
+			apis->throw_by_string(info, "no valid constructor is found");
 			return nullptr;
 		}
 
@@ -690,7 +739,7 @@ namespace xlua
 			}
 		}
 
-		if (isValueType)
+		if (isValueType && !classInfo->TypeId->has_references)
 		{
 			ValueTypeFree(self);
 		}
@@ -739,9 +788,9 @@ namespace xlua
 			return objPoolAdd.CallWithInstance(obj);
 		}
 
-		void UnRefCSObject(int32_t idx)
+		Il2CppObject* UnRefCSObject(int32_t idx)
 		{
-			objPoolRemove.CallWithInstance(idx);
+			return objPoolRemove.CallWithInstance(idx);
 		}
 		struct pesapi_ffi* apis;
 		pesapi_env_ref envRef;
@@ -833,6 +882,8 @@ namespace xlua
 		{
 			PObjectRefInfo* delegateInfo;
 			ret = (Il2CppObject*)DelegateAllocate(classInfo->TypeId, classInfo->DelegateBridge, &delegateInfo);
+			if (ret == nullptr)
+				return nullptr;
 			ValidateHandleStoreOfValue(ret, value_ref, apis, env, delegateInfo);
 		}
 		return ret;
@@ -997,6 +1048,7 @@ namespace xlua
 		success = false;
 		return 0;
 	}
+	
 	int TranslateValueType(struct pesapi_ffi* apis, pesapi_env env, Il2CppClass* targetClass, void* obj)
 	{
 		auto len = targetClass->native_size;
@@ -1005,10 +1057,9 @@ namespace xlua
 			len = targetClass->instance_size - sizeof(Il2CppObject);
 		}
 
-		auto buff = new uint8_t[len];
-		memcpy(buff, obj, len);
-		return apis->native_object_to_value(env, targetClass, buff, true);
+		return DataTransfer::CopyValueType(apis, env, targetClass, obj, len);
 	}
+
 	int TranslateValueType(struct pesapi_ffi* apis, pesapi_env env, Il2CppClass* targetClass, Il2CppObject* obj)
 	{
 		auto len = targetClass->native_size;
@@ -1017,11 +1068,9 @@ namespace xlua
 			len = targetClass->instance_size - sizeof(Il2CppObject);
 		}
 
-		auto buff = new uint8_t[len];
-		memcpy(buff, il2cpp_object_unbox(obj), len);
-		return apis->native_object_to_value(env, targetClass, buff, true);
+		return DataTransfer::CopyValueType(apis, env, targetClass, il2cpp_object_unbox(obj), len);
 	}
-
+	
 	int TryTranslateValueType(struct pesapi_ffi* apis, pesapi_env env, Il2CppObject* obj, bool& success)
 	{
 		success = true;
@@ -1181,8 +1230,11 @@ namespace xlua
 							il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::GetInvalidOperationException("call not load type of delegate"));
 						}
 						Il2CppObject* v = FunctionToDelegate(apis, env, -1, luaClassInfo);
-						memcpy(elementAddress, &v, elementSize);
-						Il2CppCodeGenWriteBarrier(&elementAddress, v);
+						if (v != nullptr)
+						{
+							memcpy(elementAddress, &v, elementSize);
+							Il2CppCodeGenWriteBarrier(&elementAddress, v);
+						}
 					}
 					break;
 				}
@@ -1469,7 +1521,7 @@ namespace xlua
 			auto objClass = (Il2CppClass*)apis->get_native_object_typeid(env, luaval);
 			if (il2cpp_class_is_assignable_from(klass, objClass))
 			{
-				return il2cpp_class_is_valuetype(objClass) ? il2cpp_value_box(objClass, ptr) : (Il2CppObject*)ptr;
+				return il2cpp_class_is_valuetype(objClass) ? DataTransfer::GetValueTypeForCSharp(objClass, ptr) : (Il2CppObject*)ptr;
 			}
 			return nullptr;
 		}
@@ -1506,7 +1558,18 @@ namespace xlua
 		default:
 			IL2CPP_ASSERT(0);
 		}
-		return il2cpp_value_box(klass, toBox);
+		return DataTransfer::GetValueTypeForCSharp(klass, toBox);
+	}
+
+	static bool IsDeadUnityEngineObject(Il2CppObject* obj)
+	{
+		if (!il2cpp_class_is_assignable_from(g_typeofObject, obj->klass))
+		{
+			return false;
+		}
+
+		typedef bool (*NativeFuncPtr)(Il2CppObject* lhs, Il2CppObject* rhs, const MethodInfo* method);
+		return ((NativeFuncPtr)s_UnityEngineObjectOpEqualityMethodInfo->methodPointer)(obj, nullptr, s_UnityEngineObjectOpEqualityMethodInfo);
 	}
 
 	int CSValueToLuaValue(struct pesapi_ffi* apis, pesapi_env env, Il2CppClass* targetClass, void* obj)
@@ -1579,6 +1642,11 @@ namespace xlua
 			return luaVal;
 		}
 
+		if (IsDeadUnityEngineObject(obj))
+		{
+			return apis->create_null(env);
+		}
+
 		auto objClass = obj && obj->klass ? obj->klass : targetClass;
 		return apis->native_object_to_value(env, objClass, obj, false);
 	}
@@ -1632,9 +1700,7 @@ namespace xlua
 			len = targetClass->instance_size - sizeof(Il2CppObject);
 		}
 
-		auto buff = new uint8_t[len];
-		memcpy(buff, ptr, len);
-		return apis->native_object_to_value(env, targetClass, buff, true);
+		return DataTransfer::CopyValueType(apis, env, targetClass, ptr, len);
 	}
 
 	static bool GetValueTypeFromLua(struct pesapi_ffi* apis, pesapi_env env, int luaValue, Il2CppClass* klass, void*& storage)
@@ -2232,7 +2298,7 @@ namespace xlua
 		return true;
 	}
 
-	static void ReflectionGetFieldWrapper(struct pesapi_ffi* apis, pesapi_callback_info info, FieldInfo* field, size_t offset, Il2CppClass* fieldType)
+	static bool ReflectionGetFieldWrapper(struct pesapi_ffi* apis, pesapi_callback_info info, FieldInfo* field, size_t offset, Il2CppClass* fieldType)
 	{
 		pesapi_env env = apis->get_env(info);
 		int luaThis = apis->get_holder(info);
@@ -2294,9 +2360,7 @@ namespace xlua
 				else
 				{
 					auto valueSize = expectType->instance_size - sizeof(Il2CppObject);
-					auto buff = new uint8_t[valueSize];
-					memcpy(buff, storage, valueSize);
-					luaVal = apis->native_object_to_value(env, expectType, buff, true);
+					luaVal = DataTransfer::CopyValueType(apis, env, expectType, storage, valueSize);
 				}
 			}
 
@@ -2311,9 +2375,10 @@ namespace xlua
 			GetFieldValue(csThis, field, offset, &storage);
 			apis->add_return(info, CSRefToLuaValue(apis, env, fieldType, (Il2CppObject*)storage));
 		}
+		return true;
 	}
 
-	static void ReflectionSetFieldWrapper(struct pesapi_ffi* apis, pesapi_callback_info info, FieldInfo* field, size_t offset, Il2CppClass* fieldType)
+	static bool ReflectionSetFieldWrapper(struct pesapi_ffi* apis, pesapi_callback_info info, FieldInfo* field, size_t offset, Il2CppClass* fieldType)
 	{
 		pesapi_env env = apis->get_env(info);
 		int luaThis = apis->get_holder(info);
@@ -2359,6 +2424,7 @@ namespace xlua
 				SetFieldValue(csThis, field, offset, val);
 			}
 		}
+		return true;
 	}
 
 	Il2CppObject* GetLuaTableValueByString(Il2CppObject* luaObject, struct pesapi_ffi* apis, Il2CppString* key, Il2CppReflectionType* rtype)
@@ -2567,7 +2633,7 @@ namespace xlua
 			apis->set_property(env, global, key.c_str(), CSRefToLuaValue(apis, env, obj->klass, obj));
 		}
 	}
-
+	
 	static void* OnCsObjectEnter(void* ptr, LuaClassInfo* classInfo, LuaEnvPrivate* luaEnvPrivate)
 	{
 		if (!classInfo) return nullptr;
@@ -2575,25 +2641,38 @@ namespace xlua
 		{
 			if (classInfo->TypeId->has_references)
 			{
-				return reinterpret_cast<void*>(luaEnvPrivate->RefCSObject(Box(classInfo->TypeId, ptr)));
+				return reinterpret_cast<void*>(luaEnvPrivate->RefCSObject(((Il2CppObject*)ptr) - 1));
 			}
 			return nullptr;
 		}
 		else
 		{
-			return reinterpret_cast<void*>(luaEnvPrivate->RefCSObject((Il2CppObject*)ptr));
+			Il2CppObject* obj = (Il2CppObject*)ptr;
+			/*if (il2cpp_class_is_assignable_from(g_typeofObject, obj->klass))
+			{
+				g_apis->warning(il2cpp::utils::StringUtils::Printf("OnCsObjectEnter %p", ptr).c_str());
+			}*/
+			return reinterpret_cast<void*>(luaEnvPrivate->RefCSObject(obj));
 		}
 	}
 
 	static void OnCsObjectExit(void* ptr, LuaClassInfo* classInfo, LuaEnvPrivate* luaEnvPrivate, void* userdata)
 	{
 		if (!classInfo) return;
-		if (classInfo->IsValueType || classInfo->TypeId->has_references)
+		if (!classInfo->IsValueType || classInfo->TypeId->has_references)
 		{
 			intptr_t idx = reinterpret_cast<intptr_t>(userdata);
-			luaEnvPrivate->UnRefCSObject(idx);
+			Il2CppObject* ret = luaEnvPrivate->UnRefCSObject(idx);
+			/*if (!classInfo->IsValueType && ret)
+			{
+				Il2CppObject* obj = (Il2CppObject*)ptr;
+				if (il2cpp_class_is_assignable_from(g_typeofObject, obj->klass))
+				{
+					g_apis->warning(il2cpp::utils::StringUtils::Printf("OnCsObjectExit %p", ptr).c_str());
+				}
+			}*/
 		}
-
+		
 		/*if (g_typeofILuaGCInterface && il2cpp_class_is_assignable_from(g_typeofILuaGCInterface, classInfo->TypeId))
 		{
 			const MethodInfo* onLuaGC = il2cpp_class_get_method_from_name(classInfo->TypeId, "OnLuaGC", 0);
@@ -2652,7 +2731,7 @@ namespace xlua
 		}
 	}
 
-	static WrapData* CreateOverloadData(const MethodInfo* method, bool isExtensionMethod)
+	static WrapData* CreateOverloadData(struct pesapi_ffi* apis, const MethodInfo* method, bool isExtensionMethod)
 	{
 		bool isStatic = !il2cpp::vm::Method::IsInstance(method) && !isExtensionMethod;
 		std::vector<Il2CppClass*> usedTypes;
@@ -2672,19 +2751,15 @@ namespace xlua
 				usedTypes.push_back(klass);
 			}
 		}
-		/*if (strcmp(method->name, "set_Item") == 0 && strcmp(method->klass->name, "Dictionary`2") == 0)
-		{
-			if (usedTypes.size() == 2 && strcmp(usedTypes[0]->name, "String") == 0 && strcmp(usedTypes[1]->name, "GameObject") == 0)
-			{
-				int a = 0;
-			}
-		}*/
 		int allocSize = sizeof(xlua::WrapData) + sizeof(void*) * usedTypes.size();
 		xlua::WrapData* overloadData = (xlua::WrapData*)malloc(allocSize);
 		memset(overloadData, 0, allocSize);
 		overloadData->Method = const_cast<MethodInfo*>(method);
 		overloadData->MethodPointer = GetMethodPointer(method);
-
+		if (overloadData->MethodPointer == nullptr)
+		{
+			apis->warning(il2cpp::utils::StringUtils::Printf("method %s.%s not found", method->klass->name, method->name).c_str());
+		}
 		try
 		{
 			std::string signature = GetMethodSignature(method, false, isExtensionMethod);
@@ -2722,12 +2797,17 @@ namespace xlua
 			else
 			{
 				bool isStatic = !il2cpp::vm::Method::IsInstance(reflectionMethod->method);
-				bool needBoxing = reflectionMethod->method->klass == il2cpp_defaults.object_class;
+				// fix: ValueType/Enum 上从 Object/ValueType/Enum 继承的虚方法（ToString/Equals/GetHashCode/GetType）
+				// 调用时也需要装箱，否则 this 会是 struct 裸地址，进入反射后崩溃
+				Il2CppClass* declaringKlass = reflectionMethod->method->klass;
+				bool needBoxing = declaringKlass == il2cpp_defaults.object_class
+					|| declaringKlass == il2cpp_defaults.value_type_class
+					|| declaringKlass == il2cpp_defaults.enum_class;
 				if (csharpMethodInfo == nullptr)
 				{
-					csharpMethodInfo = new CSharpMethodInfo{ std::string(reflectionMethod->method->name), isStatic, false, false, needBoxing };
+					csharpMethodInfo = new CSharpMethodInfo{ reflectionMethod->method->name, isStatic, false, false, needBoxing };
 				}
-				csharpMethodInfo->OverloadDatas.push_back(CreateOverloadData(reflectionMethod->method, IsExtensionMethod(reflectionMethod->method)));
+				csharpMethodInfo->OverloadDatas.push_back(CreateOverloadData(apis, reflectionMethod->method, IsExtensionMethod(reflectionMethod->method)));
 			}
 		}
 		if (csharpMethodInfo)
@@ -2755,6 +2835,9 @@ namespace xlua
 
 	xlua::LuaEnvPrivate* InitialPapiEnvRef(struct pesapi_ffi* apis, pesapi_env_ref envRef, Il2CppObject* objPool, Il2CppReflectionMethod* objPoolAddMethodInfo, Il2CppReflectionMethod* objPoolRemoveMethodInfo)
 	{
+		xlua::s_UnityEngineObjectOpEqualityMethodInfo = il2cpp_class_get_method_from_name(xlua::g_typeofObject, "op_Equality", 2);
+		IL2CPP_ASSERT(xlua::s_UnityEngineObjectOpEqualityMethodInfo);
+
 		auto env = apis->get_env_from_ref(envRef);
 		xlua::AutoValueScope ValueScope(apis, env);
 		if (xlua::LuaEnvPrivate::instance != nullptr)
@@ -2819,20 +2902,25 @@ namespace xlua
 				bool isStatic = !il2cpp::vm::Method::IsInstance(method) && !isExtensionMethod;
 				for (int i = 0; i < classInfo->Methods.size(); ++i)
 				{
-					if (classInfo->Methods[i].IsStatic == isStatic && classInfo->Methods[i].IsGetter == isGetter && classInfo->Methods[i].IsSetter == isSetter && classInfo->Methods[i].Name == name)
+					if (classInfo->Methods[i].IsStatic == isStatic && classInfo->Methods[i].IsGetter == isGetter && classInfo->Methods[i].IsSetter == isSetter && strcmp(classInfo->Methods[i].Name, name) == 0)
 					{
 						if (isGetter || isSetter) // no overload for getter or setter
 						{
 							return false;
 						}
-						classInfo->Methods[i].OverloadDatas.push_back(CreateOverloadData(method, isExtensionMethod));
+						classInfo->Methods[i].OverloadDatas.push_back(CreateOverloadData(apis, method, isExtensionMethod));
 						return true;
 					}
 				}
 				std::vector<xlua::WrapData*> OverloadDatas;
-				OverloadDatas.push_back(CreateOverloadData(method, isExtensionMethod));
-				bool needBoxing = (isExtensionMethod ? GetParameterType(method, 0) : method->klass) == il2cpp_defaults.object_class;
-				classInfo->Methods.push_back({ std::string(name), isStatic, isGetter, isSetter, needBoxing, std::move(OverloadDatas) });
+				OverloadDatas.push_back(CreateOverloadData(apis, method, isExtensionMethod));
+				// fix: ValueType/Enum 上从 Object/ValueType/Enum 继承的虚方法
+				// （ToString/Equals/GetHashCode/GetType 等）调用时也需要装箱
+				Il2CppClass* declaringKlass = isExtensionMethod ? GetParameterType(method, 0) : method->klass;
+				bool needBoxing = declaringKlass == il2cpp_defaults.object_class
+					|| declaringKlass == il2cpp_defaults.value_type_class
+					|| declaringKlass == il2cpp_defaults.enum_class;
+				classInfo->Methods.push_back({ name, isStatic, isGetter, isSetter, needBoxing, std::move(OverloadDatas) });
 				return true;
 			};
 		if (isDelegate)
@@ -2879,7 +2967,7 @@ namespace xlua
 						name = (isGetter || isSetter) ? name + 4 : name;
 						if (IsCtor(method))
 						{
-							classInfo->Ctors.push_back(CreateOverloadData(method, false));
+							classInfo->Ctors.push_back(CreateOverloadData(apis, method, false));
 						}
 						else
 						{
@@ -2987,13 +3075,13 @@ namespace xlua
 
 		for (auto const& method : methods)
 		{
-			pesapi_set_method_info(properties, pos++, method->Name.c_str(), method->IsStatic, &MethodCallback, method, nullptr);
+			pesapi_set_method_info(properties, pos++, method->Name, method->IsStatic, &MethodCallback, method, nullptr);
 		}
 
 		for (auto const& kv : gseters)
 		{
 			auto getter_or_setter = kv.second.first ? kv.second.first : kv.second.second;
-			pesapi_set_property_info(properties, pos++, getter_or_setter->Name.c_str(), getter_or_setter->IsStatic,
+			pesapi_set_property_info(properties, pos++, getter_or_setter->Name, getter_or_setter->IsStatic,
 				kv.second.first ? &MethodCallback : nullptr,
 				kv.second.second ? &MethodCallback : nullptr,
 				kv.second.first,
@@ -3022,7 +3110,7 @@ namespace xlua
 			classInfo->SuperTypeId,
 			classInfo->Name.c_str(),
 			classInfo->DelegateBridge ? &DelegateCtorCallback : &CtorCallback,
-			classInfo->IsValueType ? &PApiFree : (pesapi_finalize)nullptr,
+			classInfo->IsValueType && !classInfo->TypeId->has_references ? &PApiFree : (pesapi_finalize)nullptr,
 			propertiesCount,
 			properties,
 			classInfo,

@@ -182,7 +182,6 @@ namespace xlua
         m_Enumerable = luaL_ref(L, LUA_REGISTRYINDEX);
         lua_settop(L, oldTop);
         m_Disposed = false;
-        m_FixPtrError = bq::ccs::get_settings_value_bool("XLUA_FixPtrError", true);
     }
 
     void CppObjectMapper::Traceback(lua_State* L)
@@ -354,30 +353,20 @@ namespace xlua
         else
         {
             void* userdata = nullptr;
-            if (!m_FixPtrError)
-            {
-                if (classDefinition->OnEnter)
-                {
-                    userdata = classDefinition->OnEnter(ptr, classDefinition->Data, GameCoreDataTransfer::GetLuaEnvPrivate());
-#if LUA_MEM_PROFILER
-                    ZEngine::GetApi()->AddCSharpData((uint64_t)userdata, classDefinition->ScriptName, luaT_print_stack(L));
-#endif // LUA_MEM_PROFILER
-                }
-            }
+
             auto ret = m_DataCache.insert({ptr, new ObjectCacheNode(classDefinition->TypeId, userdata, ptr)});
             cacheNodePtr = ret.first->second;
         }
         cacheNodePtr->Value = ref;
-        if (m_FixPtrError)
+
+        if (classDefinition->OnEnter)
         {
-            if (classDefinition->OnEnter)
-            {
-                cacheNodePtr->UserData = classDefinition->OnEnter(ptr, classDefinition->Data, GameCoreDataTransfer::GetLuaEnvPrivate());
+            cacheNodePtr->UserData = classDefinition->OnEnter(ptr, classDefinition->Data, GameCoreDataTransfer::GetLuaEnvPrivate());
 #if LUA_MEM_PROFILER
-                ZEngine::GetApi()->AddCSharpData((uint64_t)cacheNodePtr->UserData, classDefinition->ScriptName, luaT_print_stack(L));
+            ZEngine::GetApi()->AddCSharpData((uint64_t)cacheNodePtr->UserData, classDefinition->ScriptName, luaT_print_stack(L));
 #endif // LUA_MEM_PROFILER
-            }
         }
+        
     }
 
     void CppObjectMapper::UnBindCppObject(const LuaClassDefinition* classDefinition, void* ptr)
@@ -565,7 +554,7 @@ namespace xlua
                     auto objNeedDelete = obj->NeedDelete;
                     if (obj->TypeId != PNode->TypeId)
                     {
-                        osgame_log->error(osgame_log->cat.Lua, "Error ptr! name is {}", name);
+                        osgame_log->warning(osgame_log->cat.Lua, "Error ptr! name is {}", name);
                         objNeedDelete = false;
                     }
                     const LuaClassDefinition* ClassDefinition = FindClassByID(typeId);
@@ -582,7 +571,7 @@ namespace xlua
                         exit = true;
                     }
                     if (obj->Ptr != ptr)
-                        osgame_log->error(osgame_log->cat.Lua, "Error ptr! class name is {}.", ClassDefinition->ScriptName);
+                        osgame_log->warning(osgame_log->cat.Lua, "Error ptr! class name is {}.", ClassDefinition->ScriptName);
                     else
                     {
                         obj->Ptr = nullptr;
@@ -758,6 +747,8 @@ namespace xlua
                 index = pf_stats_begin_sample(CppObjectMapper::PrefNewIndex, pf_stats_regist_custom_name(class_definition->ScriptName));
 #endif
             pesapi_callback_info__ callback_info{L, 1, 0};
+            if (class_definition->Initialize == nullptr)
+                return 0;
             xlua::CppObjectMapper::Get()->BindCppObject(L, class_definition, class_definition->Initialize(&g_pesapi_ffi, &callback_info), false);
 #if OSG_PROFILE
             if (pf_stats_end_sample_by_index != nullptr)

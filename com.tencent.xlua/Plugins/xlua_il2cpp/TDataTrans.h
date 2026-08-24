@@ -7,11 +7,12 @@
 #include "vm/Array.h"
 #include "vm/Exception.h"
 #include "il2cpp-object-internals.h"
+#include "il2cpp-extend-api.h"
 #include "gc/WriteBarrier.h"
 
 namespace xlua
 {
-	typedef void (*FieldWrapFuncPtr)(struct pesapi_ffi* apis, pesapi_callback_info info, FieldInfo* field, size_t offset, Il2CppClass* fieldType);
+	typedef bool (*FieldWrapFuncPtr)(struct pesapi_ffi* apis, pesapi_callback_info info, FieldInfo* field, size_t offset, Il2CppClass* fieldType);
 	typedef bool (*WrapFuncPtr)(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkArgument, struct WrapData* wrapData);
 
 #define LUA_ALL_TYPES(TYPE_ACTION)	\
@@ -21,7 +22,8 @@ namespace xlua
 	TYPE_ACTION(IntPtr)				\
 	TYPE_ACTION(IDictionary)		\
 	TYPE_ACTION(IEnumerable)		\
-	TYPE_ACTION(LuaException)
+	TYPE_ACTION(LuaException)		\
+	TYPE_ACTION(Object)
 
 #define SET_GLOBAL_TYPE_DECLARE(TYPE) extern Il2CppClass* g_typeof##TYPE;
 	LUA_ALL_TYPES(SET_GLOBAL_TYPE_DECLARE)
@@ -180,22 +182,40 @@ namespace xlua
 			return static_cast<T*>(apis->get_native_object_ptr(env, value));
 		}
 
-		template <typename T>
-		static pesapi_value CopyValueType(struct pesapi_ffi* apis, pesapi_env env, const T& v, const void* type_id)
+		static pesapi_value CopyValueType(struct pesapi_ffi* apis, pesapi_env env, const Il2CppClass* type_id, const void* ptr, size_t size)
 		{
-			T* ret = new T;
-			memcpy(ret, &v, sizeof(T));
-			return apis->native_object_to_value(env, type_id, ret, false);
+			if (type_id->has_references)
+			{
+				Il2CppObject* obj = il2cpp_value_box(const_cast<Il2CppClass*>(type_id), const_cast<void*>(ptr));
+				return apis->native_object_to_value(env, type_id, obj + 1, true);
+			}
+			else
+			{
+				uint8_t* buff = new uint8_t[size];
+				memcpy(buff, ptr, size);
+				return apis->native_object_to_value(env, type_id, buff, true);
+			}
+		}
+
+		static Il2CppObject* GetValueTypeForCSharp(const Il2CppClass* type_id, const void* luaPtr)
+		{
+			return (type_id->has_references) ? (Il2CppObject*)((((char*)luaPtr) - sizeof(Il2CppObject))) : il2cpp_value_box(const_cast<Il2CppClass*>(type_id), const_cast<void*>(luaPtr));
 		}
 
 		template <typename T>
-		static pesapi_value CopyNullableValueType(struct pesapi_ffi* apis, pesapi_env env, const T& v, const void* type_id)
+		static pesapi_value CopyValueType(struct pesapi_ffi* apis, pesapi_env env, const T& v, const Il2CppClass* type_id)
+		{
+			return CopyValueType(apis, env, type_id, &v, sizeof(T));
+		}
+
+		template <typename T>
+		static pesapi_value CopyNullableValueType(struct pesapi_ffi* apis, pesapi_env env, const T& v, const Il2CppClass* type_id)
 		{
 			if (!v.hasValue)
 			{
 				return apis->create_null(env);
 			}
-			return CopyValueType(apis, env, v.p1, type_id);
+			return CopyValueType(apis, env, v.p1, il2cpp_class_get_nullable_argument(type_id));
 		}
 	};
 

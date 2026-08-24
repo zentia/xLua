@@ -1,7 +1,3 @@
---package.cpath = package.cpath .. ';C:/Users/Administrator/AppData/Roaming/JetBrains/Rider2024.2/plugins/EmmyLua/debugger/emmy/windows/x64/?.dll'
---local dbg = require('emmy_core')
---dbg.tcpConnect('localhost', 9966)
-
 require("tte")
 require("il2cpp_snippets")
 
@@ -20,6 +16,13 @@ function genFuncWrapper(wrapperInfo)
 bool w_]], wrapperInfo.Signature,
         [[(struct pesapi_ffi* apis, MethodInfo* method, Il2CppMethodPointer methodPointer, pesapi_callback_info info, pesapi_env env, void* self, bool checkLuaArgument, WrapData* wrapData) {
     // PLog("Running w_]], wrapperInfo.Signature, '");',
+        IF(needDebug(wrapperInfo)),
+        string.format([[
+
+#if IL2CPP_TARGET_WINDOWS
+    apis->snapshot(env, "%s");
+#endif]], wrapperInfo.Signature),
+        ENDIF(), '',
         IF(hasValueScope),
         '\n    AutoValueScope value_scope(apis, env);',
         ENDIF(),
@@ -55,6 +58,10 @@ bool w_]], wrapperInfo.Signature,
             table.map(
                 table.map(parameterSignatures, function(S, i) return string.format('%s p%d', SToCPPType(S), i) end),
                 function(s) return string.format('%s, ', s) end), ''), [[const void* method);
+    if ((!methodPointer) || (!method))
+    {
+        return false;
+    }
     ]], IF(wrapperInfo.ReturnSignature ~= 'v'), '',
         SToCPPType(wrapperInfo.ReturnSignature),
         ' ret = ',

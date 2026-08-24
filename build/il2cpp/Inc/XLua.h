@@ -5,6 +5,8 @@
 
 #include "CppObjectMapper.h"
 #include "lua.hpp"
+#include "OsgBaseTypes.h"
+#include "logger/osgame_log.h"
 
 struct FunctionHashFunctor
 {
@@ -37,7 +39,7 @@ namespace xlua
 
         bool IsLuaThread(uint64 threadID)
         {
-            osgame_log->error(osgame_log->cat.GameCore, "IsLuaThread:{} {}", threadID, m_ThreadID);
+            osgame_log->warning(osgame_log->cat.GameCore, "IsLuaThread:{} {}", threadID, m_ThreadID);
             return threadID == m_ThreadID;
         }
 

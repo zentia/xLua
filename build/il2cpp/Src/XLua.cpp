@@ -26,6 +26,22 @@
 
 extern "C" int luaopen_xlua(lua_State* L);
 
+// Standalone stubs for game-engine symbols that are not available in this
+// xLua-only build. The mirrored-coroutine crash feature lives in the game
+// engine, so these are provided as no-ops.
+extern "C"
+{
+    void xlua_clear_mirrored_coroutines()
+    {
+    }
+
+    const char* xlua_capture_mirrored_traceback(lua_State* L)
+    {
+        (void)L;
+        return "";
+    }
+}
+
 struct PersistentObjectInfo
 {
     PersistentObjectInfo* EnvInfo;

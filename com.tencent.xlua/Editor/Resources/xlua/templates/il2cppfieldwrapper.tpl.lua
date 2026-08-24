@@ -8,17 +8,11 @@ require("il2cpp_snippets")
 function genGetField(fieldWrapperInfo)
     local signature = fieldWrapperInfo.ReturnSignature
     if isStructOrNullableStruct(signature) then
-        if needThis(fieldWrapperInfo) then
-            return [[
+        local code = string.format(needThis(fieldWrapperInfo) and "auto _src = (%s*)((char*)self + offset);\n" or "auto _src = (%s*)GetValueTypeFieldPtr(nullptr, fieldInfo, offset);\n", signature)
+        return string.format([[
 
-    auto ret = (char*)self + offset;
-    apis->add_return(info, apis->native_object_to_value(env, TIret, ret, false));]]
-        else
-            return [[
-
-    auto ret = GetValueTypeFieldPtr(nullptr, fieldInfo, offset);
-    apis->add_return(info, apis->native_object_to_value(env, TIret, ret, false));]]
-        end
+    %s
+    apis->add_return(info, DataTransfer::CopyValueType<%s>(apis, env, *_src, TIret));]], code, signature)
     else
         return string.format([[
         
@@ -32,21 +26,24 @@ end
 function genFieldWrapper(fieldWrapperInfo)
     return TaggedTemplateEngine(
             [[
-static void ifg_]], fieldWrapperInfo.Signature,
-            [[(pesapi_ffi* apis, pesapi_callback_info info, FieldInfo* fieldInfo, size_t offset, Il2CppClass* TIret) {
+static bool ifg_]], fieldWrapperInfo.Signature,
+            [[(pesapi_ffi* apis, pesapi_callback_info info, FieldInfo* fieldInfo, size_t offset, Il2CppClass* TIret) 
+{
     pesapi_env env = apis->get_env(info);]],
             IF(needThis(fieldWrapperInfo)), '\n', getThis(fieldWrapperInfo.ThisSignature), '\n', ENDIF(), '',
-            IF(needDebug(fieldWrapperInfo)), string.format('\tapis->snapshot(env, \"ifg_%s\");\n', fieldWrapperInfo.Signature),
-            ENDIF(), '', genGetField(fieldWrapperInfo), [[
-
+            genGetField(fieldWrapperInfo), [[
+            
+    return true;
 }
 
-static void ifs_]], fieldWrapperInfo.Signature,
-            [[(pesapi_ffi* apis, pesapi_callback_info info, FieldInfo* fieldInfo, size_t offset, Il2CppClass* TIp) {
+static bool ifs_]], fieldWrapperInfo.Signature,
+            [[(pesapi_ffi* apis, pesapi_callback_info info, FieldInfo* fieldInfo, size_t offset, Il2CppClass* TIp) 
+{
     pesapi_env env = apis->get_env(info);]],
             IF(needThis(fieldWrapperInfo)), '\n', getThis(fieldWrapperInfo.ThisSignature), '\n', ENDIF(), '',
             LuaValToCSVal(fieldWrapperInfo.ReturnSignature, "apis->get_arg(info, 0)", "p"), '\n\tSetFieldValue(', needThis(fieldWrapperInfo) and 'self, ' or 'nullptr, ', 'fieldInfo, offset, ',
             table.indexOf({ 'o', 's', 'p', 'a' }, fieldWrapperInfo.Signature) ~= -1 and 'p' or '&p', [[);
+    return true;    
 }
 ]])
 end

@@ -423,7 +423,7 @@ function needThis(wrapperInfo)
     return wrapperInfo.ThisSignature == 't' or wrapperInfo.ThisSignature == 'T'
 end
 
-local debugList = {}
+local debugList = { "Ot" }
 function needDebug(wrapperInfo)
     for i, v in ipairs(debugList) do
         if wrapperInfo.Signature == v then
