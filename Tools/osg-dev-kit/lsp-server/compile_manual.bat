@@ -1,0 +1,1 @@
+java -jar -Demmy.port=5007 -Dcmd=1 -Dconfig=luacompiler.json -DMT=1 -Drider=0 -Xss5095k -Xms512m -Xmx4g EmmyLua-LS-all.jar > 1.txt

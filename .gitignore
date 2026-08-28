@@ -1,6 +1,6 @@
 .vs
-/Library
-/Temp
+/Project/Library
+/Project/Temp
 /*.csproj
 /*.sln
 /build/build*

@@ -1,0 +1,5 @@
+{
+    "workspaceFolder":"../../..",	
+    "stdFolder":"std/",
+	"unityserver":"../unity-server/lua-unity-ls.exe"
+}

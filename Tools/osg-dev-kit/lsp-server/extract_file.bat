@@ -1,0 +1,1 @@
+java -jar LuaExtractor-2.jar -filepath=Logic\UISystem\Libraries\UI\UIHeroDetailInfoShowData.lua -func=UIHeroDetailInfoShowDataClass:ctor,UIHeroDetailInfoShowDataClass:tests,UIHeroDetailInfoShowDataClass:SetData -drop_decl -list=1
